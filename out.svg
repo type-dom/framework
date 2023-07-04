@@ -1,0 +1,60 @@
+<svg version="1.1" baseProfile="full" width="545" height="839" viewbox="0 0 545 839" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" style="font-weight:bold; font-size:12pt; font-family:'Calibri', Helvetica, sans-serif;;stroke-width:3;stroke-linejoin:round;stroke-linecap:round">
+<title >nomnoml</title>
+<desc >#.interface: fill=lightblue
+#.enumeration: fill=lightgreen
+[WebElement|+tagName: string;+className: string;+parent: WebElement;+dom: HTMLElement \| SVGElement;+childNodes: WebElement \| WebTextNode\[\];+propObj: IWebProperty;+events: any\[\]|+setAttrId(): void;+addAttrId(): void;+renderAttrId(): void;+setCursor(): void;+setPropObj(): void;+setStyleObj(): WebElement;+addStyleObj(): WebElement;+renderStyleObj(): WebElement;+setStyle(): WebElement;+addStyle(): void;+renderStyle(): void;+removeStyle(): WebElement;+show(): void;+hide(): void;+setAttrObj(): WebElement;+addAttrObj(): WebElement;+renderAttrObj(): WebElement;+setAttribute(): WebElement;+addAttribute(): void;+renderAttribute(): void;+setAttrName(): WebElement;+addAttrName(): void;+renderAttrName(): void;+removeAttribute(): WebElement;+addClassName(): WebElement;+removeClassName(): WebElement;+setParent(): void;+appendChild(): void;+addChild(): void;+renderChild(): void;+insertChild(): HTMLElement \| SVGElement \| Text;+removeChildAtIndex(): void;+removeChildDom(): void;+removeFromParent(): void;+clearChildDom(): void;+clearChildNodes(): void;+removeDom(): void;+findChildAtIndex(): WebElement \| WebTextNode \| null;+findChildIndex(): number;+removeEvents(): void;+clearEvents(): void;+createInstance(): void;+render(): void]</desc>
+<rect x="13.5" y="13.5" height="813" width="519" style="stroke:#33322E;fill:#eee8d5;stroke-dasharray:none;"></rect>
+<a id="src/web-element/type-component.abstract.ts.WebElement" xlink:href="src/web-element/type-component.abstract.ts"><text x="273" y="35" style="fill: #33322E;text-anchor: middle;">WebElement</text></a>
+<path d="M13.5 44.5 L532.5 44.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<text x="21.5" y="66" style="fill: #33322E;font-weight:normal;">+tagName: string</text>
+<text x="21.5" y="81" style="fill: #33322E;font-weight:normal;">+className: string</text>
+<text x="21.5" y="96" style="fill: #33322E;font-weight:normal;">+parent: WebElement</text>
+<text x="21.5" y="111" style="fill: #33322E;font-weight:normal;">+dom: HTMLElement | SVGElement</text>
+<text x="21.5" y="126" style="fill: #33322E;font-weight:normal;">+childNodes: WebElement | WebTextNode[]</text>
+<text x="21.5" y="141" style="fill: #33322E;font-weight:normal;">+propObj: IWebProperty</text>
+<text x="21.5" y="156" style="fill: #33322E;font-weight:normal;">+events: any[]</text>
+<path d="M13.5 165.5 L532.5 165.5" style="stroke:#33322E;fill:none;stroke-dasharray:none;"></path>
+<text x="21.5" y="187" style="fill: #33322E;font-weight:normal;">+setAttrId(): void</text>
+<text x="21.5" y="202" style="fill: #33322E;font-weight:normal;">+addAttrId(): void</text>
+<text x="21.5" y="217" style="fill: #33322E;font-weight:normal;">+renderAttrId(): void</text>
+<text x="21.5" y="232" style="fill: #33322E;font-weight:normal;">+setCursor(): void</text>
+<text x="21.5" y="247" style="fill: #33322E;font-weight:normal;">+setPropObj(): void</text>
+<text x="21.5" y="262" style="fill: #33322E;font-weight:normal;">+setStyleObj(): WebElement</text>
+<text x="21.5" y="277" style="fill: #33322E;font-weight:normal;">+addStyleObj(): WebElement</text>
+<text x="21.5" y="292" style="fill: #33322E;font-weight:normal;">+renderStyleObj(): WebElement</text>
+<text x="21.5" y="307" style="fill: #33322E;font-weight:normal;">+setStyle(): WebElement</text>
+<text x="21.5" y="322" style="fill: #33322E;font-weight:normal;">+addStyle(): void</text>
+<text x="21.5" y="337" style="fill: #33322E;font-weight:normal;">+renderStyle(): void</text>
+<text x="21.5" y="352" style="fill: #33322E;font-weight:normal;">+removeStyle(): WebElement</text>
+<text x="21.5" y="367" style="fill: #33322E;font-weight:normal;">+show(): void</text>
+<text x="21.5" y="382" style="fill: #33322E;font-weight:normal;">+hide(): void</text>
+<text x="21.5" y="397" style="fill: #33322E;font-weight:normal;">+setAttrObj(): WebElement</text>
+<text x="21.5" y="412" style="fill: #33322E;font-weight:normal;">+addAttrObj(): WebElement</text>
+<text x="21.5" y="427" style="fill: #33322E;font-weight:normal;">+renderAttrObj(): WebElement</text>
+<text x="21.5" y="442" style="fill: #33322E;font-weight:normal;">+setAttribute(): WebElement</text>
+<text x="21.5" y="457" style="fill: #33322E;font-weight:normal;">+addAttribute(): void</text>
+<text x="21.5" y="472" style="fill: #33322E;font-weight:normal;">+renderAttribute(): void</text>
+<text x="21.5" y="487" style="fill: #33322E;font-weight:normal;">+setAttrName(): WebElement</text>
+<text x="21.5" y="502" style="fill: #33322E;font-weight:normal;">+addAttrName(): void</text>
+<text x="21.5" y="517" style="fill: #33322E;font-weight:normal;">+renderAttrName(): void</text>
+<text x="21.5" y="532" style="fill: #33322E;font-weight:normal;">+removeAttribute(): WebElement</text>
+<text x="21.5" y="547" style="fill: #33322E;font-weight:normal;">+addClassName(): WebElement</text>
+<text x="21.5" y="562" style="fill: #33322E;font-weight:normal;">+removeClassName(): WebElement</text>
+<text x="21.5" y="577" style="fill: #33322E;font-weight:normal;">+setParent(): void</text>
+<text x="21.5" y="592" style="fill: #33322E;font-weight:normal;">+appendChild(): void</text>
+<text x="21.5" y="607" style="fill: #33322E;font-weight:normal;">+addChild(): void</text>
+<text x="21.5" y="622" style="fill: #33322E;font-weight:normal;">+renderChild(): void</text>
+<text x="21.5" y="637" style="fill: #33322E;font-weight:normal;">+insertChild(): HTMLElement | SVGElement | Text</text>
+<text x="21.5" y="652" style="fill: #33322E;font-weight:normal;">+removeChildAtIndex(): void</text>
+<text x="21.5" y="667" style="fill: #33322E;font-weight:normal;">+removeChildDom(): void</text>
+<text x="21.5" y="682" style="fill: #33322E;font-weight:normal;">+removeFromParent(): void</text>
+<text x="21.5" y="697" style="fill: #33322E;font-weight:normal;">+clearChildDom(): void</text>
+<text x="21.5" y="712" style="fill: #33322E;font-weight:normal;">+clearChildNodes(): void</text>
+<text x="21.5" y="727" style="fill: #33322E;font-weight:normal;">+removeDom(): void</text>
+<text x="21.5" y="742" style="fill: #33322E;font-weight:normal;">+findChildAtIndex(): WebElement | WebTextNode | null</text>
+<text x="21.5" y="757" style="fill: #33322E;font-weight:normal;">+findChildIndex(): number</text>
+<text x="21.5" y="772" style="fill: #33322E;font-weight:normal;">+removeEvents(): void</text>
+<text x="21.5" y="787" style="fill: #33322E;font-weight:normal;">+clearEvents(): void</text>
+<text x="21.5" y="802" style="fill: #33322E;font-weight:normal;">+createInstance(): void</text>
+<text x="21.5" y="817" style="fill: #33322E;font-weight:normal;">+render(): void</text>
+</svg>

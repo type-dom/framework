@@ -1,0 +1,16 @@
+export const PageLayout = {
+  A3: { name: 'A3', width: '297', height: '420' },
+  A4: { name: 'A4', width: '210', height: '297' },
+  A5: { name: 'A5', width: '148', height: '210' },
+  B3JIS: { name: 'B3(JIS) 大8K', width: '354', height: '515' },
+  B4JIS: { name: 'B4(JIS) 大16K', width: '257', height: '364' },
+  B5JIS: { name: 'B5(JIS) 大32K', width: '182', height: '257' },
+  B4: { name: 'B4 16K', width: '250', height: '353' },
+  B5: { name: 'B5 32K', width: '176', height: '250' },
+  Executive: { name: '公文', width: '184.2', height: '266.7' },
+  Legal: { name: '法律', width: '215.9', height: '855.6' },
+  Letter: { name: '信件', width: '215.9', height: '297.4' },
+  Statement: { name: '报告', width: '139.7', height: '215.9' },
+  Tabloid: { name: '小报', width: '279.4', height: '431.8' },
+  Custom: { name: '自定义', width: '105', height: '148' },
+};
