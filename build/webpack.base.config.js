@@ -22,9 +22,6 @@ console.log('当前模式', process.argv); // process.env.NODE_ENV);
 module.exports = {
   // 入口 (单个入口 或多个入口),现在是多入口
   entry: {
-    editMode: './src/example-design-mode.ts',
-    formMode: './src/example-fill-mode.ts',
-    readonlyMode: './src/example-readonly-mode.ts',
     uiComponentView: './src/ui-components-view.ts',
     // lib: './src/example-lib.ts'
     // layout: './src/layout/layout.ts'
@@ -179,33 +176,15 @@ module.exports = {
     // new CleanWebpackPlugin(),
     // 多个html页面
     new HtmlWebpackPlugin({
-      template: './public/example-design-mode.html', // 把哪个html文件打包到dist目录中
-      title: 'design form',
-      filename: 'example-design-mode.html', // 输出什么名字 默认 example-design-mode.html
-      // chunks: ['advertisement', 'commCss', 'dom', 'utils'], // todo ??? 当前页面所需要哪些模块 模块引入顺序和入口设置时的先后有关
+      template: './public/ui-components-view.html', // 把哪个html文件打包到dist目录中
+      title: 'ui view',
+      filename: 'ui-components-view.html', // 输出什么名字 默认 example-design-mode.html
+      // chunks: ['read', 'vendor']
       minify: {
         collapseWhitespace: true,
         removeComments: true,
       },
       hash: true
-    }),
-    new HtmlWebpackPlugin({
-      template: './public/example-fill-mode.html',
-      title: 'fill form',
-      filename: 'example-fill-mode.html',
-      // chunks: ['read', 'vendor']
-    }),
-    new HtmlWebpackPlugin({
-      template: './public/example-readonly-mode.html',
-      title: 'form readonly',
-      filename: 'example-readonly-mode.html',
-      // chunks: ['read', 'vendor']
-    }),
-    new HtmlWebpackPlugin({
-      template: './public/ui-components-view.html',
-      title: 'ui view',
-      filename: 'ui-components-view.html',
-      // chunks: ['read', 'vendor']
     }),
     // 提取css
     new MiniCssExtractPlugin({
