@@ -1,5 +1,5 @@
 {
-  "name": "form-editor",
+  "name": "type-dom",
   "version": "1.0.0",
   "description": "form editor . ",
   "main": "src/example-design-mode.ts",
