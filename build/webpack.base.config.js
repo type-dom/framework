@@ -306,27 +306,7 @@ module.exports = {
     //   },
     // },
     // 端口号
-    port: 8118,
-    // 服务器代理 --> 解决开发环境跨域问题
-    proxy: {
-      // 浏览器与服务器之间存在跨域问题，但与代理服务器之间不存在跨域，代理服务器与服务器之间也不存在跨域，所以，发送到代理服务器，再由它转发到服务器，可以避免跨域
-      // 一旦devServer(5000)服务器接受到 /api/xxx 的请求，就会把请求转发到另外一个服务器(3000)
-      '/api': {
-        target: 'http://localhost:3000',
-        // 发送请求时，请求路径重写：将 /api/xxx --> /xxx （去掉/api）
-        pathRewrite: {
-          '^/api': ''
-        }
-      },
-      // '/source': {
-      //   target: 'http://219.239.83.20:18800/',
-      //   secure: false, // 这是签名认证，http和https区分的参数设置
-      //   // 发送请求时，请求路径重写：将 /api/xxx --> /xxx （去掉/api）
-      //   pathRewrite: {
-      //     '^/source': ''
-      //   }
-      // }
-    },
+    port: 2288,
     //  boolean string [string] object [object]
     // 该配置项允许配置从目录提供静态文件的选项（默认是 'public' 文件夹）。
     // 将其设置为 false 以禁用：
