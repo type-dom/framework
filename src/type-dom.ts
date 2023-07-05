@@ -86,12 +86,12 @@ export {
   // TypeDom,
   TypeNode,
   TypeElement,
-  TypeHtml,
-  TypeSvg,
-  IStyle,
   ITypeElement,
+  TypeHtml,
   ITypeHtml,
+  TypeSvg,
   ITypeSvg,
+  IStyle,
   TypeRoot,
   ITypeRoot,
   TypeContainer,
@@ -120,35 +120,35 @@ export {
   ITypeB,
   TypeBr,
   TypeDiv,
-  XElement,
-  TextNode,
-  Division,
-  Span,
-  Button,
-  Header,
-  SectionClass,
-  Heading,
-  UnorderedList,
-  ListItem,
-  Select,
-  SelectOption,
-  Label,
-  Input,
-  Textarea,
-  Table,
-  TableHeaderCell,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableDataCell,
-  TableFoot,
+  // XElement,
+  // TextNode,
+  // Division,
+  // Span,
+  // Button,
+  // Header,
+  // SectionClass,
+  // Heading,
+  // UnorderedList,
+  // ListItem,
+  // Select,
+  // SelectOption,
+  // Label,
+  // Input,
+  // Textarea,
+  // Table,
+  // TableHeaderCell,
+  // TableHead,
+  // TableBody,
+  // TableRow,
+  // TableDataCell,
+  // TableFoot,
 };
 
 
-export type ITypeClass = typeof Button | typeof Division | typeof Heading
-  | typeof Input | typeof Textarea | typeof Label| typeof Span
-  | typeof Select | typeof SelectOption
-  | typeof UnorderedList | typeof ListItem
-  | typeof Table | typeof TableRow | typeof TableDataCell
-  | typeof TableHeaderCell
-  | typeof TableHead | typeof TableBody | typeof TableFoot;
+// export type ITypeClass = typeof Button | typeof Division | typeof Heading
+//   | typeof Input | typeof Textarea | typeof Label| typeof Span
+//   | typeof Select | typeof SelectOption
+//   | typeof UnorderedList | typeof ListItem
+//   | typeof Table | typeof TableRow | typeof TableDataCell
+//   | typeof TableHeaderCell
+//   | typeof TableHead | typeof TableBody | typeof TableFoot;
