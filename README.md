@@ -1,6 +1,6 @@
 ## 项目说明
 
-> 这是一个基于自建前端框架TypeDom创建的动态表单项目。
+> TypeDom是一个基于抽象类/具体类的完全面向对象的轻量级前端框架。基于typescript技术栈创建。
 
 ## 项目环境
 
@@ -38,7 +38,7 @@
 ## 框架介绍
 
     1、技术栈
-        –	虚拟DOM：TypeNode
+        –	虚拟DOM：虚拟树TypeDom,虚拟节点TypeNode，虚拟根节点TypeRoot
         –	webpack
         –	typescript
         –	抽象类
