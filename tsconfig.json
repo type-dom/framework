@@ -8,7 +8,7 @@
     // 编译的目标是什么版本的
     /* 用来指定编译后的js要使用的模块标准: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
     /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019' or 'ESNEXT'. */
-    "target": "ES2015", // ES2015这样打包后校验的属性不能动态显示。
+    "target": "ESNext", // ES2015这样打包后校验的属性不能动态显示。
     // 指定生成哪个模块系统代码
     /* 用来指定编译后的js要使用的模块标准: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
     /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
@@ -40,7 +40,7 @@
         如果设为true，编译每个ts文件之后会生成一个js文件和一个声明文件。
         但是declaration和allowJs不能同时设为true */
     /* Generates corresponding '.d.ts' file. */
-//     "declaration": true,
+    // "declaration": true,
     // 类型声明文件的输出目录
     //    "declarationDir": "./dist/types",
     /* declarationMap值为true或false，指定是否为声明文件.d.ts生成map文件 */
