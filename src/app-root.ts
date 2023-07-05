@@ -15,7 +15,8 @@ export class AppRoot extends TypeRoot {
     console.log('UIView constructor . ');
     this.className = 'UIView';
     this.addStyleObj({
-      padding: '30px'
+      padding: '30px',
+      border: '20px solid #dddddd'
     });
     this.createItems(this, [
       {

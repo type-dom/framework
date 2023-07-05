@@ -12,7 +12,7 @@ console.log('run lib');
 module.exports = {
   entry: {
     // lib: './src/example-lib.ts',
-    'form-editor': './src/form-editor.ts',
+    'type-dom': './src/type-dom.ts',
   },
   output: {
     filename: `[name].js`,

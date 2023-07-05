@@ -306,7 +306,7 @@ module.exports = {
     //   },
     // },
     // 端口号
-    port: 2288,
+    port: 1111,
     //  boolean string [string] object [object]
     // 该配置项允许配置从目录提供静态文件的选项（默认是 'public' 文件夹）。
     // 将其设置为 false 以禁用：

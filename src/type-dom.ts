@@ -1,40 +1,39 @@
-import { TypeNode } from "./type-node/type-node.abstract";
-import { ITypeAttribute} from "./type-element/type-element.interface";
-import { IStyle } from "./style/style.interface";
-import { TypeElement } from "./type-element/type-element.abstract";
-import { ITypeElement } from "./type-element/type-element.interface";
-import { TypeHtml } from "./type-element/type-html/type-html.abstract";
-import { ITypeHtml } from "./type-element/type-html/type-html.interface";
-import { TypeSvg } from "./type-element/type-svg/type-svg.abstract";
-import { ITypeSvg } from "./type-element/type-svg/type-svg.interface";
-import { TypeRoot } from "./type-root/type-root.class";
-import { ITypeRoot } from "./type-root/type-root.interface";
-import { TypeContainer } from "./type-element/type-container/type-container.abstract";
-import { ITypeContainer } from "./type-element/type-container/type-container.interface";
-import { TypeComponent } from "./type-element/type-component/type-component.abstract";
-import { ITypeComponent } from "./type-element/type-component/type-component.interface";
-import  { TypeHeader } from "./type-element/type-html/header/header.abstract";
-import { ITypeHeader } from "./type-element/type-html/header/header.interface";
-import { TypeSection } from "./type-element/type-html/section/section.abstract";
-import { ITypeSection } from "./type-element/type-html/section/section.interface";
-import { TypeA } from "./type-element/type-html/a/a.abstract";
-import { ITypeA } from "./type-element/type-html/a/a.interface";
-import { TypeAbbr } from "./type-element/type-html/abbr/abbr.abstract";
-import { ITypeAbbr } from "./type-element/type-html/abbr/abbr.interface";
-import { TypeAddress } from "./type-element/type-html/address/address.abstract";
-import { ITypeAddress } from "./type-element/type-html/address/address.interface";
-import { TypeArea } from "./type-element/type-html/area/area.abstract";
-import { ITypeArea } from "./type-element/type-html/area/area.interface";
-import { TypeArticle } from "./type-element/type-html/article/article.abstract";
-import { ITypeArticle } from "./type-element/type-html/article/article.interface";
-import { TypeAside } from "./type-element/type-html/aside/aside.abstract";
-import { ITypeAside } from "./type-element/type-html/aside/aside.interface";
-import { TypeAudio } from "./type-element/type-html/audio/audio.abstract";
-import { ITypeAudio } from "./type-element/type-html/audio/audio.interface";
-import { TypeB } from "./type-element/type-html/b/b.abstract";
-import { ITypeB } from "./type-element/type-html/b/b.interface";
-import { TypeBr } from "./type-element/type-html/br/br.abstract";
-import { TypeDiv } from "./type-element/type-html/div/div.abstract";
+import { TypeNode } from './type-node/type-node.abstract';
+import { IStyle } from './style/style.interface';
+import { TypeElement } from './type-element/type-element.abstract';
+import { ITypeElement, ITypeAttribute } from './type-element/type-element.interface';
+import { TypeHtml } from './type-element/type-html/type-html.abstract';
+import { ITypeHtml } from './type-element/type-html/type-html.interface';
+import { TypeSvg } from './type-element/type-svg/type-svg.abstract';
+import { ITypeSvg } from './type-element/type-svg/type-svg.interface';
+import { TypeRoot } from './type-root/type-root.class';
+import { ITypeRoot } from './type-root/type-root.interface';
+import { TypeContainer } from './type-element/type-container/type-container.abstract';
+import { ITypeContainer } from './type-element/type-container/type-container.interface';
+import { TypeComponent } from './type-element/type-component/type-component.abstract';
+import { ITypeComponent } from './type-element/type-component/type-component.interface';
+import  { TypeHeader } from './type-element/type-html/header/header.abstract';
+import { ITypeHeader } from './type-element/type-html/header/header.interface';
+import { TypeSection } from './type-element/type-html/section/section.abstract';
+import { ITypeSection } from './type-element/type-html/section/section.interface';
+import { TypeA } from './type-element/type-html/a/a.abstract';
+import { ITypeA } from './type-element/type-html/a/a.interface';
+import { TypeAbbr } from './type-element/type-html/abbr/abbr.abstract';
+import { ITypeAbbr } from './type-element/type-html/abbr/abbr.interface';
+import { TypeAddress } from './type-element/type-html/address/address.abstract';
+import { ITypeAddress } from './type-element/type-html/address/address.interface';
+import { TypeArea } from './type-element/type-html/area/area.abstract';
+import { ITypeArea } from './type-element/type-html/area/area.interface';
+import { TypeArticle } from './type-element/type-html/article/article.abstract';
+import { ITypeArticle } from './type-element/type-html/article/article.interface';
+import { TypeAside } from './type-element/type-html/aside/aside.abstract';
+import { ITypeAside } from './type-element/type-html/aside/aside.interface';
+import { TypeAudio } from './type-element/type-html/audio/audio.abstract';
+import { ITypeAudio } from './type-element/type-html/audio/audio.interface';
+import { TypeB } from './type-element/type-html/b/b.abstract';
+import { ITypeB } from './type-element/type-html/b/b.interface';
+import { TypeBr } from './type-element/type-html/br/br.abstract';
+import { TypeDiv } from './type-element/type-html/div/div.abstract';
 import { TextNode } from './text-node/text-node.class';
 import { Division } from './element/html-element/division/division.class';
 import { Heading } from './element/html-element/heading/heading.class';
@@ -86,9 +85,9 @@ import { TableFoot } from './element/html-element/table/foot/foot.class';
 export {
   // TypeDom,
   TypeNode,
-    TypeElement,
-    TypeHtml,
-    TypeSvg,
+  TypeElement,
+  TypeHtml,
+  TypeSvg,
   IStyle,
   ITypeElement,
   ITypeHtml,
@@ -120,7 +119,7 @@ export {
   TypeB,
   ITypeB,
   TypeBr,
-    TypeDiv,
+  TypeDiv,
   XElement,
   TextNode,
   Division,
@@ -143,7 +142,7 @@ export {
   TableRow,
   TableDataCell,
   TableFoot,
-}
+};
 
 
 export type ITypeClass = typeof Button | typeof Division | typeof Heading
