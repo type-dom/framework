@@ -40,7 +40,7 @@
         如果设为true，编译每个ts文件之后会生成一个js文件和一个声明文件。
         但是declaration和allowJs不能同时设为true */
     /* Generates corresponding '.d.ts' file. */
-    // "declaration": true,
+     "declaration": true,
     // 类型声明文件的输出目录
     //    "declarationDir": "./dist/types",
     /* declarationMap值为true或false，指定是否为声明文件.d.ts生成map文件 */
