@@ -1,4 +1,4 @@
 import { ITypeHtml } from '../../type-html.interface';
-export interface ITypeCaption extends ITypeHtml {
+export interface ITypeTableCaption extends ITypeHtml {
   nodeName: 'caption',
 }

@@ -1,6 +1,6 @@
 import { TypeHtml } from '../../type-html.abstract';
-import { ITypeColGroup } from './col-group.interface';
-export abstract class TypeColGroup extends TypeHtml implements ITypeColGroup {
+import { ITypeTableColGroup } from './col-group.interface';
+export abstract class TypeTableColGroup extends TypeHtml implements ITypeTableColGroup {
   nodeName: 'colgroup';
   dom: HTMLTableColElement;
   protected constructor() {

@@ -1,6 +1,6 @@
 import { INodeAttr } from '../type-node/type-node.interface';
 import { TypeNode } from '../type-node/type-node.abstract';
-import { TypeElement } from '../type-element/type-element.abstract';
+import {TypeElement} from "../type-element/type-element.abstract";
 import { TextNode } from '../text-node/text-node.class';
 import { XElement } from '../x-element/x-element.class';
 import { ParserErrorCode } from './parser.const';

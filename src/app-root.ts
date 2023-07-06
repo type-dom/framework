@@ -1,7 +1,6 @@
 import { TypeRoot } from './type-root/type-root.class';
-import { Br } from './element/html-element/br/br.class';
 import { TextNode } from './text-node/text-node.class';
-import { Division } from './element/html-element/division/division.class';
+import { Br, Division } from './element';
 /**
  * 应用根节点，必须存在。
  * 应用继承 TypeRoot;

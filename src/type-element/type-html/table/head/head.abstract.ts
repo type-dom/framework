@@ -1,5 +1,5 @@
 import { TypeHtml } from '../../type-html.abstract';
-import { TypeTableHeaderCell } from '../header-cell/header-cell.class';
+import { TypeTableHeaderCell } from '../header-cell/header-cell.abstract';
 import { ITypeTableHead } from './head.interface';
 
 // 表格页眉

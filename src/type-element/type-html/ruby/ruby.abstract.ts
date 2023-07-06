@@ -1,6 +1,6 @@
 import { TypeHtml } from '../type-html.abstract';
 import { ITypeRuby } from './ruby.interface';
-export abstract class TypeQ extends TypeHtml implements ITypeRuby {
+export abstract class TypeRuby extends TypeHtml implements ITypeRuby {
   nodeName: 'ruby';
   dom: HTMLElement;
   protected constructor() {

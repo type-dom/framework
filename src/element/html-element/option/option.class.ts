@@ -1,11 +1,11 @@
-import { TypeNode } from '../../../../type-node/type-node.abstract';
-import { TextNode } from '../../../../text-node/text-node.class';
-import { TypeHtml } from '../../../../type-element/type-html/type-html.abstract';
-import { Select } from '../select.class';
-import { ISelectOption } from './option.interface';
-export class SelectOption extends TypeHtml implements ISelectOption {
+import { TypeNode } from '../../../type-node/type-node.abstract';
+import { TextNode } from '../../../text-node/text-node.class';
+import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { Select } from '../select/select.class';
+import { IOption } from './option.interface';
+export class Option extends TypeHtml implements IOption {
   nodeName: 'option';
-  className: 'SelectOption';
+  className: 'Option';
   dom: HTMLOptionElement;
   childNodes: TypeNode[];
   text: TextNode;
@@ -13,7 +13,7 @@ export class SelectOption extends TypeHtml implements ISelectOption {
     super('option');
     this.nodeName = 'option';
     this.dom = document.createElement(this.nodeName);
-    this.className = 'SelectOption';
+    this.className = 'Option';
     this.propObj.attrObj = {
       name: 'option'
     };

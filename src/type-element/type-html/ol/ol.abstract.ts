@@ -1,6 +1,6 @@
 import { TypeHtml } from '../type-html.abstract';
 import { ITypeOL } from './ol.interface';
-import { TypeLI } from '../ul/li/li.class';
+import { TypeLI } from '../ul/li/li.abstract';
 import { TypeUL } from '../ul/ul.abstract';
 /**
  * 有序列表，ordered list
