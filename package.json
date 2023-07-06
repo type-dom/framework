@@ -1,8 +1,8 @@
 {
-  "name": "form-editor",
-  "version": "1.0.0",
-  "description": "form editor . ",
-  "main": "src/example-design-mode.ts",
+  "name": "type-dom.ts",
+  "version": "0.0.1",
+  "description": "type dom . ",
+  "main": "src/type-dom.ts",
   "scripts": {
     "serve": "webpack-dev-server --mode=development --config ./build/webpack.config.js",
     "build": "webpack --mode=production --config ./build/webpack.config.js",
@@ -22,8 +22,12 @@
     "FormEditor",
     "Class based programming"
   ],
-  "author": "Xu",
-  "license": "ISC",
+  "author": "xjf7711",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xjf7711/type-dom.git"
+  },
   "devDependencies": {
     "@babel/core": "^7.22.5",
     "@babel/preset-env": "^7.22.5",
