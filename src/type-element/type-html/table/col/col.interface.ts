@@ -1,4 +1,4 @@
 import { ITypeHtml } from '../../type-html.interface';
-export interface ITypeCol extends ITypeHtml {
+export interface ITypeTableCol extends ITypeHtml {
   nodeName: 'col',
 }

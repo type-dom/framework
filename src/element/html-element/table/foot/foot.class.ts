@@ -1,5 +1,5 @@
-import { TypeHtml } from '../../../../type-element/type-html/type-html.abstract';
-import { TypeTableFoot } from '../../../../type-element/type-html/table/foot/foot.class';
+import { TypeHtml } from '../../../../type-element';
+import { TypeTableFoot } from '../../../../type-element';
 import { TableRow } from '../row/row.class';
 import { ITableFoot } from './foot.interface';
 

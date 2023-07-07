@@ -1,4 +1,4 @@
 import { ITypeHtml } from '../../type-html.interface';
-export interface ITypeColGroup extends ITypeHtml {
+export interface ITypeTableColGroup extends ITypeHtml {
   nodeName: 'colgroup',
 }

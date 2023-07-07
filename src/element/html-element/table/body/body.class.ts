@@ -1,4 +1,4 @@
-import { TypeTableBody } from '../../../../type-element/type-html/table/body/body.class';
+import { TypeTableBody } from '../../../../type-element/type-html/table/body/body.abstract';
 import { Table } from '../table.class';
 import { TableRow } from '../row/row.class';
 import { ITableBody } from './body.interface';

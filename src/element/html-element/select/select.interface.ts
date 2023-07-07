@@ -1,11 +1,11 @@
 import { ITypeHtml } from '../../../type-element/type-html/type-html.interface';
-import { ISelectOption } from './option/option.interface';
+import { IOption } from '../option/option.interface';
 
 export interface ISelect extends ITypeHtml {
   className: 'Select',
-  childNodes: ISelectOption[];
+  childNodes: IOption[];
 }
-export interface IOption {
+export interface IOpt {
   label: string,
   value: string,
 }

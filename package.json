@@ -1,8 +1,8 @@
 {
   "name": "type-dom.ts",
-  "version": "0.0.1",
-  "description": "type dom . ",
-  "main": "src/type-dom.ts",
+  "version": "0.0.5",
+  "description": "一种基于抽象类和具体类的typescript的轻量级前端框架。A lightweight typescript front-end framework based on abstract classes, concrete classes. ",
+  "main": "src/index.ts",
   "scripts": {
     "serve": "webpack-dev-server --mode=development --config ./build/webpack.config.js",
     "build": "webpack --mode=production --config ./build/webpack.config.js",
@@ -22,7 +22,7 @@
     "typescript",
     "webpack",
     "TypeNode",
-    "FormEditor",
+    "TypeDom",
     "Class based programming"
   ],
   "author": "xjf7711",

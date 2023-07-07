@@ -1,6 +1,6 @@
 import { TypeHtml } from '../../type-html.abstract';
-import { ITypeCaption } from './caption.interface';
-export abstract class TypeCaption extends TypeHtml implements ITypeCaption {
+import { ITypeTableCaption } from './caption.interface';
+export abstract class TypeTableCaption extends TypeHtml implements ITypeTableCaption {
   nodeName: 'caption';
   dom: HTMLTableCaptionElement;
   protected constructor() {

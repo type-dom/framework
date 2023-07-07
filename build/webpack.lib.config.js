@@ -11,8 +11,7 @@ console.log('run lib');
 
 module.exports = {
   entry: {
-    // lib: './src/example-lib.ts',
-    'type-dom': './src/type-dom.ts',
+    'type-dom': './src/index.ts',
   },
   output: {
     filename: `[name].js`,

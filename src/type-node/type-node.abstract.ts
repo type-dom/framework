@@ -1,7 +1,8 @@
 import { Subscription } from 'rxjs';
-import { TypeElement } from '../type-element/type-element.abstract';
-import { ITypeProperty } from '../type-element/type-element.interface';
+import {TypeElement} from "../type-element/type-element.abstract";
+import {ITypeProperty} from "../type-element/type-element.interface";
 import { ITextNode } from '../text-node/text-node.interface';
+
 import { INodeAttr, IPath, ITypeNode } from './type-node.interface';
 const Entities: Record<number, string> = {
   /* < */ 0x3c: '&lt;',

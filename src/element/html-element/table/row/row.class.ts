@@ -1,4 +1,4 @@
-import { TypeTableRow } from '../../../../type-element/type-html/table/row/row.class';
+import { TypeTableRow } from '../../../../type-element/type-html/table/row/row.abstract';
 import { Table } from '../table.class';
 import { ITableRow } from './row.interface';
 import { TableDataCell } from '../data-cell/data-cell.class';
