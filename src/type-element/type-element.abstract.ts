@@ -492,7 +492,9 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       height
     };
   }
-
+  setConfig(config: any) {
+    this.setAttrObj(config);
+  }
   /**
    * 默认初始化方法
    * 清理多余的对象。

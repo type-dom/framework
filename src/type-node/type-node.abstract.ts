@@ -71,7 +71,6 @@ export abstract class TypeNode implements ITypeNode {
   childNodes?: TypeNode[];
   attributes?: INodeAttr[];
   events?: Subscription[];
-  setConfig?(config: any): void;
   protected constructor(nodeName: string, nodeValue?: string) {
     this.nodeName = nodeName;
     if (nodeValue !== undefined) {
@@ -106,9 +105,6 @@ export abstract class TypeNode implements ITypeNode {
   get children(): TypeNode[] {
     return this.childNodes || [];
   }
-  setParent(parent: TypeNode): void {
-    this.parent = parent;
-  }
   // 在定义className时，要把当前类写入到TypeMap中；
   //   todo 创建类实例时都要运行一遍。
   // setClassName(className: string, TypeClass: any) {
@@ -125,6 +121,7 @@ export abstract class TypeNode implements ITypeNode {
   //   }
   //   console.log('TypeNode.typeMap is ', TypeNode.typeMap);
   // }
+  abstract setConfig(config: any): void
   /**
    * 不独立为一个函数，是因为在这里，可以直接 this. 的方式调用。
    * 在UI组件中会重写
@@ -132,6 +129,9 @@ export abstract class TypeNode implements ITypeNode {
    * @param node
    */
   abstract createItem(parent: TypeNode, node: ITypeNode): TypeNode
+  setParent(parent: TypeNode): void {
+    this.parent = parent;
+  }
   /**
    * 创建子节点
    * 与创建组件不同

@@ -10,10 +10,4 @@ export abstract class TypeSvg extends TypeElement implements ITypeSvg {
     super(nodeName);
     this.childNodes = [];
   }
-  setConfig(config: {width: string | number, height: string | number}) {
-    this.setAttrObj({
-      width: config.width,
-      height: config.height
-    })
-  }
 }
