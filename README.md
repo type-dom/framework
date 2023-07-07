@@ -1,39 +1,16 @@
-## 项目说明
+# TypeDom 一种完全面向对象的typescript前端框架,完全基于抽象类/具体类/实例的方式组织的前端框架.
 
-> TypeDom是一个基于抽象类/具体类的完全面向对象的轻量级前端框架。基于typescript技术栈创建。
+## 基于虚拟DOM技术，参考Ext.js框架，创建的面向对象的前端框架。
 
-## 项目环境
+    在开发开发流式编辑器、ofd编辑器和动态表单编辑器的过程中，发现Vue、Extjs这些框架无法满足需求。
+    
+    需要js对象能存储为json或xml数据文件，同时还要支持将json或xml数据转化为我们定义好的js类。而现有的前端框架无法支持、或支持有限制。
+    而用纯原生js的方式开发，费时、费力。
 
-> 1、全局和本地安装TypeScript
-
-> 2、初始化、安装webpack、webpack-cli、webpack-dev-server、webpack-merge
-
-> 3、两个webpack插件clean-webpack-plugin和html-webpack-plugin
-
-> 4、创建配置文件tsconfig.json, tsc --init
-
-> 5、安装loader， ts-loader css-loader url-loader file-loader less-loader
-
-> 6、单元测试npx ts-jest config:init
-
-
-## 项目运行
-
-> 1、安装环境：yarn install
-
-> 2、运行项目： yarn serve
-
-> 3、生成js版本项目代码: yarn js
-
-> 4、打包项目： yarn build
-
-> 5、生成库： yarn lib
-
-> 6、生成类图： yarn uml
-
-> 7、生成文档：yarn docs
-
-> 8、代码检查：yarn ts-coverage
+    优点：
+    1、完全面向对象的方式进行前端开发；
+    2、可以积累需要的js类库，面向业务需要自定义的类库，不仅仅是需要的UI组件库；
+    3、简单、便捷的开发具有复杂业务规范的开发
 
 ## 框架介绍
 
@@ -48,7 +25,89 @@
         –	build
         –	public
         –	src
-            –	todo
+            –	element 元素具体类，节点名称固定
+            - parser dom解析类
+            - style 样式枚举、样式接口
+            - text-node 文本具体类
+            - type-element 元素抽象类
+            - type-node 节点抽象类，最基础的类，其它抽象类或具体类的母类
+            - type-root 根节点抽象类，项目根节点必须继承这个抽象类
+            - x-element 元素具体类，可指定节点名称
 
 
+## Installation
 
+```bash
+# or pnpm or yarn
+npm install type-dom.ts
+```
+
+## Usage
+
+### Install the framework
+
+Create a hello world page to app:
+
+```ts
+// Typescript Webpack
+import {Br, Division, TypeRoot, TextNode} from 'type-dom.ts';
+// app-root.ts 项目根节点
+export class AppRoot extends TypeRoot {
+  className: 'AppRoot';
+  constructor(editorEl: HTMLElement) {
+    super(editorEl);
+    this.className = 'AppRoot'; 
+    this.addAttrObj({ // 设置根节点的属性
+      name: 'app-root'
+    })
+    this.addStyleObj({ // 设置根节点样式
+      padding: '30px',
+      border: '20px solid #dddddd'
+    });
+    this.createItems(this, [ // 添加子节点
+      {
+        TypeClass: Division, // 具体类
+        childNodes: [
+          {
+            TypeClass: TextNode, // 文本类
+            config: {
+              title: ' hello world ! ' // 文本
+            }
+          },
+        ]
+      },
+      {
+        TypeClass: Br // 换行
+      }
+    ]);
+    this.render(); // 渲染
+  }
+}
+
+// main.ts 项目主程序
+import {fromEvent} from 'rxjs';
+import {AppRoot} from "./app-root";
+fromEvent(document, 'DOMContentLoaded').subscribe(() => {
+  const uiEl = document.querySelector('#example-ref') as HTMLElement;
+  if (uiEl) {
+    const view = new AppRoot(uiEl);
+  }
+});
+```
+```html
+// index.html
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>type dom example</title>
+  </head>
+  <body>
+    <div id="example-ref"></div>
+  </body> 
+</html>
+```
+
+> 可用类：

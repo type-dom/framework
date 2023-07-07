@@ -5,12 +5,9 @@
   "main": "src/index.ts",
   "scripts": {
     "serve": "webpack-dev-server --mode=development --config ./build/webpack.config.js",
-    "build": "webpack --mode=production --config ./build/webpack.config.js",
-    "lib": "webpack --mode=none --config ./build/webpack.lib.config.js",
     "js": "tsc",
     "prepub": "copy README.md js & copy package.json js",
     "pub": "cd js & npm publish",
-    "postpub": "cd js & del package.json",
     "test": "jest",
     "lint": "eslint src",
     "lint-fix": "eslint 'src/**/*.{ts,js,tsx,jsx}' --fix -o eslint_log.log",

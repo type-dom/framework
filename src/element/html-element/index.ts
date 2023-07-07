@@ -1,4 +1,4 @@
-// todo export interface
+// export class and interface
 export { Br } from './br/br.class';
 export { IBr } from './br/br.interface';
 export { Button } from './button/button.class';

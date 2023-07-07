@@ -6,26 +6,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 // 提取css
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-// 压缩css
-// const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
-// const TerserPlugin = require('terser-webpack-plugin');
-// const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-// 生成压缩文件，需要服务器支持
-// const CompressionPlugin = require('compression-webpack-plugin');
-
-// 查看当前是哪种模式
-console.log('当前模式', process.argv); // process.env.NODE_ENV);
-
 module.exports = {
-  // 入口 (单个入口 或多个入口),现在是多入口
-  entry: {
-    example: './examples/example.ts',
-    // lib: './src/example-lib.ts'
-    // layout: './src/layout/layout.ts'
-  },
+  // 入口 (单个入口 或多个入口),现在是单入口
+  entry:  './public/example.ts',
   // 出口
   output: {
     // 文件名称（指定名称+目录）
@@ -42,18 +28,10 @@ module.exports = {
       name: 'TypeDom',
       type: 'umd',
       // export: 'formEditor' // default umd
-    },
-    // libraryTarget: 'window' // 变量名添加到哪个全局上，browser浏览器端添加到window上
-    // libraryTarget: 'global' // 变量名添加到哪个全局上，node服务端添加到global上
-    // libraryTarget: 'commonjs'
+    }
   },
   target: 'web',
   resolve: {
-    // 配置解析模块路径别名: 优点 简写路径 缺点 写路径时没有提示
-    // alias: {
-    //   // $css: path.resolve(__dirname, 'src/css'),
-    //   src: path.resolve(__dirname, '../src')
-    // },
     // 配置省略文件路径的后缀名，引用文件时，后缀名就可以省略了
     extensions: ['.js', '.ts', '.tsx'] // '.json', '.css'],
     // 告诉 webpack 解析模块是去找哪个目录,下面这样配置之后，可以直接按照路径找到node_modules,不用再挨个遍历了
@@ -176,9 +154,9 @@ module.exports = {
     // new CleanWebpackPlugin(),
     // 多个html页面
     new HtmlWebpackPlugin({
-      template: './examples/example.html', // 把哪个html文件打包到dist目录中
+      template: './public/example.html', // 把哪个html文件打包到dist目录中
       title: 'type dom example .',
-      filename: 'example.html', // 输出什么名字 默认 example-design-mode.html
+      filename: 'index.html', // 输出什么名字
       // chunks: ['read', 'vendor']
       minify: {
         collapseWhitespace: true,

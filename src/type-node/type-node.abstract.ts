@@ -65,7 +65,6 @@ export abstract class TypeNode implements ITypeNode {
    * 渲染出真实DOM
    */
   abstract render(): void;
-  // abstract setConfig?(): void;
   propObj?: ITypeProperty;
   nodeName: string;
   nodeValue?: string;
