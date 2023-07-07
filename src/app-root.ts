@@ -1,4 +1,4 @@
-import { TypeRoot } from './type-root/type-root.class';
+import { TypeRoot } from './type-root/type-root.abstract';
 import { TextNode } from './text-node/text-node.class';
 import { Br, Division } from './element';
 /**

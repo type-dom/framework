@@ -4,7 +4,7 @@ export { TypeNode } from './type-node/type-node.abstract';
 export { TextNode } from './text-node/text-node.class';
 export { ITextNode } from './text-node/text-node.interface';
 export { IStyle } from './style/style.interface';
-export { TypeRoot } from './type-root/type-root.class';
+export { TypeRoot } from './type-root/type-root.abstract';
 export { ITypeRoot } from './type-root/type-root.interface';
 export { XElement } from './x-element/x-element.class';
 export { IXElement } from './x-element/x-element.interface'
