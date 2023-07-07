@@ -1,5 +1,4 @@
 import { Subscription } from 'rxjs';
-// import { TypeElement } from '../type-element/type-element.abstract';
 import { ITypeProperty } from '../type-element/type-element.interface';
 import { ITextNode } from '../text-node/text-node.interface';
 

@@ -2,6 +2,7 @@ export { TypeElement } from './type-element/type-element.abstract';
 export { ITypeElement, ITypeAttribute, ITypeProperty } from './type-element/type-element.interface';
 export { TypeNode } from './type-node/type-node.abstract';
 export { TextNode } from './text-node/text-node.class';
+export { ITextNode } from './text-node/text-node.interface';
 export { IStyle } from './style/style.interface';
 export { TypeRoot } from './type-root/type-root.class';
 export { ITypeRoot } from './type-root/type-root.interface';

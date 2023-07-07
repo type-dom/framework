@@ -1,8 +1,8 @@
-
-import {TypeElement} from "../../../type-element/type-element.abstract";
+import { TypeElement } from '../../../type-element/type-element.abstract';
 import { TypeSection } from '../../../type-element/type-html/section/section.abstract';
 import { Display } from '../../../style/style.enum';
-export class Section extends TypeSection {
+import { ISection } from './section.interface';
+export class Section extends TypeSection implements ISection {
   className: 'Section';
   constructor(public parent: TypeElement) {
     super();
