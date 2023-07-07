@@ -1,6 +1,4 @@
-import { TypeRoot } from './type-root/type-root.abstract';
-import { TextNode } from './text-node/text-node.class';
-import { Br, Division } from './element';
+import { Br, Division, TypeRoot, TextNode } from '../src';
 /**
  * 应用根节点，必须存在。
  * 应用继承 TypeRoot;

@@ -22,7 +22,7 @@ console.log('当前模式', process.argv); // process.env.NODE_ENV);
 module.exports = {
   // 入口 (单个入口 或多个入口),现在是多入口
   entry: {
-    example: './src/example.ts',
+    example: './examples/example.ts',
     // lib: './src/example-lib.ts'
     // layout: './src/layout/layout.ts'
   },
@@ -176,7 +176,7 @@ module.exports = {
     // new CleanWebpackPlugin(),
     // 多个html页面
     new HtmlWebpackPlugin({
-      template: './public/example.html', // 把哪个html文件打包到dist目录中
+      template: './examples/example.html', // 把哪个html文件打包到dist目录中
       title: 'type dom example .',
       filename: 'example.html', // 输出什么名字 默认 example-design-mode.html
       // chunks: ['read', 'vendor']
