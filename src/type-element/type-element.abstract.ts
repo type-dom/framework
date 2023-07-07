@@ -514,9 +514,13 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   }
   createItem(parent: TypeElement, node: ITypeNode): TypeNode {
     // XElement 必须有nodeName,默认为div。
-    const item = super.createItem(parent, node); // 创建类实例
+    const item = new node.TypeClass() as TypeNode; // 创建类实例
     console.log('item is ', item);
-    // item.setParent(parent);
+    item.setParent(parent);
+    // todo
+    if (node.config && item.setConfig) {
+      item.setConfig(node.config);
+    }
     parent.addChild(item);
     if (node.propObj) {
       if (item instanceof TypeElement) {
@@ -524,6 +528,19 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
         item.addAttrObj(node.propObj.attrObj);
       } else {
         throw Error('TextNode propObj is undefined . ');
+      }
+    }
+    // XElement时，可以单独穿nodeName.
+    if (node.nodeName) {
+      item.nodeName = node.nodeName;
+      item.dom = document.createElement(this.nodeName); // XElement 默认nodeName是div
+    }
+    if (node.nodeValue !== undefined) { // 如果是文本节点，则退出迭代; XNode,TextNode会有
+      if (item.nodeValue !== undefined) {
+        item.nodeValue = node.nodeValue;
+        return item;
+      } else {
+        throw Error('TypeClass is not TextNode, but nodeValue exist. ');
       }
     }
     if (node.childNodes) {

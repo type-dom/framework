@@ -131,7 +131,7 @@ export class TextNode extends TypeNode implements ITextNode {
     // this.render();
     this.parent.render();
   }
-  createItem(parent: TypeElement, node: ITextNode): TypeNode {
+  createItem(parent: TypeElement, node: ITextNode): TextNode {
     if (node.TypeClass === TextNode) {
       throw Error('node.TypeClass is TextNode . ');
     }
