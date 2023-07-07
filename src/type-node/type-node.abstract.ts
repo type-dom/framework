@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
-import {TypeElement} from "../type-element/type-element.abstract";
-import {ITypeProperty} from "../type-element/type-element.interface";
+// import { TypeElement } from '../type-element/type-element.abstract';
+import { ITypeProperty } from '../type-element/type-element.interface';
 import { ITextNode } from '../text-node/text-node.interface';
 
 import { INodeAttr, IPath, ITypeNode } from './type-node.interface';
@@ -61,7 +61,7 @@ export abstract class TypeNode implements ITypeNode {
    */
   abstract className: string; // 最终实体类的名称，解析转换时需要创建对应的类；
   abstract dom: HTMLElement | SVGElement | Text;
-  abstract parent?: TypeElement;
+  abstract parent?: TypeNode;
   /**
    * 渲染出真实DOM
    */
@@ -108,7 +108,7 @@ export abstract class TypeNode implements ITypeNode {
   get children(): TypeNode[] {
     return this.childNodes || [];
   }
-  setParent(parent: TypeElement): void {
+  setParent(parent: TypeNode): void {
     this.parent = parent;
   }
   // 在定义className时，要把当前类写入到TypeMap中；
@@ -133,24 +133,27 @@ export abstract class TypeNode implements ITypeNode {
    * @param parent 不一定是this，还可以是父级、子级等等。
    * @param node
    */
-  createItem(parent: TypeElement, node: ITypeNode): TypeNode | undefined {
+  createItem(parent: TypeNode, node: ITypeNode): TypeNode {
     if (node.TypeClass === undefined) {
-      console.error('node.TypeClass is undefined . ');
-      return;
+      throw Error('node.TypeClass is undefined . ');
     }
     // XElement 必须有nodeName,默认为div。
     const item = new node.TypeClass() as TypeNode; // 创建类实例
     console.log('item is ', item);
     item.setParent(parent);
-    parent.addChild(item);
-    if (node.propObj) {
-      if (item instanceof TypeElement) {
-        item.addStyleObj(node.propObj.styleObj);
-        item.addAttrObj(node.propObj.attrObj);
-      } else {
-        throw Error('TextNode propObj is undefined . ');
-      }
+    // todo
+    if (node.config && item.setConfig) {
+      item.setConfig(node.config);
     }
+    // parent.addChild(item);
+    // if (node.propObj) {
+    //   if (item instanceof TypeElement) {
+    //     item.addStyleObj(node.propObj.styleObj);
+    //     item.addAttrObj(node.propObj.attrObj);
+    //   } else {
+    //     throw Error('TextNode propObj is undefined . ');
+    //   }
+    // }
     // XElement时，可以单独穿nodeName.
     if (node.nodeName) {
       item.nodeName = node.nodeName;
@@ -164,17 +167,13 @@ export abstract class TypeNode implements ITypeNode {
         throw Error('TypeClass is not TextNode, but nodeValue exist. ');
       }
     }
-    // todo
-    if (node.config && item.setConfig) {
-      item.setConfig(node.config);
-    }
-    if (node.childNodes) {
-      if (item.childNodes !== undefined) {
-        item.childNodes = item.createItems(item as TypeElement, node.childNodes);
-      } else {
-        throw Error('TypeClass is TextNode, but has childNodes . ');
-      }
-    }
+    // if (node.childNodes) {
+    //   if (item.childNodes !== undefined) {
+    //     item.childNodes = item.createItems(item as TypeElement, node.childNodes);
+    //   } else {
+    //     throw Error('TypeClass is TextNode, but has childNodes . ');
+    //   }
+    // }
     return item;
   }
   /**
@@ -185,7 +184,7 @@ export abstract class TypeNode implements ITypeNode {
    * @param parent
    * @param nodes
    */
-  createItems(parent: TypeElement, nodes: ITypeNode[]): TypeNode[] {
+  createItems(parent: TypeNode, nodes: ITypeNode[]): TypeNode[] {
     const items: TypeNode[] = [];
     for (const node of nodes) {
       if (node.TypeClass === undefined) {

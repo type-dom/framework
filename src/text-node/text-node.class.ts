@@ -5,6 +5,7 @@
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { ITextNode } from './text-node.interface';
+import {ITypeNode} from "../type-node/type-node.interface";
 export class TextNode extends TypeNode implements ITextNode {
   className: 'TextNode';
   // childNodes: [string];
@@ -129,6 +130,49 @@ export class TextNode extends TypeNode implements ITextNode {
     // TODO 不能直接用 this.render(); 光标调到行程头部。
     // this.render();
     this.parent.render();
+  }
+  createItem(parent: TypeElement, node: ITextNode): TypeNode {
+    if (node.TypeClass === TextNode) {
+      throw Error('node.TypeClass is TextNode . ');
+    }
+    // XElement 必须有nodeName,默认为div。
+    const item = new TextNode(parent); // 创建类实例
+    console.log('item is ', item);
+    item.setParent(parent);
+    // todo
+    if (node.config && item.setConfig) {
+      item.setConfig(node.config);
+    }
+    parent.addChild(item);
+    // if (node.propObj) {
+    //   if (item instanceof TypeElement) {
+    //     item.addStyleObj(node.propObj.styleObj);
+    //     item.addAttrObj(node.propObj.attrObj);
+    //   } else {
+    //     throw Error('TextNode propObj is undefined . ');
+    //   }
+    // }
+    // XElement时，可以单独穿nodeName.
+    // if (node.nodeName) {
+    //   item.nodeName = node.nodeName;
+    //   item.dom = document.createElement(this.nodeName); // XElement 默认nodeName是div
+    // }
+    if (node.nodeValue !== undefined) { // 如果是文本节点，则退出迭代; XNode,TextNode会有
+      if (item.nodeValue !== undefined) {
+        item.nodeValue = node.nodeValue;
+        return item;
+      } else {
+        throw Error('TypeClass is not TextNode, but nodeValue exist. ');
+      }
+    }
+    // if (node.childNodes) {
+    //   if (item.childNodes !== undefined) {
+    //     item.childNodes = item.createItems(item as TypeElement, node.childNodes);
+    //   } else {
+    //     throw Error('TypeClass is TextNode, but has childNodes . ');
+    //   }
+    // }
+    return item;
   }
   render(): void {
     this.dom.textContent = this.nodeValue || '';  // '\u200b'; // &zwnj; \u200c &zwsp;

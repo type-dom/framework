@@ -15,8 +15,7 @@ export abstract class TypeComponent extends TypeHtml implements ITypeComponent {
   createItem(parent: TypeHtml, node: IComponent) {
     console.log('type-component createItem . ');
     if (node.TypeClass === undefined) {
-      console.error('node.TypeClass is undefined . ');
-      return;
+      throw Error('node.TypeClass is undefined . ');
     }
     // XElement 必须有nodeName,默认为div。
     const item = new node.TypeClass() as TypeComponent; // 创建类实例
