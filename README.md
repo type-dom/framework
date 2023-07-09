@@ -35,6 +35,33 @@
             - x-element 元素具体类，可指定节点名称
 
 
+## Introduction
+
+TypeDom is a lightweight typescript front-end framework based on abstract classes, concrete classes, and instances.
+
+#### Browser Compatibility
+
+TypeDom supports all browsers that are [ES5-compliant](https://kangax.github.io/compat-table/es5/) .
+
+## Ecosystem
+
+| Project               | Status                                       | Description             |
+|-----------------------|----------------------------------------------|-------------------------|
+| [type-svgs]           | [![type-svgs-status]][type-svgs-package]     | Svgs based on TypeDom   |
+| [type-ui]             | [![type-ui-status]][type-ui-package]         | Ui component management |
+| [form-editor]         | [![form-editor-status]][form-editor-package] | Dynamic Form project    |
+
+[type-svgs]: https://github.com/xjf7711/type-svgs
+[type-ui]: https://github.com/xjf7711/type-ui
+[form-editor]: https://github.com/xjf7711/form-editor
+[type-svgs-status]: https://img.shields.io/npm/v/vue-router.svg
+[type-ui-status]: https://img.shields.io/npm/v/vuex.svg
+[form-editor-status]: https://img.shields.io/npm/v/@vue/cli.svg
+[type-svgs-package]: https://npmjs.com/package/type-svgs
+[type-ui-package]: https://npmjs.com/package/type-ui
+[form-editor-package]: https://npmjs.com/package/form-editor
+
+
 ## Installation
 
 ```bash
@@ -110,4 +137,37 @@ fromEvent(document, 'DOMContentLoaded').subscribe(() => {
 </html>
 ```
 
-> 可用类：
+
+## Documentation
+
+To check out [live examples](https://type-dom.org/examples/) and docs, visit [type-dom.org](https://type-dom.org).
+
+## Questions
+
+For questions and support please use [the official forum](https://forum.***.org) or [community chat](https://chat.***.org/). The issue list of this repo is **exclusively** for bug reports and feature requests.
+
+## Issues
+
+Please make sure to read the [Issue Reporting Checklist](https://github.com/xjf7711/type-dom/blob/dev/.github/CONTRIBUTING.md#issue-reporting-guidelines) before opening an issue. Issues not conforming to the guidelines may be closed immediately.
+
+## Changelog
+
+Detailed changes for each release are documented in the [release notes](https://github.com/xjf7711/type-dom/releases).
+
+## Stay In Touch
+
+- [Blog](https://www.cnblogs.com/Xu7711/comments)
+
+## Contribution
+
+Please make sure to read the [Contributing Guide](https://github.com/xjf7711/type-dom/blob/dev/.github/CONTRIBUTING.md) before making a pull request. If you have a TypeDom-related project/component/tool, add it with a pull request to [this curated list](https://github.com/xfj7711/awesome-type-dom)!
+
+Thank you to all the people who already contributed to Vue!
+
+<a href="https://github.com/vuejs/vue/graphs/contributors"><img src="" /></a>
+
+## License
+
+[MIT](https://opensource.org/licenses/MIT)
+
+Copyright (c) 2013-present, xjf7711
