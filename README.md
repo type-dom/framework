@@ -48,7 +48,7 @@ TypeDom supports all browsers that are [ES5-compliant](https://kangax.github.io/
 | Project         | Status                                           | Description             |
 |-----------------|--------------------------------------------------|-------------------------|
 | [type-dom-svgs] | [![type-dom-svgs-status]][type-dom-svgs-package] | Svgs based on TypeDom   |
-| [type-ui]       | [![type-dom-ui-status]][type-ui-package]         | Ui component management |
+| [type-dom-ui]   | [![type-dom-ui-status]][type-dom-ui-package]     | Ui component management |
 | [form-editor]   | [![form-editor-status]][form-editor-package]     | Dynamic Form project    |
 
 [type-dom-svgs]: https://github.com/xjf7711/type-dom-svgs
