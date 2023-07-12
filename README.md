@@ -57,8 +57,8 @@ TypeDom supports all browsers that are [ES5-compliant](https://kangax.github.io/
 [type-dom-svgs-status]: https://img.shields.io/npm/v/vue-router.svg
 [type-dom-ui-status]: https://img.shields.io/npm/v/vuex.svg
 [form-editor-status]: https://img.shields.io/npm/v/@vue/cli.svg
-[type-dom-svgs-package]: https://npmjs.com/package/type-svgs
-[type-dom-ui-package]: https://npmjs.com/package/type-ui
+[type-dom-svgs-package]: https://npmjs.com/package/type-dom-svgs
+[type-dom-ui-package]: https://npmjs.com/package/type-dom-ui
 [form-editor-package]: https://npmjs.com/package/form-editor
 
 
