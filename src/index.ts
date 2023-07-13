@@ -2,6 +2,7 @@ export { TypeNode } from './type-node/type-node.abstract';
 export { ITypeNode, INodeAttr, IPath } from './type-node/type-node.interface';
 export { TypeElement } from './type-element/type-element.abstract';
 export { ITypeElement, ITypeAttribute, ITypeProperty } from './type-element/type-element.interface';
+export { toJSON, pxToRem, getScroll, humpToMiddleLine } from './type-element/type-element.function';
 export { TextNode } from './text-node/text-node.class';
 export { ITextNode } from './text-node/text-node.interface';
 export { IStyle } from './style/style.interface';
