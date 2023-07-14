@@ -569,12 +569,20 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   //   return items;
   // }
   /**
+   * 生命周期
+   * beforeRender 渲染前
+   * render 渲染
+   * afterRedner 渲染后
+   */
+  beforeRender?(): void;
+  /**
    * 渲染方法
    * 要调用 this.clearChildDom
    * WebPage要另外处理
    */
   render(): void {
     // console.log('this.styleObj is ', this.styleObj);
+    this.beforeRender && this.beforeRender();
     this.setStyleObj(this.styleObj);
     this.setAttrObj(this.attrObj);
     this.clearChildDom();
@@ -583,5 +591,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       this.renderChild(child);
     }
     // console.log('this.dom is ', this.dom);
+    this.afterRender && this.afterRender();
   }
+  abstract afterRender?(): void;
 }
