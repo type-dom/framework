@@ -593,5 +593,5 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     // console.log('this.dom is ', this.dom);
     this.afterRender && this.afterRender();
   }
-  abstract afterRender?(): void;
+  afterRender?(): void;
 }
