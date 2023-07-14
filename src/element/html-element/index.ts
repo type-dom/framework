@@ -11,6 +11,8 @@ export { Heading } from './heading/heading.class';
 export { IHeading } from './heading/heading.interface';
 export { I } from './i/i.class';
 export { II } from './i/i.interface';
+export { Img } from './img/img.class';
+export { IImg } from './img/img.interface';
 export { Input } from './input/input.class';
 export { IInput } from './input/input.interface';
 export { Label } from './label/label.class';
