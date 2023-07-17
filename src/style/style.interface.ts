@@ -160,4 +160,5 @@ export interface IStyle {
   listStyle: string;
   scrollBehavior: string;
   userSelect: string;
+  pointerEvents: string;
 }
