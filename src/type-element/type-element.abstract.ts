@@ -516,24 +516,25 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
   }
   createItem(parent: TypeElement, node: ITypeNode): TypeNode {
+    let item;
     if (node.template) {
       const parser = new Parser({});
-      const item = parser.parseFromString(node.template);
+      item = parser.parseFromString(node.template);
       if (item) {
-        return item;
+      //   nothing
       } else {
         throw Error('template is error . ');
       }
+    } else {
+      item = new node.TypeClass() as TypeNode; // 创建类实例
     }
-    // XElement 必须有nodeName,默认为div。
-    const item = new node.TypeClass() as TypeNode; // 创建类实例
     console.log('item is ', item);
+    parent.addChild(item);
     item.setParent(parent);
     // todo
     if (node.config && item.setConfig) {
       item.setConfig(node.config);
     }
-    parent.addChild(item);
     if (node.propObj) {
       if (item instanceof TypeElement) {
         item.addStyleObj(node.propObj.styleObj);
