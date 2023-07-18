@@ -520,7 +520,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     if (node.template) {
       const parser = new Parser({});
       item = parser.parseFromString(node.template) as TypeElement;
-      console.log('item is ', item);
+      // console.log('item is ', item);
       if (item && item.attributes) {
         for (const attr of item.attributes) {
           item.addAttrObj({
@@ -533,7 +533,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     } else {
       item = new node.TypeClass() as TypeNode; // 创建类实例
     }
-    console.log('item is ', item);
+    // console.log('item is ', item);
     parent.addChild(item);
     item.setParent(parent);
     // todo
