@@ -515,7 +515,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       this.childNodes.length = length;
     }
   }
-  createItem(parent: TypeElement, node: ITypeNode): TypeNode {
+  createItem<T extends TypeNode>(parent: TypeElement, node: ITypeNode): TypeElement | T {
     let item;
     if (node.template) {
       const parser = new Parser({});
@@ -531,7 +531,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
         throw Error('template is error . ');
       }
     } else {
-      item = new node.TypeClass() as TypeNode; // 创建类实例
+      item = new node.TypeClass() as T; // 创建类实例
     }
     // console.log('item is ', item);
     parent.addChild(item);
