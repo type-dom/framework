@@ -519,9 +519,14 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     let item;
     if (node.template) {
       const parser = new Parser({});
-      item = parser.parseFromString(node.template);
-      if (item) {
-      //   nothing
+      item = parser.parseFromString(node.template) as TypeElement;
+      console.log('item is ', item);
+      if (item && item.attributes) {
+        for (const attr of item.attributes) {
+          item.addAttrObj({
+            [attr.name]: attr.value,
+          })
+        }
       } else {
         throw Error('template is error . ');
       }

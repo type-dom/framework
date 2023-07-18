@@ -45,7 +45,7 @@ export class AppRoot extends TypeRoot {
       },
       {
         TypeClass: XElement,
-        template: `<p name='paragraph' style='border: 1px solid #FF0;'> pararaph</p>`
+        template: `<p name='second-item' style='border: 1px solid #FF0;'> pararaph</p>`
       },
       {
         TypeClass: Br // 换行
