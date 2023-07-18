@@ -22,6 +22,7 @@ export interface ITypeNode {
   parent?: ITypeNode,
   // TextNode 没有 childNodes
   childNodes?: ITypeNode[],
+  template?: string, // 模板
   // attributes?: INodeAttr[];
   // 绑定的事件集合, TypeElement 才有
   // 生成json时，基于events生成；

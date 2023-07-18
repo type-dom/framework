@@ -11,6 +11,7 @@ import {
   ITypeElement,
   ITypeProperty
 } from './type-element.interface';
+import {Parser} from "type-dom-parser";
 /**
  * 虚拟元素Element的数据结构
  * 可以对应到虚拟dom树。 createDom(tag, attr, children)
@@ -515,6 +516,15 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
   }
   createItem(parent: TypeElement, node: ITypeNode): TypeNode {
+    if (node.template) {
+      const parser = new Parser({});
+      const item = parser.parseFromString(node.template);
+      if (item) {
+        return item;
+      } else {
+        throw Error('template is error . ');
+      }
+    }
     // XElement 必须有nodeName,默认为div。
     const item = new node.TypeClass() as TypeNode; // 创建类实例
     console.log('item is ', item);

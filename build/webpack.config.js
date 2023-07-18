@@ -61,7 +61,7 @@ module.exports = {
   plugins: [
     // 多个html页面
     new HtmlWebpackPlugin({
-      template: './public/example.html', // 把哪个html文件打包到dist目录中
+      template: './public/index.html', // 把哪个html文件打包到dist目录中
       title: 'type dom example .',
       filename: 'index.html', // 输出什么名字
       minify: {
