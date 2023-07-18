@@ -1,5 +1,4 @@
-import { ITypeHtml } from '../../../type-element/type-html/type-html.interface';
-export interface ISlot extends ITypeHtml {
-  nodeName: 'slot',
+import { ITypeSlot } from '../../../type-element/type-html/slot/slot.interface';
+export interface ISlot extends ITypeSlot {
   className: 'Slot',
 }

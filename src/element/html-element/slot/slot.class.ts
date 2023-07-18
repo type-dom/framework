@@ -1,13 +1,11 @@
 import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { TypeSlot } from '../../../type-element/type-html/slot/slot.abstract';
+import { XElement } from '../../../x-element/x-element.class';
 import { ISlot } from './slot.interface';
-export class Slot extends TypeHtml implements ISlot {
-  nodeName: 'slot';
+export class Slot extends TypeSlot implements ISlot {
   className: 'Slot';
-  dom: HTMLSlotElement;
-  constructor(public parent: TypeHtml) {
-    super('slot');
-    this.nodeName = 'slot';
+  constructor(public parent: TypeHtml | XElement) {
+    super();
     this.className = 'Slot';
-    this.dom = document.createElement(this.nodeName);
   }
 }

@@ -2,7 +2,6 @@ import { TypeTableBody } from '../../../../type-element/type-html/table/body/bod
 import { Table } from '../table.class';
 import { TableRow } from '../row/row.class';
 import { ITableBody } from './body.interface';
-
 export class TableBody extends TypeTableBody implements ITableBody {
   className: 'TableBody';
   childNodes: TableRow[];

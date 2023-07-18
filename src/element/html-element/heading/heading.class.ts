@@ -1,14 +1,16 @@
 import { TextNode } from '../../../text-node/text-node.class';
 import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { TypeHead } from '../../../type-element/type-html/head/head.abstract';
 import { IHeading } from './heading.interface';
+import {XElement} from "../../../x-element/x-element.class";
 
 // h1,h2,h3,h4,h5
-export class Heading extends TypeHtml implements IHeading {
+export class Heading extends TypeHead implements IHeading {
   nodeName: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
   dom: HTMLHeadingElement;
   className: 'Heading';
   childNodes: TextNode[];
-  constructor(public parent: TypeHtml, nodeName: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6') {
+  constructor(public parent: TypeHtml | XElement, nodeName: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6') {
     super(nodeName);
     this.nodeName = nodeName;
     this.dom = document.createElement(this.nodeName);

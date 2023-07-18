@@ -1,21 +1,13 @@
 import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { TypeTextarea } from '../../../type-element/type-html/textarea/textarea.abstract';
+import { XElement } from '../../../x-element/x-element.class';
 import { ITextarea } from './textarea.interface';
-
-export class Textarea extends TypeHtml implements ITextarea {
-  nodeName: 'textarea';
+export class Textarea extends TypeTextarea implements ITextarea {
   className: 'TextArea';
-  dom: HTMLTextAreaElement;
-  childNodes: [];
   value: string | number | boolean | undefined;
-  constructor(public parent: TypeHtml) {
-    super('textarea');
-    this.nodeName = 'textarea';
+  constructor(public parent: TypeHtml | XElement) {
+    super();
     this.className = 'TextArea';
-    this.dom = document.createElement(this.nodeName);
-    this.propObj.styleObj = {
-      outline: 'none',
-    };
-    this.childNodes = [];
   }
   getValue(): string {
     return this.dom.value; // this.value

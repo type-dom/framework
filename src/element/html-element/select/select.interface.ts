@@ -1,7 +1,6 @@
-import { ITypeHtml } from '../../../type-element/type-html/type-html.interface';
+import { ITypeSelect } from '../../../type-element/type-html/select/select.interface';
 import { IOption } from '../option/option.interface';
-
-export interface ISelect extends ITypeHtml {
+export interface ISelect extends ITypeSelect {
   className: 'Select',
   childNodes: IOption[];
 }

@@ -1,5 +1,4 @@
-import { ITypeHtml } from '../../../type-element/type-html/type-html.interface';
-export interface ITemplate extends ITypeHtml {
-  nodeName: 'template',
+import { ITypeTemplate } from '../../../type-element/type-html/template/template.interface';
+export interface ITemplate extends ITypeTemplate {
   className: 'Template',
 }

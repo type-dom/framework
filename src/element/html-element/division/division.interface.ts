@@ -1,5 +1,4 @@
-import { ITypeElement } from '../../../type-element/type-element.interface';
-export interface IDivision extends ITypeElement {
-  nodeName: 'div',
+import { ITypeDiv } from '../../../type-element/type-html/div/div.interface';
+export interface IDivision extends ITypeDiv {
   className: 'Division',
 }

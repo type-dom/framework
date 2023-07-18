@@ -1,5 +1,5 @@
-import { ITypeElement } from '../../../type-element/type-element.interface';
-export interface IHeader extends ITypeElement {
+import { ITypeHeader } from '../../../type-element/type-html/header/header.interface';
+export interface IHeader extends ITypeHeader {
   nodeName: 'header',
   className: 'Header',
 }

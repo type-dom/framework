@@ -1,14 +1,11 @@
 import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { TypeTemplate } from '../../../type-element/type-html/template/template.abstract';
+import { XElement } from '../../../x-element/x-element.class';
 import { ITemplate } from './template.interface';
-
-export class Template extends TypeHtml implements ITemplate {
-  nodeName: 'template';
+export class Template extends TypeTemplate implements ITemplate {
   className: 'Template';
-  dom: HTMLTemplateElement;
-  constructor(public parent: TypeHtml) {
-    super('template');
-    this.nodeName = 'template';
+  constructor(public parent: TypeHtml | XElement) {
+    super();
     this.className = 'Template';
-    this.dom = document.createElement(this.nodeName);
   }
 }
