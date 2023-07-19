@@ -1,4 +1,5 @@
 import { Subscription } from 'rxjs';
+import { Parser } from '../parser/parser.class';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { ITypeNode } from '../type-node/type-node.interface';
 import { TextNode } from '../text-node/text-node.class';
@@ -11,7 +12,6 @@ import {
   ITypeElement,
   ITypeProperty
 } from './type-element.interface';
-import { Parser } from 'type-dom-parser';
 /**
  * 虚拟元素Element的数据结构
  * 可以对应到虚拟dom树。 createDom(tag, attr, children)

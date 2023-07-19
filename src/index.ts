@@ -13,3 +13,5 @@ export { XElement } from './x-element/x-element.class';
 export { IXElement } from './x-element/x-element.interface'
 export * from './type-element';
 export * from './element';
+export { Parser } from './parser/parser.class';
+export { IParam } from './parser/parser.interface';
