@@ -1,5 +1,5 @@
 // Br,Division,TypeRoot,TextNode等都是框架定义好的类
-import { Br, Division, TypeRoot, TextNode, XElement } from '../src';
+import { Br, Division, TypeRoot, TextNode, XElement } from 'type-dom.ts';
 /**
  * 项目根节点，继承TypeRoot（根节点抽象类）
  * 因为属性和方法要全局调用，所以全部设置为静态 static; 包括get也设置为静态
