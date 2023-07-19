@@ -1,6 +1,7 @@
 import { TypeHtml } from '../type-html/type-html.abstract';
 import { IComponent, ITypeComponent } from './type-component.interface';
 import { TypeNode } from '../../type-node/type-node.abstract';
+import {TypeElement} from "../type-element.abstract";
 /**
  * 组件基类
  */
@@ -12,24 +13,24 @@ export abstract class TypeComponent extends TypeHtml implements ITypeComponent {
     super(nodeName);
     this.childNodes = [];
   }
-  createItem(parent: TypeHtml, node: IComponent) {
-    console.log('type-component createItem . ');
-    if (node.TypeClass === undefined) {
-      throw Error('node.TypeClass is undefined . ');
-    }
-    // XElement 必须有nodeName,默认为div。
-    const item = new node.TypeClass() as TypeComponent; // 创建类实例
-    item.parent = parent;
-    console.log('item is ', item);
-    if (node.propObj) {
-      item.addStyleObj(node.propObj.styleObj);
-      item.addAttrObj(node.propObj.attrObj);
-    }
-    if (node.config) {
-      item.setConfig(node.config);
-    }
-    return item;
-  }
+  // createItem<T extends TypeElement>(parent: TypeHtml, node: IComponent): T {
+  //   console.log('type-component createItem . ');
+  //   if (node.TypeClass === undefined) {
+  //     throw Error('node.TypeClass is undefined . ');
+  //   }
+  //   // XElement 必须有nodeName,默认为div。
+  //   const item = new node.TypeClass() as T; // 创建类实例
+  //   item.parent = parent;
+  //   console.log('item is ', item);
+  //   if (node.propObj) {
+  //     item.addStyleObj(node.propObj.styleObj);
+  //     item.addAttrObj(node.propObj.attrObj);
+  //   }
+  //   if (node.config) {
+  //     item.setConfig(node.config);
+  //   }
+  //   return item;
+  // }
   createItems(parent: TypeHtml, nodes: IComponent[]) {
     console.log('type-component createItems . ');
     const items: TypeNode[] = [];

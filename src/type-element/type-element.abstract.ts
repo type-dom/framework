@@ -11,7 +11,7 @@ import {
   ITypeElement,
   ITypeProperty
 } from './type-element.interface';
-import {Parser} from "type-dom-parser";
+import { Parser } from 'type-dom-parser';
 /**
  * 虚拟元素Element的数据结构
  * 可以对应到虚拟dom树。 createDom(tag, attr, children)
@@ -515,17 +515,21 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       this.childNodes.length = length;
     }
   }
-  createItem<T extends TypeNode>(parent: TypeElement, node: ITypeNode): TypeElement | T {
+  createItem<T extends TypeNode>(parent: TypeElement, node: ITypeNode): T {
     let item;
     if (node.template) {
       const parser = new Parser({});
-      item = parser.parseFromString(node.template) as TypeElement;
-      // console.log('item is ', item);
+      item = parser.parseFromString(node.template) as T; // 这里返回的XElement是 node_module中依赖包的类型
+      console.log('item instanceof TypeElement is ', item instanceof TypeElement);
+      console.log('item is ', item);
       if (item && item.attributes) {
         for (const attr of item.attributes) {
-          item.addAttrObj({
-            [attr.name]: attr.value,
-          })
+          console.log('item instanceof TypeElement is ', item instanceof TypeElement);
+          if (item instanceof TypeElement) {
+            item.addAttrObj({
+              [attr.name]: attr.value,
+            });
+          }
         }
       } else {
         throw Error('template is error . ');
@@ -563,7 +567,11 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
     if (node.childNodes) {
       if (item.childNodes !== undefined) {
-        item.childNodes = item.createItems(item as TypeElement, node.childNodes);
+        if (item instanceof TypeElement) {
+          item.childNodes = item.createItems(item, node.childNodes);
+        } else {
+          throw Error('item is TextNode , do not have childNodes . ');
+        }
       } else {
         throw Error('TypeClass is TextNode, but has childNodes . ');
       }
