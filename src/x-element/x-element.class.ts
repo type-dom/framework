@@ -14,8 +14,8 @@ export class XElement extends TypeElement implements IXElement {
   className: 'XElement';
   parent: TypeElement; // 在解析时，onEndElement时，重新赋值。
   dom: HTMLElement | SVGElement;
-  constructor(nodeName?: string, parent?: TypeElement) {
-    super(nodeName || 'div');
+  constructor(nodeName = 'div', parent?: TypeElement) {
+    super(nodeName);
     this.className = 'XElement';
     this.dom = document.createElement(this.nodeName);
     this.parent = parent || this;

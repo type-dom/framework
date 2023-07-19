@@ -281,7 +281,7 @@ export class Parser {
    * @param data
    */
   parseFromString(data: string): TypeNode | undefined {
-    console.log('parser parseFromString . ');
+    // console.log('parser parseFromString . ');
     this._currentFragment = [];
     this._stack = [];
     this._errorCode = ParserErrorCode.NoError;
@@ -324,7 +324,7 @@ export class Parser {
       name = name.toLowerCase();
     }
     // todo 根据name创建各个定义的类，包括 (XElement | TextNode)
-    console.log('name is ', name);
+    // console.log('name is ', name);
     const node = new XElement(name);
     node.childNodes = [];
     if (this._hasAttributes) {
@@ -348,7 +348,7 @@ export class Parser {
     // 取回缓存的节点
     this._currentFragment = this._stack?.pop() || [];
     const lastElement = this._currentFragment?.at(-1);
-    console.log('lastElement is ', lastElement);
+    // console.log('lastElement is ', lastElement);
     if (!lastElement) {
       return null;
     }

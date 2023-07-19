@@ -519,12 +519,11 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     let item;
     if (node.template) {
       const parser = new Parser({});
-      item = parser.parseFromString(node.template) as T; // 这里返回的XElement是 node_module中依赖包的类型
-      console.log('item instanceof TypeElement is ', item instanceof TypeElement);
-      console.log('item is ', item);
+      item = parser.parseFromString(node.template) as T;
+      // console.log('item is ', item);
       if (item && item.attributes) {
         for (const attr of item.attributes) {
-          console.log('item instanceof TypeElement is ', item instanceof TypeElement);
+          // console.log('item instanceof TypeElement is ', item instanceof TypeElement);
           if (item instanceof TypeElement) {
             item.addAttrObj({
               [attr.name]: attr.value,
