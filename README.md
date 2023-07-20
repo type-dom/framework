@@ -21,7 +21,8 @@
         –	typescript
         –	抽象类
         –	实体类
-        - 类实例
+        –	类实例
+
     2、项目结构
         –	build
         –	public
