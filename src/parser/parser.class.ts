@@ -1,4 +1,4 @@
-import { INodeAttr, TextNode, TypeElement, TypeNode, XElement } from '../index';
+import { INodeAttr, TextNode, XElement } from '../index';
 import { ParserErrorCode } from './parser.const';
 import { isWhitespace, isWhitespaceString } from './parser.util';
 import { IContent, IInstruction, IParam } from './parser.interface';
@@ -290,7 +290,7 @@ export class Parser {
 
     if (this._errorCode !== ParserErrorCode.NoError) {
       // return undefined; // return undefined on error
-      throw Error('this._errorCode !== ' + ParserErrorCode.NoError)
+      throw Error('this._errorCode !== ' + ParserErrorCode.NoError);
     }
     // We should only have one root.
     const [documentElement] = this._currentFragment;
@@ -346,7 +346,7 @@ export class Parser {
    * @param name 应该是nodeName
    */
   onEndElement(name?: string): (XElement | TextNode) | null {
-    // console.log('onEndElement . name is ', name);
+    console.log('onEndElement . name is ', name);
     // 取回缓存的节点
     this._currentFragment = this._stack?.pop() || [];
     const lastElement = this._currentFragment?.at(-1);
@@ -356,7 +356,7 @@ export class Parser {
     }
     // 对应的字节点
     for (const child of lastElement.children) {
-      child.parent = lastElement as TypeElement;
+      child.parent = lastElement as XElement;
     }
     return lastElement;
   }
