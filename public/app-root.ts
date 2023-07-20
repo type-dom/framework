@@ -43,7 +43,7 @@ export class AppRoot extends TypeRoot {
         ]
       },
       {
-        template: `<div data-name='second-item' style='padding: 20px;color: #0F0; background: #ddd'> ${ title }</div>`,
+        template: `<div data-name='second-item' style='padding: 20px;color: #00F; background: #ddd'> ${ title }</div>`,
         // data: {
         //   title: 'I am okd'
         // }
@@ -54,7 +54,7 @@ export class AppRoot extends TypeRoot {
     ]);
     this.createItem<XElement>(this,
       {
-        template: `<p name='third-item' style='border: 1px solid #FF0;'> paragraph </p>`
+        template: `<p data-name='third-item' style='border: 1px solid #FF0;'> paragraph </p>`
       });
     this.render(); // 渲染
   }

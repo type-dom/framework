@@ -493,8 +493,9 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       height
     };
   }
-  setConfig(config: Record<string, any>) {
-    this.setAttrObj(config);
+  // 子类中有需要的地方覆写
+  setConfig<T>(config: T) {
+    this.setAttrObj(config as Partial<ITypeAttribute>);
   }
   /**
    * 默认初始化方法
@@ -515,7 +516,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       this.childNodes.length = length;
     }
   }
-  createItem<T extends (TextNode | TypeElement)>(parent: TypeElement, node: ITypeNode): T {
+  createItem<T extends TextNode | TypeElement>(parent: TypeElement, node: ITypeNode): T {
     let item;
     if (node.template) {
       const parser = new Parser({});
