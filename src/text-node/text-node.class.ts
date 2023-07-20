@@ -1,11 +1,10 @@
+import { TypeNode } from '../type-node/type-node.abstract';
+import { TypeElement } from '../type-element/type-element.abstract';
+import { ITextNode } from './text-node.interface';
 /**
  * 虚拟文本节点。
  * ----> 本身不会渲染成标签。没有对应的HTML标签。
  */
-import { TypeNode } from '../type-node/type-node.abstract';
-import { TypeElement } from '../type-element/type-element.abstract';
-import { ITextNode } from './text-node.interface';
-import {ITypeNode} from "../type-node/type-node.interface";
 export class TextNode extends TypeNode implements ITextNode {
   className: 'TextNode';
   // childNodes: [string];
@@ -39,9 +38,9 @@ export class TextNode extends TypeNode implements ITextNode {
   get length(): number {
     return this.nodeValue.length;
   }
-  setConfig(config: { title: string }) {
-    this.setText(config.title);
-  }
+  // setConfig(config: Record<string, any>) {
+  //   this.setText(config.title);
+  // }
 
   setParent(parent: TypeElement): void {
     this.parent = parent;
@@ -140,8 +139,8 @@ export class TextNode extends TypeNode implements ITextNode {
     console.log('item is ', item);
     item.setParent(parent);
     // todo
-    if (node.config && item.setConfig) {
-      item.setConfig(node.config);
+    if (node.nodeValue) {
+      item.setText(node.nodeValue);
     }
     parent.addChild(item);
     // if (node.propObj) {

@@ -65,6 +65,14 @@ export abstract class TypeNode implements ITypeNode {
    * 渲染出真实DOM
    */
   abstract render(): void;
+  // abstract setConfig?(config: any): void
+  /**
+   * 不独立为一个函数，是因为在这里，可以直接 this. 的方式调用。
+   * 在UI组件中会重写
+   * @param parent 不一定是this，还可以是父级、子级等等。
+   * @param node
+   */
+  abstract createItem(parent: TypeNode, node: ITypeNode): TypeNode
   propObj?: ITypeProperty;
   nodeName: string;
   nodeValue?: string;
@@ -121,14 +129,6 @@ export abstract class TypeNode implements ITypeNode {
   //   }
   //   console.log('TypeNode.typeMap is ', TypeNode.typeMap);
   // }
-  abstract setConfig(config: any): void
-  /**
-   * 不独立为一个函数，是因为在这里，可以直接 this. 的方式调用。
-   * 在UI组件中会重写
-   * @param parent 不一定是this，还可以是父级、子级等等。
-   * @param node
-   */
-  abstract createItem(parent: TypeNode, node: ITypeNode): TypeNode
   setParent(parent: TypeNode): void {
     this.parent = parent;
   }
@@ -143,8 +143,8 @@ export abstract class TypeNode implements ITypeNode {
   createItems(parent: TypeNode, nodes: ITypeNode[]): TypeNode[] {
     const items: TypeNode[] = [];
     for (const node of nodes) {
-      if (node.TypeClass === undefined) {
-        console.error('node.TypeClass is undefined . ');
+      if (node.TypeClass === undefined && node.template === undefined) {
+        console.error('node.TypeClass is undefined  && node.template === undefined. ');
         continue;
       }
       const item = this.createItem(parent, node);

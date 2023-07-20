@@ -493,7 +493,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       height
     };
   }
-  setConfig(config: any) {
+  setConfig(config: Record<string, any>) {
     this.setAttrObj(config);
   }
   /**
@@ -515,7 +515,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       this.childNodes.length = length;
     }
   }
-  createItem<T extends TypeNode>(parent: TypeElement, node: ITypeNode): T {
+  createItem<T extends (TextNode | TypeElement)>(parent: TypeElement, node: ITypeNode): T {
     let item;
     if (node.template) {
       const parser = new Parser({});
@@ -540,7 +540,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     parent.addChild(item);
     item.setParent(parent);
     // todo
-    if (node.config && item.setConfig) {
+    if (node.config && item instanceof TypeElement) {
       item.setConfig(node.config);
     }
     if (node.propObj) {
@@ -551,7 +551,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
         throw Error('TextNode propObj is undefined . ');
       }
     }
-    // XElement时，可以单独穿nodeName.
+    // XElement时，可以单独传nodeName.
     if (node.nodeName) {
       item.nodeName = node.nodeName;
       item.dom = document.createElement(this.nodeName); // XElement 默认nodeName是div

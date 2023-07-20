@@ -8,5 +8,5 @@ export interface ITextNode extends ITypeNode {
   className: 'TextNode';
   nodeValue: string;
   // text: string;
-  config?: {title: string}
+  // config?: {title: string}
 }

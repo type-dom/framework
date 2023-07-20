@@ -11,18 +11,19 @@ export interface IPath {
  * json格式的接口，也是json存储的数据结构
  */
 export interface ITypeNode {
-  nodeName?: string,
   className?: string,
+  nodeName?: string,
+  // nodeValue只在 TextNode中才有。
+  nodeValue?: string,
   TypeClass?: any, // todo 如何设置？？？ 这个不会转为json
   // propObj与attributes应该可以相互转换，而且都是只在TypeElement和XNode中有。
   // TextNode 没有 attributes和propObj
   propObj?: ITypeProperty;
-  // nodeValue只在 TextNode中才有。
-  nodeValue?: string,
   parent?: ITypeNode,
   // TextNode 没有 childNodes
   childNodes?: ITypeNode[],
-  template?: string, // 模板
+  template?: string, // 模板  与TypeClass不会同时使用，默认TypeClass为XElement
+  data?: Record<string, any>,
   // attributes?: INodeAttr[];
   // 绑定的事件集合, TypeElement 才有
   // 生成json时，基于events生成；

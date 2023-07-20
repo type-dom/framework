@@ -276,11 +276,11 @@ export class Parser {
     console.log('doctypeContent is ', doctypeContent);
   }
   /**
-   * 在解析Ajax获取页面时，也可以用的
+   * 在解析Ajax请求获取页面时，也可以用的
    * 将 dom字符串，解析为 虚拟dom
    * @param data
    */
-  parseFromString(data: string): TypeNode | undefined {
+  parseFromString(data: string): TextNode | XElement {
     // console.log('parser parseFromString . ');
     this._currentFragment = [];
     this._stack = [];
@@ -289,12 +289,14 @@ export class Parser {
     this.parseDom(data.trim());
 
     if (this._errorCode !== ParserErrorCode.NoError) {
-      return undefined; // return undefined on error
+      // return undefined; // return undefined on error
+      throw Error('this._errorCode !== ' + ParserErrorCode.NoError)
     }
     // We should only have one root.
     const [documentElement] = this._currentFragment;
     if (!documentElement) {
-      return undefined; // Return undefined if no root was found.
+      // return undefined; // Return undefined if no root was found.
+      throw Error('documentElement is undefined . ');
     }
     return documentElement;
   }
