@@ -134,11 +134,8 @@ export class TextNode extends TypeNode implements ITextNode {
     // this.render();
     this.parent.render();
   }
+  // 这个方法是没有地方触发的
   createItem(parent: TypeElement, node: ITextNode): TextNode {
-    if (node.TypeClass === TextNode) {
-      throw Error('node.TypeClass is TextNode . ');
-    }
-    // XElement 必须有nodeName,默认为div。
     const item = new TextNode(parent); // 创建类实例
     console.log('item is ', item);
     item.setParent(parent);
@@ -147,19 +144,6 @@ export class TextNode extends TypeNode implements ITextNode {
       item.setText(node.nodeValue);
     }
     parent.addChild(item);
-    // if (node.propObj) {
-    //   if (item instanceof TypeElement) {
-    //     item.addStyleObj(node.propObj.styleObj);
-    //     item.addAttrObj(node.propObj.attrObj);
-    //   } else {
-    //     throw Error('TextNode propObj is undefined . ');
-    //   }
-    // }
-    // XElement时，可以单独穿nodeName.
-    // if (node.nodeName) {
-    //   item.nodeName = node.nodeName;
-    //   item.dom = document.createElement(this.nodeName); // XElement 默认nodeName是div
-    // }
     if (node.nodeValue !== undefined) { // 如果是文本节点，则退出迭代; XNode,TextNode会有
       if (item.nodeValue !== undefined) {
         item.nodeValue = node.nodeValue;
@@ -168,56 +152,15 @@ export class TextNode extends TypeNode implements ITextNode {
         throw Error('TypeClass is not TextNode, but nodeValue exist. ');
       }
     }
-    // if (node.childNodes) {
-    //   if (item.childNodes !== undefined) {
-    //     item.childNodes = item.createItems(item as TypeElement, node.childNodes);
-    //   } else {
-    //     throw Error('TypeClass is TextNode, but has childNodes . ');
-    //   }
-    // }
     return item;
   }
   render(): void {
     if (this.itemData) {
-      // const regex = /{{([^{}]+)}}/g;
-      // let match;
-      // const data = this.itemData;
-      // let result = this.nodeValue;
-      // while ((match = regex.exec(this.nodeValue))) {
-      //   const key = match[1];
-      //   if (data[key]) {
-      //     result = result.replace(`${key}`, data[key]);
-      //   }
-      // }
-      // this.nodeValue = result;
       this.nodeValue = mustache(this.nodeValue, this.itemData);
     }
     this.dom.textContent = this.nodeValue || '';  // '\u200b'; // &zwnj; \u200c &zwsp;
   }
 }
-
-// function mustache(keys, data: Record<string, any>) {
-//   console.log('mustache . ');
-//   let result = template;
-//   keys.forEach((key) => {
-//     if (data[key]) {
-//       result = result.replace(`${key}`, data[key]);
-//     }
-//   });
-//   return result;
-// }
-
-function re(template: string): string[] {
-  console.log('re . ')
-  const keys: string[] = [];
-  const regex = /{{([^{}]+)}}/g;
-  let match;
-  while ((match = regex.exec(template))) {
-    keys.push(match[1]);
-  }
-  return keys;
-}
-
 // const template = "Hello, {{name}}!";
 // const data = { name: "Alice" };
 // const renderer = mustache(template);
@@ -232,7 +175,6 @@ function mustache(template: string, data: Record<string, string>) {
     for (let i = 1; i < keys.length; i++) {
       value = value[keys[i]];
     }
-    // result += data[key.trim()] + match[0].slice(3, -3);
     result = result.replace(match[0], value);
   }
   return result;
