@@ -13,16 +13,25 @@ export interface IPath {
 export interface ITypeNode {
   className?: string,
   nodeName?: string,
-  // nodeValue只在 TextNode中才有。
+  /**
+   * nodeValue只在 TextNode中才有。
+   * nodeValue存在时，就应该是 TextNode类
+   */
   nodeValue?: string,
   TypeClass?: any, // todo 如何设置？？？ 这个不会转为json
-  // propObj与attributes应该可以相互转换，而且都是只在TypeElement和XNode中有。
-  // TextNode 没有 attributes和propObj
+  /**
+   * attributes只在XElement中有，并会转换为 attrObj。
+   * TextNode 没有 attributes和propObj
+   */
   propObj?: ITypeProperty;
   parent?: ITypeNode,
   // TextNode 没有 childNodes
   childNodes?: ITypeNode[],
-  template?: string, // 模板  与TypeClass不会同时使用，默认TypeClass为XElement
+  /**
+   * 属性值必须用 ' or " 包起来
+   * 标签必须闭合， 如 <input /> 这样才能闭合。
+   */
+  template?: string, // 模板 默认TypeClass为XElement
   data?: Record<string, any>,
   // attributes?: INodeAttr[];
   // 绑定的事件集合, TypeElement 才有

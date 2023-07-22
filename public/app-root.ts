@@ -7,6 +7,7 @@ import { Br, Division, TypeRoot, TextNode, XElement } from '../src';
  */
 export class AppRoot extends TypeRoot {
   className: 'AppRoot';
+  inputValue = 'abc'
   // 构造函数，rootEl是绑定的Dom元素，对应到index.html中的页面元素
   constructor(rootEl: HTMLElement) {
     super(rootEl);
@@ -19,6 +20,7 @@ export class AppRoot extends TypeRoot {
       border: '20px solid #dddddd'
     });
     let title = 'Here you are . '
+
     // createItems 是一个创建子节点的方法
     // 第一个参数是父节点对象，
     // 第二个参数是个数组，包括了要创建的所有子节点的配置属性
@@ -35,28 +37,39 @@ export class AppRoot extends TypeRoot {
             background: '#FF0'
           }
         },
-        childNodes: [ // 第一项子节点的子元素
-          {
-            TypeClass: TextNode, // 文本类
-            nodeValue: ' hello world ! ' // 文本内容
-          },
-        ]
+        // childNodes: [ // 第一项子节点的子元素
+        //   {
+        //     nodeValue: ' hello world ! ' // 文本
+        //   },
+        // ]
       },
       {
-        template: `<div data-name='second-item' style='padding: 20px;color: #00F; background: #ddd'> ${ title }</div>`,
-        // data: {
-        //   title: 'I am okd'
-        // }
+        template: `<div data-name='second-item' style='padding: 20px;color: #00F; background: #ddd'>
+<!--          title is   {{title}} input is  {{ input }}-->
+<!--            <input :value='input'/>-->
+            name: {{ user.name }} age is {{ user.age }}
+            </div>`,
+        data: {
+          user: {
+            name: 'helen',
+            age: 27,
+          },
+          title: 'I am ok. ',
+          input: 'abc'
+        }
       },
       {
         TypeClass: Br // 换行
       }
     ]);
-    this.createItem<XElement>(this,
-      {
-        template: `<p data-name='third-item' style='border: 1px solid #FF0;'> paragraph </p>`
-      });
+    // this.createItem<XElement>(this,
+    //   {
+    //     template: `<p data-name='third-item' style='border: 1px solid #FF0;'> paragraph </p>`
+    //   });
     this.render(); // 渲染
+  }
+  inputChange(newValue: string) {
+    console.log('newValue is ', newValue);
   }
 }
 

@@ -1,6 +1,7 @@
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { ITextNode } from './text-node.interface';
+import {template} from "@babel/core";
 /**
  * 虚拟文本节点。
  * ----> 本身不会渲染成标签。没有对应的HTML标签。
@@ -22,6 +23,9 @@ export class TextNode extends TypeNode implements ITextNode {
     this.nodeName = '#text';
     this.nodeValue = text;
     this.dom = document.createTextNode(text.toString());
+  }
+  get itemData() {
+    return this.data || this.parent.itemData;
   }
   // get textContentLength(): number {
   //   return this.textContent.length;
@@ -174,7 +178,62 @@ export class TextNode extends TypeNode implements ITextNode {
     return item;
   }
   render(): void {
+    if (this.itemData) {
+      // const regex = /{{([^{}]+)}}/g;
+      // let match;
+      // const data = this.itemData;
+      // let result = this.nodeValue;
+      // while ((match = regex.exec(this.nodeValue))) {
+      //   const key = match[1];
+      //   if (data[key]) {
+      //     result = result.replace(`${key}`, data[key]);
+      //   }
+      // }
+      // this.nodeValue = result;
+      this.nodeValue = mustache(this.nodeValue, this.itemData);
+    }
     this.dom.textContent = this.nodeValue || '';  // '\u200b'; // &zwnj; \u200c &zwsp;
   }
 }
 
+// function mustache(keys, data: Record<string, any>) {
+//   console.log('mustache . ');
+//   let result = template;
+//   keys.forEach((key) => {
+//     if (data[key]) {
+//       result = result.replace(`${key}`, data[key]);
+//     }
+//   });
+//   return result;
+// }
+
+function re(template: string): string[] {
+  console.log('re . ')
+  const keys: string[] = [];
+  const regex = /{{([^{}]+)}}/g;
+  let match;
+  while ((match = regex.exec(template))) {
+    keys.push(match[1]);
+  }
+  return keys;
+}
+
+// const template = "Hello, {{name}}!";
+// const data = { name: "Alice" };
+// const renderer = mustache(template);
+// console.log(renderer(data)); // 输出 "Hello, Alice!"
+function mustache(template: string, data: Record<string, string>) {
+  let pattern = /\{\{([\w\s\.]+)\}\}/g;
+  let result = template;
+  let match;
+  while (match = pattern.exec(template)) {
+    const keys = match[1].trim().split('.');
+    let value: any = data[keys[0]];
+    for (let i = 1; i < keys.length; i++) {
+      value = value[keys[i]];
+    }
+    // result += data[key.trim()] + match[0].slice(3, -3);
+    result = result.replace(match[0], value);
+  }
+  return result;
+}

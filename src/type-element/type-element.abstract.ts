@@ -38,22 +38,21 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.childNodes = [];
     this.events = [];
   }
+  get itemData():  Record<string, any> | undefined {
+    return this.data || this.parent.itemData;
+  }
   get length(): number {
     return this.childNodes.length;
   }
-
   get index(): number {
     return this.parent ? this.parent.findChildIndex(this) : -1;
   }
-
   get attrObj(): Partial<ITypeAttribute> {
     return this.propObj.attrObj;
   }
-
   get styleObj(): Partial<IStyle> {
     return this.propObj.styleObj;
   }
-
   get firstChild(): TypeNode {
     return this.childNodes[0];
   }
@@ -518,21 +517,17 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   }
   createItem<T extends TextNode | TypeElement>(parent: TypeElement, node: ITypeNode): T {
     let item;
-    if (node.template) {
-      const parser = new Parser({});
+    if (node.nodeValue !== undefined) { // 如果是文本节点，则退出迭代
+      item = new TextNode(parent, node.nodeValue) as T;
+      parent.addChild(item);
+      return item;
+    } else if (node.template !== undefined) {
+      const parser = new Parser();
       item = parser.parseFromString(node.template) as T;
-      // console.log('item is ', item);
-      if (item && item.attributes) {
-        for (const attr of item.attributes) {
-          // console.log('item instanceof TypeElement is ', item instanceof TypeElement);
-          if (item instanceof TypeElement) {
-            item.addAttrObj({
-              [attr.name]: attr.value,
-            });
-          }
-        }
-      } else {
-        throw Error('template is error . ');
+    //   todo 绑定和指令等
+      if (node.data) {
+        console.log('node.data is ', node.data);
+        item.data = node.data;
       }
     } else {
       item = new node.TypeClass() as T; // 创建类实例
@@ -555,15 +550,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     // XElement时，可以单独传nodeName.
     if (node.nodeName) {
       item.nodeName = node.nodeName;
-      item.dom = document.createElement(this.nodeName); // XElement 默认nodeName是div
-    }
-    if (node.nodeValue !== undefined) { // 如果是文本节点，则退出迭代; XNode,TextNode会有
-      if (item.nodeValue !== undefined) {
-        item.nodeValue = node.nodeValue;
-        return item;
-      } else {
-        throw Error('TypeClass is not TextNode, but nodeValue exist. ');
-      }
+      item.dom = document.createElement(this.nodeName);
     }
     if (node.childNodes) {
       if (item.childNodes !== undefined) {

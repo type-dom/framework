@@ -14,12 +14,12 @@ export class Parser {
   private _errorCode: number;
   private readonly _hasAttributes: boolean | undefined;
   private readonly _lowerCaseName: boolean | undefined;
-  constructor({ hasAttributes = true, lowerCaseName = false }: IParam) {
+  constructor(param?: IParam) {
     this._currentFragment = [];
     this._stack = [];
     this._errorCode = ParserErrorCode.NoError;
-    this._hasAttributes = hasAttributes;
-    this._lowerCaseName = lowerCaseName;
+    this._hasAttributes = param?.hasAttributes || true;
+    this._lowerCaseName = param?.lowerCaseName || false;
   }
   _resolveEntities(s: string): string {
     return s.replace(/&([^;]+);/g, (all, entity) => {
@@ -49,6 +49,7 @@ export class Parser {
    * @param start
    */
   _parseContent(s: string, start: number): IContent | null {
+    // console.log('_parseContent . ')
     const attributes: INodeAttr[] = [];
     let pos = start;
 
@@ -88,7 +89,9 @@ export class Parser {
       ++pos;
       skipWs();
       const attrEndChar = s[pos];
+      // 限定了属性值必须以 ' or " 结尾 ， 不能注掉，会解析出错
       if (attrEndChar !== '"' && attrEndChar !== "'") {
+        // console.log(`attrEndChar !== '"' && attrEndChar !== "'"`);
         return null;
       }
       const attrEndIndex = s.indexOf(attrEndChar, ++pos);
@@ -282,6 +285,7 @@ export class Parser {
    */
   parseFromString(data: string): TextNode | XElement {
     // console.log('parser parseFromString . ');
+    // console.log('data is ', data);
     this._currentFragment = [];
     this._stack = [];
     this._errorCode = ParserErrorCode.NoError;
@@ -346,7 +350,7 @@ export class Parser {
    * @param name 应该是nodeName
    */
   onEndElement(name?: string): (XElement | TextNode) | null {
-    console.log('onEndElement . name is ', name);
+    // console.log('onEndElement . name is ', name);
     // 取回缓存的节点
     this._currentFragment = this._stack?.pop() || [];
     const lastElement = this._currentFragment?.at(-1);
@@ -358,6 +362,7 @@ export class Parser {
     for (const child of lastElement.children) {
       child.parent = lastElement as XElement;
     }
+    // console.log('lastElement is ', lastElement);
     return lastElement;
   }
   onError(code: number): void {

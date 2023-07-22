@@ -9,8 +9,8 @@ export { IStyle } from './style/style.interface';
 export { Display, Cursor, StylePosition, FontTheme, OnOff, LineSpacingRule, TextDecoration, JustifyContent } from './style/style.enum';
 export { TypeRoot } from './type-root/type-root.abstract';
 export { ITypeRoot } from './type-root/type-root.interface';
-export { XElement } from './x-element/x-element.class';
-export { IXElement } from './x-element/x-element.interface'
+export { XElement } from './element/x-element/x-element.class';
+export { IXElement } from './element/x-element/x-element.interface'
 export * from './type-element';
 export * from './element';
 export { Parser } from './parser/parser.class';

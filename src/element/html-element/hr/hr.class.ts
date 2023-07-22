@@ -1,6 +1,6 @@
 import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
 import { TypeHr } from '../../../type-element/type-html/hr/hr.abstract';
-import { XElement } from '../../../x-element/x-element.class';
+import { XElement } from '../../x-element/x-element.class';
 import { IHr } from './hr.interface';
 export class Hr extends TypeHr implements IHr {
   className: 'Hr';

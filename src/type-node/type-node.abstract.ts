@@ -51,7 +51,6 @@ function encodeToDomString(str: string) {
  * 子类有:
  *    TypeElement
  *    TextNode
- *    XNode
  */
 export abstract class TypeNode implements ITypeNode {
   /**
@@ -68,7 +67,7 @@ export abstract class TypeNode implements ITypeNode {
   // abstract setConfig?(config: any): void
   /**
    * 不独立为一个函数，是因为在这里，可以直接 this. 的方式调用。
-   * 在UI组件中会重写
+   * 在子类，如UI组件中会重写
    * @param parent 不一定是this，还可以是父级、子级等等。
    * @param node
    */
@@ -78,6 +77,7 @@ export abstract class TypeNode implements ITypeNode {
   nodeValue?: string;
   childNodes?: TypeNode[];
   attributes?: INodeAttr[];
+  data?: Record<string, any>
   events?: Subscription[];
   protected constructor(nodeName: string, nodeValue?: string) {
     this.nodeName = nodeName;
@@ -143,8 +143,11 @@ export abstract class TypeNode implements ITypeNode {
   createItems(parent: TypeNode, nodes: ITypeNode[]): TypeNode[] {
     const items: TypeNode[] = [];
     for (const node of nodes) {
-      if (node.TypeClass === undefined && node.template === undefined) {
-        console.error('node.TypeClass is undefined  && node.template === undefined. ');
+      if (node.TypeClass === undefined
+        && node.template === undefined
+        && node.nodeValue === undefined) {
+        console.error('node.TypeClass is undefined  && node.template === undefined' +
+          ' && node.template === undefined. ');
         continue;
       }
       const item = this.createItem(parent, node);
