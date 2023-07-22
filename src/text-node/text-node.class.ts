@@ -175,7 +175,9 @@ function mustache(template: string, data: Record<string, string>) {
     for (let i = 1; i < keys.length; i++) {
       value = value[keys[i]];
     }
-    result = result.replace(match[0], value);
+    if (value !== undefined) {
+      result = result.replace(match[0], value);
+    }
   }
   return result;
 }

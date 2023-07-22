@@ -45,8 +45,8 @@ export class AppRoot extends TypeRoot {
       },
       {
         template: `<div data-name='second-item' style='padding: 20px;color: #00F; background: #ddd'>
-<!--          title is   {{title}} input is  {{ input }}-->
-<!--            <input :value='input'/>-->
+          title is   {{title}}
+            <input :value='user.name'/>
             name: {{ user.name }} age is {{ user.age }}
             </div>`,
         data: {

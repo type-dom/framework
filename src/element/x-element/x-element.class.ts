@@ -28,11 +28,19 @@ export class XElement extends TypeElement implements IXElement {
         console.log('attr.name is ', attr.name);
         const attrName = attr.name.substring(1);
         console.log('this.itemData is ', this.itemData);
-        if (this.itemData && this.itemData[attr.value]) {
-          const value = this.itemData[attr.value];
-          this.addAttrObj({
-            [attrName]: value,
-          })
+        if (this.itemData && attr.value !== undefined) {
+          const keys =attr.value.split('.');
+          let value = this.itemData[keys[0]];
+          if (value !== undefined) {
+            for (let i = 1; i < keys.length; i++) {
+              value = value[keys[i]];
+            }
+            if (value !== undefined) {
+              this.addAttrObj({
+                [attrName]: value,
+              });
+            }
+          }
         }
       } else if (attr.name.startsWith('@')) {
       //   绑定事件
