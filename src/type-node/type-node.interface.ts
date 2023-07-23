@@ -37,6 +37,6 @@ export interface ITypeNode {
   // 绑定的事件集合, TypeElement 才有
   // 生成json时，基于events生成；
   // 反向转为类时，要转为events的值
-  on?: Record<string, string>,
+  methods?: Record<string, Function>,
   config?: Record<string, any>, // config不会转为json
 }

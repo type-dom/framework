@@ -18,6 +18,7 @@ import {
  * 与对应的导出时的数据结构是不一样的。
  * todo 是否需要把相关的操作也添加进来。
  */
+const vHash = Math.round(Math.random() * 1000000);
 export abstract class TypeElement extends TypeNode implements ITypeElement {
   abstract className: string;
   abstract parent: TypeElement;
@@ -31,12 +32,21 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   protected constructor(nodeName: string) {
     super(nodeName);
     this.propObj = {
-      attrObj: {},
+      attrObj: {
+        ['data-v-' + vHash]: true
+      },
       styleObj: {}
     };
     this.attributes = [];
     this.childNodes = [];
     this.events = [];
+  }
+  get tempItem(): any {
+    if (this.data) {
+      return this;
+    } else {
+      return this.parent.tempItem;
+    }
   }
   get itemData():  Record<string, any> | undefined {
     return this.data || this.parent.itemData;
@@ -237,20 +247,17 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       this.dom.setAttribute(key, String(value));
     }
   }
-
   setAttrName(value: string): TypeElement {
     this.addAttrName(value);
     this.renderAttrName(value);
     return this;
   }
-
   addAttrName(value: string): void {
     this.propObj.attrObj.name = value;
   }
   renderAttrName(value: string): void {
     this.dom.setAttribute('name', value);
   }
-
   removeAttribute(key: string): TypeElement {
     if (this.propObj.attrObj[key]) {
       delete this.propObj.attrObj[key];
@@ -258,7 +265,6 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.dom.removeAttribute(key);
     return this;
   }
-
   addClassName(className: string): TypeElement {
     // 要先判断className是否已经存在
     if (this.propObj.attrObj?.class?.indexOf(className) === -1) {
@@ -268,7 +274,6 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     // this.dom.setAttribute('class', String(this.propObj.attrObj.class).trim());
     return this;
   }
-
   removeClassName(className: string): TypeElement {
     String(this.propObj.attrObj.class).replace(className, '');
     this.dom.classList.remove(className);
@@ -286,7 +291,6 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.childNodes.push(newChild);
     this.renderChild(newChild);
     // this.dom.appendChild(newChild.render().dom);
-    // return this;
   }
   unshiftChild(newChild: TypeNode): void {
     this.childNodes.unshift(newChild);
@@ -311,7 +315,6 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   // appendChildren(newNodes: Array<TypeElement | WebText>) {
   //   this.childNodes.push(...newNodes);
   //   newNodes.map(child => child.setParent(this));
-  //   return newNodes;
   // }
 
   /**
@@ -332,7 +335,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * @param newChild
    * @param index 数组下标
    */
-  insertChild(newChild: TypeElement | TextNode, index: number): HTMLElement | SVGElement | Text {
+  insertChildDom(newChild: TypeElement | TextNode, index: number): void {
     // 判断newChild是否已经插入到数据层中。默认应该先插入数据层，再插入dom树。
     // if (!this.parent) {
     //   console.error('newChild has no parent . ');
@@ -344,7 +347,6 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     } else {
       this.renderChild(newChild);
     }
-    return newChild.dom;
   }
 
   // insertChildren(children: Array<TypeElement | WebText>, index: number) {
@@ -359,10 +361,9 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * @param length
    */
   removeChildAtIndex(index: number, length = 1): void {
-    this.removeChildDom(index, length);
+    this.removeChildDomAtIndex(index, length);
     this.childNodes.splice(index, length);
   }
-
   /**
    * 移除指定下标的dom子节点。
    * WebPage的removeChildDom相对特殊，要单独处理。
@@ -370,12 +371,11 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * @param index
    * @param length 移除的个数
    */
-  removeChildDom(index: number, length = 1): void {
+  removeChildDomAtIndex(index: number, length = 1): void {
     for (let i = 0; i < length; i++) {
       this.dom.removeChild(this.childNodes[index + i].dom);
     }
   }
-
   /**
    * 从父级中删除
    */
@@ -469,19 +469,16 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   findChildIndex(child: TypeElement | TextNode): number {
     return this.childNodes.findIndex(item => item === child);
   }
-
   removeEvents(): void {
     this.events.forEach(event => {
       event.unsubscribe();
     });
     this.events = [];
   }
-
   // 移除监听
   clearEvents(): void {
     this.events.map(item => item.unsubscribe());
   }
-
   get boundBox(): IBoundBox {
     const { left, top, width, height } = this.dom.getBoundingClientRect();
     // console.log('left is ', left, 'top is ', top, 'width is ', width, 'height is ', height);
@@ -528,6 +525,10 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       if (node.data) {
         console.log('node.data is ', node.data);
         item.data = node.data;
+      }
+      if (node.methods) {
+        console.log('node.on is ', node.methods);
+        (item as any).methods = node.methods;
       }
     } else {
       item = new node.TypeClass() as T; // 创建类实例

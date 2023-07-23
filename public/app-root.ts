@@ -1,5 +1,6 @@
 // Br,Division,TypeRoot,TextNode等都是框架定义好的类
 import { Br, Division, TypeRoot, TextNode, XElement } from '../src';
+import * as events from "events";
 /**
  * 项目根节点，继承TypeRoot（根节点抽象类）
  * 因为属性和方法要全局调用，所以全部设置为静态 static; 包括get也设置为静态
@@ -46,7 +47,7 @@ export class AppRoot extends TypeRoot {
       {
         template: `<div data-name='second-item' style='padding: 20px;color: #00F; background: #ddd'>
           title is   {{title}}
-            <input :value='user.name'/>
+            <input :value='user.name' @input="onInput" @change="onChange"/>
             name: {{ user.name }} age is {{ user.age }}
             </div>`,
         data: {
@@ -56,6 +57,22 @@ export class AppRoot extends TypeRoot {
           },
           title: 'I am ok. ',
           input: 'abc'
+        },
+        methods: {
+          onInput(evt: Event, bindItem: XElement) {
+            console.log('onInput evt is ', evt);
+            console.log('onInput bindItem is ', bindItem);
+            const domValue = (bindItem.dom as HTMLInputElement).value;
+            bindItem.setAttrObj({
+              value: domValue
+            })
+            bindItem.tempItem.data.user.name = domValue;
+            bindItem.nextSibling && bindItem.nextSibling.render();
+          },
+          onChange(evt: Event, bindItem: XElement) {
+            console.log('onChange evt is ', evt);
+            console.log('onChange bindItem is ', bindItem);
+          }
         }
       },
       {
@@ -67,9 +84,6 @@ export class AppRoot extends TypeRoot {
     //     template: `<p data-name='third-item' style='border: 1px solid #FF0;'> paragraph </p>`
     //   });
     this.render(); // 渲染
-  }
-  inputChange(newValue: string) {
-    console.log('newValue is ', newValue);
   }
 }
 

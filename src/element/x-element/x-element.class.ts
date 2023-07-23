@@ -1,3 +1,4 @@
+import {fromEvent} from "rxjs";
 import { INodeAttr } from '../../type-node/type-node.interface';
 import { TypeElement } from '../../type-element/type-element.abstract';
 import { IXElement } from './x-element.interface';
@@ -44,7 +45,24 @@ export class XElement extends TypeElement implements IXElement {
         }
       } else if (attr.name.startsWith('@')) {
       //   绑定事件
-
+        console.log('attr.name is ', attr.name);
+        console.log('attr.value is ', attr.value);
+        const attrName = attr.name.substring(1);
+        console.log('this.tempItem is ', this.tempItem);
+        if (this.tempItem && attr.value !== undefined) {
+          if (this.tempItem.methods && this.tempItem.methods[attr.value]) {
+            fromEvent(this.dom, attrName).subscribe((evt) => this.tempItem.methods[attr.value](evt, this));
+            // fromEvent(this.dom, 'input').subscribe((evt) => {
+            //   console.log('input . ');
+            //   console.log('this.dom is ', this.dom);
+            //   console.log('this.dom.value is ', (this.dom as HTMLInputElement).value);
+            //   console.log('evt is ', evt);
+            //   this.setAttrObj({
+            //     value: (this.dom as HTMLInputElement).value
+            //   })
+            // });
+          }
+        }
       } else {
         this.addAttrObj({
           [attr.name]: attr.value

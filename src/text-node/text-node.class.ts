@@ -13,6 +13,7 @@ export class TextNode extends TypeNode implements ITextNode {
   nodeValue: string;
   // text: string;
   dom: Text;
+  template?: string;
   /**
    * @param parent
    * @param text
@@ -155,10 +156,12 @@ export class TextNode extends TypeNode implements ITextNode {
     return item;
   }
   render(): void {
+    // 渲染出来的值，在 模板语法中需要转换的。
+    let text = this.nodeValue;
     if (this.itemData) {
-      this.nodeValue = mustache(this.nodeValue, this.itemData);
+      text = mustache(this.nodeValue, this.itemData);
     }
-    this.dom.textContent = this.nodeValue || '';  // '\u200b'; // &zwnj; \u200c &zwsp;
+    this.dom.textContent = text || '';  // '\u200b'; // &zwnj; \u200c &zwsp;
   }
 }
 // const template = "Hello, {{name}}!";
