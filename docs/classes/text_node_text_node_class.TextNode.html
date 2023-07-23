@@ -17,7 +17,8 @@
 <li><a href="text_node_text_node_class.TextNode.html">TextNode</a></li></ul>
 <h1>Class TextNode</h1></div>
 <section class="tsd-panel tsd-comment">
-<div class="tsd-comment tsd-typography"><p>json格式的接口，也是json存储的数据结构</p>
+<div class="tsd-comment tsd-typography"><p>虚拟文本节点。
+----&gt; 本身不会渲染成标签。没有对应的HTML标签。</p>
 </div>
 <div class="tsd-comment tsd-typography"></div></section>
 <section class="tsd-panel tsd-hierarchy">
@@ -31,7 +32,7 @@
 <ul class="tsd-hierarchy">
 <li><a href="../interfaces/text_node_text_node_interface.ITextNode.html" class="tsd-signature-type tsd-kind-interface">ITextNode</a></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/text-node/text-node.class.ts#L9">text-node/text-node.class.ts:9</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/text-node/text-node.class.ts#L9">text-node/text-node.class.ts:9</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -46,18 +47,21 @@
 <div class="tsd-index-list"><a href="text_node_text_node_class.TextNode.html#attributes" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-1024"><rect fill="var(--color-icon-background)" stroke="#FF984D" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12"></rect><path d="M9.354 16V7.24H12.174C12.99 7.24 13.638 7.476 14.118 7.948C14.606 8.412 14.85 9.036 14.85 9.82C14.85 10.604 14.606 11.232 14.118 11.704C13.638 12.168 12.99 12.4 12.174 12.4H10.434V16H9.354ZM10.434 11.428H12.174C12.646 11.428 13.022 11.284 13.302 10.996C13.59 10.7 13.734 10.308 13.734 9.82C13.734 9.324 13.59 8.932 13.302 8.644C13.022 8.356 12.646 8.212 12.174 8.212H10.434V11.428Z" fill="var(--color-text)"></path></g></svg><span>attributes?</span></a>
 <a href="text_node_text_node_class.TextNode.html#childNodes" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>child<wbr/>Nodes?</span></a>
 <a href="text_node_text_node_class.TextNode.html#className" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>class<wbr/>Name</span></a>
+<a href="text_node_text_node_class.TextNode.html#data" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>data?</span></a>
 <a href="text_node_text_node_class.TextNode.html#dom" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>dom</span></a>
 <a href="text_node_text_node_class.TextNode.html#events" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>events?</span></a>
 <a href="text_node_text_node_class.TextNode.html#nodeName" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>node<wbr/>Name</span></a>
 <a href="text_node_text_node_class.TextNode.html#nodeValue" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>node<wbr/>Value</span></a>
 <a href="text_node_text_node_class.TextNode.html#parent" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>parent</span></a>
 <a href="text_node_text_node_class.TextNode.html#propObj" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>prop<wbr/>Obj?</span></a>
+<a href="text_node_text_node_class.TextNode.html#template" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>template?</span></a>
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Accessors</h3>
 <div class="tsd-index-list"><a href="text_node_text_node_class.TextNode.html#children" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-262144"><rect fill="var(--color-icon-background)" stroke="#FF4D4D" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12"></rect><path d="M8.85 16L11.13 7.24H12.582L14.85 16H13.758L13.182 13.672H10.53L9.954 16H8.85ZM10.746 12.76H12.954L12.282 10.06C12.154 9.548 12.054 9.12 11.982 8.776C11.91 8.432 11.866 8.208 11.85 8.104C11.834 8.208 11.79 8.432 11.718 8.776C11.646 9.12 11.546 9.544 11.418 10.048L10.746 12.76Z" fill="var(--color-text)"></path></g></svg><span>children</span></a>
 <a href="text_node_text_node_class.TextNode.html#firstChild" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>first<wbr/>Child</span></a>
 <a href="text_node_text_node_class.TextNode.html#index" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>index</span></a>
+<a href="text_node_text_node_class.TextNode.html#itemData" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>item<wbr/>Data</span></a>
 <a href="text_node_text_node_class.TextNode.html#length" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>length</span></a>
 <a href="text_node_text_node_class.TextNode.html#nextSibling" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>next<wbr/>Sibling</span></a>
 <a href="text_node_text_node_class.TextNode.html#textContent" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>text<wbr/>Content</span></a>
@@ -73,7 +77,6 @@
 <a href="text_node_text_node_class.TextNode.html#insertText" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>insert<wbr/>Text</span></a>
 <a href="text_node_text_node_class.TextNode.html#render" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>render</span></a>
 <a href="text_node_text_node_class.TextNode.html#searchNode" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>search<wbr/>Node</span></a>
-<a href="text_node_text_node_class.TextNode.html#setConfig" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>set<wbr/>Config</span></a>
 <a href="text_node_text_node_class.TextNode.html#setParent" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>set<wbr/>Parent</span></a>
 <a href="text_node_text_node_class.TextNode.html#setText" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>set<wbr/>Text</span></a>
 <a href="text_node_text_node_class.TextNode.html#sliceText" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>slice<wbr/>Text</span></a>
@@ -99,7 +102,7 @@
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Overrides <a href="type_node_type_node_abstract.TypeNode.html">TypeNode</a>.<a href="type_node_type_node_abstract.TypeNode.html#constructor">constructor</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/text-node/text-node.class.ts#L20">text-node/text-node.class.ts:20</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/text-node/text-node.class.ts#L21">text-node/text-node.class.ts:21</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="attributes" class="tsd-anchor"></a>
@@ -107,14 +110,14 @@
 <div class="tsd-signature"><span class="tsd-kind-property">attributes</span><span class="tsd-signature-symbol">?:</span> <a href="../interfaces/type_node_type_node_interface.INodeAttr.html" class="tsd-signature-type tsd-kind-interface">INodeAttr</a><span class="tsd-signature-symbol">[]</span></div><aside class="tsd-sources">
 <p>Inherited from <a href="type_node_type_node_abstract.TypeNode.html">TypeNode</a>.<a href="type_node_type_node_abstract.TypeNode.html#attributes">attributes</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L72">type-node/type-node.abstract.ts:72</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L79">type-node/type-node.abstract.ts:79</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="childNodes" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>child<wbr/>Nodes</span><a href="#childNodes" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">child<wbr/>Nodes</span><span class="tsd-signature-symbol">?:</span> <a href="type_node_type_node_abstract.TypeNode.html" class="tsd-signature-type tsd-kind-class">TypeNode</a><span class="tsd-signature-symbol">[]</span></div><aside class="tsd-sources">
 <p>Implementation of <a href="../interfaces/text_node_text_node_interface.ITextNode.html">ITextNode</a>.<a href="../interfaces/text_node_text_node_interface.ITextNode.html#childNodes">childNodes</a></p>
 <p>Inherited from <a href="type_node_type_node_abstract.TypeNode.html">TypeNode</a>.<a href="type_node_type_node_abstract.TypeNode.html#childNodes">childNodes</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L71">type-node/type-node.abstract.ts:71</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L78">type-node/type-node.abstract.ts:78</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member"><a id="className" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>class<wbr/>Name</span><a href="#className" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">class<wbr/>Name</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;TextNode&quot;</span></div>
@@ -125,33 +128,44 @@
 <p>Implementation of <a href="../interfaces/text_node_text_node_interface.ITextNode.html">ITextNode</a>.<a href="../interfaces/text_node_text_node_interface.ITextNode.html#className">className</a></p>
 <p>Overrides <a href="type_node_type_node_abstract.TypeNode.html">TypeNode</a>.<a href="type_node_type_node_abstract.TypeNode.html#className">className</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/text-node/text-node.class.ts#L10">text-node/text-node.class.ts:10</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/text-node/text-node.class.ts#L10">text-node/text-node.class.ts:10</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-is-inherited"><a id="data" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>data</span><a href="#data" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">data</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type ">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div><aside class="tsd-sources">
+<p>Implementation of <a href="../interfaces/text_node_text_node_interface.ITextNode.html">ITextNode</a>.<a href="../interfaces/text_node_text_node_interface.ITextNode.html#data">data</a></p>
+<p>Inherited from <a href="type_node_type_node_abstract.TypeNode.html">TypeNode</a>.<a href="type_node_type_node_abstract.TypeNode.html#data">data</a></p>
+<ul>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L80">type-node/type-node.abstract.ts:80</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member"><a id="dom" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>dom</span><a href="#dom" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">dom</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type ">Text</span></div><aside class="tsd-sources">
 <p>Overrides <a href="type_node_type_node_abstract.TypeNode.html">TypeNode</a>.<a href="type_node_type_node_abstract.TypeNode.html#dom">dom</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/text-node/text-node.class.ts#L15">text-node/text-node.class.ts:15</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/text-node/text-node.class.ts#L15">text-node/text-node.class.ts:15</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="events" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>events</span><a href="#events" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">events</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type ">Subscription</span><span class="tsd-signature-symbol">[]</span></div><aside class="tsd-sources">
 <p>Inherited from <a href="type_node_type_node_abstract.TypeNode.html">TypeNode</a>.<a href="type_node_type_node_abstract.TypeNode.html#events">events</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L73">type-node/type-node.abstract.ts:73</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L81">type-node/type-node.abstract.ts:81</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member"><a id="nodeName" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>node<wbr/>Name</span><a href="#nodeName" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">node<wbr/>Name</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;#text&quot;</span></div><aside class="tsd-sources">
 <p>Implementation of <a href="../interfaces/text_node_text_node_interface.ITextNode.html">ITextNode</a>.<a href="../interfaces/text_node_text_node_interface.ITextNode.html#nodeName">nodeName</a></p>
 <p>Overrides <a href="type_node_type_node_abstract.TypeNode.html">TypeNode</a>.<a href="type_node_type_node_abstract.TypeNode.html#nodeName">nodeName</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/text-node/text-node.class.ts#L12">text-node/text-node.class.ts:12</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/text-node/text-node.class.ts#L12">text-node/text-node.class.ts:12</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member"><a id="nodeValue" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>node<wbr/>Value</span><a href="#nodeValue" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">node<wbr/>Value</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
+<div class="tsd-signature"><span class="tsd-kind-property">node<wbr/>Value</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+<div class="tsd-comment tsd-typography"><p>nodeValue只在 TextNode中才有。
+nodeValue存在时，就应该是 TextNode类</p>
+</div>
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Implementation of <a href="../interfaces/text_node_text_node_interface.ITextNode.html">ITextNode</a>.<a href="../interfaces/text_node_text_node_interface.ITextNode.html#nodeValue">nodeValue</a></p>
 <p>Overrides <a href="type_node_type_node_abstract.TypeNode.html">TypeNode</a>.<a href="type_node_type_node_abstract.TypeNode.html#nodeValue">nodeValue</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/text-node/text-node.class.ts#L13">text-node/text-node.class.ts:13</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/text-node/text-node.class.ts#L13">text-node/text-node.class.ts:13</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="parent" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>parent</span><a href="#parent" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">parent</span><span class="tsd-signature-symbol">:</span> <a href="type_element_type_element_abstract.TypeElement.html" class="tsd-signature-type tsd-kind-class">TypeElement</a></div>
@@ -159,14 +173,28 @@
 <p>Implementation of <a href="../interfaces/text_node_text_node_interface.ITextNode.html">ITextNode</a>.<a href="../interfaces/text_node_text_node_interface.ITextNode.html#parent">parent</a></p>
 <p>Inherited from <a href="type_node_type_node_abstract.TypeNode.html">TypeNode</a>.<a href="type_node_type_node_abstract.TypeNode.html#parent">parent</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/text-node/text-node.class.ts#L20">text-node/text-node.class.ts:20</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/text-node/text-node.class.ts#L21">text-node/text-node.class.ts:21</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="propObj" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>prop<wbr/>Obj</span><a href="#propObj" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">prop<wbr/>Obj</span><span class="tsd-signature-symbol">?:</span> <a href="../interfaces/type_element_type_element_interface.ITypeProperty.html" class="tsd-signature-type tsd-kind-interface">ITypeProperty</a></div><aside class="tsd-sources">
+<div class="tsd-signature"><span class="tsd-kind-property">prop<wbr/>Obj</span><span class="tsd-signature-symbol">?:</span> <a href="../interfaces/type_element_type_element_interface.ITypeProperty.html" class="tsd-signature-type tsd-kind-interface">ITypeProperty</a></div>
+<div class="tsd-comment tsd-typography"><p>attributes只在XElement中有，并会转换为 attrObj。
+TextNode 没有 attributes和propObj</p>
+</div>
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Implementation of <a href="../interfaces/text_node_text_node_interface.ITextNode.html">ITextNode</a>.<a href="../interfaces/text_node_text_node_interface.ITextNode.html#propObj">propObj</a></p>
 <p>Inherited from <a href="type_node_type_node_abstract.TypeNode.html">TypeNode</a>.<a href="type_node_type_node_abstract.TypeNode.html#propObj">propObj</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L68">type-node/type-node.abstract.ts:68</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L75">type-node/type-node.abstract.ts:75</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member"><a id="template" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>template</span><a href="#template" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">template</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span></div>
+<div class="tsd-comment tsd-typography"><p>属性值必须用 &#39; or &quot; 包起来
+标签必须闭合， 如 <input /> 这样才能闭合。</p>
+</div>
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
+<p>Implementation of <a href="../interfaces/text_node_text_node_interface.ITextNode.html">ITextNode</a>.<a href="../interfaces/text_node_text_node_interface.ITextNode.html#template">template</a></p>
+<ul>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/text-node/text-node.class.ts#L16">text-node/text-node.class.ts:16</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Accessors</h2>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="children" class="tsd-anchor"></a>
@@ -177,7 +205,7 @@
 <h4 class="tsd-returns-title">Returns <a href="type_node_type_node_abstract.TypeNode.html" class="tsd-signature-type tsd-kind-class">TypeNode</a><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <p>Inherited from TypeNode.children</p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L105">type-node/type-node.abstract.ts:105</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L113">type-node/type-node.abstract.ts:113</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="firstChild" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>first<wbr/>Child</span><a href="#firstChild" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -186,7 +214,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="type_node_type_node_abstract.TypeNode.html" class="tsd-signature-type tsd-kind-class">TypeNode</a></h4><aside class="tsd-sources">
 <p>Inherited from TypeNode.firstChild</p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L81">type-node/type-node.abstract.ts:81</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L89">type-node/type-node.abstract.ts:89</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="index" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>index</span><a href="#index" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -194,7 +222,15 @@
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/text-node/text-node.class.ts#L32">text-node/text-node.class.ts:32</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/text-node/text-node.class.ts#L36">text-node/text-node.class.ts:36</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member"><a id="itemData" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>item<wbr/>Data</span><a href="#itemData" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="tsd-signature" id="itemData.itemData-1"><span class="tsd-signature-symbol">get</span> itemData<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type ">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+<li class="tsd-description">
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type ">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/text-node/text-node.class.ts#L28">text-node/text-node.class.ts:28</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="length" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>length</span><a href="#length" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -202,7 +238,7 @@
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/text-node/text-node.class.ts#L39">text-node/text-node.class.ts:39</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/text-node/text-node.class.ts#L43">text-node/text-node.class.ts:43</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="nextSibling" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>next<wbr/>Sibling</span><a href="#nextSibling" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -211,7 +247,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="type_node_type_node_abstract.TypeNode.html" class="tsd-signature-type tsd-kind-class">TypeNode</a></h4><aside class="tsd-sources">
 <p>Inherited from TypeNode.nextSibling</p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L84">type-node/type-node.abstract.ts:84</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L92">type-node/type-node.abstract.ts:92</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="textContent" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>text<wbr/>Content</span><a href="#textContent" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -220,7 +256,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <p>Inherited from TypeNode.textContent</p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L95">type-node/type-node.abstract.ts:95</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L103">type-node/type-node.abstract.ts:103</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member"><a id="appendText" class="tsd-anchor"></a>
@@ -243,14 +279,14 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/text-node/text-node.class.ts#L59">text-node/text-node.class.ts:59</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/text-node/text-node.class.ts#L63">text-node/text-node.class.ts:63</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="createItem" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>create<wbr/>Item</span><a href="#createItem" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
 <li class="tsd-signature tsd-anchor-link" id="createItem.createItem-1"><span class="tsd-kind-call-signature">create<wbr/>Item</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">parent</span>, <span class="tsd-kind-parameter">node</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="text_node_text_node_class.TextNode.html" class="tsd-signature-type tsd-kind-class">TextNode</a><a href="#createItem.createItem-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>不独立为一个函数，是因为在这里，可以直接 this. 的方式调用。
-在UI组件中会重写</p>
+在子类，如UI组件中会重写</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
@@ -267,7 +303,7 @@
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Overrides <a href="type_node_type_node_abstract.TypeNode.html">TypeNode</a>.<a href="type_node_type_node_abstract.TypeNode.html#createItem">createItem</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/text-node/text-node.class.ts#L134">text-node/text-node.class.ts:134</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/text-node/text-node.class.ts#L139">text-node/text-node.class.ts:139</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="createItems" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>create<wbr/>Items</span><a href="#createItems" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -291,7 +327,7 @@
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Inherited from <a href="type_node_type_node_abstract.TypeNode.html">TypeNode</a>.<a href="type_node_type_node_abstract.TypeNode.html#createItems">createItems</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L143">type-node/type-node.abstract.ts:143</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L143">type-node/type-node.abstract.ts:143</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="deleteText" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>delete<wbr/>Text</span><a href="#deleteText" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -315,7 +351,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/text-node/text-node.class.ts#L103">text-node/text-node.class.ts:103</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/text-node/text-node.class.ts#L107">text-node/text-node.class.ts:107</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="dump" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>dump</span><a href="#dump" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -329,7 +365,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="type_node_type_node_abstract.TypeNode.html">TypeNode</a>.<a href="type_node_type_node_abstract.TypeNode.html#dump">dump</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L226">type-node/type-node.abstract.ts:226</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L229">type-node/type-node.abstract.ts:229</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="hasChildNodes" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>has<wbr/>Child<wbr/>Nodes</span><a href="#hasChildNodes" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -338,7 +374,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="type_node_type_node_abstract.TypeNode.html">TypeNode</a>.<a href="type_node_type_node_abstract.TypeNode.html#hasChildNodes">hasChildNodes</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L157">type-node/type-node.abstract.ts:157</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L160">type-node/type-node.abstract.ts:160</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="insertText" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>insert<wbr/>Text</span><a href="#insertText" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -368,7 +404,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/text-node/text-node.class.ts#L87">text-node/text-node.class.ts:87</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/text-node/text-node.class.ts#L91">text-node/text-node.class.ts:91</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="render" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>render</span><a href="#render" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -380,7 +416,7 @@
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Overrides <a href="type_node_type_node_abstract.TypeNode.html">TypeNode</a>.<a href="type_node_type_node_abstract.TypeNode.html#render">render</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/text-node/text-node.class.ts#L177">text-node/text-node.class.ts:177</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/text-node/text-node.class.ts#L158">text-node/text-node.class.ts:158</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="searchNode" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>search<wbr/>Node</span><a href="#searchNode" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -411,24 +447,7 @@ to the path or null if not found.</p>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Inherited from <a href="type_node_type_node_abstract.TypeNode.html">TypeNode</a>.<a href="type_node_type_node_abstract.TypeNode.html#searchNode">searchNode</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L172">type-node/type-node.abstract.ts:172</a></li></ul></aside></li></ul></section>
-<section class="tsd-panel tsd-member"><a id="setConfig" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><span>set<wbr/>Config</span><a href="#setConfig" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<ul class="tsd-signatures">
-<li class="tsd-signature tsd-anchor-link" id="setConfig.setConfig-1"><span class="tsd-kind-call-signature">set<wbr/>Config</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">config</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#setConfig.setConfig-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
-<li class="tsd-description">
-<div class="tsd-parameters">
-<h4 class="tsd-parameters-title">Parameters</h4>
-<ul class="tsd-parameter-list">
-<li>
-<h5><span class="tsd-kind-parameter">config</span>: <span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-property">title</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span></h5>
-<ul class="tsd-parameters">
-<li class="tsd-parameter">
-<h5><span class="tsd-kind-property">title</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5></li></ul></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
-<p>Overrides <a href="type_node_type_node_abstract.TypeNode.html">TypeNode</a>.<a href="type_node_type_node_abstract.TypeNode.html#setConfig">setConfig</a></p>
-<ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/text-node/text-node.class.ts#L42">text-node/text-node.class.ts:42</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L175">type-node/type-node.abstract.ts:175</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="setParent" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Parent</span><a href="#setParent" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -442,7 +461,7 @@ to the path or null if not found.</p>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Overrides <a href="type_node_type_node_abstract.TypeNode.html">TypeNode</a>.<a href="type_node_type_node_abstract.TypeNode.html#setParent">setParent</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/text-node/text-node.class.ts#L46">text-node/text-node.class.ts:46</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/text-node/text-node.class.ts#L50">text-node/text-node.class.ts:50</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="setText" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Text</span><a href="#setText" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -455,7 +474,7 @@ to the path or null if not found.</p>
 <h5><span class="tsd-kind-parameter">text</span>: <span class="tsd-signature-type">string</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/text-node/text-node.class.ts#L49">text-node/text-node.class.ts:49</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/text-node/text-node.class.ts#L53">text-node/text-node.class.ts:53</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="sliceText" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>slice<wbr/>Text</span><a href="#sliceText" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -476,7 +495,7 @@ to the path or null if not found.</p>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/text-node/text-node.class.ts#L73">text-node/text-node.class.ts:73</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/text-node/text-node.class.ts#L77">text-node/text-node.class.ts:77</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="toJSON" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>toJSON</span><a href="#toJSON" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -491,7 +510,7 @@ todo events如何处理？？</p>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Inherited from <a href="type_node_type_node_abstract.TypeNode.html">TypeNode</a>.<a href="type_node_type_node_abstract.TypeNode.html#toJSON">toJSON</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L259">type-node/type-node.abstract.ts:259</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L262">type-node/type-node.abstract.ts:262</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -515,15 +534,18 @@ todo events如何处理？？</p>
 <li><a href="#attributes" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>attributes</span></a></li>
 <li><a href="#childNodes" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>child<wbr/>Nodes</span></a></li>
 <li><a href="#className" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>class<wbr/>Name</span></a></li>
+<li><a href="#data" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>data</span></a></li>
 <li><a href="#dom" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>dom</span></a></li>
 <li><a href="#events" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>events</span></a></li>
 <li><a href="#nodeName" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>node<wbr/>Name</span></a></li>
 <li><a href="#nodeValue" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>node<wbr/>Value</span></a></li>
 <li><a href="#parent" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>parent</span></a></li>
 <li><a href="#propObj" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>prop<wbr/>Obj</span></a></li>
+<li><a href="#template" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>template</span></a></li>
 <li><a href="#children" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>children</span></a></li>
 <li><a href="#firstChild" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>first<wbr/>Child</span></a></li>
 <li><a href="#index" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>index</span></a></li>
+<li><a href="#itemData" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>item<wbr/>Data</span></a></li>
 <li><a href="#length" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>length</span></a></li>
 <li><a href="#nextSibling" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>next<wbr/>Sibling</span></a></li>
 <li><a href="#textContent" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-262144"></use></svg><span>text<wbr/>Content</span></a></li>
@@ -536,7 +558,6 @@ todo events如何处理？？</p>
 <li><a href="#insertText" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>insert<wbr/>Text</span></a></li>
 <li><a href="#render" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>render</span></a></li>
 <li><a href="#searchNode" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>search<wbr/>Node</span></a></li>
-<li><a href="#setConfig" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>set<wbr/>Config</span></a></li>
 <li><a href="#setParent" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>set<wbr/>Parent</span></a></li>
 <li><a href="#setText" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>set<wbr/>Text</span></a></li>
 <li><a href="#sliceText" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>slice<wbr/>Text</span></a></li>
@@ -664,7 +685,13 @@ todo events如何处理？？</p>
 <li><a href="../modules/element_svg_element_svg_svg_interface.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>element/svg-<wbr/>element/svg/svg.interface</span></a></li>
 <li><a href="../modules/element_svg_element_text_text_class.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>element/svg-<wbr/>element/text/text.class</span></a></li>
 <li><a href="../modules/element_svg_element_text_text_interface.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>element/svg-<wbr/>element/text/text.interface</span></a></li>
+<li><a href="../modules/element_x_element_x_element_class.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>element/x-<wbr/>element/x-<wbr/>element.class</span></a></li>
+<li><a href="../modules/element_x_element_x_element_interface.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>element/x-<wbr/>element/x-<wbr/>element.interface</span></a></li>
 <li><a href="../modules/index.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>index</span></a></li>
+<li><a href="../modules/parser_parser_class.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>parser/parser.class</span></a></li>
+<li><a href="../modules/parser_parser_const.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>parser/parser.const</span></a></li>
+<li><a href="../modules/parser_parser_interface.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>parser/parser.interface</span></a></li>
+<li><a href="../modules/parser_parser_util.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>parser/parser.util</span></a></li>
 <li><a href="../modules/style_style_enum.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>style/style.enum</span></a></li>
 <li><a href="../modules/style_style_interface.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>style/style.interface</span></a></li>
 <li>
@@ -890,9 +917,7 @@ todo events如何处理？？</p>
 <li><a href="../modules/type_node_type_node_abstract.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>type-<wbr/>node/type-<wbr/>node.abstract</span></a></li>
 <li><a href="../modules/type_node_type_node_interface.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>type-<wbr/>node/type-<wbr/>node.interface</span></a></li>
 <li><a href="../modules/type_root_type_root_abstract.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>type-<wbr/>root/type-<wbr/>root.abstract</span></a></li>
-<li><a href="../modules/type_root_type_root_interface.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>type-<wbr/>root/type-<wbr/>root.interface</span></a></li>
-<li><a href="../modules/x_element_x_element_class.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>x-<wbr/>element/x-<wbr/>element.class</span></a></li>
-<li><a href="../modules/x_element_x_element_interface.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>x-<wbr/>element/x-<wbr/>element.interface</span></a></li></ul></nav></div></div></div>
+<li><a href="../modules/type_root_type_root_interface.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>type-<wbr/>root/type-<wbr/>root.interface</span></a></li></ul></nav></div></div></div>
 <div class="tsd-generator">
 <p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div>
 <div class="overlay"></div></body></html>

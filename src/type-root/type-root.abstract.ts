@@ -10,13 +10,8 @@ import { ITypeRoot } from './type-root.interface';
  */
 export abstract class TypeRoot extends TypeDiv implements ITypeRoot {
   parent: TypeRoot;
-  // abstract app: any;
   protected constructor(el: HTMLElement | string) {
     super();
-    this.propObj = {
-      attrObj: {},
-      styleObj: {}
-    };
     this.parent = this;
     if (el instanceof HTMLElement) {
       el.appendChild(this.dom);

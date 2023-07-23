@@ -44,12 +44,20 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   get tempItem(): any {
     if (this.data) {
       return this;
+    } else if (this.parent === this) {
+      return this;
     } else {
       return this.parent.tempItem;
     }
   }
   get itemData():  Record<string, any> | undefined {
-    return this.data || this.parent.itemData;
+    if (this.data) {
+      return this.data;
+    } else if (this.parent === this) {
+      return this;
+    } else {
+      return this.parent.itemData;
+    }
   }
   get length(): number {
     return this.childNodes.length;

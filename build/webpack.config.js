@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   // 入口 (单个入口 或多个入口),现在是单入口
-  entry:  './public/example.ts',
+  entry:  './public/main.ts',
   // 出口
   output: {
     // 文件名称（指定名称+目录）

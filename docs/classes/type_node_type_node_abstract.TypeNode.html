@@ -21,8 +21,7 @@
 abstract syntax tree 抽象语法树 抽象节点类
 子类有:
    TypeElement
-   TextNode
-   XNode</p>
+   TextNode</p>
 </div>
 <div class="tsd-comment tsd-typography"></div></section>
 <section class="tsd-panel tsd-hierarchy">
@@ -37,7 +36,7 @@ abstract syntax tree 抽象语法树 抽象节点类
 <ul class="tsd-hierarchy">
 <li><a href="../interfaces/type_node_type_node_interface.ITypeNode.html" class="tsd-signature-type tsd-kind-interface">ITypeNode</a></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L56">type-node/type-node.abstract.ts:56</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L55">type-node/type-node.abstract.ts:55</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -52,6 +51,7 @@ abstract syntax tree 抽象语法树 抽象节点类
 <div class="tsd-index-list"><a href="type_node_type_node_abstract.TypeNode.html#attributes" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-1024"><rect fill="var(--color-icon-background)" stroke="#FF984D" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12"></rect><path d="M9.354 16V7.24H12.174C12.99 7.24 13.638 7.476 14.118 7.948C14.606 8.412 14.85 9.036 14.85 9.82C14.85 10.604 14.606 11.232 14.118 11.704C13.638 12.168 12.99 12.4 12.174 12.4H10.434V16H9.354ZM10.434 11.428H12.174C12.646 11.428 13.022 11.284 13.302 10.996C13.59 10.7 13.734 10.308 13.734 9.82C13.734 9.324 13.59 8.932 13.302 8.644C13.022 8.356 12.646 8.212 12.174 8.212H10.434V11.428Z" fill="var(--color-text)"></path></g></svg><span>attributes?</span></a>
 <a href="type_node_type_node_abstract.TypeNode.html#childNodes" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>child<wbr/>Nodes?</span></a>
 <a href="type_node_type_node_abstract.TypeNode.html#className" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>class<wbr/>Name</span></a>
+<a href="type_node_type_node_abstract.TypeNode.html#data" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>data?</span></a>
 <a href="type_node_type_node_abstract.TypeNode.html#dom" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>dom</span></a>
 <a href="type_node_type_node_abstract.TypeNode.html#events" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>events?</span></a>
 <a href="type_node_type_node_abstract.TypeNode.html#nodeName" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>node<wbr/>Name</span></a>
@@ -74,7 +74,6 @@ abstract syntax tree 抽象语法树 抽象节点类
 <a href="type_node_type_node_abstract.TypeNode.html#hasChildNodes" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>has<wbr/>Child<wbr/>Nodes</span></a>
 <a href="type_node_type_node_abstract.TypeNode.html#render" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>render</span></a>
 <a href="type_node_type_node_abstract.TypeNode.html#searchNode" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>search<wbr/>Node</span></a>
-<a href="type_node_type_node_abstract.TypeNode.html#setConfig" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>set<wbr/>Config</span></a>
 <a href="type_node_type_node_abstract.TypeNode.html#setParent" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>set<wbr/>Parent</span></a>
 <a href="type_node_type_node_abstract.TypeNode.html#toJSON" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>toJSON</span></a>
 </div></section></div></details></section></section>
@@ -94,20 +93,20 @@ abstract syntax tree 抽象语法树 抽象节点类
 <h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-parameter">nodeValue</span>: <span class="tsd-signature-type">string</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="type_node_type_node_abstract.TypeNode.html" class="tsd-signature-type tsd-kind-class">TypeNode</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L74">type-node/type-node.abstract.ts:74</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L82">type-node/type-node.abstract.ts:82</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member"><a id="attributes" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>attributes</span><a href="#attributes" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">attributes</span><span class="tsd-signature-symbol">?:</span> <a href="../interfaces/type_node_type_node_interface.INodeAttr.html" class="tsd-signature-type tsd-kind-interface">INodeAttr</a><span class="tsd-signature-symbol">[]</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L72">type-node/type-node.abstract.ts:72</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L79">type-node/type-node.abstract.ts:79</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member"><a id="childNodes" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>child<wbr/>Nodes</span><a href="#childNodes" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">child<wbr/>Nodes</span><span class="tsd-signature-symbol">?:</span> <a href="type_node_type_node_abstract.TypeNode.html" class="tsd-signature-type tsd-kind-class">TypeNode</a><span class="tsd-signature-symbol">[]</span></div><aside class="tsd-sources">
 <p>Implementation of <a href="../interfaces/type_node_type_node_interface.ITypeNode.html">ITypeNode</a>.<a href="../interfaces/type_node_type_node_interface.ITypeNode.html#childNodes">childNodes</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L71">type-node/type-node.abstract.ts:71</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L78">type-node/type-node.abstract.ts:78</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member"><a id="className" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagAbstract">Abstract</code> <span>class<wbr/>Name</span><a href="#className" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">class<wbr/>Name</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
@@ -117,41 +116,55 @@ abstract syntax tree 抽象语法树 抽象节点类
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Implementation of <a href="../interfaces/type_node_type_node_interface.ITypeNode.html">ITypeNode</a>.<a href="../interfaces/type_node_type_node_interface.ITypeNode.html#className">className</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L61">type-node/type-node.abstract.ts:61</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L60">type-node/type-node.abstract.ts:60</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member"><a id="data" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>data</span><a href="#data" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">data</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type ">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div><aside class="tsd-sources">
+<p>Implementation of <a href="../interfaces/type_node_type_node_interface.ITypeNode.html">ITypeNode</a>.<a href="../interfaces/type_node_type_node_interface.ITypeNode.html#data">data</a></p>
+<ul>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L80">type-node/type-node.abstract.ts:80</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member"><a id="dom" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagAbstract">Abstract</code> <span>dom</span><a href="#dom" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">dom</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type ">HTMLElement</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type ">SVGElement</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type ">Text</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L62">type-node/type-node.abstract.ts:62</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L61">type-node/type-node.abstract.ts:61</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member"><a id="events" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>events</span><a href="#events" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">events</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type ">Subscription</span><span class="tsd-signature-symbol">[]</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L73">type-node/type-node.abstract.ts:73</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L81">type-node/type-node.abstract.ts:81</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member"><a id="nodeName" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>node<wbr/>Name</span><a href="#nodeName" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">node<wbr/>Name</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
 <p>Implementation of <a href="../interfaces/type_node_type_node_interface.ITypeNode.html">ITypeNode</a>.<a href="../interfaces/type_node_type_node_interface.ITypeNode.html#nodeName">nodeName</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L69">type-node/type-node.abstract.ts:69</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L76">type-node/type-node.abstract.ts:76</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member"><a id="nodeValue" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>node<wbr/>Value</span><a href="#nodeValue" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">node<wbr/>Value</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources">
+<div class="tsd-signature"><span class="tsd-kind-property">node<wbr/>Value</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span></div>
+<div class="tsd-comment tsd-typography"><p>nodeValue只在 TextNode中才有。
+nodeValue存在时，就应该是 TextNode类</p>
+</div>
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Implementation of <a href="../interfaces/type_node_type_node_interface.ITypeNode.html">ITypeNode</a>.<a href="../interfaces/type_node_type_node_interface.ITypeNode.html#nodeValue">nodeValue</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L70">type-node/type-node.abstract.ts:70</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L77">type-node/type-node.abstract.ts:77</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member"><a id="parent" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <code class="tsd-tag ts-flagAbstract">Abstract</code> <span>parent</span><a href="#parent" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">parent</span><span class="tsd-signature-symbol">?:</span> <a href="type_node_type_node_abstract.TypeNode.html" class="tsd-signature-type tsd-kind-class">TypeNode</a></div><aside class="tsd-sources">
 <p>Implementation of <a href="../interfaces/type_node_type_node_interface.ITypeNode.html">ITypeNode</a>.<a href="../interfaces/type_node_type_node_interface.ITypeNode.html#parent">parent</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L63">type-node/type-node.abstract.ts:63</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L62">type-node/type-node.abstract.ts:62</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member"><a id="propObj" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>prop<wbr/>Obj</span><a href="#propObj" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">prop<wbr/>Obj</span><span class="tsd-signature-symbol">?:</span> <a href="../interfaces/type_element_type_element_interface.ITypeProperty.html" class="tsd-signature-type tsd-kind-interface">ITypeProperty</a></div><aside class="tsd-sources">
+<div class="tsd-signature"><span class="tsd-kind-property">prop<wbr/>Obj</span><span class="tsd-signature-symbol">?:</span> <a href="../interfaces/type_element_type_element_interface.ITypeProperty.html" class="tsd-signature-type tsd-kind-interface">ITypeProperty</a></div>
+<div class="tsd-comment tsd-typography"><p>attributes只在XElement中有，并会转换为 attrObj。
+TextNode 没有 attributes和propObj</p>
+</div>
+<div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <p>Implementation of <a href="../interfaces/type_node_type_node_interface.ITypeNode.html">ITypeNode</a>.<a href="../interfaces/type_node_type_node_interface.ITypeNode.html#propObj">propObj</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L68">type-node/type-node.abstract.ts:68</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L75">type-node/type-node.abstract.ts:75</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Accessors</h2>
 <section class="tsd-panel tsd-member"><a id="children" class="tsd-anchor"></a>
@@ -161,7 +174,7 @@ abstract syntax tree 抽象语法树 抽象节点类
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <a href="type_node_type_node_abstract.TypeNode.html" class="tsd-signature-type tsd-kind-class">TypeNode</a><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L105">type-node/type-node.abstract.ts:105</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L113">type-node/type-node.abstract.ts:113</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="firstChild" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>first<wbr/>Child</span><a href="#firstChild" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -169,7 +182,7 @@ abstract syntax tree 抽象语法树 抽象节点类
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="type_node_type_node_abstract.TypeNode.html" class="tsd-signature-type tsd-kind-class">TypeNode</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L81">type-node/type-node.abstract.ts:81</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L89">type-node/type-node.abstract.ts:89</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="nextSibling" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>next<wbr/>Sibling</span><a href="#nextSibling" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -177,7 +190,7 @@ abstract syntax tree 抽象语法树 抽象节点类
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="type_node_type_node_abstract.TypeNode.html" class="tsd-signature-type tsd-kind-class">TypeNode</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L84">type-node/type-node.abstract.ts:84</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L92">type-node/type-node.abstract.ts:92</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="textContent" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>text<wbr/>Content</span><a href="#textContent" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -185,7 +198,7 @@ abstract syntax tree 抽象语法树 抽象节点类
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L95">type-node/type-node.abstract.ts:95</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L103">type-node/type-node.abstract.ts:103</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member"><a id="createItem" class="tsd-anchor"></a>
@@ -194,7 +207,7 @@ abstract syntax tree 抽象语法树 抽象节点类
 <li class="tsd-signature tsd-anchor-link" id="createItem.createItem-1"><span class="tsd-kind-call-signature">create<wbr/>Item</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">parent</span>, <span class="tsd-kind-parameter">node</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="type_node_type_node_abstract.TypeNode.html" class="tsd-signature-type tsd-kind-class">TypeNode</a><a href="#createItem.createItem-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>不独立为一个函数，是因为在这里，可以直接 this. 的方式调用。
-在UI组件中会重写</p>
+在子类，如UI组件中会重写</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
@@ -210,7 +223,7 @@ abstract syntax tree 抽象语法树 抽象节点类
 <h4 class="tsd-returns-title">Returns <a href="type_node_type_node_abstract.TypeNode.html" class="tsd-signature-type tsd-kind-class">TypeNode</a></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L131">type-node/type-node.abstract.ts:131</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L74">type-node/type-node.abstract.ts:74</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="createItems" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>create<wbr/>Items</span><a href="#createItems" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -233,7 +246,7 @@ abstract syntax tree 抽象语法树 抽象节点类
 <h4 class="tsd-returns-title">Returns <a href="type_node_type_node_abstract.TypeNode.html" class="tsd-signature-type tsd-kind-class">TypeNode</a><span class="tsd-signature-symbol">[]</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L143">type-node/type-node.abstract.ts:143</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L143">type-node/type-node.abstract.ts:143</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="dump" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>dump</span><a href="#dump" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -246,7 +259,7 @@ abstract syntax tree 抽象语法树 抽象节点类
 <h5><span class="tsd-kind-parameter">buffer</span>: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L226">type-node/type-node.abstract.ts:226</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L229">type-node/type-node.abstract.ts:229</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="hasChildNodes" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>has<wbr/>Child<wbr/>Nodes</span><a href="#hasChildNodes" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -254,7 +267,7 @@ abstract syntax tree 抽象语法树 抽象节点类
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L157">type-node/type-node.abstract.ts:157</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L160">type-node/type-node.abstract.ts:160</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="render" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagAbstract">Abstract</code> <span>render</span><a href="#render" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -265,7 +278,7 @@ abstract syntax tree 抽象语法树 抽象节点类
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L67">type-node/type-node.abstract.ts:67</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L66">type-node/type-node.abstract.ts:66</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="searchNode" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>search<wbr/>Node</span><a href="#searchNode" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -295,20 +308,7 @@ to the path or null if not found.</p>
 
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L172">type-node/type-node.abstract.ts:172</a></li></ul></aside></li></ul></section>
-<section class="tsd-panel tsd-member"><a id="setConfig" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagAbstract">Abstract</code> <span>set<wbr/>Config</span><a href="#setConfig" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<ul class="tsd-signatures">
-<li class="tsd-signature tsd-anchor-link" id="setConfig.setConfig-1"><span class="tsd-kind-call-signature">set<wbr/>Config</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">config</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#setConfig.setConfig-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></li>
-<li class="tsd-description">
-<div class="tsd-parameters">
-<h4 class="tsd-parameters-title">Parameters</h4>
-<ul class="tsd-parameter-list">
-<li>
-<h5><span class="tsd-kind-parameter">config</span>: <span class="tsd-signature-type">any</span></h5></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L124">type-node/type-node.abstract.ts:124</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L175">type-node/type-node.abstract.ts:175</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="setParent" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>set<wbr/>Parent</span><a href="#setParent" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -321,7 +321,7 @@ to the path or null if not found.</p>
 <h5><span class="tsd-kind-parameter">parent</span>: <a href="type_node_type_node_abstract.TypeNode.html" class="tsd-signature-type tsd-kind-class">TypeNode</a></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L132">type-node/type-node.abstract.ts:132</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L132">type-node/type-node.abstract.ts:132</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="toJSON" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>toJSON</span><a href="#toJSON" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -335,7 +335,7 @@ todo events如何处理？？</p>
 <h4 class="tsd-returns-title">Returns <a href="../interfaces/type_node_type_node_interface.ITypeNode.html" class="tsd-signature-type tsd-kind-interface">ITypeNode</a></h4>
 <div class="tsd-comment tsd-typography"></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/994db05/src/type-node/type-node.abstract.ts#L259">type-node/type-node.abstract.ts:259</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-node/type-node.abstract.ts#L262">type-node/type-node.abstract.ts:262</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -359,6 +359,7 @@ todo events如何处理？？</p>
 <li><a href="#attributes" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>attributes</span></a></li>
 <li><a href="#childNodes" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>child<wbr/>Nodes</span></a></li>
 <li><a href="#className" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>class<wbr/>Name</span></a></li>
+<li><a href="#data" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>data</span></a></li>
 <li><a href="#dom" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>dom</span></a></li>
 <li><a href="#events" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>events</span></a></li>
 <li><a href="#nodeName" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-1024"></use></svg><span>node<wbr/>Name</span></a></li>
@@ -375,7 +376,6 @@ todo events如何处理？？</p>
 <li><a href="#hasChildNodes" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>has<wbr/>Child<wbr/>Nodes</span></a></li>
 <li><a href="#render" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>render</span></a></li>
 <li><a href="#searchNode" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>search<wbr/>Node</span></a></li>
-<li><a href="#setConfig" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>set<wbr/>Config</span></a></li>
 <li><a href="#setParent" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>set<wbr/>Parent</span></a></li>
 <li><a href="#toJSON" class=""><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-2048"></use></svg><span>toJSON</span></a></li></ul></div></details></div>
 <div class="site-menu">
@@ -501,7 +501,13 @@ todo events如何处理？？</p>
 <li><a href="../modules/element_svg_element_svg_svg_interface.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>element/svg-<wbr/>element/svg/svg.interface</span></a></li>
 <li><a href="../modules/element_svg_element_text_text_class.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>element/svg-<wbr/>element/text/text.class</span></a></li>
 <li><a href="../modules/element_svg_element_text_text_interface.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>element/svg-<wbr/>element/text/text.interface</span></a></li>
+<li><a href="../modules/element_x_element_x_element_class.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>element/x-<wbr/>element/x-<wbr/>element.class</span></a></li>
+<li><a href="../modules/element_x_element_x_element_interface.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>element/x-<wbr/>element/x-<wbr/>element.interface</span></a></li>
 <li><a href="../modules/index.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>index</span></a></li>
+<li><a href="../modules/parser_parser_class.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>parser/parser.class</span></a></li>
+<li><a href="../modules/parser_parser_const.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>parser/parser.const</span></a></li>
+<li><a href="../modules/parser_parser_interface.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>parser/parser.interface</span></a></li>
+<li><a href="../modules/parser_parser_util.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>parser/parser.util</span></a></li>
 <li><a href="../modules/style_style_enum.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>style/style.enum</span></a></li>
 <li><a href="../modules/style_style_interface.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>style/style.interface</span></a></li>
 <li><a href="../modules/text_node_text_node_class.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>text-<wbr/>node/text-<wbr/>node.class</span></a></li>
@@ -727,9 +733,7 @@ todo events如何处理？？</p>
 <li><a href="type_node_type_node_abstract.TypeNode.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-128"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-class)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6"></rect><path d="M11.898 16.1201C11.098 16.1201 10.466 15.8961 10.002 15.4481C9.53803 15.0001 9.30603 14.3841 9.30603 13.6001V9.64012C9.30603 8.85612 9.53803 8.24012 10.002 7.79212C10.466 7.34412 11.098 7.12012 11.898 7.12012C12.682 7.12012 13.306 7.34812 13.77 7.80412C14.234 8.25212 14.466 8.86412 14.466 9.64012H13.386C13.386 9.14412 13.254 8.76412 12.99 8.50012C12.734 8.22812 12.37 8.09212 11.898 8.09212C11.426 8.09212 11.054 8.22412 10.782 8.48812C10.518 8.75212 10.386 9.13212 10.386 9.62812V13.6001C10.386 14.0961 10.518 14.4801 10.782 14.7521C11.054 15.0161 11.426 15.1481 11.898 15.1481C12.37 15.1481 12.734 15.0161 12.99 14.7521C13.254 14.4801 13.386 14.0961 13.386 13.6001H14.466C14.466 14.3761 14.234 14.9921 13.77 15.4481C13.306 15.8961 12.682 16.1201 11.898 16.1201Z" fill="var(--color-text)"></path></g></svg><span>Type<wbr/>Node</span></a></li></ul></div></details></li>
 <li><a href="../modules/type_node_type_node_interface.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>type-<wbr/>node/type-<wbr/>node.interface</span></a></li>
 <li><a href="../modules/type_root_type_root_abstract.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>type-<wbr/>root/type-<wbr/>root.abstract</span></a></li>
-<li><a href="../modules/type_root_type_root_interface.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>type-<wbr/>root/type-<wbr/>root.interface</span></a></li>
-<li><a href="../modules/x_element_x_element_class.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>x-<wbr/>element/x-<wbr/>element.class</span></a></li>
-<li><a href="../modules/x_element_x_element_interface.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>x-<wbr/>element/x-<wbr/>element.interface</span></a></li></ul></nav></div></div></div>
+<li><a href="../modules/type_root_type_root_interface.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>type-<wbr/>root/type-<wbr/>root.interface</span></a></li></ul></nav></div></div></div>
 <div class="tsd-generator">
 <p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div>
 <div class="overlay"></div></body></html>

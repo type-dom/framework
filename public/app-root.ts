@@ -1,6 +1,5 @@
 // Br,Division,TypeRoot,TextNode等都是框架定义好的类
-import { Br, Division, TypeRoot, TextNode, XElement } from '../src';
-import * as events from "events";
+import { Br, Division, TypeRoot, XElement } from '../src';
 /**
  * 项目根节点，继承TypeRoot（根节点抽象类）
  * 因为属性和方法要全局调用，所以全部设置为静态 static; 包括get也设置为静态
@@ -38,11 +37,11 @@ export class AppRoot extends TypeRoot {
             background: '#FF0'
           }
         },
-        // childNodes: [ // 第一项子节点的子元素
-        //   {
-        //     nodeValue: ' hello world ! ' // 文本
-        //   },
-        // ]
+        childNodes: [ // 第一项子节点的子元素
+          {
+            nodeValue: ' hello world ! ' // 文本
+          },
+        ]
       },
       {
         template: `<div data-name='second-item' style='padding: 20px;color: #00F; background: #ddd'>
@@ -79,10 +78,10 @@ export class AppRoot extends TypeRoot {
         TypeClass: Br // 换行
       }
     ]);
-    // this.createItem<XElement>(this,
-    //   {
-    //     template: `<p data-name='third-item' style='border: 1px solid #FF0;'> paragraph </p>`
-    //   });
+    this.createItem<XElement>(this,
+      {
+        template: `<p data-name='third-item' style='border: 1px solid #FF0;'> paragraph </p>`
+      });
     this.render(); // 渲染
   }
 }
