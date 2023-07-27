@@ -1,7 +1,6 @@
 import { Subscription } from 'rxjs';
 import { Parser } from '../parser/parser.class';
 import { TypeNode } from '../type-node/type-node.abstract';
-import { ITypeNode } from '../type-node/type-node.interface';
 import { TextNode } from '../text-node/text-node.class';
 import { Display } from '../style/style.enum';
 import { IStyle } from '../style/style.interface';
@@ -41,7 +40,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.childNodes = [];
     this.events = [];
   }
-  get tempItem(): any {
+  get tempItem(): TypeElement {
     if (this.data) {
       return this;
     } else if (this.parent === this) {
@@ -536,7 +535,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       }
       if (node.methods) {
         console.log('node.on is ', node.methods);
-        (item as any).methods = node.methods;
+        (item as IXItem).methods = node.methods;
       }
     } else {
       item = new node.TypeClass() as T; // 创建类实例
