@@ -7,5 +7,10 @@ export class UnorderedList extends TypeUL implements IUnorderedList {
   constructor(public parent: TypeHtml | XElement) {
     super();
     this.className = 'UnorderedList';
+    this.addStyleObj({
+      marginBlockStart: '0',
+      marginBlockEnd: '0',
+      paddingInlineStart: '0',
+    })
   }
 }

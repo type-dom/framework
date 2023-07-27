@@ -38,8 +38,8 @@ export interface IStyle {
   marginRight: string;
   // chrome 69以上
   marginBlock: string; // 一个元素的逻辑块开始和结束边距，根据元素的写入模式、 方向性和文本方向映射到物理边界。
-  marginBlockStart: string; // p标签 段首间距
-  marginBlockEnd: string; // p标签 段尾间距
+  marginBlockStart: string; // p,ul标签 段首间距
+  marginBlockEnd: string; // p,ul标签 段尾间距
   marginLineStart: string; // p标签 起始行间距
   marginLineEnd: string; // p标签 尾间距
 
@@ -49,6 +49,7 @@ export interface IStyle {
   paddingBottom: string;
   paddingLeft: string;
   paddingRight: string;
+  paddingInlineStart: string, // ul
 
   // font 字体
   color: string; // 颜色
