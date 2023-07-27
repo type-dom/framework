@@ -1,7 +1,6 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
-import { SvgSvg } from '../svg/svg.class';
+import { TypeSvgSvg } from '../../../type-element/type-svg/svg/svg.abstract';
 import { ISvgLine, ISvgLineProperty } from './line.interface';
-
 export class SvgLine extends TypeSvg implements ISvgLine {
   nodeName: 'line';
   className: 'SvgLine';
@@ -12,8 +11,7 @@ export class SvgLine extends TypeSvg implements ISvgLine {
   x2 = 0;
   y1 = 0;
   y2 = 0;
-
-  constructor(public parent: SvgSvg) {
+  constructor(public parent: TypeSvgSvg) {
     super('line');
     this.nodeName = 'line';
     this.className = 'SvgLine';
@@ -32,7 +30,6 @@ export class SvgLine extends TypeSvg implements ISvgLine {
       }
     };
   }
-
   reset(x1: string | number, y1: string | number, x2: string | number, y2: string | number): SvgLine {
     this.setAttrObj({
       x1,

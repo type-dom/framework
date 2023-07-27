@@ -161,4 +161,5 @@ export interface IStyle {
   scrollBehavior: string;
   userSelect: string;
   pointerEvents: string;
+  filter: string;
 }

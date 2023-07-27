@@ -1,5 +1,5 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
-import { SvgSvg } from '../svg/svg.class';
+import { TypeSvgSvg } from '../../../type-element/type-svg/svg/svg.abstract';
 import { ISvgRect, ISvgRectProperty } from './rect.interface';
 export class SvgRect extends TypeSvg implements ISvgRect {
   nodeName: 'rect';
@@ -9,7 +9,7 @@ export class SvgRect extends TypeSvg implements ISvgRect {
   childNodes: [];
   width = 60;
   height = 60;
-  constructor(public parent: SvgSvg) {
+  constructor(public parent: TypeSvgSvg) {
     super('rect');
     this.nodeName = 'rect';
     this.className = 'SvgRect';
@@ -28,8 +28,17 @@ export class SvgRect extends TypeSvg implements ISvgRect {
     };
   }
 
-  reset(width: string | number, height: string | number): void {
+  /**
+   * 重置
+   * @param x
+   * @param y
+   * @param width
+   * @param height
+   */
+  reset(x: string | number, y : string | number, width: string | number, height: string | number): void {
     this.setAttrObj({
+      x,
+      y,
       width,
       height
     });

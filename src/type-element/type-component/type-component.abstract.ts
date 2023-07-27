@@ -1,14 +1,13 @@
+import { TypeNode } from '../../type-node/type-node.abstract';
 import { TypeHtml } from '../type-html/type-html.abstract';
 import { IComponent, ITypeComponent } from './type-component.interface';
-import { TypeNode } from '../../type-node/type-node.abstract';
-import {TypeElement} from "../type-element.abstract";
 /**
  * 组件基类
  */
 export abstract class TypeComponent extends TypeHtml implements ITypeComponent {
   abstract parent: TypeHtml;
   // childNodes: TypeNode[];
-  abstract setConfig(config: any): void
+  // abstract setConfig(config: any): void
   protected constructor(nodeName: string) {
     super(nodeName);
     this.childNodes = [];
