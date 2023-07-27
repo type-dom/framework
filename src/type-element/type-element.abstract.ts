@@ -10,7 +10,7 @@ import {
   ITypeAttribute,
   IBoundBox,
   ITypeElement,
-  ITypeProperty
+  ITypeProperty, ITextItem, IXItem, IElementItem
 } from './type-element.interface';
 /**
  * 虚拟元素Element的数据结构
@@ -491,10 +491,10 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     const { left, top, width, height } = this.dom.getBoundingClientRect();
     // console.log('left is ', left, 'top is ', top, 'width is ', width, 'height is ', height);
     return {
-      left,
-      top,
-      width,
-      height
+      left: left + 'px',
+      top: top + 'px',
+      width: width + 'px',
+      height: height + 'px'
     };
   }
   // 子类中有需要的地方覆写
@@ -520,7 +520,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       this.childNodes.length = length;
     }
   }
-  createItem<T extends TextNode | TypeElement>(parent: TypeElement, node: ITypeNode): T {
+  createItem<T extends TextNode | TypeElement>(parent: TypeElement, node: ITextItem | IXItem | IElementItem): T {
     let item;
     if (node.nodeValue !== undefined) { // 如果是文本节点，则退出迭代
       item = new TextNode(parent, node.nodeValue) as T;

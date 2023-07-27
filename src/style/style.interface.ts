@@ -155,7 +155,7 @@ export interface IStyle {
   justifyContent: string;
   alignItems: string;
   transition: string;
-  flex: string;
+  flex: string | number;
   overflowY: string;
   listStyle: string;
   scrollBehavior: string;

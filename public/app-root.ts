@@ -19,7 +19,6 @@ export class AppRoot extends TypeRoot {
       padding: '30px',
       border: '20px solid #dddddd'
     });
-    let title = 'Here you are . '
 
     // createItems 是一个创建子节点的方法
     // 第一个参数是父节点对象，
