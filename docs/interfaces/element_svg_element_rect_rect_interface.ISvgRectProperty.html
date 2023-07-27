@@ -16,20 +16,6 @@
 <li><a href="../modules/element_svg_element_rect_rect_interface.html">element/svg-element/rect/rect.interface</a></li>
 <li><a href="element_svg_element_rect_rect_interface.ISvgRectProperty.html">ISvgRectProperty</a></li></ul>
 <h1>Interface ISvgRectProperty</h1></div>
-<section class="tsd-panel tsd-comment">
-<div class="tsd-comment tsd-typography"><p>width 和 height 属性可定义矩形的高度和宽度
-x 属性定义矩形的左侧位置（例如，x=&quot;0&quot; 定义矩形到浏览器窗口左侧的距离是 0px）
-y 属性定义矩形的顶端位置（例如，y=&quot;0&quot; 定义矩形到浏览器窗口顶端的距离是 0px）
-rx 和 ry 属性可使矩形产生圆角。
-style 属性用来定义 CSS 属性
-CSS 的 fill 属性定义矩形的填充颜色（rgb 值、颜色名或者十六进制值）
-CSS 的 stroke-width 属性定义矩形边框的宽度
-CSS 的 stroke 属性定义矩形边框的颜色
-CSS 的 fill-opacity 属性定义填充颜色透明度（合法的范围是：0 - 1）
-CSS 的 stroke-opacity 属性定义笔触颜色的透明度（合法的范围是：0 - 1）
-CSS 的 opacity 属性定义整个元素的透明值（合法的范围是：0 - 1）</p>
-</div>
-<div class="tsd-comment tsd-typography"></div></section>
 <section class="tsd-panel tsd-hierarchy">
 <h4>Hierarchy</h4>
 <ul class="tsd-hierarchy">
@@ -37,7 +23,7 @@ CSS 的 opacity 属性定义整个元素的透明值（合法的范围是：0 - 
 <ul class="tsd-hierarchy">
 <li><span class="target">ISvgRectProperty</span></li></ul></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/element/svg-element/rect/rect.interface.ts#L16">element/svg-element/rect/rect.interface.ts:16</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/743f314/src/element/svg-element/rect/rect.interface.ts#L33">element/svg-element/rect/rect.interface.ts:33</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -53,52 +39,22 @@ CSS 的 opacity 属性定义整个元素的透明值（合法的范围是：0 - 
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member"><a id="attrObj" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>attr<wbr/>Obj</span><a href="#attrObj" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><g stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" id="icon-anchor"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></g></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">attr<wbr/>Obj</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-property">height</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">rx</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">ry</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">width</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">x</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">y</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span></div>
-<div class="tsd-type-declaration">
-<h4>Type declaration</h4>
-<ul class="tsd-parameters">
-<li class="tsd-parameter">
-<h5><span class="tsd-kind-property">height</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5></li>
-<li class="tsd-parameter">
-<h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-property">rx</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5></li>
-<li class="tsd-parameter">
-<h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-property">ry</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5></li>
-<li class="tsd-parameter">
-<h5><span class="tsd-kind-property">width</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5></li>
-<li class="tsd-parameter">
-<h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-property">x</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5></li>
-<li class="tsd-parameter">
-<h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-property">y</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5></li></ul></div><aside class="tsd-sources">
+<div class="tsd-signature"><span class="tsd-kind-property">attr<wbr/>Obj</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type ">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="element_svg_element_rect_rect_interface.ISvgRectAttribute.html" class="tsd-signature-type tsd-kind-interface">ISvgRectAttribute</a><span class="tsd-signature-symbol">&gt;</span></div><aside class="tsd-sources">
 <p>Overrides <a href="type_element_type_element_interface.ITypeProperty.html">ITypeProperty</a>.<a href="type_element_type_element_interface.ITypeProperty.html#attrObj">attrObj</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/element/svg-element/rect/rect.interface.ts#L25">element/svg-element/rect/rect.interface.ts:25</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/743f314/src/element/svg-element/rect/rect.interface.ts#L35">element/svg-element/rect/rect.interface.ts:35</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-inherited"><a id="classes" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>classes</span><a href="#classes" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">classes</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div><aside class="tsd-sources">
 <p>Inherited from <a href="type_element_type_element_interface.ITypeProperty.html">ITypeProperty</a>.<a href="type_element_type_element_interface.ITypeProperty.html#classes">classes</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/type-element/type-element.interface.ts#L17">type-element/type-element.interface.ts:17</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/743f314/src/type-element/type-element.interface.ts#L18">type-element/type-element.interface.ts:18</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member"><a id="styleObj" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>style<wbr/>Obj</span><a href="#styleObj" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">style<wbr/>Obj</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-property">fill</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">fillOpacity</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">opacity</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">stroke</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">strokeOpacity</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">strokeWidth</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span></div>
-<div class="tsd-type-declaration">
-<h4>Type declaration</h4>
-<ul class="tsd-parameters">
-<li class="tsd-parameter">
-<h5><span class="tsd-kind-property">fill</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5></li>
-<li class="tsd-parameter">
-<h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-property">fill<wbr/>Opacity</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5></li>
-<li class="tsd-parameter">
-<h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-property">opacity</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5></li>
-<li class="tsd-parameter">
-<h5><span class="tsd-kind-property">stroke</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5></li>
-<li class="tsd-parameter">
-<h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-property">stroke<wbr/>Opacity</span><span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5></li>
-<li class="tsd-parameter">
-<h5><span class="tsd-kind-property">stroke<wbr/>Width</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5></li></ul></div><aside class="tsd-sources">
+<div class="tsd-signature"><span class="tsd-kind-property">style<wbr/>Obj</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type ">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="element_svg_element_rect_rect_interface.ISvgRectStyle.html" class="tsd-signature-type tsd-kind-interface">ISvgRectStyle</a><span class="tsd-signature-symbol">&gt;</span></div><aside class="tsd-sources">
 <p>Overrides <a href="type_element_type_element_interface.ITypeProperty.html">ITypeProperty</a>.<a href="type_element_type_element_interface.ITypeProperty.html#styleObj">styleObj</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/72a4084/src/element/svg-element/rect/rect.interface.ts#L17">element/svg-element/rect/rect.interface.ts:17</a></li></ul></aside></section></section></div>
+<li>Defined in <a href="https://github.com/xjf7711/type-dom/blob/743f314/src/element/svg-element/rect/rect.interface.ts#L34">element/svg-element/rect/rect.interface.ts:34</a></li></ul></aside></section></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -242,7 +198,9 @@ CSS 的 opacity 属性定义整个元素的透明值（合法的范围是：0 - 
 <div class="tsd-accordion-details">
 <ul class="tsd-nested-navigation">
 <li><a href="element_svg_element_rect_rect_interface.ISvgRect.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-256"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-interface)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6"></rect><path d="M9.51 16V15.016H11.298V8.224H9.51V7.24H14.19V8.224H12.402V15.016H14.19V16H9.51Z" fill="var(--color-text)"></path></g></svg><span>ISvg<wbr/>Rect</span></a></li>
-<li><a href="element_svg_element_rect_rect_interface.ISvgRectProperty.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>ISvg<wbr/>Rect<wbr/>Property</span></a></li></ul></div></details></li>
+<li><a href="element_svg_element_rect_rect_interface.ISvgRectAttribute.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>ISvg<wbr/>Rect<wbr/>Attribute</span></a></li>
+<li><a href="element_svg_element_rect_rect_interface.ISvgRectProperty.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>ISvg<wbr/>Rect<wbr/>Property</span></a></li>
+<li><a href="element_svg_element_rect_rect_interface.ISvgRectStyle.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-256"></use></svg><span>ISvg<wbr/>Rect<wbr/>Style</span></a></li></ul></div></details></li>
 <li><a href="../modules/element_svg_element_stop_stop_class.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>element/svg-<wbr/>element/stop/stop.class</span></a></li>
 <li><a href="../modules/element_svg_element_stop_stop_interface.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>element/svg-<wbr/>element/stop/stop.interface</span></a></li>
 <li><a href="../modules/element_svg_element_svg_svg_class.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>element/svg-<wbr/>element/svg/svg.class</span></a></li>
