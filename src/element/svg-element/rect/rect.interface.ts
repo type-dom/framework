@@ -1,5 +1,6 @@
-import { ITypeProperty } from '../../../type-element/type-element.interface';
+import { ITypeAttribute, ITypeProperty } from '../../../type-element/type-element.interface';
 import { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
+import { IStyle } from '../../../style/style.interface';
 /**
  * width 和 height 属性可定义矩形的高度和宽度
  * x 属性定义矩形的左侧位置（例如，x="0" 定义矩形到浏览器窗口左侧的距离是 0px）
@@ -13,23 +14,25 @@ import { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
  * CSS 的 stroke-opacity 属性定义笔触颜色的透明度（合法的范围是：0 - 1）
  * CSS 的 opacity 属性定义整个元素的透明值（合法的范围是：0 - 1）
  */
+export interface ISvgRectStyle extends Partial<IStyle> {
+  fillOpacity?: number, // 0.1
+  strokeOpacity?: number, // 0.9
+  opacity?: number, // 0.9
+}
+export interface ISvgRectAttribute extends ITypeAttribute {
+  fill: string, // rgb(0,0,255) blue
+  strokeWidth: number,
+  stroke: string, // rgb(0,0,0) pink
+  x?: number,
+  y?: number,
+  rx?: number,
+  ry?: number,
+  width: number,
+  height: number, // px
+}
 export interface ISvgRectProperty extends ITypeProperty {
-  styleObj: {
-    fill: string, // rgb(0,0,255) blue
-    strokeWidth: number,
-    stroke: string, // rgb(0,0,0) pink
-    fillOpacity?: number, // 0.1
-    strokeOpacity?: number, // 0.9
-    opacity?: number, // 0.9
-  },
-  attrObj: {
-    x?: number,
-    y?: number,
-    rx?: number,
-    ry?: number,
-    width: number,
-    height: number, // px
-  }
+  styleObj: Partial<ISvgRectStyle>,
+  attrObj: Partial<ISvgRectAttribute>,
 }
 export interface ISvgRect extends ITypeSvg {
   nodeName: 'rect';

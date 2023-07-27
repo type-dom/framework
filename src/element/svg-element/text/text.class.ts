@@ -2,13 +2,13 @@ import { TextNode } from '../../../text-node/text-node.class';
 import { TypeSvgSvg } from '../../../type-element/type-svg/svg/svg.abstract';
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
 import { ISvgText, ISvgTextProperty } from './text.interface';
-
 export class SvgText extends TypeSvg implements ISvgText {
   nodeName: 'text';
   dom: SVGTextElement;
   className: 'SvgText';
   propObj: ISvgTextProperty;
   childNodes: TextNode[];
+  textNode: TextNode;
   constructor(public parent: TypeSvgSvg) {
     super('text');
     this.nodeName = 'text';
@@ -21,6 +21,7 @@ export class SvgText extends TypeSvg implements ISvgText {
         y: 0,
       }
     };
-    this.childNodes = [new TextNode(this, '')];
+    this.textNode = new TextNode(this, '');
+    this.childNodes = [this.textNode];
   }
 }

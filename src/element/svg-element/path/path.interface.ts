@@ -1,15 +1,19 @@
-import { ITypeProperty } from '../../../type-element/type-element.interface';
+import { ITypeAttribute, ITypeProperty } from '../../../type-element/type-element.interface';
 import { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
+import { IStyle } from '../../../style/style.interface';
+export interface ISvgPathStyle extends IStyle {
+  fill: string; // white;
+  stroke: string; // red;
+  strokeWidth: number // 2
+}
+export interface ISvgPathAttribute extends ITypeAttribute {
+  d: string, // M250 150 L150 350 L350 350 Z
+  fill: string,
+  strokeWidth: number,
+}
 export interface ISvgPathProperty extends ITypeProperty {
-  styleObj: {
-    fill?: string; // white;
-    stroke?: string; // red;
-    strokeWidth?: number // 2
-  },
-  attrObj: {
-    d: string, // M250 150 L150 350 L350 350 Z
-    fill?: string
-  }
+  styleObj: Partial<ISvgPathStyle>,
+  attrObj: Partial<ISvgPathAttribute>
 }
 /**
  * <path> 标签用来定义路径。
