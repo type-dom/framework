@@ -54,8 +54,10 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       return this.data;
     } else if (this.parent === this) {
       return this;
-    } else {
+    } else if (this.parent) {
       return this.parent.itemData;
+    } else {
+      return this;
     }
   }
   get length(): number {
