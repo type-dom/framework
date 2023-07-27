@@ -193,7 +193,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     (this.propObj.styleObj as Record<string, string | number | boolean>)[key] = value;
   }
   renderStyle(key: keyof IStyle, value: string | number | boolean): void {
-    this.dom.style[key as any] = String(value);
+    this.dom.style.setProperty(humpToMiddleLine(key), String(value)); // 要转中划线
   }
   // 删除样式
   removeStyle(key: keyof IStyle): TypeElement {
@@ -221,7 +221,6 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
     return this;
   }
-
   addAttrObj(attrObj: Partial<ITypeAttribute>): TypeElement {
     for (const key in attrObj) {
       if (Object.hasOwnProperty.call(attrObj, key)) {
@@ -231,7 +230,6 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
     return this;
   }
-
   renderAttrObj(attrObj: Partial<ITypeAttribute>): TypeElement {
     for (const key in attrObj) {
       if (Object.hasOwnProperty.call(attrObj, key)) {
@@ -253,12 +251,20 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   }
   // 渲染属性
   renderAttribute(key: string, value: string| number | boolean): void {
+    // dom渲染时， 驼峰转中划线连接
+    if (key !== 'viewBox' && key !== 'spreadMethod' && key !== 'gradientUnits') {
+      key = humpToMiddleLine(key);
+    }
     if (value === true) {
       this.dom.setAttribute(key, '');
     } else if (value === false) {
       this.dom.removeAttribute(key);
+    } else if (value === undefined) {
+      // console.log('value is ', value);
+      this.dom.removeAttribute(key);
     } else {
-      this.dom.setAttribute(key, String(value));
+      const val = value.toString();
+      this.dom.setAttribute(key, val);
     }
   }
   setAttrName(value: string): TypeElement {
