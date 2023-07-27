@@ -2,7 +2,7 @@ import { Subscription } from 'rxjs';
 import { Parser } from '../parser/parser.class';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TextNode } from '../text-node/text-node.class';
-import { Display } from '../style/style.enum';
+import {Cursor, Display} from '../style/style.enum';
 import { IStyle } from '../style/style.interface';
 import { humpToMiddleLine } from './type-element.function';
 import {
@@ -40,7 +40,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.childNodes = [];
     this.events = [];
   }
-  get tempItem(): TypeElement {
+  get tempItem(): any {
     if (this.data) {
       return this;
     } else if (this.parent === this) {
@@ -110,6 +110,11 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   //     this.removeAttribute('value');
   //   }
   // }
+  setCursor(cursor: Cursor) {
+    this.setStyleObj({
+      cursor
+    });
+  }
   setAttrId(id: string): void {
     this.addAttrId(id);
     this.renderAttrId(id);

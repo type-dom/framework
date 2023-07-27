@@ -1,4 +1,4 @@
-import {fromEvent} from "rxjs";
+import { fromEvent } from 'rxjs';
 import { INodeAttr } from '../../type-node/type-node.interface';
 import { TypeElement } from '../../type-element/type-element.abstract';
 import { IXElement } from './x-element.interface';
@@ -30,7 +30,7 @@ export class XElement extends TypeElement implements IXElement {
         const attrName = attr.name.substring(1);
         console.log('this.itemData is ', this.itemData);
         if (this.itemData && attr.value !== undefined) {
-          const keys =attr.value.split('.');
+          const keys = attr.value.split('.');
           let value = this.itemData[keys[0]];
           if (value !== undefined) {
             for (let i = 1; i < keys.length; i++) {
@@ -66,7 +66,7 @@ export class XElement extends TypeElement implements IXElement {
       } else {
         this.addAttrObj({
           [attr.name]: attr.value
-        })
+        });
       }
 
     }
