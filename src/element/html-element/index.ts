@@ -63,6 +63,8 @@ export { Slot } from './slot/slot.class';
 export { ISlot } from './slot/slot.interface';
 export { Span } from './span/span.class';
 export { ISpan } from './span/span.interface';
+export { Table } from './table/table.class';
+export { ITable } from './table/table.interface';
 export * from './table';
 export { Template } from './template/template.class';
 export { ITemplate } from './template/template.interface';
