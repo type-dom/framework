@@ -2,7 +2,7 @@ import { Subscription } from 'rxjs';
 import { Parser } from '../parser/parser.class';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TextNode } from '../text-node/text-node.class';
-import {Cursor, Display} from '../style/style.enum';
+import { Cursor, Display } from '../style/style.enum';
 import { IStyle } from '../style/style.interface';
 import { humpToMiddleLine } from './type-element.function';
 import {
@@ -398,7 +398,13 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       console.error('this.parent is null . ');
     }
   }
-
+  /**
+   * 清理子节点
+   */
+  clearChild(): void {
+    this.clearChildNodes();
+    this.clearChildDom();
+  }
   /**
    * 清除dom所有子节点
    * render时使用
@@ -410,7 +416,6 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       first = this.dom.firstElementChild;
     }
   }
-
   // 替换
   // replaceChild(newNode: TypeElement, oldNode: TypeElement): void {
   //   const index = this.childNodes.indexOf(oldNode);
@@ -502,8 +507,10 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     };
   }
   // 子类中有需要的地方覆写
-  setConfig<T>(config: T) {
-    this.setAttrObj(config as Partial<ITypeAttribute>);
+  setConfig(config?: Record<string, any>) {
+    if (config) {
+      this.setAttrObj(config as Partial<ITypeAttribute>);
+    }
   }
   /**
    * 默认初始化方法

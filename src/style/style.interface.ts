@@ -161,5 +161,10 @@ export interface IStyle {
   scrollBehavior: string;
   userSelect: string;
   pointerEvents: string;
-  filter: string;
+  src: string,
+  rowGap: string,
+  filter: string,
+  stopColor: string,
+  stopOpacity: number,
+  textOverflow: string,
 }
