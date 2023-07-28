@@ -1,7 +1,6 @@
 import { TypeHtml } from '../../type-html/type-html.abstract';
 import { TypeSvg } from '../type-svg.abstract';
 import { ITypeSvgSvg } from './svg.interface';
-
 export abstract class TypeSvgSvg extends TypeSvg implements ITypeSvgSvg {
   abstract className: string;
   abstract parent: TypeHtml;

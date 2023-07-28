@@ -45,6 +45,6 @@ export class SvgPath extends TypeSvg implements ISvgPath {
   setFill(color: string) {
     this.addAttrObj({
       fill: color
-    })
+    });
   }
 }

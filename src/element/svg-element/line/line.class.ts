@@ -18,11 +18,10 @@ export class SvgLine extends TypeSvg implements ISvgLine {
     this.dom = document.createElementNS('http://www.w3.org/2000/svg', this.nodeName);
     this.childNodes = [];
     this.propObj = {
-      styleObj: {
-        strokeWidth: 1,
-        stroke: 'rgb(0, 0, 0)',
-      },
+      styleObj: {},
       attrObj: {
+        strokeWidth: 1,
+        stroke: '#000',
         x1: this.x1,
         y1: this.y1,
         x2: this.x2,
