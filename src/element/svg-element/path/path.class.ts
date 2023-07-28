@@ -20,16 +20,23 @@ export class SvgPath extends TypeSvg implements ISvgPath {
     };
     this.childNodes = [];
   }
+  get pathData(): string {
+    return this.attrObj.d as string || '';
+  }
   /**
    * 添加相关值，不渲染；
    * @param rest
    */
   setData(...rest: string[]): void {
-    this.addAttrObj({
-      d: rest.join(' ')
-    })
+    this.addData(...rest);
+    this.renderData(...rest);
   }
-
+  addData(...rest: string[]): void {
+    this.addAttribute('d', rest.join(' '));
+  }
+  renderData(...rest: string[]): void {
+    this.dom.setAttribute('d', rest.join(' '));
+  }
   /**
    * color  #ffffff
    * 不直接渲染的。
