@@ -128,7 +128,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   renderAttrId(id: string): void {
     this.dom.setAttribute('id', id);
   }
-  // 设置属性
+  // 设置属性 会清理原有属性
   setPropObj(propObj: ITypeProperty): void {
     if (this.propObj) {  // 清理原有属性
       for (const key in this.propObj.attrObj) {
@@ -183,9 +183,13 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     //   console.warn('key === display, value is ', value);
     // }
     // todo type ???
-    this.addStyle(key, value);
-    // 直接dom操作
-    this.renderStyle(key, value);
+    if (value !== undefined) {
+      this.addStyle(key, value);
+      // 直接dom操作
+      this.renderStyle(key, value);
+    } else {
+      this.removeStyle(key);
+    }
     // todo error
     // Object.defineProperty(this.propObj.styleObj, key, value);
   }
