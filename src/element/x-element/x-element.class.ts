@@ -17,6 +17,7 @@ export class XElement extends TypeElement implements IXElement {
   constructor(nodeName = 'div', parent?: TypeElement) {
     super(nodeName);
     this.className = 'XElement';
+    // todo nodejs下没有document，Parser可能会用到
     this.dom = document.createElement(this.nodeName);
     this.parent = parent || this;
     this.attributes = [];
