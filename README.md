@@ -28,13 +28,19 @@
         –	public
         –	src
             –	element 元素具体类，节点名称固定
+              - html-element html标签类
+              - svg-element svg标签类
+              - x-element 通用元素具体类，需指定节点名称
+            - parser 解析类，解析模板字符串
             - style 样式枚举、样式接口
             - text-node 文本具体类
             - type-element 元素抽象类
+              - type-component 组件抽象类
+              - type-container 容器抽象类
+              - type-html html标签抽象类
+              - type-svg svg标签抽象类
             - type-node 节点抽象类，最基础的类，其它抽象类或具体类的母类
             - type-root 根节点抽象类，项目根节点必须继承这个抽象类
-            - x-element 通用元素具体类，需指定节点名称
-
 
 ## Introduction
 
