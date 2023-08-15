@@ -27,7 +27,7 @@
         –	build
         –	public
         –	src
-            –	element 元素具体类，节点名称固定
+            – element 元素具体类，节点名称固定
               - html-element html标签类
               - svg-element svg标签类
               - x-element 通用元素具体类，需指定节点名称
@@ -117,11 +117,8 @@ export class AppRoot extends TypeRoot {
             }
         },
         childNodes: [ // 第一项子节点的子元素
-          {
-            TypeClass: TextNode, // 文本类
-            config: {
-              title: ' hello world ! ' // 文本内容
-            }
+          { // 文本类
+            nodeValue: ' hello world ! ' // 文本内容
           },
         ]
       },
