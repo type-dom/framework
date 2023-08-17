@@ -1,6 +1,6 @@
 {
   "name": "type-dom.ts",
-  "version": "0.1.24",
+  "version": "0.1.27",
   "description": "一种基于抽象类和具体类的typescript的轻量级前端框架。A lightweight typescript front-end framework based on abstract classes, concrete classes. ",
   "main": "src/index.ts",
   "scripts": {
