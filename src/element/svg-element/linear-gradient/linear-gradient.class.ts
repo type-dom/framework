@@ -2,14 +2,12 @@ import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
 import { SvgStop } from '../stop/stop.class';
 import { SvgDefs } from '../defs/defs.class';
 import { ISvgLinearGradient, ISvgLinearGradientPropObj } from './linear-gradient.interface';
-
 export class SvgLinearGradient extends TypeSvg implements ISvgLinearGradient {
   nodeName: 'linearGradient';
   className: 'SvgLinearGradient';
   propObj: ISvgLinearGradientPropObj;
   dom: SVGLinearGradientElement;
   childNodes: SvgStop[];
-
   constructor(public parent: SvgDefs) {
     super('linearGradient');
     this.nodeName = 'linearGradient';
