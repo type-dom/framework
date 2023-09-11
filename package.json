@@ -4,7 +4,6 @@
   "description": "一种基于抽象类和具体类的typescript的轻量级前端框架。A lightweight typescript front-end framework based on abstract classes, concrete classes. ",
   "main": "src/index.ts",
   "scripts": {
-    "serve": "webpack-dev-server --mode=development --config ./build/webpack.config.js",
     "lib": "tsc",
     "prepub": "copy README.md js & copy package.json js",
     "pub": "cd js & npm publish",

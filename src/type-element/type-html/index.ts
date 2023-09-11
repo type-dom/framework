@@ -26,6 +26,7 @@ export { TypeBr } from './br/br.abstract';
 export { ITypeBr } from './br/br.interface';
 export { TypeButton } from './button/button.abstract';
 export { ITypeButton } from './button/button.interface';
+export { buttonStyle } from './button/button.const';
 export { TypeCanvas } from './canvas/canvas.abstract';
 export { ITypeCanvas } from './canvas/canvas.interface';
 export { TypeCite } from './cite/cite.abstract';

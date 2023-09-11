@@ -73,11 +73,11 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     return this.propObj.styleObj;
   }
   get firstChild(): TypeNode {
-    return this.childNodes[0];
+    return this.children[0];
   }
 
   get lastChild(): TypeNode {
-    return this.childNodes[this.length - 1];
+    return this.children[this.length - 1];
   }
 
   // get clientHeight(): string {
@@ -629,7 +629,9 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.setStyleObj(this.styleObj);
     this.setAttrObj(this.attrObj);
     this.clearChildDom();
-    for (const child of this.childNodes) {
+    // children/childNodes可能是不一样的。
+    // 如CollapsibleBox中，contents重新赋值后，children会变，而childNodes是不变的。
+    for (const child of this.children) {
       // this.dom.appendChild(child.render().dom);
       this.renderChild(child);
     }
