@@ -77,6 +77,7 @@ export abstract class TypeNode implements ITypeNode {
   nodeValue?: string;
   childNodes?: TypeNode[];
   attributes?: INodeAttr[];
+  configs?: Record<string, any>
   data?: Record<string, any>
   events?: Subscription[];
   protected constructor(nodeName: string, nodeValue?: string) {

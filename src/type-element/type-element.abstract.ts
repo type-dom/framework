@@ -2,7 +2,7 @@ import { Subscription } from 'rxjs';
 import { Parser } from '../parser/parser.class';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TextNode } from '../text-node/text-node.class';
-import { Cursor, Display } from '../style/style.enum';
+import { StyleCursor, StyleDisplay } from '../style/style.enum';
 import { IStyle } from '../style/style.interface';
 import { humpToMiddleLine } from './type-element.function';
 import {
@@ -112,7 +112,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   //     this.removeAttribute('value');
   //   }
   // }
-  setCursor(cursor: Cursor) {
+  setCursor(cursor: StyleCursor) {
     this.setStyleObj({
       cursor
     });
@@ -208,8 +208,13 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     // delete this.dom.style[key as keyof CSSStyleDeclaration];
     return this;
   }
-  show(mode: keyof typeof Display = 'block'): void {
-    this.setStyle('display', Display[mode]); // flex ?  fixed ?
+  /**
+   * 默认显示是  block
+   * 可指定具体显示模式
+   * @param mode
+   */
+  show(mode?: StyleDisplay): void {
+    this.setStyle('display', mode || 'block'); // flex block inline-block
   }
   hide(): void {
     this.setStyle('display', 'none');

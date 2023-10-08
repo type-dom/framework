@@ -1,4 +1,4 @@
-import { Cursor, StylePosition, TextDecoration } from './style.enum';
+import { StyleCursor, StyleDisplay, StylePosition, StyleJustifyContent } from './style.enum';
 
 /**
  * 字体格式设置
@@ -93,7 +93,7 @@ export interface IStyle {
   textTransform: string; // 指定如何将元素的文本大写。它可以用于使文本显示为全大写或全小写，也可单独对每一个单词进行操作。
   // none | capitalize首字母大写 | uppercase | lowercase | full-width | full-size-kana
 
-  textDecoration: TextDecoration; // none underline;下划线 overline;顶划线 line-through;删除线
+  textDecoration: StyleJustifyContent; // none underline;下划线 overline;顶划线 line-through;删除线
   textDecorationStyle: string; // wavy solid double dotted dashed 几乎所有的主流浏览器都不支持 text-decoration-style 属性。
   textDecorationColor: string; //
 
@@ -114,7 +114,7 @@ export interface IStyle {
   // or margin-left property depending on the values defined for writing-mode, direction, and text-orientation.
   marginInlineEnd: string;
   // 定位 (Positioning)
-  position: keyof typeof StylePosition;
+  position: keyof typeof StylePosition; // 因为form表单中存储的json中有该值，不能直接用enum类型。
   left: string;
   top: string;
   right: string;
@@ -126,9 +126,9 @@ export interface IStyle {
 
   // 分类属性 (Classification)
   clear: string;
-  cursor: Cursor;
+  cursor: StyleCursor; // 因为存储的json中没有该值，所以能直接用enum类型。
   display: string; //
-  disabled:string; // 是否可以编辑
+  disabled: string; // 是否可以编辑
 
   float: string; // left right none inherit
   visibility: string; // visible hidden collapse inherit;
