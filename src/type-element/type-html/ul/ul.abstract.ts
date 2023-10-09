@@ -11,7 +11,7 @@ export abstract class TypeUL extends TypeHtml implements ITypeUL {
     this.addStyleObj({
       margin: '0',
       padding: '0'
-    })
+    });
     this.dom = document.createElement(this.nodeName);
     this.childNodes = [];
   }

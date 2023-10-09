@@ -1,6 +1,6 @@
-import {ITypeSvg} from "../../../type-element/type-svg/type-svg.interface";
-import {ITypeAttribute, ITypeProperty} from "../../../type-element/type-element.interface";
-import {IStyle} from "../../../style/style.interface";
+import { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
+import { ITypeAttribute, ITypeProperty } from '../../../type-element/type-element.interface';
+import { IStyle } from '../../../style/style.interface';
 
 /**
  */

@@ -1,5 +1,5 @@
-import {ITypeSvg} from "../../../type-element/type-svg/type-svg.interface";
-import {ITypeAttribute, ITypeProperty} from "../../../type-element/type-element.interface";
+import { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
+import { ITypeAttribute, ITypeProperty } from '../../../type-element/type-element.interface';
 import { ISvgStop } from '../stop/stop.interface';
 export interface ISvgLinearGradientAttribute extends ITypeAttribute {
   id: string,
