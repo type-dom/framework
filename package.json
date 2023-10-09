@@ -5,8 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "build": "tsc",
-    "prepub": "copy README.md js & copy package.json js",
-    "pub": "cd js & npm publish",
+    "publish": "tsc && cp README.md package.json dist/ && cd dist && npm publish",
     "test": "jest",
     "lint": "eslint src",
     "lint-fix": "eslint 'src/**/*.{ts,js,tsx,jsx}' --fix -o eslint_log.log",
