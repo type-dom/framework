@@ -48,7 +48,6 @@ import {
   Title,
   Track, UnorderedList, Video
 } from '../element';
-import { template } from '@babel/core';
 export interface ITypeAttribute {
   // id?: string;
   class?: string,
