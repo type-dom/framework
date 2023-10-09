@@ -3,7 +3,7 @@
  */
 import { ITypeNode } from '../type-node/type-node.interface';
 import { IStyle } from '../style/style.interface';
-import {TypeElement} from "./type-element.abstract";
+import { TypeElement } from './type-element.abstract';
 import {
   A,
   Area,
@@ -48,8 +48,8 @@ import {
   Textarea,
   Title,
   Track, UnorderedList, Video
-} from "../element";
-import {template} from "@babel/core";
+} from '../element';
+import { template } from '@babel/core';
 export interface ITypeAttribute {
   // id?: string;
   class?: string,
@@ -88,21 +88,21 @@ export interface IXItem extends ITypeNode {
 }
 export interface IElementItem extends ITypeNode {
   TypeClass: typeof A | typeof Area | typeof Article | typeof Aside | typeof Audio
-    | typeof B | typeof Br | typeof Button
-    | typeof Canvas | typeof Code
-    | typeof Division
-    | typeof Form
-    | typeof Header | typeof Heading | typeof Hr
-    | typeof I | typeof Img | typeof Input
-    | typeof Label | typeof ListItem
-    | typeof Main | typeof Map | typeof Menu
-    | typeof Option
-    | typeof P | typeof Picture | typeof Pre | typeof Progress
-    | typeof Section | typeof Select | typeof Slot | typeof Span
-    | typeof Table | typeof TableRow | typeof TableBody | typeof TableFoot | typeof TableHead | typeof TableDataCell | typeof TableHeaderCell
-    | typeof Template | typeof Textarea | typeof Title | typeof Track
-    | typeof UnorderedList
-    | typeof Video
-    | typeof SvgCircle | typeof SvgEllipse | typeof SvgImage | typeof SvgLine | typeof SvgPath | typeof SvgRect | typeof SvgSvg | typeof SvgText
-    | any
+  | typeof B | typeof Br | typeof Button
+  | typeof Canvas | typeof Code
+  | typeof Division
+  | typeof Form
+  | typeof Header | typeof Heading | typeof Hr
+  | typeof I | typeof Img | typeof Input
+  | typeof Label | typeof ListItem
+  | typeof Main | typeof Map | typeof Menu
+  | typeof Option
+  | typeof P | typeof Picture | typeof Pre | typeof Progress
+  | typeof Section | typeof Select | typeof Slot | typeof Span
+  | typeof Table | typeof TableRow | typeof TableBody | typeof TableFoot | typeof TableHead | typeof TableDataCell | typeof TableHeaderCell
+  | typeof Template | typeof Textarea | typeof Title | typeof Track
+  | typeof UnorderedList
+  | typeof Video
+  | typeof SvgCircle | typeof SvgEllipse | typeof SvgImage | typeof SvgLine | typeof SvgPath | typeof SvgRect | typeof SvgSvg | typeof SvgText
+  | any
 }
