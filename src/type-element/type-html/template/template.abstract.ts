@@ -4,7 +4,7 @@ export abstract class TypeTemplate extends TypeHtml implements ITypeTemplate {
   nodeName: 'template';
   dom: HTMLTemplateElement;
   protected constructor() {
-    super('template');
+    super();
     this.nodeName = 'template';
     this.dom = document.createElement(this.nodeName);
   }

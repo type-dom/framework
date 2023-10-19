@@ -4,7 +4,7 @@ export abstract class TypeTableColGroup extends TypeHtml implements ITypeTableCo
   nodeName: 'colgroup';
   dom: HTMLTableColElement;
   protected constructor() {
-    super('colgroup');
+    super();
     this.nodeName = 'colgroup';
     this.dom = document.createElement(this.nodeName);
   }

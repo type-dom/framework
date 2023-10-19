@@ -4,7 +4,7 @@ export abstract class TypeEmbed extends TypeHtml implements ITypeEmbed {
   nodeName: 'embed';
   dom: HTMLEmbedElement;
   protected constructor() {
-    super('embed');
+    super();
     this.nodeName = 'embed';
     this.dom = document.createElement(this.nodeName);
   }

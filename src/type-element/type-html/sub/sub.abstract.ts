@@ -4,7 +4,7 @@ export abstract class TypeSub extends TypeHtml implements ITypeSub {
   nodeName: 'sub';
   dom: HTMLElement;
   protected constructor() {
-    super('sub');
+    super();
     this.nodeName = 'sub';
     this.dom = document.createElement(this.nodeName);
   }

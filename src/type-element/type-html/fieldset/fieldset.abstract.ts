@@ -4,7 +4,7 @@ export abstract class TypeFieldset extends TypeHtml implements ITypeFieldset {
   nodeName: 'fieldset';
   dom: HTMLFieldSetElement;
   protected constructor() {
-    super('fieldset');
+    super();
     this.nodeName = 'fieldset';
     this.dom = document.createElement(this.nodeName);
   }

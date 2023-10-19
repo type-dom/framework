@@ -19,8 +19,8 @@
  *   eslint-plugin-react ^7.24.0
  *   vue-eslint-parser ^7.9.0
  *   eslint-plugin-vue ^7.14.0
- *   @typescript-eslint/parser ^4.28.3
- *   @typescript-eslint/eslint-plugin ^4.28.3
+ *   @typescript-eslint/parser ^6.7.5
+ *   @typescript-eslint/eslint-plugin ^6.7.5
  */
 
 module.exports = {

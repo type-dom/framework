@@ -4,7 +4,7 @@ export abstract class TypeDel extends TypeHtml implements ITypeDel {
   nodeName: 'del';
   dom: HTMLModElement;
   protected constructor() {
-    super('del');
+    super();
     this.nodeName = 'del';
     this.dom = document.createElement(this.nodeName);
   }

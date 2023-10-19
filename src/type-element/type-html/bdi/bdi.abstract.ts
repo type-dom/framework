@@ -4,7 +4,7 @@ export abstract class TypeBdi extends TypeHtml implements ITypeBdi {
   nodeName: 'bdi';
   dom: HTMLElement;
   protected constructor() {
-    super('bdi');
+    super();
     this.nodeName = 'bdi';
     this.dom = document.createElement(this.nodeName);
   }

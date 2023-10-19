@@ -4,7 +4,7 @@ export abstract class TypeSamp extends TypeHtml implements ITypeSamp {
   nodeName: 'samp';
   dom: HTMLElement;
   protected constructor() {
-    super('samp');
+    super();
     this.nodeName = 'samp';
     this.dom = document.createElement(this.nodeName);
   }

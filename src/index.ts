@@ -8,7 +8,7 @@ export { ITextNode } from './text-node/text-node.interface';
 export { IStyle } from './style/style.interface';
 export { StyleDisplay, StyleCursor, StylePosition, StyleFontTheme, StyleOnOff, StyleLineSpacingRule, StyleTextDecoration, StyleJustifyContent } from './style/style.enum';
 export { TypeRoot } from './type-root/type-root.abstract';
-export { ITypeRoot } from './type-root/type-root.interface';
+export { ITypeRoot, ITypeRootOption } from './type-root/type-root.interface';
 export { XElement } from './element/x-element/x-element.class';
 export { IXElement } from './element/x-element/x-element.interface';
 export * from './type-element';

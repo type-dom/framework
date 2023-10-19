@@ -4,7 +4,7 @@ export abstract class TypeMenu extends TypeHtml implements ITypeMenu {
   nodeName: 'menu';
   dom: HTMLMenuElement;
   protected constructor() {
-    super('menu');
+    super();
     this.nodeName = 'menu';
     this.dom = document.createElement(this.nodeName);
   }

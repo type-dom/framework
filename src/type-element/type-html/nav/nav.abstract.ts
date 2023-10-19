@@ -4,7 +4,7 @@ export abstract class TypeNav extends TypeHtml implements ITypeNav {
   nodeName: 'nav';
   dom: HTMLElement;
   protected constructor() {
-    super('nav');
+    super();
     this.nodeName = 'nav';
     this.dom = document.createElement(this.nodeName);
   }

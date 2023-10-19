@@ -4,7 +4,7 @@ export abstract class TypeVar extends TypeHtml implements ITypeVar {
   nodeName: 'var';
   dom: HTMLElement;
   protected constructor() {
-    super('var');
+    super();
     this.nodeName = 'var';
     this.dom = document.createElement(this.nodeName);
   }

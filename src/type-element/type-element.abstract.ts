@@ -11,6 +11,8 @@ import {
   ITypeElement,
   ITypeProperty, ITextItem, IXItem, IElementItem
 } from './type-element.interface';
+import { IXElementOption } from '../element/x-element/x-element.interface';
+import { XElement } from '../element/x-element/x-element.class';
 /**
  * 虚拟元素Element的数据结构
  * 可以对应到虚拟dom树。 createDom(tag, attr, children)
@@ -22,20 +24,24 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   abstract className: string;
   abstract parent: TypeElement;
   abstract dom: HTMLElement | SVGElement;
+  abstract nodeName: string;
+  nodeValue: undefined;
   propObj: ITypeProperty;
   // attributes: INodeAttr[];
   childNodes: TypeNode[];
   events: Subscription[];
   // initEvents?(): () => any;
 
-  protected constructor(nodeName: string) {
-    super(nodeName);
+  protected constructor() {
+    super();
     this.propObj = {
-      attrObj: {
-        ['data-v-' + vHash]: true
-      },
+      attrObj: {},
       styleObj: {}
     };
+    this.addAttrObj({
+      ['data-v-' + vHash]: true
+    });
+    // this.nodeName = nodeName;
     this.attributes = [];
     this.childNodes = [];
     this.events = [];
@@ -294,7 +300,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.dom.removeAttribute(key);
     return this;
   }
-  addClassName(className: string): TypeElement {
+  addDomClassName(className: string): TypeElement {
     // 要先判断className是否已经存在
     if (this.propObj.attrObj?.class?.indexOf(className) === -1) {
       this.propObj.attrObj.class += ' ' + className;
@@ -303,7 +309,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     // this.dom.setAttribute('class', String(this.propObj.attrObj.class).trim());
     return this;
   }
-  removeClassName(className: string): TypeElement {
+  removeDomClassName(className: string): TypeElement {
     String(this.propObj.attrObj.class).replace(className, '');
     this.dom.classList.remove(className);
     return this;
@@ -317,10 +323,14 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   // abstract appendChild(newChild: TypeElement | TextNode): TypeElement | TextNode;
   appendChild(newChild: TypeNode): void {
     newChild.setParent(this); // 如果不是子类，是其它地方的对象加过来，要重设其父类。
-    this.childNodes.push(newChild);
     this.renderChild(newChild);
     // this.dom.appendChild(newChild.render().dom);
   }
+
+  /**
+   * 从前面添加子元素
+   * @param newChild
+   */
   unshiftChild(newChild: TypeNode): void {
     this.childNodes.unshift(newChild);
   }
@@ -548,7 +558,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       this.childNodes.length = length;
     }
   }
-  createItem<T extends TextNode | TypeElement>(parent: TypeElement, node: ITextItem | IXItem | IElementItem): T {
+  createItem<T extends TextNode | TypeElement>(parent: TypeElement, node: ITextItem | IXItem | IElementItem | IXElementOption): T {
     let item;
     if (node.nodeValue !== undefined) { // 如果是文本节点，则退出迭代
       item = new TextNode(parent, node.nodeValue) as T;
@@ -564,13 +574,12 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       }
       if (node.methods) {
         console.log('node.on is ', node.methods);
-        (item as IXItem).methods = node.methods;
+        (item as XElement).methods = node.methods;
       }
     } else {
       item = new node.TypeClass() as T; // 创建类实例
     }
     // console.log('item is ', item);
-    parent.addChild(item);
     item.setParent(parent);
     // todo
     if (node.config && item instanceof TypeElement) {

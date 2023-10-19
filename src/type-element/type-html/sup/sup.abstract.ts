@@ -4,7 +4,7 @@ export abstract class TypeSup extends TypeHtml implements ITypeSup {
   nodeName: 'sup';
   dom: HTMLElement;
   protected constructor() {
-    super('sup');
+    super();
     this.nodeName = 'sup';
     this.dom = document.createElement(this.nodeName);
   }

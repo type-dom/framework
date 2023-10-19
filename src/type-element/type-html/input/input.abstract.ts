@@ -4,7 +4,7 @@ export abstract class TypeInput extends TypeHtml implements ITypeInput {
   nodeName: 'input';
   dom: HTMLInputElement;
   protected constructor() {
-    super('input');
+    super();
     this.nodeName = 'input';
     this.dom = document.createElement(this.nodeName);
   }

@@ -4,7 +4,7 @@ export abstract class TypeTableCaption extends TypeHtml implements ITypeTableCap
   nodeName: 'caption';
   dom: HTMLTableCaptionElement;
   protected constructor() {
-    super('caption');
+    super();
     this.nodeName = 'caption';
     this.dom = document.createElement(this.nodeName);
   }

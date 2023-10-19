@@ -10,7 +10,7 @@ export abstract class TypeDL extends TypeHtml implements ITypeDL {
   // childNodes: (TypeLI | TypeUL)[];
   // type, start 在属性中单独配置，不需要在构造函数中传参
   protected constructor() {
-    super('dl');
+    super();
     this.nodeName = 'dl';
     this.dom = document.createElement(this.nodeName);
     // this.propObj.attrObj.type = type;

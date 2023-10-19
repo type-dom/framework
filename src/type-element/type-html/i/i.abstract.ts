@@ -4,7 +4,7 @@ export abstract class TypeI extends TypeHtml implements ITypeI {
   nodeName: 'i';
   dom: HTMLElement;
   protected constructor() {
-    super('i');
+    super();
     this.nodeName = 'i';
     this.dom = document.createElement(this.nodeName);
   }

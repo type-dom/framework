@@ -4,7 +4,7 @@ export abstract class TypeA extends TypeHtml implements ITypeA {
   nodeName: 'a';
   dom: HTMLAnchorElement;
   protected constructor() {
-    super('a');
+    super();
     this.nodeName = 'a';
     this.dom = document.createElement(this.nodeName);
   }

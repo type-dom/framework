@@ -4,7 +4,7 @@ export abstract class TypeQ extends TypeHtml implements ITypeQ {
   nodeName: 'q';
   dom: HTMLQuoteElement;
   protected constructor() {
-    super('q');
+    super();
     this.nodeName = 'q';
     this.dom = document.createElement(this.nodeName);
   }

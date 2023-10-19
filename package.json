@@ -1,8 +1,9 @@
 {
   "name": "type-dom.ts",
-  "version": "0.1.27",
+  "version": "0.1.28",
   "description": "一种基于抽象类和具体类的typescript的轻量级前端框架。A lightweight typescript front-end framework based on abstract classes, concrete classes. ",
   "main": "src/index.ts",
+  "types": "dist/index.d.js",
   "scripts": {
     "build": "tsc",
     "postversion": "rimraf dist && tsc && cp README.md package.json dist && cd dist && npm publish",
@@ -34,8 +35,8 @@
     "@babel/preset-env": "^7.22.10",
     "@babel/preset-react": "^7.22.5",
     "@types/jest": "^29.5.2",
-    "@typescript-eslint/eslint-plugin": "^6.7.4",
-    "@typescript-eslint/parser": "^6.7.4",
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "@typescript-eslint/parser": "^6.7.5",
     "autoprefixer": "^10.4.15",
     "babel-loader": "^9.1.2",
     "eslint": "^8.42.0",
@@ -59,10 +60,7 @@
     "debug": true,
     "detail": true,
     "ignoreCatch": true,
-    "ignoreFiles": [
-      "demo1/*.ts",
-      "demo2/foo.ts"
-    ],
+    "ignoreFiles": [],
     "project": "tsconfig.json",
     "strict": true,
     "suppressError": true,

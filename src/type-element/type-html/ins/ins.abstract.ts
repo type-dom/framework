@@ -4,7 +4,7 @@ export abstract class TypeIns extends TypeHtml implements ITypeIns {
   nodeName: 'ins';
   dom: HTMLModElement;
   protected constructor() {
-    super('ins');
+    super();
     this.nodeName = 'ins';
     this.dom = document.createElement(this.nodeName);
   }

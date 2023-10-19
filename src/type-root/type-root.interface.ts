@@ -1,6 +1,12 @@
-import { ITypeDiv } from '../type-element/type-html/div/div.interface';
-import { TypeRoot } from './type-root.abstract';
-export interface ITypeRoot extends ITypeDiv {
+import { ITypeNode } from '../type-node/type-node.interface';
+import { ITypeElement } from '../type-element/type-element.interface';
+export interface ITypeRoot extends ITypeElement {
   // className: 'TypeRoot',
-  parent: TypeRoot;
+  // parent: ITypeRoot;
+  nodeName: string;
+}
+
+export interface ITypeRootOption extends ITypeNode {
+  el: HTMLElement | string,
+  nodeName: string,
 }

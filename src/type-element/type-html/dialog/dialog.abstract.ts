@@ -4,7 +4,7 @@ export abstract class TypeDialog extends TypeHtml implements ITypeDialog {
   nodeName: 'dialog';
   dom: HTMLDialogElement;
   protected constructor() {
-    super('dialog');
+    super();
     this.nodeName = 'dialog';
     this.dom = document.createElement(this.nodeName);
   }

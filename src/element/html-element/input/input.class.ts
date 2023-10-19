@@ -8,7 +8,7 @@ export class Input extends TypeHtml implements IInput {
   childNodes: [];
   // value: string | number | boolean | undefined;
   constructor(public parent: TypeHtml) {
-    super('input');
+    super();
     this.nodeName = 'input';
     this.dom = document.createElement(this.nodeName);
     this.className = 'Input';

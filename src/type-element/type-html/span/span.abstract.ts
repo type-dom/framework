@@ -4,7 +4,7 @@ export abstract class TypeSpan extends TypeHtml implements ITypeSpan {
   nodeName: 'span';
   dom: HTMLSpanElement;
   protected constructor() {
-    super('span');
+    super();
     this.nodeName = 'span';
     this.dom = document.createElement(this.nodeName);
   }

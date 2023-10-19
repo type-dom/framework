@@ -1,25 +1,24 @@
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { ITextNode } from './text-node.interface';
-import { template } from '@babel/core';
 /**
  * 虚拟文本节点。
  * ----> 本身不会渲染成标签。没有对应的HTML标签。
  */
 export class TextNode extends TypeNode implements ITextNode {
   className: 'TextNode';
-  // childNodes: [string];
+  childNodes: undefined;
   nodeName: '#text';
   nodeValue: string;
   // text: string;
   dom: Text;
-  template?: string;
+  // template?: string;
   /**
    * @param parent
    * @param text
    */
   constructor(public parent: TypeElement, text = '') { // \u200c
-    super('#text', text);
+    super();
     this.className = 'TextNode';
     this.nodeName = '#text';
     this.nodeValue = text;
@@ -46,10 +45,6 @@ export class TextNode extends TypeNode implements ITextNode {
   // setConfig(config: Record<string, any>) {
   //   this.setText(config.title);
   // }
-
-  setParent(parent: TypeElement): void {
-    this.parent = parent;
-  }
   setText(text: string): void {
     this.nodeValue = text;
     this.render();
@@ -140,11 +135,10 @@ export class TextNode extends TypeNode implements ITextNode {
     const item = new TextNode(parent); // 创建类实例
     console.log('item is ', item);
     item.setParent(parent);
-    // todo
-    if (node.nodeValue) {
-      item.setText(node.nodeValue);
-    }
-    parent.addChild(item);
+    // todo ??? 需要吗 ？？？
+    // if (node.nodeValue !== undefined) {
+    //   item.setText(node.nodeValue);
+    // }
     if (node.nodeValue !== undefined) { // 如果是文本节点，则退出迭代; XNode,TextNode会有
       if (item.nodeValue !== undefined) {
         item.nodeValue = node.nodeValue;

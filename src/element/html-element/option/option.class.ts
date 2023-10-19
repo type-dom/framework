@@ -10,7 +10,7 @@ export class Option extends TypeHtml implements IOption {
   childNodes: TypeNode[];
   text: TextNode;
   constructor(public parent: TypeSelect) {
-    super('option');
+    super();
     this.nodeName = 'option';
     this.dom = document.createElement(this.nodeName);
     this.className = 'Option';

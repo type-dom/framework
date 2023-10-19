@@ -66,6 +66,7 @@ export interface ITypeProperty {
  */
 export interface ITypeElement extends ITypeNode {
   className: string; // todo enum ??
+  nodeName: string;
   propObj: ITypeProperty;
   childNodes: Array<ITypeNode>;// contents
 }

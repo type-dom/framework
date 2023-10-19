@@ -4,7 +4,7 @@ export abstract class TypeEm extends TypeHtml implements ITypeEm {
   nodeName: 'em';
   dom: HTMLElement;
   protected constructor() {
-    super('em');
+    super();
     this.nodeName = 'em';
     this.dom = document.createElement(this.nodeName);
   }

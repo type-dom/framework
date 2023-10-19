@@ -1,8 +1,8 @@
 import { Subscription } from 'rxjs';
 import { ITypeProperty } from '../type-element/type-element.interface';
 import { ITextNode } from '../text-node/text-node.interface';
-
 import { INodeAttr, IPath, ITypeNode } from './type-node.interface';
+import { TypeElement } from '../type-element/type-element.abstract';
 const Entities: Record<number, string> = {
   /* < */ 0x3c: '&lt;',
   /* > */ 0x3e: '&gt;',
@@ -46,18 +46,22 @@ function encodeToDomString(str: string) {
   return buffer.join('');
 }
 /**
- * 虚拟DOM，TypeNode 抽象节点类, 所有节点类的基础类；
+ * 虚拟DOM，TypeNode 抽象节点类, 所有节点类的抽象类；
  * abstract syntax tree 抽象语法树 抽象节点类
  * 子类有:
  *    TypeElement
  *    TextNode
+ *    XElement
  */
 export abstract class TypeNode implements ITypeNode {
   /**
    * 在生成dom字符串时，可以转为 attributes 的一个元素 { name: 'className', value: string }
-   * 在定义className时，要把当前类写入到TypeMap中；
+   * 在定义ClassName时，要把当前类写入到TypeMap中；
    */
   abstract className: string; // 最终实体类的名称，解析转换时需要创建对应的类；
+  abstract nodeName?: string;
+  abstract nodeValue?: string;
+  abstract childNodes?: TypeNode[];
   abstract dom: HTMLElement | SVGElement | Text;
   abstract parent?: TypeNode;
   /**
@@ -68,25 +72,19 @@ export abstract class TypeNode implements ITypeNode {
   /**
    * 不独立为一个函数，是因为在这里，可以直接 this. 的方式调用。
    * 在子类，如UI组件中会重写
+   * 子类有： TypeElement,XElement,TextNode
    * @param parent 不一定是this，还可以是父级、子级等等。
    * @param node
    */
   abstract createItem(parent: TypeNode, node: ITypeNode): TypeNode
   propObj?: ITypeProperty;
-  nodeName: string;
-  nodeValue?: string;
-  childNodes?: TypeNode[];
   attributes?: INodeAttr[];
   configs?: Record<string, any>;
   data?: Record<string, any>;
   events?: Subscription[];
-  protected constructor(nodeName: string, nodeValue?: string) {
-    this.nodeName = nodeName;
-    if (nodeValue !== undefined) {
-      this.nodeValue = nodeValue;
-    }
-    // Object.defineProperty(this, "parentNode", { value: null, writable: true });
-  }
+  // protected constructor() {
+  //   Object.defineProperty(this, "parentNode", { value: null, writable: true });
+  // }
   get firstChild(): TypeNode | undefined {
     return this.childNodes && this.childNodes[0];
   }
@@ -130,14 +128,16 @@ export abstract class TypeNode implements ITypeNode {
   //   }
   //   console.log('TypeNode.typeMap is ', TypeNode.typeMap);
   // }
-  setParent(parent: TypeNode): void {
+  setParent(parent: TypeElement): void {
     this.parent = parent;
+    parent.addChild(this);
   }
   /**
    * 创建子节点
    * 与创建组件不同
    * 基于json对象创建类实例
    *   todo 运行时，类可能还没有写入 typeMap ????
+   *      默认加载XElement,TextNode,其它类要 TypeClass显式调用
    * @param parent
    * @param nodes
    */
@@ -147,8 +147,8 @@ export abstract class TypeNode implements ITypeNode {
       if (node.TypeClass === undefined
         && node.template === undefined
         && node.nodeValue === undefined) {
-        console.error('node.TypeClass is undefined  && node.template === undefined' +
-          ' && node.template === undefined. ');
+        console.error('node.TypeClass === undefined  && node.template === undefined' +
+          ' && node.nodeValue === undefined. ');
         continue;
       }
       const item = this.createItem(parent, node);
@@ -262,16 +262,17 @@ export abstract class TypeNode implements ITypeNode {
    */
   toJSON(): ITypeNode {
     return {
-      nodeName: this.nodeName,
       className: this.className,
+      nodeName: this.nodeName,
+      nodeValue: this.nodeValue,
       attributes: this.attributes,
       childNodes: this.children.map(child => {
         if (child.nodeName === '#text') {
           return {
-            className: 'TextNode',
-            nodeName: '#text',
+            // className: 'TextNode',
+            // nodeName: '#text',
             nodeValue: child.nodeValue, // textContent
-          } as ITextNode;
+          };
         } else {
           return child.toJSON();
         }

@@ -4,7 +4,7 @@ export abstract class TypeOptGroup extends TypeHtml implements ITypeOptGroup {
   nodeName: 'optgroup';
   dom: HTMLOptGroupElement;
   protected constructor() {
-    super('optgroup');
+    super();
     this.nodeName = 'optgroup';
     this.dom = document.createElement(this.nodeName);
   }

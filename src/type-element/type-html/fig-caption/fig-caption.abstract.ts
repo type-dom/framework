@@ -4,7 +4,7 @@ export abstract class TypeFigCaption extends TypeHtml implements ITypeFigCaption
   nodeName: 'figcaption';
   dom: HTMLElement;
   protected constructor() {
-    super('figcaption');
+    super();
     this.nodeName = 'figcaption';
     this.dom = document.createElement(this.nodeName);
   }

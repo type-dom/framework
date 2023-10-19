@@ -4,7 +4,7 @@ export abstract class TypeBdo extends TypeHtml implements ITypeBdo {
   nodeName: 'bdo';
   dom: HTMLElement;
   protected constructor() {
-    super('bdo');
+    super();
     this.nodeName = 'bdo';
     this.dom = document.createElement(this.nodeName);
   }

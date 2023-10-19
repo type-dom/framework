@@ -4,7 +4,7 @@ export abstract class TypeForm extends TypeHtml implements ITypeForm {
   nodeName: 'form';
   dom: HTMLFormElement;
   protected constructor() {
-    super('form');
+    super();
     this.nodeName = 'form';
     this.dom = document.createElement(this.nodeName);
   }

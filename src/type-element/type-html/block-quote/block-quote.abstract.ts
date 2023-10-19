@@ -4,7 +4,7 @@ export abstract class TypeBlockQuote extends TypeHtml implements ITypeBlockQuote
   nodeName: 'blockquote';
   dom: HTMLQuoteElement;
   protected constructor() {
-    super('blockquote');
+    super();
     this.nodeName = 'blockquote';
     this.dom = document.createElement(this.nodeName);
   }

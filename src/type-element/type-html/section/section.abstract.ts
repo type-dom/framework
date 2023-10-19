@@ -4,7 +4,7 @@ export abstract class TypeSection extends TypeHtml implements ITypeSection {
   nodeName: 'section';
   dom: HTMLElement;
   protected constructor() {
-    super('section');
+    super();
     this.nodeName = 'section';
     this.dom = document.createElement(this.nodeName);
   }

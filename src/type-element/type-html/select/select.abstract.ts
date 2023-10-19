@@ -4,7 +4,7 @@ export abstract class TypeSelect extends TypeHtml implements ITypeSelect {
   nodeName: 'select';
   dom: HTMLSelectElement;
   protected constructor() {
-    super('select');
+    super();
     this.nodeName = 'select';
     this.dom = document.createElement(this.nodeName);
   }

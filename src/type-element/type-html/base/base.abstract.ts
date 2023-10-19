@@ -4,7 +4,7 @@ export abstract class TypeBase extends TypeHtml implements ITypeBase {
   nodeName: 'base';
   dom: HTMLElement;
   protected constructor() {
-    super('base');
+    super();
     this.nodeName = 'base';
     this.dom = document.createElement(this.nodeName);
   }
