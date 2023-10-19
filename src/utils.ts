@@ -58,3 +58,7 @@ export function deepCopy<T>(destination: T, source: T, deep?: boolean): T {
   }
   return destination;
 }
+
+export function add(a: number, b: number) {
+  return a + b;
+}
