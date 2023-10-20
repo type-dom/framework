@@ -1,0 +1,143 @@
+[0m[0m
+[0m[4m/Users/jianfengxu/Documents/MY-GIT/nx-workspace/libs/type-dom.ts/src/element/html-element/button/button.interface.ts[24m[0m
+[0m  [2m2:10[22m  [31merror[39m  'ITypeNode' is defined but never used  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/Users/jianfengxu/Documents/MY-GIT/nx-workspace/libs/type-dom.ts/src/element/x-element/x-element.class.ts[24m[0m
+[0m  [2m19:28[22m  [31merror[39m  Don't use `Function` as a type. The `Function` type accepts any function-like value.[0m
+[0mIt provides no type safety when calling the function, which can be a common source of bugs.[0m
+[0mIt also accepts things like class declarations, which will throw at runtime as they will not be called with `new`.[0m
+[0mIf you are expecting the function to accept certain arguments, you should explicitly define the function shape  [2m@typescript-eslint/ban-types[22m[0m
+[0m  [2m20:27[22m  [31merror[39m  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                            [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/Users/jianfengxu/Documents/MY-GIT/nx-workspace/libs/type-dom.ts/src/parser/parser.class.ts[24m[0m
+[0m  [2m352:16[22m  [31merror[39m  'name' is defined but never used  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/Users/jianfengxu/Documents/MY-GIT/nx-workspace/libs/type-dom.ts/src/style/style.interface.ts[24m[0m
+[0m  [2m1:23[22m  [31merror[39m  'StyleDisplay' is defined but never used  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/Users/jianfengxu/Documents/MY-GIT/nx-workspace/libs/type-dom.ts/src/text-node/text-node.class.ts[24m[0m
+[0m  [2m169:10[22m  [31merror[39m  Expected a conditional expression and instead saw an assignment  [2mno-cond-assign[22m[0m
+[0m  [2m171:16[22m  [31merror[39m  Unexpected any. Specify a different type                         [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/Users/jianfengxu/Documents/MY-GIT/nx-workspace/libs/type-dom.ts/src/type-element/HtmlTypes.ts[24m[0m
+[0m    [2m2:10[22m  [31merror[39m  'ITypeA' is defined but never used           [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m    [2m4:10[22m  [31merror[39m  'ITypeAbbr' is defined but never used        [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m    [2m6:10[22m  [31merror[39m  'ITypeAddress' is defined but never used     [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m    [2m8:10[22m  [31merror[39m  'ITypeArea' is defined but never used        [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m10:10[22m  [31merror[39m  'ITypeArticle' is defined but never used     [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m12:10[22m  [31merror[39m  'ITypeAside' is defined but never used       [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m14:10[22m  [31merror[39m  'ITypeAudio' is defined but never used       [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m16:10[22m  [31merror[39m  'ITypeB' is defined but never used           [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m18:10[22m  [31merror[39m  'ITypeBase' is defined but never used        [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m20:10[22m  [31merror[39m  'ITypeBdi' is defined but never used         [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m22:10[22m  [31merror[39m  'ITypeBdo' is defined but never used         [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m24:10[22m  [31merror[39m  'ITypeBlockQuote' is defined but never used  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m26:10[22m  [31merror[39m  'ITypeBr' is defined but never used          [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m28:10[22m  [31merror[39m  'ITypeButton' is defined but never used      [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m30:10[22m  [31merror[39m  'ITypeCanvas' is defined but never used      [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m32:10[22m  [31merror[39m  'ITypeCite' is defined but never used        [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m34:10[22m  [31merror[39m  'ITypeCode' is defined but never used        [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m36:10[22m  [31merror[39m  'ITypeData' is defined but never used        [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m38:10[22m  [31merror[39m  'ITypeDataList' is defined but never used    [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m40:10[22m  [31merror[39m  'ITypeDel' is defined but never used         [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m42:10[22m  [31merror[39m  'ITypeDetails' is defined but never used     [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m44:10[22m  [31merror[39m  'ITypeDfn' is defined but never used         [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m46:10[22m  [31merror[39m  'ITypeDialog' is defined but never used      [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m48:10[22m  [31merror[39m  'ITypeDiv' is defined but never used         [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m50:10[22m  [31merror[39m  'ITypeDL' is defined but never used          [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m52:10[22m  [31merror[39m  'ITypeDD' is defined but never used          [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m54:10[22m  [31merror[39m  'ITypeDT' is defined but never used          [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m56:10[22m  [31merror[39m  'ITypeEm' is defined but never used          [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m58:10[22m  [31merror[39m  'ITypeEmbed' is defined but never used       [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m60:10[22m  [31merror[39m  'ITypeFieldset' is defined but never used    [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m62:10[22m  [31merror[39m  'ITypeFigCaption' is defined but never used  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m64:10[22m  [31merror[39m  'ITypeFigure' is defined but never used      [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m66:10[22m  [31merror[39m  'ITypeFooter' is defined but never used      [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m68:10[22m  [31merror[39m  'ITypeForm' is defined but never used        [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m70:10[22m  [31merror[39m  'ITypeHead' is defined but never used        [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m72:10[22m  [31merror[39m  'ITypeHeader' is defined but never used      [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m74:10[22m  [31merror[39m  'ITypeHGroup' is defined but never used      [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m76:10[22m  [31merror[39m  'ITypeHr' is defined but never used          [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m78:10[22m  [31merror[39m  'ITypeI' is defined but never used           [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m80:10[22m  [31merror[39m  'ITypeIFrame' is defined but never used      [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m82:10[22m  [31merror[39m  'ITypeImg' is defined but never used         [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m84:10[22m  [31merror[39m  'ITypeInput' is defined but never used       [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m86:10[22m  [31merror[39m  'ITypeIns' is defined but never used         [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m88:10[22m  [31merror[39m  'ITypeKbd' is defined but never used         [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m90:10[22m  [31merror[39m  'ITypeLabel' is defined but never used       [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m92:10[22m  [31merror[39m  'ITypeLegend' is defined but never used      [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m94:10[22m  [31merror[39m  'ITypeMain' is defined but never used        [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m96:10[22m  [31merror[39m  'ITypeMap' is defined but never used         [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m98:10[22m  [31merror[39m  'ITypeMark' is defined but never used        [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m100:10[22m  [31merror[39m  'ITypeMenu' is defined but never used        [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m101:10[22m  [31merror[39m  'TypeMenuItem' is defined but never used     [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m102:10[22m  [31merror[39m  'ITypeMenuItem' is defined but never used    [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m104:10[22m  [31merror[39m  'ITypeMeter' is defined but never used       [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m106:10[22m  [31merror[39m  'ITypeNav' is defined but never used         [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m108:10[22m  [31merror[39m  'ITypeOL' is defined but never used          [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m110:10[22m  [31merror[39m  'ITypeOptGroup' is defined but never used    [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m112:10[22m  [31merror[39m  'ITypeOption' is defined but never used      [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m114:10[22m  [31merror[39m  'ITypeOutput' is defined but never used      [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m116:10[22m  [31merror[39m  'ITypeP' is defined but never used           [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m118:10[22m  [31merror[39m  'ITypePicture' is defined but never used     [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m120:10[22m  [31merror[39m  'ITypePre' is defined but never used         [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m122:10[22m  [31merror[39m  'ITypeProgress' is defined but never used    [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m124:10[22m  [31merror[39m  'ITypeQ' is defined but never used           [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m126:10[22m  [31merror[39m  'ITypeRp' is defined but never used          [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m128:10[22m  [31merror[39m  'ITypeRt' is defined but never used          [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m130:10[22m  [31merror[39m  'ITypeRuby' is defined but never used        [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m132:10[22m  [31merror[39m  'ITypeS' is defined but never used           [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m134:10[22m  [31merror[39m  'ITypeSamp' is defined but never used        [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m136:10[22m  [31merror[39m  'ITypeSection' is defined but never used     [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m138:10[22m  [31merror[39m  'ITypeSelect' is defined but never used      [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m140:10[22m  [31merror[39m  'ITypeSmall' is defined but never used       [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m142:10[22m  [31merror[39m  'ITypeSource' is defined but never used      [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m144:10[22m  [31merror[39m  'ITypeSpan' is defined but never used        [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m146:10[22m  [31merror[39m  'ITypeStrong' is defined but never used      [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m148:10[22m  [31merror[39m  'ITypeSub' is defined but never used         [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m150:10[22m  [31merror[39m  'ITypeTextarea' is defined but never used    [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m152:10[22m  [31merror[39m  'ITypeTime' is defined but never used        [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m154:10[22m  [31merror[39m  'ITypeTitle' is defined but never used       [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m156:10[22m  [31merror[39m  'ITypeTrack' is defined but never used       [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m158:10[22m  [31merror[39m  'ITypeU' is defined but never used           [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m160:10[22m  [31merror[39m  'ITypeUL' is defined but never used          [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m162:10[22m  [31merror[39m  'ITypeLI' is defined but never used          [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m164:10[22m  [31merror[39m  'ITypeVar' is defined but never used         [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m166:10[22m  [31merror[39m  'ITypeVideo' is defined but never used       [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m168:10[22m  [31merror[39m  'ITypeWbr' is defined but never used         [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/Users/jianfengxu/Documents/MY-GIT/nx-workspace/libs/type-dom.ts/src/type-element/type-component/type-component.interface.ts[24m[0m
+[0m  [2m10:11[22m  [31merror[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/Users/jianfengxu/Documents/MY-GIT/nx-workspace/libs/type-dom.ts/src/type-element/type-element.abstract.ts[24m[0m
+[0m   [2m49:19[22m  [31merror[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m   [2m58:34[22m  [31merror[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m537:37[22m  [31merror[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/Users/jianfengxu/Documents/MY-GIT/nx-workspace/libs/type-dom.ts/src/type-element/type-element.interface.ts[24m[0m
+[0m  [2m106:5[22m  [31merror[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/Users/jianfengxu/Documents/MY-GIT/nx-workspace/libs/type-dom.ts/src/type-element/type-svg/type-svg.abstract.ts[24m[0m
+[0m  [2m9:25[22m  [31merror[39m  'nodeName' is defined but never used  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m[0m
+[0m[4m/Users/jianfengxu/Documents/MY-GIT/nx-workspace/libs/type-dom.ts/src/type-node/type-node.abstract.ts[24m[0m
+[0m   [2m3:10[22m  [31merror[39m  'ITextNode' is defined but never used     [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m82:28[22m  [31merror[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m83:25[22m  [31merror[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/Users/jianfengxu/Documents/MY-GIT/nx-workspace/libs/type-dom.ts/src/type-node/type-node.interface.ts[24m[0m
+[0m  [2m21:15[22m  [31merror[39m  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                            [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m35:25[22m  [31merror[39m  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                            [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m40:28[22m  [31merror[39m  Don't use `Function` as a type. The `Function` type accepts any function-like value.[0m
+[0mIt provides no type safety when calling the function, which can be a common source of bugs.[0m
+[0mIt also accepts things like class declarations, which will throw at runtime as they will not be called with `new`.[0m
+[0mIf you are expecting the function to accept certain arguments, you should explicitly define the function shape  [2m@typescript-eslint/ban-types[22m[0m
+[0m  [2m41:27[22m  [31merror[39m  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                            [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[4m/Users/jianfengxu/Documents/MY-GIT/nx-workspace/libs/type-dom.ts/src/utils.ts[24m[0m
+[0m   [2m99:25[22m  [31merror[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m104:50[22m  [31merror[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m106:50[22m  [31merror[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[0m
+[0m[31m[1m✖ 108 problems (108 errors, 0 warnings)[22m[39m[0m
+[0m[31m[1m[22m[39m[0m

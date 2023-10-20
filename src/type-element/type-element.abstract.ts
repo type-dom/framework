@@ -4,15 +4,18 @@ import { TypeNode } from '../type-node/type-node.abstract';
 import { TextNode } from '../text-node/text-node.class';
 import { StyleCursor, StyleDisplay } from '../style/style.enum';
 import { IStyle } from '../style/style.interface';
-import { humpToMiddleLine } from './type-element.function';
+import { IXElementOption } from '../element/x-element/x-element.interface';
+import { XElement } from '../element/x-element/x-element.class';
+import { humpToMiddleLine } from '../utils';
 import {
   ITypeAttribute,
   IBoundBox,
   ITypeElement,
-  ITypeProperty, ITextItem, IXItem, IElementItem
+  ITypeProperty,
+  ITextItem,
+  IXItem,
+  IElementItem
 } from './type-element.interface';
-import { IXElementOption } from '../element/x-element/x-element.interface';
-import { XElement } from '../element/x-element/x-element.class';
 /**
  * 虚拟元素Element的数据结构
  * 可以对应到虚拟dom树。 createDom(tag, attr, children)

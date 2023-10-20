@@ -6,11 +6,13 @@ import { IComponent, ITypeComponent } from './type-component.interface';
  */
 export abstract class TypeComponent extends TypeHtml implements ITypeComponent {
   abstract parent: TypeHtml;
+  nodeName : string;
   dom: HTMLElement;
   // childNodes: TypeNode[];
   // abstract setConfig(config: any): void
   protected constructor(nodeName: string) {
     super();
+    this.nodeName = nodeName;
     this.dom = document.createElement(nodeName);
     this.childNodes = [];
   }

@@ -9,3 +9,4 @@ export { ITypeSvg } from './type-svg/type-svg.interface';
 export { TypeSvgSvg } from './type-svg/svg/svg.abstract';
 export { ITypeSvgSvg } from './type-svg/svg/svg.interface';
 export * from './type-html';
+export { HtmlTypes } from './HtmlTypes';

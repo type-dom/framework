@@ -8,5 +8,5 @@ export interface ITypeRoot extends ITypeElement {
 
 export interface ITypeRootOption extends ITypeNode {
   el: HTMLElement | string,
-  nodeName: string,
+  nodeName?: string,
 }
