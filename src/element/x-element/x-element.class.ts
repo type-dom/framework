@@ -1,8 +1,8 @@
 import { fromEvent } from 'rxjs';
 import { INodeAttr } from '../../type-node/type-node.interface';
 import { TypeElement } from '../../type-element/type-element.abstract';
-import { IXElement, IXElementOption } from './x-element.interface';
 import { Parser } from '../../parser/parser.class';
+import { IXElement, IXElementOption } from './x-element.interface';
 /**
  * XElement是一个通用元素节点类，可以是其它类的父节点，也可以是其它类的子节点
  * DOM/XML

@@ -351,7 +351,9 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    */
   renderChild(newChild: TypeNode): void {
     newChild.render();
-    this.dom.appendChild(newChild.dom);
+    if (newChild.dom) {
+      this.dom.appendChild(newChild.dom);
+    }
   }
 
   // appendChildren(newNodes: Array<TypeElement | WebText>) {
@@ -415,7 +417,10 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    */
   removeChildDomAtIndex(index: number, length = 1): void {
     for (let i = 0; i < length; i++) {
-      this.dom.removeChild(this.childNodes[index + i].dom);
+      if (this.childNodes[index + i].dom) {
+        // this.dom.removeChild(this.childNodes[index + i].dom);
+        this.childNodes[index + i].dom?.remove();
+      }
     }
   }
   /**
@@ -555,7 +560,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
         // this.childNodes的对象和literal.childNodes的字面量要对应。
         //    如果不一致，应该清除原有的对象，根据字面量的值创建相应的对象。
         if (i > length - 1) {
-          this.childNodes[i].dom.remove();
+          this.childNodes[i].dom?.remove();
         }
       }
       this.childNodes.length = length;

@@ -13,7 +13,7 @@ export interface IComponent {
   pos: number,
   name: string,
 }
-export interface IParam {
+export interface IParserParam {
   hasAttributes?: boolean,
   lowerCaseName?: boolean,
 }

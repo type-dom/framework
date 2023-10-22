@@ -1,12 +1,14 @@
 import { INodeAttr, TextNode, XElement } from '../index';
+// import { XElement } from "../element/x-element/x-element.class"; // todo 这样会报错。上面引入没问题；
 import { ParserErrorCode } from './parser.const';
 import { isWhitespace, isWhitespaceString } from './parser.util';
-import { IContent, IInstruction, IParam } from './parser.interface';
+import { IContent, IInstruction, IParserParam } from './parser.interface';
 /**
  * The code for XMLParser copied from pdf.js
  * 虚拟DOM/XML字符串解析工具
  * DOM/XML对象和String字符串之间的转换
- * 字符串解析为(XElement | TextNode)对象。？？？？todo 解析为 className 对应的类。
+ * 字符串解析为(XElement | TextNode)对象。
+ * ？？？？todo 解析为 className 对应的类。 ———— 好像不行，className 对应的类可能是后创建的。
  */
 export class Parser {
   private _currentFragment: (XElement | TextNode)[];
@@ -14,7 +16,7 @@ export class Parser {
   private _errorCode: number;
   private readonly _hasAttributes: boolean | undefined;
   private readonly _lowerCaseName: boolean | undefined;
-  constructor(param?: IParam) {
+  constructor(param?: IParserParam) {
     this._currentFragment = [];
     this._stack = [];
     this._errorCode = ParserErrorCode.NoError;

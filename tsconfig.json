@@ -12,7 +12,7 @@
     // 指定生成哪个模块系统代码
     /* 用来指定编译后的js要使用的模块标准: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
     /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
-    "module": "ESNext",
+    "module": "umd",
     // 编译过程中需要引入的库文件的列表
     /* lib用于指定要包含在编译中的库文件 */
     /* Specify library files to be included in the compilation. */

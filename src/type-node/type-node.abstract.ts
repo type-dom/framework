@@ -62,7 +62,7 @@ export abstract class TypeNode implements ITypeNode {
   abstract nodeName?: string;
   abstract nodeValue?: string;
   abstract childNodes?: TypeNode[];
-  abstract dom: HTMLElement | SVGElement | Text;
+  abstract dom?: HTMLElement | SVGElement | Text;
   abstract parent?: TypeNode;
   /**
    * 渲染出真实DOM
