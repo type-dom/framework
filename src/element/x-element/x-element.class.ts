@@ -1,8 +1,11 @@
 import { fromEvent } from 'rxjs';
+import {TypeNode} from "../../type-node/type-node.abstract";
 import { INodeAttr } from '../../type-node/type-node.interface';
+import { TextNode } from '../../text-node/text-node.class';
 import { TypeElement } from '../../type-element/type-element.abstract';
 import { Parser } from '../../parser/parser.class';
 import { IXElement, IXElementOption } from './x-element.interface';
+
 /**
  * XElement是一个通用元素节点类，可以是其它类的父节点，也可以是其它类的子节点
  * DOM/XML
@@ -13,6 +16,7 @@ import { IXElement, IXElementOption } from './x-element.interface';
 export class XElement extends TypeElement implements IXElement {
   className: 'XElement';
   nodeName: string;
+  childNodes: (XElement | TextNode)[];
   parent: TypeElement; // 在解析时，onEndElement时，重新赋值。
   template?: string;
   // data?: Record<string, any>;
@@ -55,6 +59,17 @@ export class XElement extends TypeElement implements IXElement {
     //     throw Error('TypeClass is TextNode, but has childNodes . ');
     //   }
     // }
+    this.childNodes = (option.childNodes || [])
+      .map(child => {
+        if (child.nodeValue !== undefined) {
+          return new TextNode(this,  child.nodeValue);
+        } else {
+          return new XElement({
+            nodeName: child.nodeName || 'div',
+            childNodes: child.childNodes
+          });
+        }
+      });
   }
   beforeRender(): void {
     console.log('XElement beforeRender . ');
