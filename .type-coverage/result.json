@@ -1,0 +1,2104 @@
+{
+  "cache": {
+    "src/type-node/type-node.interface.ts": {
+      "hash": "635681d09376e4709854486e4d693df03eb7a851",
+      "correctCount": 25,
+      "totalCount": 26,
+      "anys": []
+    },
+    "src/style/style.enum.ts": {
+      "hash": "5584d806282c6a23a307785a3707ce60d4c6955a",
+      "correctCount": 8,
+      "totalCount": 8,
+      "anys": []
+    },
+    "src/style/style.interface.ts": {
+      "hash": "c23cd5c3496dcafc9fad58e5f227ead3e298edd5",
+      "correctCount": 136,
+      "totalCount": 136,
+      "anys": []
+    },
+    "src/parser/parser.const.ts": {
+      "hash": "c508d7d63014b666910eff6bd1a580f55495531f",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/parser/parser.util.ts": {
+      "hash": "39e2f318cca59bece3abbcfbe4d7af36601a4858",
+      "correctCount": 22,
+      "totalCount": 22,
+      "anys": []
+    },
+    "src/parser/parser.interface.ts": {
+      "hash": "01b6d663521b94eeb4a85ac4f512ef37ad55be12",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/parser/parser.class.ts": {
+      "hash": "7595698d141f3c690bba034bb71e251c693102a4",
+      "correctCount": 554,
+      "totalCount": 564,
+      "anys": []
+    },
+    "src/text-node/text-node.interface.ts": {
+      "hash": "db26f70b3de4c22894928f61671f9cfadf40dca9",
+      "correctCount": 5,
+      "totalCount": 5,
+      "anys": []
+    },
+    "src/text-node/text-node.class.ts": {
+      "hash": "5aae988442091cb77a23979cd01cfa0c2f80f07d",
+      "correctCount": 235,
+      "totalCount": 238,
+      "anys": []
+    },
+    "src/type-element/type-element.function.ts": {
+      "hash": "1a99cede40ef40656c8708538c459c56dc5204ab",
+      "correctCount": 137,
+      "totalCount": 141,
+      "anys": []
+    },
+    "src/type-element/type-element.abstract.ts": {
+      "hash": "69802e44f490635f00707074b3ee23a80c7b4270",
+      "correctCount": 838,
+      "totalCount": 849,
+      "anys": []
+    },
+    "src/type-element/type-html/type-html.interface.ts": {
+      "hash": "a5ddacf58c0311892e0e5b9e85601f38a29d266a",
+      "correctCount": 7,
+      "totalCount": 7,
+      "anys": []
+    },
+    "src/type-element/type-html/type-html.abstract.ts": {
+      "hash": "33777e88ab3c1ff0de9c339f621407b3ca86adec",
+      "correctCount": 7,
+      "totalCount": 7,
+      "anys": []
+    },
+    "src/element/x-element/x-element.interface.ts": {
+      "hash": "078165415a12493d9b2cd81ff73b4886ca2cb074",
+      "correctCount": 7,
+      "totalCount": 7,
+      "anys": []
+    },
+    "src/element/x-element/x-element.class.ts": {
+      "hash": "05c6c4f9d2b2adca0b467a4a85b074791c5dff2f",
+      "correctCount": 124,
+      "totalCount": 135,
+      "anys": []
+    },
+    "src/type-element/type-html/a/a.interface.ts": {
+      "hash": "0b96f28676e8ed296de69eb788500cf6c312cffb",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/a/a.abstract.ts": {
+      "hash": "40de106eb7c9b1a7bef616387cfca7984aa3e3ca",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/a/a.interface.ts": {
+      "hash": "c447b62b55ca11e4c34e1aeb9a4c8a910998fc0d",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/a/a.class.ts": {
+      "hash": "5139992803b1bf38a22afc6db2b78165d5bf125c",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/type-element/type-html/area/area.interface.ts": {
+      "hash": "c41de3c391d897c3fa55966e68ec35ca6ca642de",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/area/area.abstract.ts": {
+      "hash": "527df596d5c531aabe1cf0a0cf6f6ba4495f6d73",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/area/area.interface.ts": {
+      "hash": "16866c510ef1305910491043874ebc1e60bb7a74",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/area/area.class.ts": {
+      "hash": "97d668b725269fca6a3876ac22c7d1c632e33efd",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/type-element/type-html/article/article.interface.ts": {
+      "hash": "dfb4aa625007d004fa9985668b9ba3a4b55c5950",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/article/article.abstract.ts": {
+      "hash": "2e97832facd1a54c5e6d15cb07ab26ebb9ac71e6",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/article/article.interface.ts": {
+      "hash": "d71706cd9ff55283212a6e0f36ab646429048989",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/article/article.class.ts": {
+      "hash": "b590efb148bce95c7b6399d901a7fd822f55ecae",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/type-element/type-html/aside/aside.interface.ts": {
+      "hash": "84f1d28dd8a7adea6a968ae5bef0bc6bf7d65a64",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/aside/aside.abstract.ts": {
+      "hash": "271e1c39a9285500171f044380f042924a9797b8",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/aside/aside.interface.ts": {
+      "hash": "4b6806fa6d7c86c111f5f8305d45470685fdf9c7",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/aside/aside.class.ts": {
+      "hash": "b2996c3161a834541651daeb76032bd660458965",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/type-element/type-html/audio/audio.interface.ts": {
+      "hash": "afa4691b30d4ad6b3b7a601e0d29bc2d3417f070",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/audio/audio.abstract.ts": {
+      "hash": "e19a2934599f338b9e446312c08c2e05d31f8ca4",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/audio/audio.interface.ts": {
+      "hash": "0ec78a939f37c4277acda9622b9dc3983edd9973",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/audio/audio.class.ts": {
+      "hash": "dfb35c31e05f164bb9797e2816bbc4254c5add3e",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/type-element/type-html/b/b.interface.ts": {
+      "hash": "2c2644768f339a564563ab59fddb5cefa8f27265",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/b/b.abstract.ts": {
+      "hash": "262ebfeff89fb26eefe08d7999a958b2613d4d5e",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/b/b.interface.ts": {
+      "hash": "f0c7be4c85126896408df2ac6791e726c8783458",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/b/b.class.ts": {
+      "hash": "1b0798d4b2d24024761b7c07ff544eea5740b054",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/type-element/type-html/br/br.interface.ts": {
+      "hash": "8110f03e33cb0af18dd233dedfb19081285bb8b6",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/br/br.abstract.ts": {
+      "hash": "97cd33742174521346809dc5b92b6caac954787f",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/br/br.interface.ts": {
+      "hash": "4ff0c2c6839b452c6cd029091873eba663d2f636",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/br/br.class.ts": {
+      "hash": "d43b35bd7681cb628b81da8666b62665ce429823",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/type-element/type-html/button/button.const.ts": {
+      "hash": "d671173bf2e4b579b86f76ebd652e799053312a4",
+      "correctCount": 11,
+      "totalCount": 11,
+      "anys": []
+    },
+    "src/type-element/type-html/button/button.interface.ts": {
+      "hash": "3da302bdf613f8b4fa54fae1dfd5d8b40345bdd9",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/button/button.abstract.ts": {
+      "hash": "e142de2f59d3569bf01a35b4290e61d0c052031e",
+      "correctCount": 47,
+      "totalCount": 47,
+      "anys": []
+    },
+    "src/element/html-element/button/button.interface.ts": {
+      "hash": "fed7b56e7094697aa959c3162ba54cf14e57d97b",
+      "correctCount": 5,
+      "totalCount": 5,
+      "anys": []
+    },
+    "src/element/html-element/button/button.class.ts": {
+      "hash": "d45bcde576dd36cef1534e6e8c2ada0bd8c98c0d",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/type-element/type-html/canvas/canvas.interface.ts": {
+      "hash": "0d2d639ae5658be79d5e98c96c1d691a8ef95fea",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/canvas/canvas.abstract.ts": {
+      "hash": "7995260348feba4804e94a1413ac164fbaa6fd65",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/canvas/canvas.interface.ts": {
+      "hash": "bec55acd9de125aad9c023b65b6f9cb852ecbcc9",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/canvas/canvas.class.ts": {
+      "hash": "b8e9fb1441d24f36f7cbf5dd317252234e29ef32",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/type-element/type-html/code/code.interface.ts": {
+      "hash": "70f0b636eb81c194c1737c385c2607a98874d3fb",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/code/code.abstract.ts": {
+      "hash": "ab9b15da904ee0a12a4fd6ff5b514703dbfe1679",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/code/code.interface.ts": {
+      "hash": "0d28780ce77ba7dffa26e078112d9a9426a50b5b",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/code/code.class.ts": {
+      "hash": "d54c136ccfd946c52e84fdd9db9d91b388253add",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/type-element/type-html/form/form.interface.ts": {
+      "hash": "d131d59c4cf66503ff8b3a74a31d3fac3cd64330",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/form/form.abstract.ts": {
+      "hash": "53be34dc33b94ba618a8100bfecd98a998a57ebd",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/form/form.interface.ts": {
+      "hash": "5a871bdaff7665e628553dcfa1cbbf729d1c2c7c",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/form/form.class.ts": {
+      "hash": "11b4dfe1b6cda6e889721470e87213a6560c019c",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/type-element/type-html/div/div.interface.ts": {
+      "hash": "db0b39d2e3ed93f5891eff68e7058f9ed77854b2",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/div/div.abstract.ts": {
+      "hash": "40f8305360ac7dea567d9e1dcda4c85ad68593ad",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/division/division.interface.ts": {
+      "hash": "6ed1eee36c7f9e8c5627e3ed432e2168ea2f3349",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/division/division.class.ts": {
+      "hash": "7a0b99b6c39fb5d1134fb2deb87d931e64f3d26f",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/type-element/type-html/header/header.interface.ts": {
+      "hash": "3b8e7196cddd7c4c1478c9a855627556e5ad9f97",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/header/header.abstract.ts": {
+      "hash": "f64074bbaf13daa5f9d6507f71dbe4f07291e79f",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/header/header.interface.ts": {
+      "hash": "c19131c05c7ce23f74dbacb123e3720032ab9dde",
+      "correctCount": 5,
+      "totalCount": 5,
+      "anys": []
+    },
+    "src/element/html-element/header/header.class.ts": {
+      "hash": "d653339571df15e96281e59e72d740161eef7e8f",
+      "correctCount": 21,
+      "totalCount": 21,
+      "anys": []
+    },
+    "src/type-element/type-html/head/head.interface.ts": {
+      "hash": "a5fdf9b08868d8802a6057ad9de77434297de065",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/head/head.abstract.ts": {
+      "hash": "cd8735ba365415ae141824dc13158b7893b7fcdb",
+      "correctCount": 19,
+      "totalCount": 19,
+      "anys": []
+    },
+    "src/element/html-element/heading/heading.interface.ts": {
+      "hash": "07538bf3321d0b44986fd2c2e021f0ba62ef030a",
+      "correctCount": 8,
+      "totalCount": 8,
+      "anys": []
+    },
+    "src/element/html-element/heading/heading.class.ts": {
+      "hash": "fd2122269e517892b973cf681ac9039a853ca6c1",
+      "correctCount": 32,
+      "totalCount": 32,
+      "anys": []
+    },
+    "src/type-element/type-html/hr/hr.interface.ts": {
+      "hash": "8092f785ef2f074e6faef6b9321b12dd7f2862e5",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/hr/hr.abstract.ts": {
+      "hash": "f33869b154119d31217aa046550041d6f7a2c0ef",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/hr/hr.interface.ts": {
+      "hash": "aea34589352c58eeb4e7e793c2ba7da9565a62c0",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/hr/hr.class.ts": {
+      "hash": "407973da6b92ce781f625f427a7caa07a347e3b5",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/type-element/type-html/i/i.interface.ts": {
+      "hash": "bee10fbfe49289d27296ae4c1b038b676e1ec832",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/i/i.abstract.ts": {
+      "hash": "b2cb61d10959abf564911e7a015cb6bf486ea22d",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/i/i.interface.ts": {
+      "hash": "514040b8a09cab38755cc29d1738307f6323960d",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/i/i.class.ts": {
+      "hash": "392b9dea60941296d95aaa692c42af909693b900",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/type-element/type-html/img/img.interface.ts": {
+      "hash": "b7bf2cdccd517cd48c83cd8a3feee037312cda4b",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/img/img.abstract.ts": {
+      "hash": "1d107dbc07ac224172ee61fdce13c4f7681f2dc2",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/img/img.interface.ts": {
+      "hash": "183cea57c8a4393f25b4f03fa0cf6fde82a48f6c",
+      "correctCount": 7,
+      "totalCount": 7,
+      "anys": []
+    },
+    "src/element/html-element/img/img.class.ts": {
+      "hash": "5be43150ccb8a67feeda85c3fc849f71651512a3",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/element/html-element/input/input.enum.ts": {
+      "hash": "59d68b828351a638f9c3c68d60f1eff6a2bb07b2",
+      "correctCount": 1,
+      "totalCount": 1,
+      "anys": []
+    },
+    "src/element/html-element/input/input.interface.ts": {
+      "hash": "611fefddef46870fe5a6c54a7347b6421d00f319",
+      "correctCount": 12,
+      "totalCount": 12,
+      "anys": []
+    },
+    "src/element/html-element/input/input.class.ts": {
+      "hash": "fd2e66b8d024acc99d155f8af4a33b843bd6981a",
+      "correctCount": 71,
+      "totalCount": 73,
+      "anys": []
+    },
+    "src/type-element/type-html/label/label.interface.ts": {
+      "hash": "22058d87584faf703782086757b72c571449fe02",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/label/label.abstract.ts": {
+      "hash": "7656342a253ea4d39ccd3b13cd0d94132590eda0",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/label/label.interface.ts": {
+      "hash": "c5b79631223d8ec04024513cd84b5a4fc25b4f0d",
+      "correctCount": 10,
+      "totalCount": 10,
+      "anys": []
+    },
+    "src/element/html-element/label/label.class.ts": {
+      "hash": "5867e394b4fcfea8a70a123f3cadc952b791653e",
+      "correctCount": 22,
+      "totalCount": 22,
+      "anys": []
+    },
+    "src/element/html-element/list-item/list-item.interface.ts": {
+      "hash": "f686ffebf01ec72c97917e712a6709a6882c0efd",
+      "correctCount": 5,
+      "totalCount": 5,
+      "anys": []
+    },
+    "src/element/html-element/list-item/list-item.class.ts": {
+      "hash": "fa1257cc69393c6e278858ef2c28d19a04e6775b",
+      "correctCount": 38,
+      "totalCount": 38,
+      "anys": []
+    },
+    "src/type-element/type-html/main/main.interface.ts": {
+      "hash": "7e44a050e3a5e9e821d865efe2c8b2e1998e33d9",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/main/main.abstract.ts": {
+      "hash": "9df8ec48a39d77328803658c4d0ddb5a7d884aa7",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/main/main.interface.ts": {
+      "hash": "48a12c11b137d244ca5aa8fc40280e167dba2f8f",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/main/main.class.ts": {
+      "hash": "570f3936be48fd23b392467fca5519aa54fed457",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/type-element/type-html/map/map.interface.ts": {
+      "hash": "181884329d4ffc899ef1a4ed62e5710eaf6b7cbd",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/map/map.abstract.ts": {
+      "hash": "ec436a9df87c1eeab1eac998c9f824a6ee682fa8",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/map/map.interface.ts": {
+      "hash": "ccb65e4af0977e068c57429902821df212077534",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/map/map.class.ts": {
+      "hash": "4d5ce5828c4b640cfe7aaa09194f57863794f74b",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/type-element/type-html/menu/menu.interface.ts": {
+      "hash": "f0783382788c113944f0adcbca0a1c1ee0de825a",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/menu/menu.abstract.ts": {
+      "hash": "60813ce493169c53fd95daee10d491a93eb41bd5",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/menu/menu.interface.ts": {
+      "hash": "52eb7e15c39ac1e2bda18709ae84050847a67a05",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/menu/menu.class.ts": {
+      "hash": "34e5d3d7a05efe3ce01ba9cea6c1fc90565c9cf3",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/type-element/type-html/select/select.interface.ts": {
+      "hash": "5ec3abfb8cfc4a3789557064b5d56825c233fb21",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/select/select.abstract.ts": {
+      "hash": "972720779ae66b09c3adad145dee63e6aa067957",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/option/option.interface.ts": {
+      "hash": "fd780b7a4674b109d98cca001d35997e1a305d82",
+      "correctCount": 5,
+      "totalCount": 5,
+      "anys": []
+    },
+    "src/element/html-element/option/option.class.ts": {
+      "hash": "36847dba154468cb83239253abf308e4a02cda3c",
+      "correctCount": 40,
+      "totalCount": 40,
+      "anys": []
+    },
+    "src/type-element/type-html/p/p.interface.ts": {
+      "hash": "0149d1403092b538db232d738aff4d27453213d6",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/p/p.abstract.ts": {
+      "hash": "5fadb0b8e86642c89fd009bd13fa45204c132002",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/p/p.interface.ts": {
+      "hash": "312146ad22b7fa9bf5957f550027379c86734503",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/p/p.class.ts": {
+      "hash": "c00f0ce5735669925322a3522448ea0f5af3ba6b",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/type-element/type-html/picture/picture.interface.ts": {
+      "hash": "c3fc877392fefc14afd4897807a87e4c3f1e6f2d",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/picture/picture.abstract.ts": {
+      "hash": "4fd8d1be48abf23e63ef6011e848ee443c502e0d",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/picture/picture.interface.ts": {
+      "hash": "bc44327dac9879b24c32522ea80a3693351ddb3c",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/picture/picture.class.ts": {
+      "hash": "052167e91bee1a954f254d937f2259de07c7cf78",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/type-element/type-html/pre/pre.interface.ts": {
+      "hash": "4f53c7c3bbf1140b1a767afb5c85526a3db124bb",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/pre/pre.abstract.ts": {
+      "hash": "df0fe72ecb5b04d80f6f6e4149856e73ee2c332e",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/pre/pre.interface.ts": {
+      "hash": "97b54389b3f5eaa4ea07cc9419bb6c1fc7b66303",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/pre/pre.class.ts": {
+      "hash": "e40709f48a0aba829f59e48bb3a0fc5afac43999",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/type-element/type-html/progress/progress.interface.ts": {
+      "hash": "10f480b11eb3212143db212348750a9c07d7fdab",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/progress/progress.abstract.ts": {
+      "hash": "1e742eba91f2b6d081294714dadccd4dd6e79d28",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/progress/progress.interface.ts": {
+      "hash": "543b05f21c39deac5836be2e703f56fe2659d05d",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/progress/progress.class.ts": {
+      "hash": "852f02ba3705dd1f6f1dedb62ab0cf8e88036005",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/type-element/type-html/section/section.interface.ts": {
+      "hash": "614663c0e2d02e43435681e347c2a6449db24c9f",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/section/section.abstract.ts": {
+      "hash": "185d78f30aa93cf4baa60cdd32a71ad65b844b7c",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/section/section.interface.ts": {
+      "hash": "e667326a9d94b6f5ba06c45382a0fa3d9cc575da",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/section/section.class.ts": {
+      "hash": "4b3a98b19bb8caebc370069e8bfeb872a3ffb1fa",
+      "correctCount": 23,
+      "totalCount": 23,
+      "anys": []
+    },
+    "src/element/html-element/select/select.interface.ts": {
+      "hash": "a9a3ca19f195f6f806cb08154b71f373c95ad4f0",
+      "correctCount": 10,
+      "totalCount": 10,
+      "anys": []
+    },
+    "src/element/html-element/select/select.class.ts": {
+      "hash": "0ef0403e86bb181dbc1441d91f0ef566a8488ea3",
+      "correctCount": 19,
+      "totalCount": 19,
+      "anys": []
+    },
+    "src/type-element/type-html/slot/slot.interface.ts": {
+      "hash": "bea4e93ce490a6df0d25eeac577988eaebd96afb",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/slot/slot.abstract.ts": {
+      "hash": "6c3d3ba3917a2514aa8c74d2d0d39dedeb60e9ed",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/slot/slot.interface.ts": {
+      "hash": "ce2a8eaeef77eb74bdca485ce5cd0c985246212b",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/slot/slot.class.ts": {
+      "hash": "dec1667fa6ac6a30fd2b5ae5476988052cdb9284",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/type-element/type-html/span/span.interface.ts": {
+      "hash": "905dcc43fd7bd943a82fa598e813146f25091c4e",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/span/span.abstract.ts": {
+      "hash": "f32e9cbe596737dbc920bf7e78a429104d5b2549",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/span/span.interface.ts": {
+      "hash": "a58877bec50c6d53fc66446c69976a8d0c2364b3",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/span/span.class.ts": {
+      "hash": "56a4fbe665d42f021f0b979ea3514d31dbdcc30b",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/type-element/type-html/table/table.interface.ts": {
+      "hash": "10eff98a73a8eeb28e77ec97b3284631a5c96873",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/table/table.abstract.ts": {
+      "hash": "f429422f4f51ce5fee82be549626903ee678c3ce",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/table/data-cell/data-cell.interface.ts": {
+      "hash": "6443badd77c93bc5ea84906774279d5dc4f14391",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/table/data-cell/data-cell.abstract.ts": {
+      "hash": "fae4200cde105c0bed1e3a8b21187e5e7160c8ba",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/table/row/row.interface.ts": {
+      "hash": "039bae53d44bdee2e56737271cca0b7f4c31f5ba",
+      "correctCount": 7,
+      "totalCount": 7,
+      "anys": []
+    },
+    "src/type-element/type-html/table/row/row.abstract.ts": {
+      "hash": "d24c68b499b32794e4558c8c70a82014259c7012",
+      "correctCount": 21,
+      "totalCount": 21,
+      "anys": []
+    },
+    "src/element/html-element/table/data-cell/data-cell.interface.ts": {
+      "hash": "c68c62284a0622b8c4f7602f67d7adbfda2ef082",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/table/row/row.interface.ts": {
+      "hash": "6b76540bbd644079ef2c5f925b561a95979ed240",
+      "correctCount": 7,
+      "totalCount": 7,
+      "anys": []
+    },
+    "src/element/html-element/table/data-cell/data-cell.class.ts": {
+      "hash": "7c913491a155d0d1a9b877c194b67d1d87ab0e70",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/element/html-element/table/row/row.class.ts": {
+      "hash": "d7151afcf102cca882d6c8d419108e23a3fbd072",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/table/header-cell/header-cell.interface.ts": {
+      "hash": "bfe20e19938e3517569555ee32804844a7c531bf",
+      "correctCount": 7,
+      "totalCount": 7,
+      "anys": []
+    },
+    "src/type-element/type-html/table/header-cell/header-cell.abstract.ts": {
+      "hash": "85a7f94f707e7d4ac898f6582614ca689d35ec49",
+      "correctCount": 21,
+      "totalCount": 21,
+      "anys": []
+    },
+    "src/type-element/type-html/table/head/head.interface.ts": {
+      "hash": "0a42e97dc180907cbe56ff4a5f9c2c5f3111cf2e",
+      "correctCount": 7,
+      "totalCount": 7,
+      "anys": []
+    },
+    "src/type-element/type-html/table/head/head.abstract.ts": {
+      "hash": "54637e7107efb33d0132443a44b7d33d4e87435b",
+      "correctCount": 21,
+      "totalCount": 21,
+      "anys": []
+    },
+    "src/type-element/type-component/type-component.interface.ts": {
+      "hash": "c710ca7ce252e02536ac4ad46212a5951d8c3f89",
+      "correctCount": 13,
+      "totalCount": 14,
+      "anys": []
+    },
+    "src/type-element/type-component/type-component.abstract.ts": {
+      "hash": "6dac760f65fff38efd697fefdd6e37f0cf94b4bd",
+      "correctCount": 46,
+      "totalCount": 46,
+      "anys": []
+    },
+    "src/type-element/type-container/type-container.interface.ts": {
+      "hash": "11dfd0041eb60ef595bc08e87a3dae97c6f36a59",
+      "correctCount": 8,
+      "totalCount": 8,
+      "anys": []
+    },
+    "src/type-element/type-container/type-container.abstract.ts": {
+      "hash": "c973ecf7409733e62dff346adc0af2ad88cc8dcf",
+      "correctCount": 38,
+      "totalCount": 38,
+      "anys": []
+    },
+    "src/type-element/type-svg/type-svg.interface.ts": {
+      "hash": "0cb27333812943b31362a0be838f2a9262077814",
+      "correctCount": 7,
+      "totalCount": 7,
+      "anys": []
+    },
+    "src/type-element/type-svg/type-svg.abstract.ts": {
+      "hash": "fa710716ef93bfbdd51ca83372e6cbd92a91ccef",
+      "correctCount": 17,
+      "totalCount": 17,
+      "anys": []
+    },
+    "src/type-element/type-svg/svg/svg.interface.ts": {
+      "hash": "30ec6e355bedad223ad29d07e697452fedba3224",
+      "correctCount": 6,
+      "totalCount": 6,
+      "anys": []
+    },
+    "src/type-element/type-svg/svg/svg.abstract.ts": {
+      "hash": "189d96f2d5c0e01e1315df922493f333b5ebe908",
+      "correctCount": 41,
+      "totalCount": 41,
+      "anys": []
+    },
+    "src/type-element/type-html/abbr/abbr.interface.ts": {
+      "hash": "7f33e39e800d1e7b85ae65bccf0fc697bcf1b223",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/abbr/abbr.abstract.ts": {
+      "hash": "0ada5aac4783300972138237c04845e17030444a",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/address/address.interface.ts": {
+      "hash": "e1e3d8350745cdb136d7ec71e2b5c16920444c0e",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/address/address.abstract.ts": {
+      "hash": "fb13da6b676001b0eff173cf36f86a3ff27eb561",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/base/base.interface.ts": {
+      "hash": "1bfe1408d562790c3efc02d723555568b0cea047",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/base/base.abstract.ts": {
+      "hash": "2b0a67972d477097115caede4f4703f310cc5dd5",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/bdi/bdi.interface.ts": {
+      "hash": "231cae0b0b02200996f371411bcb635a012339e0",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/bdi/bdi.abstract.ts": {
+      "hash": "8e59d668a2506bbd697ede63f0c85233fbea61de",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/bdo/bdo.interface.ts": {
+      "hash": "c2492871dab7d9d412f94b240058147e661fab90",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/bdo/bdo.abstract.ts": {
+      "hash": "3040bcf3ab78be64c751f0d8a4e6d9663305c62e",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/block-quote/block-quote.interface.ts": {
+      "hash": "909eac39ad5a2ea06727abaa7021309aba4fab77",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/block-quote/block-quote.abstract.ts": {
+      "hash": "1b64988b1bd806283d0db314ead637c687e3f6e3",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/cite/cite.interface.ts": {
+      "hash": "9a3458bd263579706774472032c342f3e146f9f6",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/cite/cite.abstract.ts": {
+      "hash": "9debe14dae853230b829c7a8610a11ccb90814cc",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/data/data.interface.ts": {
+      "hash": "e84715a68ba7b5ebea29bfbec06b55efea9b4ecc",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/data/data.abstract.ts": {
+      "hash": "2c838dc5424df6f9698d1878e6702453933e2f03",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/data-list/data-list.interface.ts": {
+      "hash": "e45d0d175b8234dc701b8846f130dca6fc08735c",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/data-list/data-list.abstract.ts": {
+      "hash": "8915d2aef6a817e7727b615490d48e48b4bcc3c2",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/del/del.interface.ts": {
+      "hash": "466df5858d00b79d53a6a5fe531dd55717f0b722",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/del/del.abstract.ts": {
+      "hash": "4c4f5cba1557295eec1af03a03e603310228ab03",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/details/details.interface.ts": {
+      "hash": "a9a1d6b089ae3c8836fdb5ccb9672955542319a5",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/details/details.abstract.ts": {
+      "hash": "2793497a4f1ae190e3a65c583cfa3659f868aa27",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/dfn/dfn.interface.ts": {
+      "hash": "047b703a8a433a1693a952e71a119e0c08aaee6f",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/dfn/dfn.abstract.ts": {
+      "hash": "dfe1f4af7a75609aeaaeb176e6dd20067bf633dc",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/dialog/dialog.interface.ts": {
+      "hash": "02d42920863460f2ebd7cbd722c0d0dc49339c7a",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/dialog/dialog.abstract.ts": {
+      "hash": "7cbed5b60068c65e7f06864531123ee0dee28bdf",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/dl/dl.interface.ts": {
+      "hash": "0b53374f92ca4e0c64c25c550594fb6432ca9bdd",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/dl/dl.abstract.ts": {
+      "hash": "39469d6e13020d96059cfe81edeb2926fe08fcf2",
+      "correctCount": 18,
+      "totalCount": 18,
+      "anys": []
+    },
+    "src/type-element/type-html/dl/dd/dd.interface.ts": {
+      "hash": "dd262bd1b9b6e3a7fe37d8f4ab66d58e7d7ab28c",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/dl/dd/dd.abstract.ts": {
+      "hash": "e24e91b7b639f5a511c1ab743377a5a465a4c834",
+      "correctCount": 18,
+      "totalCount": 18,
+      "anys": []
+    },
+    "src/type-element/type-html/dl/dt/dt.interface.ts": {
+      "hash": "860c67e2159d1b2652296bc1d425888287da5382",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/dl/dt/dt.abstract.ts": {
+      "hash": "86fb5865850516f1e2e60b714c98f5b17e129c11",
+      "correctCount": 18,
+      "totalCount": 18,
+      "anys": []
+    },
+    "src/type-element/type-html/em/em.interface.ts": {
+      "hash": "5ad8ff2f5f1c5c7690ed2df97ee92996fff46152",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/em/em.abstract.ts": {
+      "hash": "96385b716a25d2a3a87d929c0d28e0c8c75256ab",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/embed/embed.interface.ts": {
+      "hash": "b0568ca6c18e94b8c065f04e4c219a5a6b99f887",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/embed/embed.abstract.ts": {
+      "hash": "0b68df4487729c1d2b62ea6e54053bcd9344a8d3",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/fieldset/fieldset.interface.ts": {
+      "hash": "942eb14a550feb77c0de979d1b08474c3c71344e",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/fieldset/fieldset.abstract.ts": {
+      "hash": "08575f0b50d1f81843c213cfa170385e6a2ea214",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/fig-caption/fig-caption.interface.ts": {
+      "hash": "90d18aaf0f2cb295f5878330214cff18740b50a3",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/fig-caption/fig-caption.abstract.ts": {
+      "hash": "932efec2de5269251fa4990605dfe386040177f2",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/figure/figure.interface.ts": {
+      "hash": "c4a99d643e673077be69fbd5fe11a7bb9e880324",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/figure/figure.abstract.ts": {
+      "hash": "542258da3c8b92079a916548bd2e54da0742ae4a",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/footer/footer.interface.ts": {
+      "hash": "83af0a1c13d82f0c870afbf16895dac940a5543c",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/footer/footer.abstract.ts": {
+      "hash": "e150020e4b28587a63199660927f87bf72613d19",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/hgroup/hgroup.interface.ts": {
+      "hash": "ccce8d5f87495ddddcff68bed933a7b5ece4f048",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/hgroup/hgroup.abstract.ts": {
+      "hash": "13b21677b06a4a044419dd1b1d9a0522dfb18a7b",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/iframe/iframe.interface.ts": {
+      "hash": "2b3fd9df802ddcbec814960d54fc62162c8fb197",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/iframe/iframe.abstract.ts": {
+      "hash": "7bab84d3a0be5bd6fbfb8df4c33cee4a3ae8bdca",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/input/input.interface.ts": {
+      "hash": "be7ad7e6f6ae0fa5f1817f29fcedad1b6d7602e5",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/input/input.abstract.ts": {
+      "hash": "7350a47524c7d965ae7df248b225547114f7fb27",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/ins/ins.interface.ts": {
+      "hash": "fdaf63e4bf958cbf25758d1d6da4be98f73f202e",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/ins/ins.abstract.ts": {
+      "hash": "2aeac8df5595b3fff58fcbe12cad947b7ac9a814",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/kbd/kbd.interface.ts": {
+      "hash": "48ab4cf3b0cdc6e3321bc1e90eeca8a785e9c202",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/kbd/kbd.abstract.ts": {
+      "hash": "46d1d6d6c5d77099f926afb88630aca38923584a",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/legend/legend.interface.ts": {
+      "hash": "22a855c8534004706c3cfe6eac75074466394cb0",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/legend/legend.abstract.ts": {
+      "hash": "97786491c3f7a2360993a0d7d1fd6d96e744cb0a",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/mark/mark.interface.ts": {
+      "hash": "16e674491d7aeb4e707fc891fd9844359e1ccc0e",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/mark/mark.abstract.ts": {
+      "hash": "21f42bd86e49869679f61453b0c36dfc3d47d43e",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/menu-item/menu-item.interface.ts": {
+      "hash": "c991b0ff1872fd4414dc2d84300119da289f9382",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/menu-item/menu-item.abstract.ts": {
+      "hash": "ff4fd1f607f5502d0c1fe0f49fc157332620bdda",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/meter/meter.interface.ts": {
+      "hash": "5b435e59978df849c1b7595ff9ace2a98f5ca186",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/meter/meter.abstract.ts": {
+      "hash": "74c0a95c19c44ad55edcbdb0c9999746d0a2374b",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/nav/nav.interface.ts": {
+      "hash": "bc0b592ea8d81d8fc5eff9c88552ad873bd7d109",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/nav/nav.abstract.ts": {
+      "hash": "0f62659e89702f7aa10831c9d80e3e657ed0df80",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/ul/li/li.interface.ts": {
+      "hash": "8c20076668e9accb62d2f910c453542d062a4316",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/ul/ul.interface.ts": {
+      "hash": "8cddc436d0d7030eb7e86bd0abe2271ae87246c8",
+      "correctCount": 7,
+      "totalCount": 7,
+      "anys": []
+    },
+    "src/type-element/type-html/ol/ol.interface.ts": {
+      "hash": "5aec2c61feae31cb5ee5bd3ffd77ba8a1d597c45",
+      "correctCount": 14,
+      "totalCount": 14,
+      "anys": []
+    },
+    "src/type-element/type-html/ul/li/li.abstract.ts": {
+      "hash": "59b41fe525cd134b2d7b61fc49ef886b8ffe212a",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/ul/ul.abstract.ts": {
+      "hash": "852c883921e9749846d50b18289c8973ca608efa",
+      "correctCount": 25,
+      "totalCount": 25,
+      "anys": []
+    },
+    "src/type-element/type-html/ol/ol.abstract.ts": {
+      "hash": "c54a4ba061f5c24693b7d00f97a3f41eab9f7776",
+      "correctCount": 23,
+      "totalCount": 23,
+      "anys": []
+    },
+    "src/type-element/type-html/opt-group/opt-group.interface.ts": {
+      "hash": "38317659a25a314d97617eb9ada612166988c96d",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/opt-group/opt-group.abstract.ts": {
+      "hash": "93a5b3ef7674a68e2f2c0ce02c7afd41e5704303",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/option/option.interface.ts": {
+      "hash": "75190adfedc851ae7b2e26cc17da0e989a816ed2",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/option/option.abstract.ts": {
+      "hash": "30c8c604000feef70492a23c9d10e910a3a398cd",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/output/output.interface.ts": {
+      "hash": "c63b80238454ba5f028c40e89fa680ca3d9f8829",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/output/output.abstract.ts": {
+      "hash": "f2a2d37c04c355fdcb5e9a348bf719d01c545f71",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/q/q.interface.ts": {
+      "hash": "328cb3e746f6f1c02aaf9a8cf6afc86fa5724752",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/q/q.abstract.ts": {
+      "hash": "a412f0bb0e2522a7db63996e598357e4b17abd07",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/rp/rp.interface.ts": {
+      "hash": "c1fa6b7142f15a2821576e5e7b3a5fac5cdc41c7",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/rp/rp.abstract.ts": {
+      "hash": "2e6bb3bd41506563aa1080a398475d663e229b13",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/rt/rt.interface.ts": {
+      "hash": "50a0cb9d1defd6f7b81861cc8c6fd5c97ab0c877",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/rt/rt.abstract.ts": {
+      "hash": "d4a2110281c209cf3366f777ab102e13c63c1ced",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/ruby/ruby.interface.ts": {
+      "hash": "fbc35ea0eb014649c22df4fe1fd56791934fd310",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/ruby/ruby.abstract.ts": {
+      "hash": "2dad1d04ecbd123285ca99a81e5456af32a61e6e",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/s/s.interface.ts": {
+      "hash": "da6548641f71f1588cc474d87b65f8226f3617cb",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/s/s.abstract.ts": {
+      "hash": "cba8a01b71520562e9ee62645ec2a39658ba5d91",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/samp/samp.interface.ts": {
+      "hash": "c704e1bac047396e20afff915980a109292b2289",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/samp/samp.abstract.ts": {
+      "hash": "17b2a010521e4a071651e5eeb49fa4d4eb343e33",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/small/small.interface.ts": {
+      "hash": "4f548f49d1b8cf9104991c87dfb5c60ec50ff2ee",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/small/small.abstract.ts": {
+      "hash": "535263bd98a17959e1e163c996a46d2e37e7bc13",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/source/source.interface.ts": {
+      "hash": "82f8a8fbe647513b8f81f25035841510c1346ae6",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/source/source.abstract.ts": {
+      "hash": "2dd1dd0b6d090cd197e18988cc923e7aa142bca9",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/strong/strong.interface.ts": {
+      "hash": "aec1589534fe764a99eaf9a846c6a1ada7939a13",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/strong/strong.abstract.ts": {
+      "hash": "812808d0f5f0d29f304eedd6d6d3c84909a7b231",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/sub/sub.interface.ts": {
+      "hash": "b9b2ece7fec25ad9f301a3d190a91fac460be0d6",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/sub/sub.abstract.ts": {
+      "hash": "95d22f25e497f18af157ffb6d074c60346148f69",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/table/body/body.interface.ts": {
+      "hash": "601f150aaf64efe262507322059ae629f471fcf3",
+      "correctCount": 7,
+      "totalCount": 7,
+      "anys": []
+    },
+    "src/type-element/type-html/table/body/body.abstract.ts": {
+      "hash": "0e02017b3de7a28f6b1b8d0af270b20febcd3419",
+      "correctCount": 21,
+      "totalCount": 21,
+      "anys": []
+    },
+    "src/type-element/type-html/table/caption/caption.interface.ts": {
+      "hash": "8ee20a70d9a533d35a21403244a98c707767fc6a",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/table/caption/caption.abstract.ts": {
+      "hash": "34c7ec5f7fde6d44d9866ed886a286c9df2ec29a",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/table/col/col.interface.ts": {
+      "hash": "edc2cf9a153f4af1feaad3334d3191243302c2a0",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/table/col/col.abstract.ts": {
+      "hash": "94d02561396d227e6a5c9e8f2aded0272154f0e0",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/table/col-group/col-group.interface.ts": {
+      "hash": "97743e220e114987969283afbbb841868336cb10",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/table/col-group/col-group.abstract.ts": {
+      "hash": "5c590a87a2e36ebdf8ff6e5a51f089da6d7284d7",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/table/foot/foot.interface.ts": {
+      "hash": "66ccd2b1998eef43714902804ccf70708e20ee58",
+      "correctCount": 7,
+      "totalCount": 7,
+      "anys": []
+    },
+    "src/type-element/type-html/table/foot/foot.abstract.ts": {
+      "hash": "64ac554c5e384c99ff5e6f2238b018efa56f472c",
+      "correctCount": 21,
+      "totalCount": 21,
+      "anys": []
+    },
+    "src/type-element/type-html/table/index.ts": {
+      "hash": "8e7710348eb44a25d0b41515ef7fea6a79e42b7a",
+      "correctCount": 20,
+      "totalCount": 20,
+      "anys": []
+    },
+    "src/type-element/type-html/textarea/textarea.interface.ts": {
+      "hash": "cb061ea22ebb9aed8da43287285df9a270804070",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/textarea/textarea.abstract.ts": {
+      "hash": "6776879d613f4268584f8bd3821e6c7571a6547c",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/template/template.interface.ts": {
+      "hash": "d45fd91ecc69a109d0caf734b9387dcb54933bf7",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/template/template.abstract.ts": {
+      "hash": "22a67af897292fb3c87135fa16448c820767c486",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/time/time.interface.ts": {
+      "hash": "78992516f730a27435566fba68873dfb068ab21c",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/time/time.abstract.ts": {
+      "hash": "1783412fdf51a1f78005fdfd441857274fb4bc74",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/title/title.interface.ts": {
+      "hash": "e27413227504eb4ea14f271ed3c9a5d33e64d52f",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/title/title.abstract.ts": {
+      "hash": "6d859c92d5362ef982d15c7b6ba1ef9f1ec3f699",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/track/track.interface.ts": {
+      "hash": "859e2aaadbe250481af45f8a43e5702b16e5398c",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/track/track.abstract.ts": {
+      "hash": "befb234fa2fae61eeeaacf286e4953b5ad33eea5",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/u/u.interface.ts": {
+      "hash": "0ad9e6ab77406118deb8d6f1eb359664eae87ca5",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/u/u.abstract.ts": {
+      "hash": "387fbd8d45fdf84814ab5f87113fbbf4b7ada3d6",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/var/var.interface.ts": {
+      "hash": "20c22f0226bdec075da127032df0590fa2f1a397",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/var/var.abstract.ts": {
+      "hash": "3bb6f3b6cda7fce45ce49c8e50b4e434d4385752",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/video/video.interface.ts": {
+      "hash": "c42c9259aa814b2f94c3a2f8cb08ddbd3fa5f710",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/video/video.abstract.ts": {
+      "hash": "32054287dd6e33b62f237283ff752473add68c7c",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/wbr/wbr.interface.ts": {
+      "hash": "9687a2b2123be320fbde7ff42d9b2429ab516ac7",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/wbr/wbr.abstract.ts": {
+      "hash": "d9289a65d92a5d07cc9dfd2668002c983c4bde31",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/index.ts": {
+      "hash": "ac99e1fb2339febd4b3491de257a60853e8d4033",
+      "correctCount": 173,
+      "totalCount": 173,
+      "anys": []
+    },
+    "src/type-element/index.ts": {
+      "hash": "86f55d9cac378fffd8e144a88bd60a5c0b6da218",
+      "correctCount": 10,
+      "totalCount": 10,
+      "anys": []
+    },
+    "src/element/html-element/table/header-cell/header-cell.interface.ts": {
+      "hash": "b0e133419371bb5e18cd4b24462071168698b6ef",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/table/header-cell/header-cell.class.ts": {
+      "hash": "8e563e2f4cb94c16e7461a5ed5d3f8924a2a87f1",
+      "correctCount": 11,
+      "totalCount": 11,
+      "anys": []
+    },
+    "src/element/html-element/table/head/head.interface.ts": {
+      "hash": "956d69fe99e282907bcaf0ab0c87af9454f3b01b",
+      "correctCount": 7,
+      "totalCount": 7,
+      "anys": []
+    },
+    "src/element/html-element/table/head/head.class.ts": {
+      "hash": "002c1d4e85497c140f12f75f703ebfcfbc1ad427",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/table/table.interface.ts": {
+      "hash": "7db14c3e9b79461f2f26cb4a9ebb9f328757771c",
+      "correctCount": 9,
+      "totalCount": 9,
+      "anys": []
+    },
+    "src/element/html-element/table/table.class.ts": {
+      "hash": "c388be36a119d16216ea240b87fd2feebc5e690d",
+      "correctCount": 18,
+      "totalCount": 18,
+      "anys": []
+    },
+    "src/element/html-element/table/body/body.interface.ts": {
+      "hash": "7662b121dd14e928d59288c7a0a753a96042df02",
+      "correctCount": 7,
+      "totalCount": 7,
+      "anys": []
+    },
+    "src/element/html-element/table/body/body.class.ts": {
+      "hash": "1628b526d8863a2033a2ed90a1b98035068d9d8d",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/table/foot/foot.interface.ts": {
+      "hash": "ce44b7214bf05870999422528fb424e84f6ca693",
+      "correctCount": 7,
+      "totalCount": 7,
+      "anys": []
+    },
+    "src/element/html-element/table/foot/foot.class.ts": {
+      "hash": "42625b0166831f2419bd16169c130053ee4dc880",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/element/html-element/table/index.ts": {
+      "hash": "0eb11dd883d28ac6004e21c08407cdf5848e1b82",
+      "correctCount": 12,
+      "totalCount": 12,
+      "anys": []
+    },
+    "src/element/html-element/template/template.interface.ts": {
+      "hash": "1bd1d58a4765442546ec04716e315e160abf1a6f",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/template/template.class.ts": {
+      "hash": "3d7e4f3f5ae99284fc00bb24f423c255d9d98745",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/element/html-element/textarea/textarea.interface.ts": {
+      "hash": "a665516dd99d306025ff0ad4c0f65b8d78286d30",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/textarea/textarea.class.ts": {
+      "hash": "b170985342bbf495cf1763fa4a603b1b06a49605",
+      "correctCount": 28,
+      "totalCount": 28,
+      "anys": []
+    },
+    "src/element/html-element/title/title.interface.ts": {
+      "hash": "2ecc900036bbd26a23a45788e2736cd25a0c1536",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/title/title.class.ts": {
+      "hash": "e8d78751c679b89c7ef7605183a03f0fea73731a",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/element/html-element/track/track.interface.ts": {
+      "hash": "4460169bdddb790fe394d32930693fc0497b0026",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/track/track.class.ts": {
+      "hash": "b28b4a5a86bc4a1cb3311f209a94b145b9e2cddc",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/element/html-element/unordered-list/unordered-list.interface.ts": {
+      "hash": "527ea869c7d013425d07a5e06c2d4529f7fb832c",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/unordered-list/unordered-list.class.ts": {
+      "hash": "e543d0a20caf3cd321ff8b8d0413eaad7593881e",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/element/html-element/video/video.interface.ts": {
+      "hash": "8e4e09f16ae1c4601d2a810327614343de6bf753",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/element/html-element/video/video.class.ts": {
+      "hash": "2cda52847b5ece1e07fa9c8bf7a68007527bd78d",
+      "correctCount": 13,
+      "totalCount": 13,
+      "anys": []
+    },
+    "src/element/html-element/index.ts": {
+      "hash": "9044a1ae4b6990480cf4c5e672ef58fbead9177e",
+      "correctCount": 78,
+      "totalCount": 78,
+      "anys": []
+    },
+    "src/element/svg-element/circle/circle.interface.ts": {
+      "hash": "a65a64e7fef9d45d02d08ef403f9249c037962b5",
+      "correctCount": 6,
+      "totalCount": 6,
+      "anys": []
+    },
+    "src/element/svg-element/circle/circle.class.ts": {
+      "hash": "835d7c6c0c9aae787f316b010576a576d49e2313",
+      "correctCount": 25,
+      "totalCount": 25,
+      "anys": []
+    },
+    "src/element/svg-element/defs/defs.interface.ts": {
+      "hash": "d2892197303d895384e09105e3a09374a4eb7081",
+      "correctCount": 7,
+      "totalCount": 7,
+      "anys": []
+    },
+    "src/element/svg-element/defs/defs.class.ts": {
+      "hash": "2bc35a11b0b0e0a8306a8eedfe86b7ca479db4d3",
+      "correctCount": 26,
+      "totalCount": 26,
+      "anys": []
+    },
+    "src/element/svg-element/ellipse/ellipse.interface.ts": {
+      "hash": "273c36f1a6ff86bbcfbe16efe3bb0d65cc195155",
+      "correctCount": 35,
+      "totalCount": 35,
+      "anys": []
+    },
+    "src/element/svg-element/ellipse/ellipse.class.ts": {
+      "hash": "dacf9550384dc8ff063465b6ead08bfa85ab4b4d",
+      "correctCount": 75,
+      "totalCount": 75,
+      "anys": []
+    },
+    "src/element/svg-element/image/image.interface.ts": {
+      "hash": "4197cd57070e4ac4110dd126a6bb5873adfdaf50",
+      "correctCount": 19,
+      "totalCount": 19,
+      "anys": []
+    },
+    "src/element/svg-element/image/image.class.ts": {
+      "hash": "d025951264ad4f6932220cb6bfe7fde9a2b6ef7f",
+      "correctCount": 32,
+      "totalCount": 32,
+      "anys": []
+    },
+    "src/element/svg-element/line/line.interface.ts": {
+      "hash": "4cd7fc4f9633f12694c24f73c3207d96f0bf7cca",
+      "correctCount": 34,
+      "totalCount": 34,
+      "anys": []
+    },
+    "src/element/svg-element/line/line.class.ts": {
+      "hash": "e97ec5d63b87535e2d9d90a68a695594833dd4ac",
+      "correctCount": 75,
+      "totalCount": 75,
+      "anys": []
+    },
+    "src/element/svg-element/stop/stop.interface.ts": {
+      "hash": "03ba38a690ebd16e93d10914be8650d4f44091cc",
+      "correctCount": 22,
+      "totalCount": 22,
+      "anys": []
+    },
+    "src/element/svg-element/radial-gradient/radial-gradient.interface.ts": {
+      "hash": "eaad9000ecfc0f79a5f7225b97576ed8f7a4e08b",
+      "correctCount": 17,
+      "totalCount": 17,
+      "anys": []
+    },
+    "src/element/svg-element/radial-gradient/radial-gradient.class.ts": {
+      "hash": "e739672347c47bca82de5ac7b670c9903295eed7",
+      "correctCount": 34,
+      "totalCount": 34,
+      "anys": []
+    },
+    "src/element/svg-element/stop/stop.class.ts": {
+      "hash": "2534c68ab09eddb08980fadd553a4d8cb18b225b",
+      "correctCount": 45,
+      "totalCount": 45,
+      "anys": []
+    },
+    "src/element/svg-element/linear-gradient/linear-gradient.interface.ts": {
+      "hash": "b69c457b5181d6252875e06af5075201ed994332",
+      "correctCount": 24,
+      "totalCount": 24,
+      "anys": []
+    },
+    "src/element/svg-element/linear-gradient/linear-gradient.class.ts": {
+      "hash": "290fab1416d3c21f04e217f60a02814691e3ea3e",
+      "correctCount": 46,
+      "totalCount": 46,
+      "anys": []
+    },
+    "src/element/svg-element/path/path.interface.ts": {
+      "hash": "00d4cd5f25d0c6c5a71d19b24ad536a7573fe482",
+      "correctCount": 29,
+      "totalCount": 29,
+      "anys": []
+    },
+    "src/element/svg-element/path/path.class.ts": {
+      "hash": "6ee9d9247fbe8f56e8339ac5d25129fa15577cf0",
+      "correctCount": 64,
+      "totalCount": 65,
+      "anys": []
+    },
+    "src/element/svg-element/rect/rect.interface.ts": {
+      "hash": "0b7dcb4e487b08f7fca0ac9c1ddbc6fb2c5267f1",
+      "correctCount": 36,
+      "totalCount": 36,
+      "anys": []
+    },
+    "src/element/svg-element/rect/rect.class.ts": {
+      "hash": "b1c82a4eb7fabf4f39560aad3e9e6bcaf9d38ef4",
+      "correctCount": 74,
+      "totalCount": 74,
+      "anys": []
+    },
+    "src/element/svg-element/svg/svg.interface.ts": {
+      "hash": "cc8e65fa141f885b780c3115382f6ebe2a706b1c",
+      "correctCount": 7,
+      "totalCount": 7,
+      "anys": []
+    },
+    "src/element/svg-element/svg/svg.class.ts": {
+      "hash": "d273250fb43c9f3439b8c7f3a7c9fa553da042f7",
+      "correctCount": 11,
+      "totalCount": 11,
+      "anys": []
+    },
+    "src/element/svg-element/text/text.interface.ts": {
+      "hash": "2620f1bfada049329830764886da9299efaf8e97",
+      "correctCount": 24,
+      "totalCount": 24,
+      "anys": []
+    },
+    "src/element/svg-element/text/text.class.ts": {
+      "hash": "18155e4445a8ab41e1c90a3774d6d1f79134e8b1",
+      "correctCount": 44,
+      "totalCount": 44,
+      "anys": []
+    },
+    "src/element/svg-element/index.ts": {
+      "hash": "201a00a7375e00b56e19589353cfb5a211ae2c9c",
+      "correctCount": 24,
+      "totalCount": 24,
+      "anys": []
+    },
+    "src/element/index.ts": {
+      "hash": "0c34417b9d4077aa59ef6af21d9918f4fe9cee04",
+      "correctCount": 0,
+      "totalCount": 0,
+      "anys": []
+    },
+    "src/type-element/type-element.interface.ts": {
+      "hash": "7a302226475d0ffe8cbd685e03aec0ac4df6d749",
+      "correctCount": 143,
+      "totalCount": 144,
+      "anys": []
+    },
+    "src/type-node/type-node.abstract.ts": {
+      "hash": "de3c3f5240355cce564aa059d9ceec4d75881000",
+      "correctCount": 358,
+      "totalCount": 370,
+      "anys": []
+    },
+    "src/type-root/type-root.interface.ts": {
+      "hash": "35208159a7036da1cc7470b5257e52bae280982f",
+      "correctCount": 6,
+      "totalCount": 6,
+      "anys": []
+    },
+    "src/type-root/type-root.abstract.ts": {
+      "hash": "04a623cf825a0e04c78ddd591142af6157e95104",
+      "correctCount": 29,
+      "totalCount": 29,
+      "anys": []
+    },
+    "src/utils.ts": {
+      "hash": "02b21366f63fcb8cbe86969fbdd25bdc9274f587",
+      "correctCount": 96,
+      "totalCount": 100,
+      "anys": []
+    },
+    "src/index.ts": {
+      "hash": "016c5ac0c07048744ca1e2a3f3dd063efdb8b410",
+      "correctCount": 34,
+      "totalCount": 34,
+      "anys": []
+    },
+    "src/type-element/type-html/summary/summary.interface.ts": {
+      "hash": "715bddd00cbee5f68f90bab471d9272b495af9e4",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/summary/summary.abstract.ts": {
+      "hash": "4fcf16e5344ea1011b1974fa90110cba2579a94f",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/type-html/sup/sup.interface.ts": {
+      "hash": "2f29ea3c566598aa289c032a5c958d995bece9ef",
+      "correctCount": 4,
+      "totalCount": 4,
+      "anys": []
+    },
+    "src/type-element/type-html/sup/sup.abstract.ts": {
+      "hash": "4e77a8951fe956e51c055935d62937926a61034e",
+      "correctCount": 16,
+      "totalCount": 16,
+      "anys": []
+    },
+    "src/type-element/HtmlTypes.ts": {
+      "hash": "141a0384bea6dd3c3a0f22914267ab4dbef79df7",
+      "correctCount": 389,
+      "totalCount": 389,
+      "anys": []
+    },
+    "src/element/svg-element/SvgTypes.ts": {
+      "hash": "b09922dc219a89446facca763904e482cc1b221b",
+      "correctCount": 37,
+      "totalCount": 37,
+      "anys": []
+    }
+  }
+}

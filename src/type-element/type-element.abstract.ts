@@ -11,6 +11,7 @@ import {
   ITypeElement,
   ITypeProperty, ITextItem, IXItem, IElementItem
 } from './type-element.interface';
+import {IXElementOption} from "../element/x-element/x-element.interface";
 /**
  * 虚拟元素Element的数据结构
  * 可以对应到虚拟dom树。 createDom(tag, attr, children)
@@ -548,7 +549,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       this.childNodes.length = length;
     }
   }
-  createItem<T extends TextNode | TypeElement>(parent: TypeElement, node: ITextItem | IXItem | IElementItem): T {
+  createItem<T extends TextNode | TypeElement>(parent: TypeElement, node: ITextItem | IXItem | IElementItem | IXElementOption): T {
     let item;
     if (node.nodeValue !== undefined) { // 如果是文本节点，则退出迭代
       item = new TextNode(parent, node.nodeValue) as T;

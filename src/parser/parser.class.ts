@@ -284,8 +284,8 @@ export class Parser {
    * @param data
    */
   parseFromString(data: string): TextNode | XElement {
-    // console.log('parser parseFromString . ');
-    // console.log('data is ', data);
+    console.log('parser parseFromString . ');
+    console.log('data is ', data);
     this._currentFragment = [];
     this._stack = [];
     this._errorCode = ParserErrorCode.NoError;
@@ -309,12 +309,12 @@ export class Parser {
     if (isWhitespaceString(text)) {
       return;
     }
-    const xEl = new XElement('span');
+    const xEl = new XElement({ nodeName: 'span' });
     const node = new TextNode(xEl, text);
     this._currentFragment.push(node);
   }
   onCdata(text: string): void {
-    const xEl = new XElement('span');
+    const xEl = new XElement({ nodeName: 'span' });
     const node = new TextNode(xEl, text);
     this._currentFragment.push(node);
   }
@@ -331,7 +331,7 @@ export class Parser {
     }
     // todo 根据name创建各个定义的类，包括 (XElement | TextNode)
     // console.log('name is ', name);
-    const node = new XElement(name);
+    const node = new XElement({ nodeName: name });
     node.childNodes = [];
     if (this._hasAttributes) {
       node.attributes = attributes;

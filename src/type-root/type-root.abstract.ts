@@ -3,20 +3,20 @@
  * 作为前端项目的入口文件要继承根节点抽象类，并挂载到对应的 ID 上。
  */
 import { TypeDiv } from '../type-element/type-html/div/div.abstract';
-import { ITypeRoot } from './type-root.interface';
+import { ITypeRoot, ITypeRootOption } from './type-root.interface';
 /**
  * el 元素对象或ID；
  * parent 只有自己 TypeRoot
  */
 export abstract class TypeRoot extends TypeDiv implements ITypeRoot {
   parent: TypeRoot;
-  protected constructor(el: HTMLElement | string) {
+  protected constructor(option: ITypeRootOption) {
     super();
     this.parent = this;
-    if (el instanceof HTMLElement) {
-      el.appendChild(this.dom);
+    if (option.el instanceof HTMLElement) {
+      option.el.appendChild(this.dom);
     } else {
-      const app = document.querySelector<Element>(el);
+      const app = document.querySelector<Element>(option.el);
       if (app) {
         app.appendChild(this.dom);
       } else {
