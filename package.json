@@ -3,7 +3,6 @@
   "version": "0.1.28",
   "description": "一种基于抽象类和具体类的typescript的轻量级前端框架。A lightweight typescript front-end framework based on abstract classes, concrete classes. ",
   "main": "src/index.ts",
-  "types": "dist/index.d.js",
   "scripts": {
     "build": "tsc",
     "postversion": "rimraf dist && tsc && cp README.md package.json dist && cd dist && npm publish",
