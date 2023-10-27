@@ -1,8 +1,7 @@
 import { Subscription } from 'rxjs';
 import { ITypeProperty } from '../type-element/type-element.interface';
-import { ITextNode } from '../text-node/text-node.interface';
-import { INodeAttr, IPath, ITypeNode } from './type-node.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
+import { INodeAttr, IPath, ITypeNode } from './type-node.interface';
 const Entities: Record<number, string> = {
   /* < */ 0x3c: '&lt;',
   /* > */ 0x3e: '&gt;',
@@ -63,7 +62,7 @@ export abstract class TypeNode implements ITypeNode {
   abstract nodeValue?: string;
   abstract childNodes?: TypeNode[];
   abstract dom?: HTMLElement | SVGElement | Text;
-  abstract parent?: TypeNode;
+  abstract parent?: TypeElement;
   /**
    * 渲染出真实DOM
    */
@@ -132,6 +131,9 @@ export abstract class TypeNode implements ITypeNode {
     this.parent = parent;
     parent.addChild(this);
   }
+  appendParent(parent: TypeElement): void {
+    parent.addChild(this);
+  }
   /**
    * 创建子节点
    * 与创建组件不同
@@ -147,7 +149,8 @@ export abstract class TypeNode implements ITypeNode {
       if (node.TypeClass === undefined
         && node.template === undefined
         && node.nodeValue === undefined) {
-        console.error('node.TypeClass === undefined  && node.template === undefined' +
+        console.error('node.TypeClass === undefined' +
+          '  && node.template === undefined' +
           ' && node.nodeValue === undefined. ');
         continue;
       }

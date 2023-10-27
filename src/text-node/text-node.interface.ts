@@ -5,7 +5,7 @@
   */
 import { ITypeNode } from '../type-node/type-node.interface';
 export interface ITextNode extends ITypeNode {
-  className: 'TextNode';
+  className?: 'TextNode';
   nodeValue: string;
   // text: string;
   // config?: {title: string}

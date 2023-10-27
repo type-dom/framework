@@ -1,7 +1,6 @@
 import { TypeElement } from './type-element/type-element.abstract';
 import { ITypeElement } from './type-element/type-element.interface';
 import { ITextNode } from './text-node/text-node.interface';
-
 export function pxToRem(str: string): string {
   // 匹配:20px或: 20px不区分大小写
   const reg = /(\:|: )+(\d)+(px)/gi;
@@ -119,7 +118,26 @@ export function deepCopy<T>(destination: T, source: T, deep?: boolean): T {
   }
   return destination;
 }
-
+// const template = "Hello, {{name}}!";
+// const data = { name: "Alice" };
+// const renderer = mustache(template);
+// console.log(renderer(data)); // 输出 "Hello, Alice!"
+export function mustache(template: string, data: Record<string, string>) {
+  const pattern = /\{\{([\w\s\.]+)\}\}/g;
+  let result = template;
+  let match;
+  while (match = pattern.exec(template)) {
+    const keys = match[1].trim().split('.');
+    let value: any = data[keys[0]];
+    for (let i = 1; i < keys.length; i++) {
+      value = value[keys[i]];
+    }
+    if (value !== undefined) {
+      result = result.replace(match[0], value);
+    }
+  }
+  return result;
+}
 export function add(a: number, b: number) {
   return a + b;
 }

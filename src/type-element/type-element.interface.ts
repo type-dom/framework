@@ -13,7 +13,7 @@ import {
   Br,
   Button,
   Canvas,
-  Code,
+  Code, Div,
   Division,
   Form,
   Header,
@@ -76,10 +76,6 @@ export interface IBoundBox {
   width: string,
   height: string,
 }
-
-export interface ITextItem extends ITypeNode {
-  nodeValue: string
-}
 export interface IXItem extends ITypeNode {
   template: string,
   // data: Record<string, any>,
@@ -89,7 +85,7 @@ export interface IElementItem extends ITypeNode {
   TypeClass: typeof A | typeof Area | typeof Article | typeof Aside | typeof Audio
   | typeof B | typeof Br | typeof Button
   | typeof Canvas | typeof Code
-  | typeof Division
+  | typeof Div | typeof Division
   | typeof Form
   | typeof Header | typeof Heading | typeof Hr
   | typeof I | typeof Img | typeof Input

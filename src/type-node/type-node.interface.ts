@@ -1,4 +1,7 @@
 import { ITypeProperty } from '../type-element/type-element.interface';
+import { TypeNode } from './type-node.abstract';
+import { TypeElement } from '../type-element';
+import { XNode } from '../x-node/x-node.class';
 export interface INodeAttr {
   name: string,
   value: string;
@@ -12,19 +15,31 @@ export interface IPath {
  */
 export interface ITypeNode {
   className?: string,
+  attributes?: INodeAttr[],
   nodeName?: string,
   /**
    * nodeValue只在 TextNode中才有。
    * nodeValue存在时，就应该是 TextNode类
    */
   nodeValue?: string,
-  TypeClass?: any, // todo 如何设置？？？ 这个不会转为json
+
+  /**
+   * 构造函数 new (config: ITypeNode) , 没有parent参数
+   *   todo 如何设置？？？ 这个不会转为json
+    * @param config
+   */
+  TypeClass?: any,
+  /**
+   * parent 可选
+   * 且为 TypeElement
+   * XNode 如何处理 ———————— 不设 parent， === undefined
+   */
+  parent?: TypeElement,
   /**
    * attributes只在XElement中有，并会转换为 attrObj。
    * TextNode 没有 attributes和propObj
    */
   propObj?: ITypeProperty;
-  parent?: ITypeNode,
   // TextNode 没有 childNodes
   childNodes?: ITypeNode[],
   /**

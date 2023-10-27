@@ -311,13 +311,11 @@ export class Parser {
     if (isWhitespaceString(text)) {
       return;
     }
-    const xEl = new XElement({ nodeName: 'span' });
-    const node = new TextNode(xEl, text);
+    const node = new TextNode(text);
     this._currentFragment.push(node);
   }
   onCdata(text: string): void {
-    const xEl = new XElement({ nodeName: 'span' });
-    const node = new TextNode(xEl, text);
+    const node = new TextNode(text);
     this._currentFragment.push(node);
   }
 

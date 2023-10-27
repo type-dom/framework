@@ -17,7 +17,7 @@ export class Option extends TypeHtml implements IOption {
     this.propObj.attrObj = {
       name: 'option'
     };
-    this.text = new TextNode(this, '一个选项');
+    this.text = new TextNode('一个选项');
     this.childNodes = [this.text];
   }
   // render(): void {

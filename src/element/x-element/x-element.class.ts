@@ -1,11 +1,10 @@
 import { fromEvent } from 'rxjs';
-import {TypeNode} from "../../type-node/type-node.abstract";
-import { INodeAttr } from '../../type-node/type-node.interface';
+import { INodeAttr, ITypeNode } from '../../type-node/type-node.interface';
 import { TextNode } from '../../text-node/text-node.class';
 import { TypeElement } from '../../type-element/type-element.abstract';
 import { Parser } from '../../parser/parser.class';
-import { IXElement, IXElementOption } from './x-element.interface';
-
+import { IXElement } from './x-element.interface';
+import { XNode } from '../../x-node/x-node.class';
 /**
  * XElement是一个通用元素节点类，可以是其它类的父节点，也可以是其它类的子节点
  * DOM/XML
@@ -17,62 +16,56 @@ export class XElement extends TypeElement implements IXElement {
   className: 'XElement';
   nodeName: string;
   childNodes: (XElement | TextNode)[];
-  parent: TypeElement; // 在解析时，onEndElement时，重新赋值。
+  parent?: TypeElement; // 在解析时，onEndElement时，重新赋值。
   template?: string;
   // data?: Record<string, any>;
   methods?: Record<string, Function>;
   config?: Record<string, any>; // config不会转为json
-  dom: HTMLElement | SVGElement;
+  dom?: HTMLElement | SVGElement;
   attributes: INodeAttr[];
-  constructor(option: IXElementOption) {
+  /**
+   * 在 Parser 中使用 XElement 时， 限制了不能直接使用 parent 参数。
+   * @param config
+   */
+  constructor(config: ITypeNode) {
     super();
     this.className = 'XElement';
-    this.nodeName = option.nodeName || 'div';
-    // todo nodejs下没有document，Parser可能会用到
-    this.dom = document.createElement(this.nodeName);
-    this.parent = option.parent || this;
-    this.attributes = [];
+    this.nodeName = config.nodeName || 'div';
+    this.parent = config.parent || undefined;
+    this.attributes = config.attributes || [];
     console.log('x-element . ');
-    if (option.template !== undefined) {
+    if (config.template !== undefined) {
       const parser = new Parser();
-      const item = parser.parseFromString(option.template) as XElement;
+      const item = parser.parseFromString(config.template) as XElement;
       //   todo 绑定和指令等
-      if (option.data) {
-        console.log('option.data is ', option.data);
-        item.data = option.data;
+      if (config.data) {
+        console.log('config.data is ', config.data);
+        item.data = config.data;
       }
-      if (option.methods) {
-        console.log('option.methods is ', option.methods);
-        item.methods = option.methods;
+      if (config.methods) {
+        console.log('config.methods is ', config.methods);
+        item.methods = config.methods;
       }
-      this.parent.addChild(item);
+      this.parent?.addChild(item);
     }
     // todo template 和 childNodes 同时存在时怎么办  ？？？？？？
-    // if (option.childNodes) {
-    //   if (item.childNodes !== undefined) {
-    //     if (item instanceof TypeElement) {
-    //       item.childNodes = item.createItems(item, node.childNodes);
-    //     } else {
-    //       throw Error('item is TextNode , do not have childNodes . ');
-    //     }
-    //   } else {
-    //     throw Error('TypeClass is TextNode, but has childNodes . ');
-    //   }
-    // }
-    this.childNodes = (option.childNodes || [])
-      .map(child => {
+    this.childNodes = config.childNodes
+      ?.map(child => {
         if (child.nodeValue !== undefined) {
-          return new TextNode(this,  child.nodeValue);
+          return new TextNode(child.nodeValue, this);
         } else {
           return new XElement({
+            parent: this,
             nodeName: child.nodeName || 'div',
             childNodes: child.childNodes
           });
         }
-      });
+      }) || [];
   }
   beforeRender(): void {
     console.log('XElement beforeRender . ');
+    // todo nodejs下没有document，Parser可能会用到
+    this.dom = document.createElement(this.nodeName);
     for (const attr of this.attributes) {
       if (attr.name.startsWith(':')) {
       //   绑定值
@@ -101,7 +94,9 @@ export class XElement extends TypeElement implements IXElement {
         console.log('this.tempItem is ', this.tempItem);
         if (this.tempItem && attr.value !== undefined) {
           if (this.tempItem.methods && this.tempItem.methods[attr.value]) {
-            fromEvent(this.dom, attrName).subscribe((evt) => this.tempItem.methods[attr.value](evt, this));
+            if (this.dom !== undefined) {
+              fromEvent(this.dom, attrName).subscribe((evt) => this.tempItem.methods[attr.value](evt, this));
+            }
             // fromEvent(this.dom, 'input').subscribe((evt) => {
             //   console.log('input . ');
             //   console.log('this.dom is ', this.dom);
@@ -118,7 +113,6 @@ export class XElement extends TypeElement implements IXElement {
           [attr.name]: attr.value
         });
       }
-
     }
   }
 }

@@ -3,6 +3,7 @@ import { ITypeElement } from '../type-element/type-element.interface';
 export interface ITypeRoot extends ITypeElement {
   // className: 'TypeRoot',
   // parent: ITypeRoot;
+  el?: HTMLElement | string,
   nodeName: string;
 }
 

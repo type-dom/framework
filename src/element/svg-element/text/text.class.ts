@@ -21,7 +21,7 @@ export class SvgText extends TypeSvg implements ISvgText {
         y: 0,
       }
     };
-    this.textNode = new TextNode(this, '');
+    this.textNode = new TextNode();
     this.childNodes = [this.textNode];
   }
 }

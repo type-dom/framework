@@ -4,7 +4,6 @@ import { TypeNode } from '../type-node/type-node.abstract';
 import { TextNode } from '../text-node/text-node.class';
 import { StyleCursor, StyleDisplay } from '../style/style.enum';
 import { IStyle } from '../style/style.interface';
-import { IXElementOption } from '../element/x-element/x-element.interface';
 import { XElement } from '../element/x-element/x-element.class';
 import { humpToMiddleLine } from '../utils';
 import {
@@ -12,10 +11,8 @@ import {
   IBoundBox,
   ITypeElement,
   ITypeProperty,
-  ITextItem,
-  IXItem,
-  IElementItem
 } from './type-element.interface';
+import { ITypeNode } from '../type-node/type-node.interface';
 /**
  * 虚拟元素Element的数据结构
  * 可以对应到虚拟dom树。 createDom(tag, attr, children)
@@ -25,15 +22,15 @@ import {
 const vHash = Math.round(Math.random() * 1000000);
 export abstract class TypeElement extends TypeNode implements ITypeElement {
   abstract className: string;
-  abstract parent: TypeElement;
-  abstract dom: HTMLElement | SVGElement;
+  abstract parent?: TypeElement;
+  abstract dom?: HTMLElement | SVGElement;
   abstract nodeName: string;
   nodeValue: undefined;
   propObj: ITypeProperty;
   // attributes: INodeAttr[];
   childNodes: TypeNode[];
   events: Subscription[];
-  // initEvents?(): () => any;
+  initEvents?(): void;
 
   protected constructor() {
     super();
@@ -55,7 +52,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     } else if (this.parent === this) {
       return this;
     } else {
-      return this.parent.tempItem;
+      return this.parent?.tempItem;
     }
   }
   get itemData(): Record<string, any> | undefined {
@@ -135,7 +132,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.propObj.attrObj.id = id;
   }
   renderAttrId(id: string): void {
-    this.dom.setAttribute('id', id);
+    this.dom?.setAttribute('id', id);
   }
   // 设置属性 会清理原有属性
   setPropObj(propObj: ITypeProperty): void {
@@ -146,7 +143,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       // for (const style in this.propObj.styleObj) {
       //   this.removeStyle(style as keyof IStyle);
       // }
-      this.dom.removeAttribute('style');
+      this.dom?.removeAttribute('style');
     }
     this.propObj = propObj;
     this.setAttrObj(propObj.attrObj);
@@ -206,16 +203,15 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     (this.propObj.styleObj as Record<string, string | number | boolean>)[key] = value;
   }
   renderStyle(key: keyof IStyle, value: string | number | boolean): void {
-    this.dom.style.setProperty(humpToMiddleLine(key), String(value)); // 要转中划线
+    this.dom?.style.setProperty(humpToMiddleLine(key), String(value)); // 要转中划线
   }
   // 删除样式
-  removeStyle(key: keyof IStyle): TypeElement {
+  removeStyle(key: keyof IStyle): void {
     if (this.propObj.styleObj[key]) {
       delete this.propObj.styleObj[key];
     }
-    this.dom.style.removeProperty(humpToMiddleLine(key));
+    this.dom?.style.removeProperty(humpToMiddleLine(key));
     // delete this.dom.style[key as keyof CSSStyleDeclaration];
-    return this;
   }
   /**
    * 默认显示是  block
@@ -274,15 +270,15 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       key = humpToMiddleLine(key);
     }
     if (value === true) {
-      this.dom.setAttribute(key, '');
+      this.dom?.setAttribute(key, '');
     } else if (value === false) {
-      this.dom.removeAttribute(key);
+      this.dom?.removeAttribute(key);
     } else if (value === undefined) {
       // console.log('value is ', value);
-      this.dom.removeAttribute(key);
+      this.dom?.removeAttribute(key);
     } else {
       const val = value.toString();
-      this.dom.setAttribute(key, val);
+      this.dom?.setAttribute(key, val);
     }
   }
   setAttrName(value: string): TypeElement {
@@ -294,13 +290,13 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.propObj.attrObj.name = value;
   }
   renderAttrName(value: string): void {
-    this.dom.setAttribute('name', value);
+    this.dom?.setAttribute('name', value);
   }
   removeAttribute(key: string): TypeElement {
     if (this.propObj.attrObj[key]) {
       delete this.propObj.attrObj[key];
     }
-    this.dom.removeAttribute(key);
+    this.dom?.removeAttribute(key);
     return this;
   }
   addDomClassName(className: string): TypeElement {
@@ -308,13 +304,13 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     if (this.propObj.attrObj?.class?.indexOf(className) === -1) {
       this.propObj.attrObj.class += ' ' + className;
     }
-    this.dom.classList.add(className);
+    this.dom?.classList.add(className);
     // this.dom.setAttribute('class', String(this.propObj.attrObj.class).trim());
     return this;
   }
   removeDomClassName(className: string): TypeElement {
     String(this.propObj.attrObj.class).replace(className, '');
-    this.dom.classList.remove(className);
+    this.dom?.classList.remove(className);
     return this;
   }
   /**
@@ -352,7 +348,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   renderChild(newChild: TypeNode): void {
     newChild.render();
     if (newChild.dom) {
-      this.dom.appendChild(newChild.dom);
+      this.dom?.appendChild(newChild.dom);
     }
   }
 
@@ -387,7 +383,9 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     // }
     // 如果下标位置已有dom节点。
     if (this.childNodes.length > index + 1) {
-      this.dom.insertBefore(newChild.dom, this.dom.childNodes[index]);
+      if (newChild.dom !== undefined) {
+        this.dom?.insertBefore(newChild.dom, this.dom.childNodes[index]);
+      }
     } else {
       this.renderChild(newChild);
     }
@@ -445,10 +443,10 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * render时使用
    */
   clearChildDom(): void {
-    let first = this.dom.firstElementChild;
+    let first = this.dom?.firstElementChild;
     while (first) {
       first.remove();
-      first = this.dom.firstElementChild;
+      first = this.dom?.firstElementChild;
     }
   }
   // 替换
@@ -532,7 +530,15 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.events.map(item => item.unsubscribe());
   }
   get boundBox(): IBoundBox {
-    const { left, top, width, height } = this.dom.getBoundingClientRect();
+    if (this.dom === undefined) {
+      return {
+        left: '0',
+        top: '0',
+        width: '0',
+        height: '0'
+      };
+    }
+    const { left, top, width, height } = this.dom?.getBoundingClientRect();
     // console.log('left is ', left, 'top is ', top, 'width is ', width, 'height is ', height);
     return {
       left: left + 'px',
@@ -542,11 +548,11 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     };
   }
   // 子类中有需要的地方覆写
-  setConfig(config?: Record<string, any>) {
-    if (config) {
-      this.setAttrObj(config as Partial<ITypeAttribute>);
-    }
-  }
+  // setConfig(config?: Record<string, any>) {
+  //   if (config) {
+  //     this.setAttrObj(config as Partial<ITypeAttribute>);
+  //   }
+  // }
   /**
    * 默认初始化方法
    * 清理多余的对象。
@@ -566,33 +572,39 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       this.childNodes.length = length;
     }
   }
-  createItem<T extends TextNode | TypeElement>(parent: TypeElement, node: ITextItem | IXItem | IElementItem | IXElementOption): T {
-    let item;
+  createItem<T extends(TextNode | TypeElement)>(parent: TypeElement, node: ITypeNode): T {
+    let item: T;
     if (node.nodeValue !== undefined) { // 如果是文本节点，则退出迭代
-      item = new TextNode(parent, node.nodeValue) as T;
+      item = new TextNode(node.nodeValue) as T;
       parent.addChild(item);
       return item;
     } else if (node.template !== undefined) {
       const parser = new Parser();
       item = parser.parseFromString(node.template) as T;
       //   todo 绑定和指令等
-      if (node.data) {
+      if (node.data !== undefined) {
         console.log('node.data is ', node.data);
         item.data = node.data;
       }
-      if (node.methods) {
+      if (node.methods !== undefined) {
         console.log('node.on is ', node.methods);
         (item as XElement).methods = node.methods;
       }
     } else {
-      item = new node.TypeClass() as T; // 创建类实例
+      // todo TypeClass 为 XElement时的处理
+      //    XElement(config) ??? there is not parent .
+      // if (node.TypeClass === XElement) { // Uncaught ReferenceError: Cannot access 'TypeElement' before initialization
+      //   item = new node.TypeClass(node) as T; // 创建类实例
+      // } else {
+      item = new node.TypeClass(node.config) as T; // 创建类实例
+      // }
     }
     // console.log('item is ', item);
     item.setParent(parent);
     // todo
-    if (node.config && item instanceof TypeElement) {
-      item.setConfig(node.config);
-    }
+    // if (node.config && item instanceof TypeElement) { // new 时已经传过了。
+    //   item.setConfig(node.config);
+    // }
     if (node.propObj) {
       if (item instanceof TypeElement) {
         item.addStyleObj(node.propObj.styleObj);
@@ -659,6 +671,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
     // console.log('this.dom is ', this.dom);
     this.afterRender && this.afterRender();
+    this.initEvents && this.initEvents();
   }
   afterRender?(): void;
 }
