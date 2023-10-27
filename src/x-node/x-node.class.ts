@@ -14,7 +14,7 @@ export class XNode extends TypeNode implements IXNode {
   childNodes?: XNode[];
   // 只有渲染后才会生成真实dom
   dom?: HTMLElement | SVGElement | Text;
-  // parentNode: XNode | null;
+  parentNode?: XNode | null;
   constructor(option: IXNode) {
     super();
     this.className = 'XNode';
