@@ -11,3 +11,10 @@ export const ParserErrorCode: Record<string, number> = {
   UnterminatedElement: -9,
   ElementNeverBegun: -10,
 };
+export const XMLEntities = {
+  /* < */ 0x3c: '&lt;',
+  /* > */ 0x3e: '&gt;',
+  /* & */ 0x26: '&amp;',
+  /* " */ 0x22: '&quot;',
+  /* ' */ 0x27: '&apos;',
+};

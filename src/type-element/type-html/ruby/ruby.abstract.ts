@@ -4,7 +4,7 @@ export abstract class TypeRuby extends TypeHtml implements ITypeRuby {
   nodeName: 'ruby';
   dom: HTMLElement;
   protected constructor() {
-    super('ruby');
+    super();
     this.nodeName = 'ruby';
     this.dom = document.createElement(this.nodeName);
   }

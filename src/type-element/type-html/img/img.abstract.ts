@@ -4,7 +4,7 @@ export abstract class TypeImg extends TypeHtml implements ITypeImg {
   nodeName: 'img';
   dom: HTMLImageElement;
   protected constructor() {
-    super('img');
+    super();
     this.nodeName = 'img';
     this.dom = document.createElement(this.nodeName);
   }

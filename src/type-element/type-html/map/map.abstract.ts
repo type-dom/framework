@@ -4,7 +4,7 @@ export abstract class TypeMap extends TypeHtml implements ITypeMap {
   nodeName: 'map';
   dom: HTMLMapElement;
   protected constructor() {
-    super('map');
+    super();
     this.nodeName = 'map';
     this.dom = document.createElement(this.nodeName);
   }

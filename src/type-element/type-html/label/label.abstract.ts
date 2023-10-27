@@ -4,7 +4,7 @@ export abstract class TypeLabel extends TypeHtml implements ITypeLabel {
   nodeName: 'label';
   dom: HTMLLabelElement;
   protected constructor() {
-    super('label');
+    super();
     this.nodeName = 'label';
     this.dom = document.createElement(this.nodeName);
   }

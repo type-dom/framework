@@ -4,7 +4,7 @@ export abstract class TypeVideo extends TypeHtml implements ITypeVideo {
   nodeName: 'video';
   dom: HTMLVideoElement;
   protected constructor() {
-    super('video');
+    super();
     this.nodeName = 'video';
     this.dom = document.createElement(this.nodeName);
   }

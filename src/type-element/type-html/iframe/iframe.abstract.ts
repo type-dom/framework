@@ -4,7 +4,7 @@ export abstract class TypeIFrame extends TypeHtml implements ITypeIFrame {
   nodeName: 'iframe';
   dom: HTMLIFrameElement;
   protected constructor() {
-    super('iframe');
+    super();
     this.nodeName = 'iframe';
     this.dom = document.createElement(this.nodeName);
   }

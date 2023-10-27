@@ -4,7 +4,7 @@ export abstract class TypeOption extends TypeHtml implements ITypeOption {
   nodeName: 'option';
   dom: HTMLOptionElement;
   protected constructor() {
-    super('option');
+    super();
     this.nodeName = 'option';
     this.dom = document.createElement(this.nodeName);
   }

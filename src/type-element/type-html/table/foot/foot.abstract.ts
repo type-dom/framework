@@ -6,7 +6,7 @@ export abstract class TypeTableFoot extends TypeHtml implements ITypeTableFoot {
   dom: HTMLElement;
   childNodes: TypeTableRow[];
   protected constructor() {
-    super('tfoot');
+    super();
     this.nodeName = 'tfoot';
     this.dom = document.createElement(this.nodeName);
     this.childNodes = [];

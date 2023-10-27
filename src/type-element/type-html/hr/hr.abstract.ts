@@ -4,7 +4,7 @@ export abstract class TypeHr extends TypeHtml implements ITypeHr {
   nodeName: 'hr';
   dom: HTMLElement;
   protected constructor() {
-    super('hr');
+    super();
     this.nodeName = 'hr';
     this.dom = document.createElement(this.nodeName);
   }

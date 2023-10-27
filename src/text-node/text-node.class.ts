@@ -1,32 +1,32 @@
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { ITextNode } from './text-node.interface';
-import { template } from '@babel/core';
+import { mustache } from '../utils';
 /**
  * 虚拟文本节点。
  * ----> 本身不会渲染成标签。没有对应的HTML标签。
  */
 export class TextNode extends TypeNode implements ITextNode {
   className: 'TextNode';
-  // childNodes: [string];
+  parent?: TypeElement;
+  childNodes: undefined;
   nodeName: '#text';
   nodeValue: string;
   // text: string;
-  dom: Text;
-  template?: string;
+  dom?: Text;
+  // template?: string;
   /**
-   * @param parent
+   *
    * @param text
    */
-  constructor(public parent: TypeElement, text = '') { // \u200c
-    super('#text', text);
+  constructor(text = '\u200c', parent?: TypeElement) { // \u200c
+    super();
     this.className = 'TextNode';
     this.nodeName = '#text';
     this.nodeValue = text;
-    this.dom = document.createTextNode(text.toString());
   }
   get itemData() {
-    return this.data || this.parent.itemData;
+    return this.data || this.parent?.itemData;
   }
   // get textContentLength(): number {
   //   return this.textContent.length;
@@ -34,7 +34,7 @@ export class TextNode extends TypeNode implements ITextNode {
 
   // run中可能会有多个TextNode 了。
   get index(): number {
-    return this.parent ? this.parent.findChildIndex(this) : -1;
+    return this.parent ? this.parent?.findChildIndex(this) : -1;
   }
   // todo delete
   // get textContent(): string {
@@ -42,13 +42,6 @@ export class TextNode extends TypeNode implements ITextNode {
   // }
   get length(): number {
     return this.nodeValue.length;
-  }
-  // setConfig(config: Record<string, any>) {
-  //   this.setText(config.title);
-  // }
-
-  setParent(parent: TypeElement): void {
-    this.parent = parent;
   }
   setText(text: string): void {
     this.nodeValue = text;
@@ -66,7 +59,7 @@ export class TextNode extends TypeNode implements ITextNode {
     }
     this.nodeValue = this.nodeValue.concat(content);
     // this.render();
-    this.parent.render();
+    this.parent?.render();
   }
   /**
    * 调用 String自带slice方法
@@ -97,7 +90,7 @@ export class TextNode extends TypeNode implements ITextNode {
     this.setText(newContent);
     // todo error 光标移到头部。 ??触发selectionchange??
     // this.render(); //
-    this.parent.render();
+    this.parent?.render();
   }
   /**
    * 光标状态和选中状态的不同处理
@@ -133,26 +126,25 @@ export class TextNode extends TypeNode implements ITextNode {
     this.setText(newContent);
     // TODO 不能直接用 this.render(); 光标调到行程头部。
     // this.render();
-    this.parent.render();
+    this.parent?.render();
   }
   // 这个方法是没有地方触发的
   createItem(parent: TypeElement, node: ITextNode): TextNode {
-    const item = new TextNode(parent); // 创建类实例
+    const item = new TextNode(node.nodeValue, parent); // 创建类实例
     console.log('item is ', item);
-    item.setParent(parent);
-    // todo
-    if (node.nodeValue) {
-      item.setText(node.nodeValue);
-    }
-    parent.addChild(item);
-    if (node.nodeValue !== undefined) { // 如果是文本节点，则退出迭代; XNode,TextNode会有
-      if (item.nodeValue !== undefined) {
-        item.nodeValue = node.nodeValue;
-        return item;
-      } else {
-        throw Error('TypeClass is not TextNode, but nodeValue exist. ');
-      }
-    }
+    // item.setParent(parent);
+    // todo ??? 需要吗 ？？？
+    // if (node.nodeValue !== undefined) {
+    //   item.setText(node.nodeValue);
+    // }
+    // if (node.nodeValue !== undefined) { // 如果是文本节点，则退出迭代; XNode,TextNode会有
+    //   if (item.nodeValue !== undefined) {
+    //     item.nodeValue = node.nodeValue;
+    //     return item;
+    //   } else {
+    //     throw Error('TypeClass is not TextNode, but nodeValue exist. ');
+    //   }
+    // }
     return item;
   }
   render(): void {
@@ -161,26 +153,11 @@ export class TextNode extends TypeNode implements ITextNode {
     if (this.itemData) {
       text = mustache(this.nodeValue, this.itemData);
     }
-    this.dom.textContent = text || '';  // '\u200b'; // &zwnj; \u200c &zwsp;
-  }
-}
-// const template = "Hello, {{name}}!";
-// const data = { name: "Alice" };
-// const renderer = mustache(template);
-// console.log(renderer(data)); // 输出 "Hello, Alice!"
-function mustache(template: string, data: Record<string, string>) {
-  let pattern = /\{\{([\w\s\.]+)\}\}/g;
-  let result = template;
-  let match;
-  while (match = pattern.exec(template)) {
-    const keys = match[1].trim().split('.');
-    let value: any = data[keys[0]];
-    for (let i = 1; i < keys.length; i++) {
-      value = value[keys[i]];
-    }
-    if (value !== undefined) {
-      result = result.replace(match[0], value);
+    if (this.dom === undefined) {
+      this.dom = document.createTextNode(text.toString());
+    } else {
+      this.dom.textContent = text || '';  // '\u200b'; // &zwnj; \u200c &zwsp;
     }
   }
-  return result;
 }
+

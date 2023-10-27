@@ -7,7 +7,7 @@ export abstract class TypeHGroup extends TypeHtml implements ITypeHGroup {
   nodeName: 'hgroup';
   dom: HTMLElement;
   protected constructor() {
-    super('hgroup');
+    super();
     this.nodeName = 'hgroup';
     this.dom = document.createElement(this.nodeName);
   }

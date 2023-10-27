@@ -10,14 +10,14 @@ export class Option extends TypeHtml implements IOption {
   childNodes: TypeNode[];
   text: TextNode;
   constructor(public parent: TypeSelect) {
-    super('option');
+    super();
     this.nodeName = 'option';
     this.dom = document.createElement(this.nodeName);
     this.className = 'Option';
     this.propObj.attrObj = {
       name: 'option'
     };
-    this.text = new TextNode(this, '一个选项');
+    this.text = new TextNode('一个选项');
     this.childNodes = [this.text];
   }
   // render(): void {

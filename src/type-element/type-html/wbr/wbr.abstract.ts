@@ -4,7 +4,7 @@ export abstract class TypeWbr extends TypeHtml implements ITypeWbr {
   nodeName: 'wbr';
   dom: HTMLElement;
   protected constructor() {
-    super('wbr');
+    super();
     this.nodeName = 'wbr';
     this.dom = document.createElement(this.nodeName);
   }

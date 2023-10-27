@@ -4,7 +4,7 @@ export abstract class TypeSummary extends TypeHtml implements ITypeSummary {
   nodeName: 'summary';
   dom: HTMLElement;
   protected constructor() {
-    super('summary');
+    super();
     this.nodeName = 'summary';
     this.dom = document.createElement(this.nodeName);
   }

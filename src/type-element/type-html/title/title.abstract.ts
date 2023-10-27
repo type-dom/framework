@@ -4,7 +4,7 @@ export abstract class TypeTitle extends TypeHtml implements ITypeTitle {
   nodeName: 'title';
   dom: HTMLTitleElement;
   protected constructor() {
-    super('title');
+    super();
     this.nodeName = 'title';
     this.dom = document.createElement(this.nodeName);
   }

@@ -4,7 +4,7 @@ export abstract class TypeDetails extends TypeHtml implements ITypeDetails {
   nodeName: 'details';
   dom: HTMLDetailsElement;
   protected constructor() {
-    super('details');
+    super();
     this.nodeName = 'details';
     this.dom = document.createElement(this.nodeName);
   }

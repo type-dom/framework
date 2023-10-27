@@ -8,7 +8,7 @@ export abstract class TypeTableHead extends TypeHtml implements ITypeTableHead {
   dom: HTMLTableSectionElement;
   childNodes: TypeTableHeaderCell[];
   protected constructor() {
-    super('thead');
+    super();
     this.nodeName = 'thead';
     this.dom = document.createElement(this.nodeName);
     this.childNodes = [];

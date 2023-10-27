@@ -4,7 +4,7 @@ export abstract class TypeFigure extends TypeHtml implements ITypeFigure {
   nodeName: 'figure';
   dom: HTMLElement;
   protected constructor() {
-    super('figure');
+    super();
     this.nodeName = 'figure';
     this.dom = document.createElement(this.nodeName);
   }

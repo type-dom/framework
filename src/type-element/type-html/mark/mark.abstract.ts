@@ -4,7 +4,7 @@ export abstract class TypeMark extends TypeHtml implements ITypeMark {
   nodeName: 'mark';
   dom: HTMLElement;
   protected constructor() {
-    super('mark');
+    super();
     this.nodeName = 'mark';
     this.dom = document.createElement(this.nodeName);
   }

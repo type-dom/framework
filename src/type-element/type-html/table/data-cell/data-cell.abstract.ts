@@ -4,7 +4,7 @@ export abstract class TypeTableDataCell extends TypeHtml implements ITypeTableDa
   nodeName: 'td';
   dom: HTMLElement;
   protected constructor() {
-    super('td');
+    super();
     this.nodeName = 'td';
     this.dom = document.createElement(this.nodeName);
   }

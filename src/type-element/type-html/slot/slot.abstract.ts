@@ -4,7 +4,7 @@ export abstract class TypeSlot extends TypeHtml implements ITypeSlot {
   nodeName: 'slot';
   dom: HTMLSlotElement;
   protected constructor() {
-    super('slot');
+    super();
     this.nodeName = 'slot';
     this.dom = document.createElement(this.nodeName);
   }

@@ -4,7 +4,7 @@ export abstract class TypeDataList extends TypeHtml implements ITypeDataList {
   nodeName: 'datalist';
   dom: HTMLDataListElement;
   protected constructor() {
-    super('datalist');
+    super();
     this.nodeName = 'datalist';
     this.dom = document.createElement(this.nodeName);
   }

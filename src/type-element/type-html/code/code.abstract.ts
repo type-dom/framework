@@ -4,7 +4,7 @@ export abstract class TypeCode extends TypeHtml implements ITypeCode {
   nodeName: 'code';
   dom: HTMLElement;
   protected constructor() {
-    super('code');
+    super();
     this.nodeName = 'code';
     this.dom = document.createElement(this.nodeName);
   }

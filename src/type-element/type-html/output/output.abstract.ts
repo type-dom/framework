@@ -4,7 +4,7 @@ export abstract class TypeOutput extends TypeHtml implements ITypeOutput {
   nodeName: 'output';
   dom: HTMLOutputElement;
   protected constructor() {
-    super('output');
+    super();
     this.nodeName = 'output';
     this.dom = document.createElement(this.nodeName);
   }

@@ -1,16 +1,17 @@
-import { TypeNode } from '../../type-node/type-node.abstract';
 import { TypeHtml } from '../type-html/type-html.abstract';
-import { IComponent, ITypeComponent } from './type-component.interface';
+import { ITypeComponent } from './type-component.interface';
 /**
  * 组件基类
  */
 export abstract class TypeComponent extends TypeHtml implements ITypeComponent {
-  abstract parent: TypeHtml;
+  abstract parent?: TypeHtml;
+  nodeName : string;
   dom: HTMLElement;
   // childNodes: TypeNode[];
   // abstract setConfig(config: any): void
-  protected constructor(nodeName: string) {
-    super(nodeName);
+  protected constructor(nodeName: string = 'div') {
+    super();
+    this.nodeName = nodeName;
     this.dom = document.createElement(nodeName);
     this.childNodes = [];
   }
@@ -32,19 +33,20 @@ export abstract class TypeComponent extends TypeHtml implements ITypeComponent {
   //   }
   //   return item;
   // }
-  createItems(parent: TypeHtml, nodes: IComponent[]) {
-    console.log('type-component createItems . ');
-    const items: TypeNode[] = [];
-    for (const node of nodes) {
-      if (node.TypeClass === undefined) {
-        console.error('node.TypeClass is undefined . ');
-        continue;
-      }
-      const item = this.createItem(parent, node);
-      if (item) {
-        items.push(item);
-      }
-    }
-    return items;
-  }
+  // todo 有问题
+  // createItems(parent: TypeHtml, nodes: IComponent[]) {
+  //   console.log('type-component createItems . ');
+  //   const items: TypeNode[] = [];
+  //   for (const node of nodes) {
+  //     if (node.TypeClass === undefined) {
+  //       console.error('node.TypeClass is undefined . ');
+  //       continue;
+  //     }
+  //     const item = this.createItem(parent, node);
+  //     if (item) {
+  //       items.push(item);
+  //     }
+  //   }
+  //   return items;
+  // }
 }

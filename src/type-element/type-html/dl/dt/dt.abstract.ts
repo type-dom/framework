@@ -8,7 +8,7 @@ export abstract class TypeDT extends TypeHtml implements ITypeDT {
   nodeName: 'dt';
   dom: HTMLElement;
   protected constructor() {
-    super('dt');
+    super();
     this.nodeName = 'dt';
     this.dom = document.createElement(this.nodeName);
     this.childNodes = [];

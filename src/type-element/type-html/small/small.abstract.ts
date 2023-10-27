@@ -4,7 +4,7 @@ export abstract class TypeSmall extends TypeHtml implements ITypeSmall {
   nodeName: 'small';
   dom: HTMLElement;
   protected constructor() {
-    super('small');
+    super();
     this.nodeName = 'small';
     this.dom = document.createElement(this.nodeName);
   }

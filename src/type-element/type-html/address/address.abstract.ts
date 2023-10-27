@@ -4,7 +4,7 @@ export abstract class TypeAddress extends TypeHtml implements ITypeAddress {
   nodeName: 'address';
   dom: HTMLElement;
   protected constructor() {
-    super('address');
+    super();
     this.nodeName = 'address';
     this.dom = document.createElement(this.nodeName);
   }

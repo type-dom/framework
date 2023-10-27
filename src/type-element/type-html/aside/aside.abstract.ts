@@ -4,7 +4,7 @@ export abstract class TypeAside extends TypeHtml implements ITypeAside {
   nodeName: 'aside';
   dom: HTMLElement;
   protected constructor() {
-    super('aside');
+    super();
     this.nodeName = 'aside';
     this.dom = document.createElement(this.nodeName);
   }

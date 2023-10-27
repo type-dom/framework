@@ -6,12 +6,14 @@ import { ILabel } from './label.interface';
 export class Label extends TypeLabel implements ILabel {
   className: 'Label';
   childNodes: (Input | TextNode)[];
+  textNode: TextNode;
   constructor(public parent: TypeHtml) {
     super();
     this.className = 'Label';
     this.propObj.attrObj = {
       name: 'label'
     };
+    this.textNode = new TextNode();
     this.childNodes = [];
   }
   // createInstance(labelLiteral: ILabel): void {

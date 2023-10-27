@@ -4,7 +4,7 @@ export abstract class TypeRp extends TypeHtml implements ITypeRp {
   nodeName: 'rp';
   dom: HTMLElement;
   protected constructor() {
-    super('rp');
+    super();
     this.nodeName = 'rp';
     this.dom = document.createElement(this.nodeName);
   }

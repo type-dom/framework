@@ -7,7 +7,7 @@ export class ListItem extends TypeHtml implements IListItem {
   dom: HTMLLIElement;
   childNodes: (TypeHtml | TextNode)[];
   constructor(public parent: TypeHtml) {
-    super('li');
+    super();
     this.nodeName = 'li';
     this.dom = document.createElement(this.nodeName);
     this.className = 'ListItem';

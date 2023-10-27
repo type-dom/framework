@@ -4,7 +4,7 @@ export abstract class TypeData extends TypeHtml implements ITypeData {
   nodeName: 'data';
   dom: HTMLDataElement;
   protected constructor() {
-    super('data');
+    super();
     this.nodeName = 'data';
     this.dom = document.createElement(this.nodeName);
   }
