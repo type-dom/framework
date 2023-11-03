@@ -4,7 +4,8 @@ import { XElement } from '../../x-element/x-element.class';
 import { IDivision } from './division.interface';
 export class Division extends TypeDiv implements IDivision {
   className: 'Division';
-  constructor(public parent: TypeHtml | XElement) {
+  parent?: TypeHtml | XElement
+  constructor() {
     super();
     this.className = 'Division';
   }

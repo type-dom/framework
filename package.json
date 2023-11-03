@@ -12,8 +12,8 @@
     "uml": "tsuml2 --glob src/type-node/web-element/*.ts ",
     "docs": "typedoc --entryPointStrategy expand ./src",
     "coverage": "typescript-coverage-report",
-    "git-pull": "git pull",
-    "git-push": "git add . && git commit -m 'edit' && git push origin main"
+    "git-push": "git add . && git commit -m 'edit' && git push origin main",
+    "git-pull": "git pull"
   },
   "keywords": [
     "type-dom",
