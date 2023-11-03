@@ -5,8 +5,8 @@ export class SvgLine extends TypeSvg implements ISvgLine {
   nodeName: 'line';
   className: 'SvgLine';
   dom: SVGLineElement;
-  propObj: ISvgLineProperty;
-  childNodes: [];
+  declare propObj: ISvgLineProperty;
+  declare childNodes: [];
   x1 = 0;
   x2 = 0;
   y1 = 0;

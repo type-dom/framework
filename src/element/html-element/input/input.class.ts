@@ -5,7 +5,7 @@ export class Input extends TypeHtml implements IInput {
   nodeName: 'input';
   dom: HTMLInputElement;
   className: 'Input';
-  childNodes: [];
+  declare childNodes: [];
   // value: string | number | boolean | undefined;
   constructor(public parent: TypeHtml) {
     super();

@@ -4,7 +4,7 @@ import { ITableRow } from './row.interface';
 import { TableDataCell } from '../data-cell/data-cell.class';
 export class TableRow extends TypeTableRow implements ITableRow {
   className: 'TableRow';
-  childNodes: TableDataCell[];
+  declare childNodes: TableDataCell[];
   constructor(public parent: Table) {
     super();
     this.className = 'TableRow';

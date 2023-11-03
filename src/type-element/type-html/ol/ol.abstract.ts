@@ -15,7 +15,7 @@ import { TypeUL } from '../ul/ul.abstract';
 export abstract class TypeOL extends TypeHtml implements ITypeOL {
   nodeName: 'ol';
   dom: HTMLOListElement;
-  childNodes: (TypeLI | TypeUL)[];
+  declare childNodes: (TypeLI | TypeUL)[];
   // type, start 在属性中单独配置，不需要在构造函数中传参
   protected constructor() {
     super();

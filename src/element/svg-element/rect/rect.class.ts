@@ -5,12 +5,12 @@ export class SvgRect extends TypeSvg implements ISvgRect {
   nodeName: 'rect';
   className: 'SvgRect';
   dom: SVGRectElement;
-  propObj: ISvgRectProperty;
+  declare propObj: ISvgRectProperty;
   x = 0;
   y = 0;
   width = 60;
   height = 60;
-  childNodes: [];
+  declare childNodes: [];
   constructor(public parent: TypeSvgSvg) {
     super('rect');
     this.nodeName = 'rect';

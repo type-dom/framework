@@ -92,7 +92,7 @@
 [0m  [2m170:10[22m  [31merror[39m  'IWbr' is defined but never used         [2m@typescript-eslint/no-unused-vars[22m[0m
 [0m[0m
 [0m[4m/Users/jianfengxu/Documents/MY-GIT/nx-workspace/libs/type-dom.ts/src/element/x-element/x-element.class.ts[24m[0m
-[0m   [2m7:10[22m  [31merror[39m  'XNode' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                   [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m   [2m6:21[22m  [31merror[39m  'IXElementOption' is defined but never used                                                                                                                                                                                                                                                                                                                                                                         [2m@typescript-eslint/no-unused-vars[22m[0m
 [0m  [2m22:28[22m  [31merror[39m  Don't use `Function` as a type. The `Function` type accepts any function-like value.[0m
 [0mIt provides no type safety when calling the function, which can be a common source of bugs.[0m
 [0mIt also accepts things like class declarations, which will throw at runtime as they will not be called with `new`.[0m
@@ -199,8 +199,9 @@
 [0m  [2m10:11[22m  [31merror[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
 [0m[0m
 [0m[4m/Users/jianfengxu/Documents/MY-GIT/nx-workspace/libs/type-dom.ts/src/type-element/type-element.abstract.ts[24m[0m
-[0m  [2m49:19[22m  [31merror[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
-[0m  [2m58:34[22m  [31merror[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m16:10[22m  [31merror[39m  'IXElementOption' is defined but never used  [2m@typescript-eslint/no-unused-vars[22m[0m
+[0m  [2m52:19[22m  [31merror[39m  Unexpected any. Specify a different type     [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m61:34[22m  [31merror[39m  Unexpected any. Specify a different type     [2m@typescript-eslint/no-explicit-any[22m[0m
 [0m[0m
 [0m[4m/Users/jianfengxu/Documents/MY-GIT/nx-workspace/libs/type-dom.ts/src/type-element/type-element.interface.ts[24m[0m
 [0m  [2m102:5[22m  [31merror[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
@@ -213,22 +214,16 @@
 [0m  [2m82:25[22m  [31merror[39m  Unexpected any. Specify a different type  [2m@typescript-eslint/no-explicit-any[22m[0m
 [0m[0m
 [0m[4m/Users/jianfengxu/Documents/MY-GIT/nx-workspace/libs/type-dom.ts/src/type-node/type-node.interface.ts[24m[0m
-[0m   [2m2:10[22m  [31merror[39m  'TypeNode' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                [2m@typescript-eslint/no-unused-vars[22m[0m
-[0m   [2m4:10[22m  [31merror[39m  'XNode' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                   [2m@typescript-eslint/no-unused-vars[22m[0m
-[0m  [2m31:15[22m  [31merror[39m  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                            [2m@typescript-eslint/no-explicit-any[22m[0m
-[0m  [2m50:25[22m  [31merror[39m  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                            [2m@typescript-eslint/no-explicit-any[22m[0m
-[0m  [2m55:28[22m  [31merror[39m  Don't use `Function` as a type. The `Function` type accepts any function-like value.[0m
+[0m  [2m29:15[22m  [31merror[39m  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                            [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m48:25[22m  [31merror[39m  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                            [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m53:28[22m  [31merror[39m  Don't use `Function` as a type. The `Function` type accepts any function-like value.[0m
 [0mIt provides no type safety when calling the function, which can be a common source of bugs.[0m
 [0mIt also accepts things like class declarations, which will throw at runtime as they will not be called with `new`.[0m
 [0mIf you are expecting the function to accept certain arguments, you should explicitly define the function shape  [2m@typescript-eslint/ban-types[22m[0m
-[0m  [2m56:27[22m  [31merror[39m  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                            [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m  [2m54:27[22m  [31merror[39m  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                            [2m@typescript-eslint/no-explicit-any[22m[0m
 [0m[0m
-[0m[4m/Users/jianfengxu/Documents/MY-GIT/nx-workspace/libs/type-dom.ts/src/utils.ts[24m[0m
-[0m   [2m98:25[22m  [31merror[39m  Unexpected any. Specify a different type                         [2m@typescript-eslint/no-explicit-any[22m[0m
-[0m  [2m103:50[22m  [31merror[39m  Unexpected any. Specify a different type                         [2m@typescript-eslint/no-explicit-any[22m[0m
-[0m  [2m105:50[22m  [31merror[39m  Unexpected any. Specify a different type                         [2m@typescript-eslint/no-explicit-any[22m[0m
-[0m  [2m129:10[22m  [31merror[39m  Expected a conditional expression and instead saw an assignment  [2mno-cond-assign[22m[0m
-[0m  [2m131:16[22m  [31merror[39m  Unexpected any. Specify a different type                         [2m@typescript-eslint/no-explicit-any[22m[0m
+[0m[4m/Users/jianfengxu/Documents/MY-GIT/nx-workspace/libs/type-dom.ts/src/type-root/type-root.interface.ts[24m[0m
+[0m  [2m16:18[22m  [31merror[39m  'ITypeRootOption' is already defined  [2mno-redeclare[22m[0m
 [0m[0m
-[0m[31m[1m✖ 197 problems (197 errors, 0 warnings)[22m[39m[0m
+[0m[31m[1m✖ 192 problems (192 errors, 0 warnings)[22m[39m[0m
 [0m[31m[1m[22m[39m[0m

@@ -4,7 +4,7 @@ import { ITypeTableFoot } from './foot.interface';
 export abstract class TypeTableFoot extends TypeHtml implements ITypeTableFoot {
   nodeName: 'tfoot';
   dom: HTMLElement;
-  childNodes: TypeTableRow[];
+  declare childNodes: TypeTableRow[];
   protected constructor() {
     super();
     this.nodeName = 'tfoot';

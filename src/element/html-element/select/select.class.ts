@@ -6,7 +6,7 @@ import { ISelect } from './select.interface';
 
 export class Select extends TypeSelect implements ISelect {
   className: 'Select';
-  childNodes: Option[];
+  declare childNodes: Option[];
   value?: string | number | boolean;
   constructor(public parent: TypeHtml | XElement) {
     super();

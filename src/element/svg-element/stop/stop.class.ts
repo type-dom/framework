@@ -6,8 +6,8 @@ export class SvgStop extends TypeSvg implements ISvgStop {
   nodeName: 'stop';
   className: 'SvgStop';
   dom: SVGStopElement;
-  propObj: ISvgStopProperty;
-  childNodes: [];
+  declare propObj: ISvgStopProperty;
+  declare childNodes: [];
   constructor(public parent: SvgLinearGradient | SvgRadialGradient) {
     super('stop');
     this.nodeName = 'stop';

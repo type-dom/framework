@@ -8,9 +8,9 @@ import { ISvgImage, ISvgImageProperty } from './image.interface';
 export class SvgImage extends TypeSvg implements ISvgImage {
   nodeName: 'image';
   className: 'SvgImage';
-  propObj: ISvgImageProperty;
+  declare propObj: ISvgImageProperty;
   dom: SVGImageElement;
-  childNodes: [];
+  declare childNodes: [];
   constructor(public parent: TypeSvgSvg) {
     super('image');
     this.nodeName = 'image';

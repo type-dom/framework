@@ -4,7 +4,7 @@ import { TypeLI } from './li/li.abstract';
 export abstract class TypeUL extends TypeHtml implements ITypeUL {
   nodeName: 'ul';
   dom: HTMLUListElement;
-  childNodes: TypeLI[];
+  declare childNodes: TypeLI[];
   protected constructor() {
     super();
     this.nodeName = 'ul';

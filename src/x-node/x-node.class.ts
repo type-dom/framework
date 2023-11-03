@@ -10,7 +10,7 @@ export class XNode extends TypeNode implements IXNode {
   parent: undefined;
   nodeName?: string;
   nodeValue?: string;
-  attributes: INodeAttr[] = [];
+  override attributes: INodeAttr[] = [];
   childNodes?: XNode[];
   // 只有渲染后才会生成真实dom
   dom?: HTMLElement | SVGElement | Text;

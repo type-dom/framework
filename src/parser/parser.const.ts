@@ -1,4 +1,4 @@
-export const ParserErrorCode: Record<string, number> = {
+export const XMLParserErrorCode = {
   NoError: 0,
   EndOfDocument: -1,
   UnterminatedCdat: -2,

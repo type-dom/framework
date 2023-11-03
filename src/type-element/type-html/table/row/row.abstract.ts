@@ -4,7 +4,7 @@ import { ITypeTableRow } from './row.interface';
 export abstract class TypeTableRow extends TypeHtml implements ITypeTableRow {
   nodeName: 'tr';
   dom: HTMLTableRowElement;
-  childNodes: TypeTableDataCell[];
+  declare childNodes: TypeTableDataCell[];
   protected constructor() {
     super();
     // console.log('trData is ', trData);
