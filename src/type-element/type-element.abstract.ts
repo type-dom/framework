@@ -34,7 +34,6 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   childNodes: TypeNode[];
   events: Subscription[];
   initEvents?(): void;
-
   protected constructor() {
     super();
     this.propObj = {
