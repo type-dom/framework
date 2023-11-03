@@ -5,7 +5,7 @@ import { ITableFoot } from './foot.interface';
 
 export class TableFoot extends TypeTableFoot implements ITableFoot {
   className: 'TableFoot';
-  childNodes: TableRow[];
+  declare childNodes: TableRow[];
   constructor(public parent: Table) {
     super();
     this.className = 'TableFoot';

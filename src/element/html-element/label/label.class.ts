@@ -5,7 +5,7 @@ import { Input } from '../input/input.class';
 import { ILabel } from './label.interface';
 export class Label extends TypeLabel implements ILabel {
   className: 'Label';
-  childNodes: (Input | TextNode)[];
+  declare childNodes: (Input | TextNode)[];
   textNode: TextNode;
   constructor(public parent: TypeHtml) {
     super();

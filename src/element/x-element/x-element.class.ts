@@ -1,9 +1,9 @@
 import { fromEvent } from 'rxjs';
-import {INodeAttr, ITypeNode} from '../../type-node/type-node.interface';
-import {TextNode} from "../../text-node/text-node.class";
+import { INodeAttr, ITypeNode } from '../../type-node/type-node.interface';
+import { TextNode } from '../../text-node/text-node.class';
 import { TypeElement } from '../../type-element/type-element.abstract';
 import { Parser } from '../../parser/parser.class';
-import {IXElement, IXElementOption} from './x-element.interface';
+import { IXElement, IXElementOption } from './x-element.interface';
 // import { XNode } from '../../x-node/x-node.class';
 /**
  * XElement是一个通用元素节点类，可以是其它类的父节点，也可以是其它类的子节点
@@ -15,14 +15,14 @@ import {IXElement, IXElementOption} from './x-element.interface';
 export class XElement extends TypeElement implements IXElement {
   className: 'XElement';
   nodeName: string;
-  childNodes: (XElement | TextNode)[];
+  declare childNodes: (XElement | TextNode)[];
   parent?: TypeElement; // 在解析时，onEndElement时，重新赋值。
   template?: string;
   // data?: Record<string, any>;
   methods?: Record<string, Function>;
   config?: Record<string, any>; // config不会转为json
   dom?: HTMLElement | SVGElement;
-  attributes: INodeAttr[];
+  declare attributes: INodeAttr[];
   /**
    * 在 Parser 中使用 XElement 时， 限制了不能直接使用 parent 参数。
    * @param config
@@ -62,7 +62,7 @@ export class XElement extends TypeElement implements IXElement {
         }
       }) || [];
   }
-  beforeRender(): void {
+  override beforeRender(): void {
     console.log('XElement beforeRender . ');
     // todo nodejs下没有document，Parser可能会用到
     this.dom = document.createElement(this.nodeName);

@@ -5,7 +5,7 @@ import { TableHead } from './head/head.class';
 import { ITable } from './table.interface';
 export class Table extends TypeTable implements ITable {
   className: 'Table';
-  childNodes: (TableHead | TableRow)[];
+  declare childNodes: (TableHead | TableRow)[];
   constructor(public parent: TypeHtml) {
     super();
     this.className = 'Table';

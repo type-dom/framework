@@ -86,13 +86,13 @@ Create a hello world page to app:
 // Typescript
 // Br,Division,TypeRoot,TextNode等都是框架定义好的类
 import {Br, Division, TypeRoot, TextNode} from 'type-dom.ts';
-// app-root.ts 项目根节点，继承TypeRoot（根节点抽象类）
-export class AppRoot extends TypeRoot {
-  className: 'AppRoot';
+// app-element.ts 项目根节点，继承TypeRoot（根节点抽象类）
+export class AppElement extends TypeRoot {
+  className: 'AppElement';
   // 构造函数，rootEl是绑定的Dom元素，对应到index.html中的页面元素
   constructor(rootEl: HTMLElement) { 
     super(rootEl);
-    this.className = 'AppRoot';  // 类名，不是样式类
+    this.className = 'AppElement';  // 类名，不是样式类
     this.addAttrObj({ // 设置根节点的属性
       name: 'app-root' // 节点名称
     })
@@ -132,11 +132,11 @@ export class AppRoot extends TypeRoot {
 
 // main.ts 项目主程序
 import {fromEvent} from 'rxjs';
-import {AppRoot} from "./app-root";
+import {AppElement} from "./app-root";
 fromEvent(document, 'DOMContentLoaded').subscribe(() => {
   const uiEl = document.querySelector('#example-ref') as HTMLElement;
   if (uiEl) {
-    const view = new AppRoot(uiEl);
+    const view = new AppElement(uiEl);
   }
 });
 ```

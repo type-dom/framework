@@ -1,6 +1,6 @@
 import { INodeAttr, TextNode, XElement } from '../index';
 // import { XElement } from "../element/x-element/x-element.class"; // todo 这样会报错。上面引入没问题；
-import { ParserErrorCode } from './parser.const';
+import { XMLParserErrorCode } from './parser.const';
 import { isWhitespace, isWhitespaceString } from './parser.util';
 import { IContent, IInstruction, IParserParam } from './parser.interface';
 /**
@@ -19,7 +19,7 @@ export class Parser {
   constructor(param?: IParserParam) {
     this._currentFragment = [];
     this._stack = [];
-    this._errorCode = ParserErrorCode.NoError;
+    this._errorCode = XMLParserErrorCode.NoError;
     this._hasAttributes = param?.hasAttributes || true;
     this._lowerCaseName = param?.lowerCaseName || false;
   }
@@ -175,7 +175,7 @@ export class Parser {
             ++j;
             q = s.indexOf('>', j);
             if (q < 0) {
-              this.onError(ParserErrorCode.UnterminatedElement);
+              this.onError(XMLParserErrorCode.UnterminatedElement);
               return;
             }
             this.onEndElement(s.substring(j, q));
@@ -185,7 +185,7 @@ export class Parser {
             ++j;
             pi = this._parseProcessingInstruction(s, j);
             if (s.substring(j + pi.parsed, j + pi.parsed + 2) !== '?>') {
-              this.onError(ParserErrorCode.UnterminatedXmlDeclaration);
+              this.onError(XMLParserErrorCode.UnterminatedXmlDeclaration);
               return;
             }
             this.onPi(pi.name, pi.value);
@@ -195,7 +195,7 @@ export class Parser {
             if (s.substring(j + 1, j + 3) === '--') {
               q = s.indexOf('-->', j + 3);
               if (q < 0) {
-                this.onError(ParserErrorCode.UnterminatedComment);
+                this.onError(XMLParserErrorCode.UnterminatedComment);
                 return;
               }
               this.onComment(s.substring(j + 3, q));
@@ -203,7 +203,7 @@ export class Parser {
             } else if (s.substring(j + 1, j + 8) === '[CDATA[') {
               q = s.indexOf(']]>', j + 8);
               if (q < 0) {
-                this.onError(ParserErrorCode.UnterminatedCdat);
+                this.onError(XMLParserErrorCode.UnterminatedCdat);
                 return;
               }
               this.onCdata(s.substring(j + 8, q));
@@ -213,14 +213,14 @@ export class Parser {
               let complexDoctype = false;
               q = s.indexOf('>', j + 8);
               if (q < 0) {
-                this.onError(ParserErrorCode.UnterminatedDoctypeDeclaration);
+                this.onError(XMLParserErrorCode.UnterminatedDoctypeDeclaration);
                 return;
               }
               if (q2 > 0 && q > q2) {
                 q = s.indexOf(']>', j + 8);
                 if (q < 0) {
                   this.onError(
-                    ParserErrorCode.UnterminatedDoctypeDeclaration
+                    XMLParserErrorCode.UnterminatedDoctypeDeclaration
                   );
                   return;
                 }
@@ -233,14 +233,14 @@ export class Parser {
               this.onDoctype(doctypeContent);
               j = q + (complexDoctype ? 2 : 1);
             } else {
-              this.onError(ParserErrorCode.MalformedElement);
+              this.onError(XMLParserErrorCode.MalformedElement);
               return;
             }
             break;
           default:
             content = this._parseContent(s, j);
             if (content === null) {
-              this.onError(ParserErrorCode.MalformedElement);
+              this.onError(XMLParserErrorCode.MalformedElement);
               return;
             }
             isClosed = false;
@@ -251,7 +251,7 @@ export class Parser {
             } else if (
               s.substring(j + content.parsed, j + content.parsed + 1) !== '>'
             ) {
-              this.onError(ParserErrorCode.UnterminatedElement);
+              this.onError(XMLParserErrorCode.UnterminatedElement);
               return;
             }
             this.onBeginElement(content.name, content.attributes, isClosed);
@@ -290,13 +290,13 @@ export class Parser {
     console.log('data is ', data);
     this._currentFragment = [];
     this._stack = [];
-    this._errorCode = ParserErrorCode.NoError;
+    this._errorCode = XMLParserErrorCode.NoError;
 
     this.parseDom(data.trim());
 
-    if (this._errorCode !== ParserErrorCode.NoError) {
+    if (this._errorCode !== XMLParserErrorCode.NoError) {
       // return undefined; // return undefined on error
-      throw Error('this._errorCode !== ' + ParserErrorCode.NoError);
+      throw Error('this._errorCode !== ' + XMLParserErrorCode.NoError);
     }
     // We should only have one root.
     const [documentElement] = this._currentFragment;

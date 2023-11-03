@@ -5,9 +5,9 @@ import { ISvgLinearGradient, ISvgLinearGradientPropObj } from './linear-gradient
 export class SvgLinearGradient extends TypeSvg implements ISvgLinearGradient {
   nodeName: 'linearGradient';
   className: 'SvgLinearGradient';
-  propObj: ISvgLinearGradientPropObj;
+  declare propObj: ISvgLinearGradientPropObj;
   dom: SVGLinearGradientElement;
-  childNodes: SvgStop[];
+  declare childNodes: SvgStop[];
   constructor(public parent: SvgDefs) {
     super('linearGradient');
     this.nodeName = 'linearGradient';

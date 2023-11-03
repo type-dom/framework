@@ -5,8 +5,8 @@ export class SvgEllipse extends TypeSvg implements ISvgEllipse {
   nodeName: 'ellipse';
   className: 'SvgEllipse';
   dom: SVGEllipseElement;
-  propObj: ISvgEllipseProperty;
-  childNodes: [];
+  declare propObj: ISvgEllipseProperty;
+  declare childNodes: [];
   cx: number = 0;
   cy: number = 0;
   rx: number = 0;

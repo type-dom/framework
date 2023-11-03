@@ -4,7 +4,7 @@ import { ITypeComponent } from './type-component.interface';
  * 组件基类
  */
 export abstract class TypeComponent extends TypeHtml implements ITypeComponent {
-  abstract parent?: TypeHtml;
+  abstract declare parent?: TypeHtml;
   nodeName : string;
   dom: HTMLElement;
   // childNodes: TypeNode[];

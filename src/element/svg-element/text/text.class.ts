@@ -6,8 +6,8 @@ export class SvgText extends TypeSvg implements ISvgText {
   nodeName: 'text';
   dom: SVGTextElement;
   className: 'SvgText';
-  propObj: ISvgTextProperty;
-  childNodes: TextNode[];
+  declare propObj: ISvgTextProperty;
+  declare childNodes: TextNode[];
   textNode: TextNode;
   constructor(public parent: TypeSvgSvg) {
     super('text');

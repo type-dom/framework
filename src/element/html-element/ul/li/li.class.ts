@@ -6,7 +6,7 @@ export class LI extends TypeHtml implements ILI {
   nodeName: 'li';
   className: 'LI';
   dom: HTMLLIElement;
-  childNodes: (TypeHtml | TextNode)[];
+  declare childNodes: (TypeHtml | TextNode)[];
   constructor(public parent: TypeHtml) {
     super();
     this.nodeName = 'li';

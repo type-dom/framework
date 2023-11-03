@@ -1,7 +1,5 @@
 import { ITypeProperty } from '../type-element/type-element.interface';
-import { TypeNode } from './type-node.abstract';
 import { TypeElement } from '../type-element';
-import { XNode } from '../x-node/x-node.class';
 export interface INodeAttr {
   name: string,
   value: string;

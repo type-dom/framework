@@ -12,7 +12,8 @@
     "uml": "tsuml2 --glob src/type-node/web-element/*.ts ",
     "docs": "typedoc --entryPointStrategy expand ./src",
     "coverage": "typescript-coverage-report",
-    "git-pull": "git pull"
+    "git-pull": "git pull",
+    "git-push": "git add . && git commit -m 'edit' && git push origin main"
   },
   "keywords": [
     "type-dom",
@@ -51,7 +52,8 @@
     "typescript-coverage-report": "^0.8.0"
   },
   "dependencies": {
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "type-utils": "*"
   },
   "typeCoverage": {
     "atLeast": 99,

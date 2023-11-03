@@ -6,7 +6,7 @@ import { ITableHead } from './head.interface';
 // 表格页眉
 export class TableHead extends TypeTableHead implements ITableHead {
   className: 'TableHead';
-  childNodes: TableHeaderCell[];
+  declare childNodes: TableHeaderCell[];
   constructor(public parent: Table) {
     super();
     this.className = 'TableHead';

@@ -7,7 +7,7 @@ export class OptGroup extends TypeHtml implements IOptGroup {
   nodeName: 'optgroup';
   className: 'OptGroup';
   dom: HTMLOptGroupElement;
-  childNodes: TypeNode[];
+  declare childNodes: TypeNode[];
   text: TextNode;
   constructor(public parent: TypeSelect) {
     super();

@@ -5,7 +5,7 @@ import { ITypeTableBody } from './body.interface';
 export abstract class TypeTableBody extends TypeHtml implements ITypeTableBody {
   nodeName: 'tbody';
   dom: HTMLTableSectionElement;
-  childNodes: TypeTableRow[];
+  declare childNodes: TypeTableRow[];
   protected constructor() {
     super();
     this.nodeName = 'tbody';

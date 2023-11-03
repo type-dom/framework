@@ -1,11 +1,11 @@
 import { Subscription } from 'rxjs';
+import { humpToMiddleLine } from 'type-utils';
 import { Parser } from '../parser/parser.class';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TextNode } from '../text-node/text-node.class';
 import { StyleCursor, StyleDisplay } from '../style/style.enum';
 import { IStyle } from '../style/style.interface';
 import { XElement } from '../element/x-element/x-element.class';
-import { humpToMiddleLine } from '../utils';
 import {
   ITypeAttribute,
   IBoundBox,
@@ -13,7 +13,7 @@ import {
   ITypeProperty,
 } from './type-element.interface';
 
-import {IXElementOption} from "../element/x-element/x-element.interface";
+import { IXElementOption } from '../element/x-element/x-element.interface';
 
 import { ITypeNode } from '../type-node/type-node.interface';
 /**
@@ -24,15 +24,15 @@ import { ITypeNode } from '../type-node/type-node.interface';
  */
 const vHash = Math.round(Math.random() * 1000000);
 export abstract class TypeElement extends TypeNode implements ITypeElement {
-  abstract className: string;
-  abstract parent?: TypeElement;
-  abstract dom?: HTMLElement | SVGElement;
-  abstract nodeName: string;
+  abstract override className: string;
+  abstract override parent?: TypeElement;
+  abstract override dom?: HTMLElement | SVGElement;
+  abstract override nodeName: string;
   nodeValue: undefined;
-  propObj: ITypeProperty;
+  declare propObj: ITypeProperty;
   // attributes: INodeAttr[];
   childNodes: TypeNode[];
-  events: Subscription[];
+  declare events: Subscription[];
   initEvents?(): void;
   protected constructor() {
     super();
@@ -80,7 +80,8 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   get styleObj(): Partial<IStyle> {
     return this.propObj.styleObj;
   }
-  get firstChild(): TypeNode {
+
+  override get firstChild(): TypeNode {
     return this.children[0];
   }
 

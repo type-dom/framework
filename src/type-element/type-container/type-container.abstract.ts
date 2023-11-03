@@ -7,26 +7,26 @@ import { ITypeContainer } from './type-container.interface';
  * 子节点是 TypeElement, 不包括 TextNode
  */
 export abstract class TypeContainer extends TypeDiv implements ITypeContainer {
-  abstract parent: TypeHtml;
-  childNodes: TypeElement[];  // 没有TextNode
+  abstract declare parent: TypeHtml;
+  declare childNodes: TypeElement[];  // 没有TextNode
   protected constructor() {
     super();
     this.childNodes = [];
   }
 
-  get firstChild(): TypeElement {
+  override get firstChild(): TypeElement {
     return this.childNodes[0];
   }
 
-  get lastChild(): TypeElement {
+  override get lastChild(): TypeElement {
     return this.childNodes[this.length - 1];
   }
 
-  findChildAtIndex(index: number): TypeElement | null {
+  override findChildAtIndex(index: number): TypeElement | null {
     return this.childNodes[index] || null;
   }
 
-  findChildIndex(child: TypeElement): number {
+  override findChildIndex(child: TypeElement): number {
     return this.childNodes.findIndex(item => item === child);
   }
 }
