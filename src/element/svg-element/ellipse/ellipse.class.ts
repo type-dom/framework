@@ -12,7 +12,7 @@ export class SvgEllipse extends TypeSvg implements ISvgEllipse {
   rx: number = 0;
   ry: number = 0;
   constructor(public parent: TypeSvg) {
-    super('ellipse');
+    super();
     this.nodeName = 'ellipse';
     this.className = 'SvgEllipse';
     this.dom = document.createElementNS('http://www.w3.org/2000/svg', this.nodeName);

@@ -8,7 +8,7 @@ export class SvgRadialGradient extends TypeSvg implements ISvgRadialGradient {
   dom: SVGRadialGradientElement;
   declare childNodes: SvgStop[];
   constructor(public parent: SvgDefs) {
-    super('radialGradient');
+    super();
     this.nodeName = 'radialGradient';
     this.className = 'SvgRadialGradient';
     this.dom = document.createElementNS('http://www.w3.org/2000/svg', this.nodeName);

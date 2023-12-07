@@ -1,3 +1,4 @@
+import { deepClone } from 'type-utils';
 import { TypeElement } from './type-element/type-element.abstract';
 import { ITypeElement } from './type-element/type-element.interface';
 import { ITextNode } from './text-node/text-node.interface';
@@ -8,12 +9,11 @@ import { ITextNode } from './text-node/text-node.interface';
  */
 export function toJSON(element: TypeElement): ITypeElement {
   return {
-    // nodeName: element.nodeName,
     nodeName: element.nodeName,
     className: element.className,
     propObj: {
-      styleObj: Object.assign({}, element.styleObj), // 两层。浅拷贝
-      attrObj: Object.assign({}, element.attrObj),
+      styleObj: deepClone(element.styleObj), // 两层。浅拷贝
+      attrObj: deepClone(element.attrObj),
     },
     // items, page ----> 不起作用
     childNodes: element.childNodes.map(child => {

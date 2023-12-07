@@ -12,7 +12,7 @@ export class SvgLine extends TypeSvg implements ISvgLine {
   y1 = 0;
   y2 = 0;
   constructor(public parent: TypeSvgSvg) {
-    super('line');
+    super();
     this.nodeName = 'line';
     this.className = 'SvgLine';
     this.dom = document.createElementNS('http://www.w3.org/2000/svg', this.nodeName);

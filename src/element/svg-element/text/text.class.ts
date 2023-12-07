@@ -10,7 +10,7 @@ export class SvgText extends TypeSvg implements ISvgText {
   declare childNodes: TextNode[];
   textNode: TextNode;
   constructor(public parent: TypeSvgSvg) {
-    super('text');
+    super();
     this.nodeName = 'text';
     this.dom = document.createElementNS('http://www.w3.org/2000/svg', this.nodeName);
     this.className = 'SvgText';

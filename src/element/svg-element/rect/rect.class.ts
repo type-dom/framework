@@ -12,7 +12,7 @@ export class SvgRect extends TypeSvg implements ISvgRect {
   height = 60;
   declare childNodes: [];
   constructor(public parent: TypeSvgSvg) {
-    super('rect');
+    super();
     this.nodeName = 'rect';
     this.className = 'SvgRect';
     this.dom = document.createElementNS('http://www.w3.org/2000/svg', this.nodeName);

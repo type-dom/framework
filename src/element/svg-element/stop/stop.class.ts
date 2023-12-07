@@ -1,4 +1,4 @@
-import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
+ import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
 import { SvgRadialGradient } from '../radial-gradient/radial-gradient.class';
 import { SvgLinearGradient } from '../linear-gradient/linear-gradient.class';
 import { ISvgStop, ISvgStopProperty } from './stop.interface';
@@ -9,7 +9,7 @@ export class SvgStop extends TypeSvg implements ISvgStop {
   declare propObj: ISvgStopProperty;
   declare childNodes: [];
   constructor(public parent: SvgLinearGradient | SvgRadialGradient) {
-    super('stop');
+    super();
     this.nodeName = 'stop';
     this.className = 'SvgStop';
     this.dom = document.createElementNS('http://www.w3.org/2000/svg', this.nodeName);

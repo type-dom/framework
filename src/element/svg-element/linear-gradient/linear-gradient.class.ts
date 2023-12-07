@@ -9,7 +9,7 @@ export class SvgLinearGradient extends TypeSvg implements ISvgLinearGradient {
   dom: SVGLinearGradientElement;
   declare childNodes: SvgStop[];
   constructor(public parent: SvgDefs) {
-    super('linearGradient');
+    super();
     this.nodeName = 'linearGradient';
     this.className = 'SvgLinearGradient';
     this.dom = document.createElementNS('http://www.w3.org/2000/svg', this.nodeName);

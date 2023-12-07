@@ -12,7 +12,7 @@ export class SvgImage extends TypeSvg implements ISvgImage {
   dom: SVGImageElement;
   declare childNodes: [];
   constructor(public parent: TypeSvgSvg) {
-    super('image');
+    super();
     this.nodeName = 'image';
     this.className = 'SvgImage';
     this.dom = document.createElementNS('http://www.w3.org/2000/svg', this.nodeName);

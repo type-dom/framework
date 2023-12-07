@@ -6,7 +6,7 @@ export abstract class TypeSvg extends TypeElement implements ITypeSvg {
   abstract override nodeName: string;
   abstract override dom: SVGElement;
   declare childNodes: (TypeSvg | TextNode)[];
-  protected constructor(nodeName: string) {
+  protected constructor() {
     super();
     this.childNodes = [];
   }
