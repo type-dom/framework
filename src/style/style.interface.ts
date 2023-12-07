@@ -168,4 +168,5 @@ export interface IStyle {
   stopColor: string,
   stopOpacity: number,
   textOverflow: string,
+  clipPath: string,
 }

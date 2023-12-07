@@ -86,7 +86,7 @@ Create a hello world page to app:
 // Typescript
 // Br,Division,TypeRoot,TextNode等都是框架定义好的类
 import {Br, Division, TypeRoot, TextNode} from 'type-dom.ts';
-// app-element.ts 项目根节点，继承TypeRoot（根节点抽象类）
+// svgs-root.ts 项目根节点，继承TypeRoot（根节点抽象类）
 export class AppElement extends TypeRoot {
   className: 'AppElement';
   // 构造函数，rootEl是绑定的Dom元素，对应到index.html中的页面元素
