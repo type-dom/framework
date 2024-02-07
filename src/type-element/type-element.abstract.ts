@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs';
-import { humpToMiddleLine } from 'type-utils';
+import { humpToMiddleLine } from '@type-dom/utils';
 import { Parser } from '../parser/parser.class';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TextNode } from '../text-node/text-node.class';

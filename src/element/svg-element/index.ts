@@ -24,5 +24,3 @@ export { SvgText } from './text/text.class';
 export { ISvgText } from './text/text.interface';
 export { SvgClipPath } from './clip-path/clip-path.class';
 export type { ISvgClipPath } from './clip-path/clip-path.interface';
-
-

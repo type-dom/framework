@@ -1,4 +1,4 @@
-import { mustache } from 'type-utils';
+import { mustache } from '@type-dom/utils';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { ITextNode } from './text-node.interface';

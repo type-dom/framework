@@ -1,4 +1,4 @@
-import { deepClone } from 'type-utils';
+import { deepClone } from '@type-dom/utils';
 import { TypeElement } from './type-element/type-element.abstract';
 import { ITypeElement } from './type-element/type-element.interface';
 import { ITextNode } from './text-node/text-node.interface';

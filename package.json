@@ -53,7 +53,7 @@
   },
   "dependencies": {
     "rxjs": "^7.8.1",
-    "type-utils": "*"
+    "@type-dom/utils": "*"
   },
   "typeCoverage": {
     "atLeast": 99,
