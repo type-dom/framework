@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeSmall } from './small.interface';
+import type { ITypeSmall } from './small.interface';
 export abstract class TypeSmall extends TypeHtml implements ITypeSmall {
   nodeName: 'small';
   dom: HTMLElement;

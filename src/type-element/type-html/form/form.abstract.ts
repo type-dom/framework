@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeForm } from './form.interface';
+import type { ITypeForm } from './form.interface';
 export abstract class TypeForm extends TypeHtml implements ITypeForm {
   nodeName: 'form';
   dom: HTMLFormElement;

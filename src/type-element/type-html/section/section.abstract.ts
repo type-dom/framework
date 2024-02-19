@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeSection } from './section.interface';
+import type { ITypeSection } from './section.interface';
 export abstract class TypeSection extends TypeHtml implements ITypeSection {
   nodeName: 'section';
   dom: HTMLElement;

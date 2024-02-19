@@ -1,8 +1,8 @@
-import { INodeAttr, TextNode, XElement } from '../index';
+import { XMLParserErrorCode, isWhitespace, isWhitespaceString } from '@type-dom/utils';
+import { TextNode, XElement } from '../index';
 // import { XElement } from "../element/x-element/x-element.class"; // todo 这样会报错。上面引入没问题；
-import { XMLParserErrorCode } from './parser.const';
-import { isWhitespace, isWhitespaceString } from './parser.util';
-import { IContent, IInstruction, IParserParam } from './parser.interface';
+import type { INodeAttr } from '../index';
+import type { IContent, IInstruction, IParserParam } from './parser.interface';
 /**
  * The code for XMLParser copied from pdf.js
  * 虚拟DOM/XML字符串解析工具
@@ -11,19 +11,19 @@ import { IContent, IInstruction, IParserParam } from './parser.interface';
  * ？？？？todo 解析为 className 对应的类。 ———— 好像不行，className 对应的类可能是后创建的。
  */
 export class Parser {
-  private _currentFragment: (XElement | TextNode)[];
-  private _stack: (XElement | TextNode)[][];
-  private _errorCode: number;
-  private readonly _hasAttributes: boolean | undefined;
-  private readonly _lowerCaseName: boolean | undefined;
+  private currentFragment: (XElement | TextNode)[];
+  private stack: (XElement | TextNode)[][];
+  private errorCode: number;
+  private readonly hasAttributes: boolean | undefined;
+  private readonly lowerCaseName: boolean | undefined;
   constructor(param?: IParserParam) {
-    this._currentFragment = [];
-    this._stack = [];
-    this._errorCode = XMLParserErrorCode.NoError;
-    this._hasAttributes = param?.hasAttributes || true;
-    this._lowerCaseName = param?.lowerCaseName || false;
+    this.currentFragment = [];
+    this.stack = [];
+    this.errorCode = XMLParserErrorCode.NoError;
+    this.hasAttributes = param?.hasAttributes || true;
+    this.lowerCaseName = param?.lowerCaseName || false;
   }
-  _resolveEntities(s: string): string {
+  resolveEntities(s: string): string {
     return s.replace(/&([^;]+);/g, (all, entity) => {
       if (entity.substring(0, 2) === '#x') {
         return String.fromCodePoint(parseInt(entity.substring(2), 16));
@@ -102,7 +102,7 @@ export class Parser {
       }
       attrValue = s.substring(pos, attrEndIndex);
       // todo 不同值的处理
-      let value = this._resolveEntities(attrValue);
+      const value = this.resolveEntities(attrValue);
       // if (value === 'true' || value === 'false') {
       //   attributes.push({
       //     name: attrName,
@@ -263,7 +263,7 @@ export class Parser {
           j++;
         }
         const text = s.substring(i, j);
-        this.onText(this._resolveEntities(text));
+        this.onText(this.resolveEntities(text));
       }
       i = j;
     }
@@ -288,18 +288,18 @@ export class Parser {
   parseFromString(data: string): TextNode | XElement {
     console.log('parser parseFromString . ');
     console.log('data is ', data);
-    this._currentFragment = [];
-    this._stack = [];
-    this._errorCode = XMLParserErrorCode.NoError;
+    this.currentFragment = [];
+    this.stack = [];
+    this.errorCode = XMLParserErrorCode.NoError;
 
     this.parseDom(data.trim());
 
-    if (this._errorCode !== XMLParserErrorCode.NoError) {
+    if (this.errorCode !== XMLParserErrorCode.NoError) {
       // return undefined; // return undefined on error
-      throw Error('this._errorCode !== ' + XMLParserErrorCode.NoError);
+      throw Error('this.errorCode !== ' + XMLParserErrorCode.NoError);
     }
     // We should only have one root.
-    const [documentElement] = this._currentFragment;
+    const [documentElement] = this.currentFragment;
     if (!documentElement) {
       // return undefined; // Return undefined if no root was found.
       throw Error('documentElement is undefined . ');
@@ -312,11 +312,11 @@ export class Parser {
       return;
     }
     const node = new TextNode(text);
-    this._currentFragment.push(node);
+    this.currentFragment.push(node);
   }
   onCdata(text: string): void {
     const node = new TextNode(text);
-    this._currentFragment.push(node);
+    this.currentFragment.push(node);
   }
 
   /**
@@ -326,23 +326,23 @@ export class Parser {
    * @param isEmpty
    */
   onBeginElement(name: string, attributes: INodeAttr[], isEmpty?: boolean): void {
-    if (this._lowerCaseName) {
+    if (this.lowerCaseName) {
       name = name.toLowerCase();
     }
     // todo 根据name创建各个定义的类，包括 (XElement | TextNode)
     // console.log('name is ', name);
     const node = new XElement({ nodeName: name });
     node.childNodes = [];
-    if (this._hasAttributes) {
+    if (this.hasAttributes) {
       node.attributes = attributes;
     }
-    this._currentFragment.push(node);
+    this.currentFragment.push(node);
     if (isEmpty) {
       return;
     }
     // 存入缓存
-    this._stack.push(this._currentFragment);
-    this._currentFragment = node.children as (XElement | TextNode)[];
+    this.stack.push(this.currentFragment);
+    this.currentFragment = node.children as (XElement | TextNode)[];
   }
 
   /**
@@ -352,8 +352,8 @@ export class Parser {
   onEndElement(name?: string): (XElement | TextNode) | null {
     // console.log('onEndElement . name is ', name);
     // 取回缓存的节点
-    this._currentFragment = this._stack?.pop() || [];
-    const lastElement = this._currentFragment?.at(-1);
+    this.currentFragment = this.stack?.pop() || [];
+    const lastElement = this.currentFragment?.at(-1);
     // console.log('lastElement is ', lastElement);
     if (!lastElement) {
       return null;
@@ -366,6 +366,6 @@ export class Parser {
     return lastElement;
   }
   onError(code: number): void {
-    this._errorCode = code;
+    this.errorCode = code;
   }
 }

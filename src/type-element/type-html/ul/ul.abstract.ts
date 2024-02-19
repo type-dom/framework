@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeUL } from './ul.interface';
+import type { ITypeUL } from './ul.interface';
 import { TypeLI } from './li/li.abstract';
 export abstract class TypeUL extends TypeHtml implements ITypeUL {
   nodeName: 'ul';

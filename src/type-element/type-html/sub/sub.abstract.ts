@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeSub } from './sub.interface';
+import type { ITypeSub } from './sub.interface';
 export abstract class TypeSub extends TypeHtml implements ITypeSub {
   nodeName: 'sub';
   dom: HTMLElement;

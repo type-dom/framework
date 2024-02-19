@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeSpan } from './span.interface';
+import type { ITypeSpan } from './span.interface';
 export abstract class TypeSpan extends TypeHtml implements ITypeSpan {
   nodeName: 'span';
   dom: HTMLSpanElement;

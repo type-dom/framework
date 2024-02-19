@@ -1,5 +1,5 @@
-import { ITypeAttribute, ITypeElement } from '../../../type-element/type-element.interface';
-import { InputEnum } from './input.enum';
+import type { ITypeAttribute, ITypeElement } from '../../../type-element/type-element.interface';
+import type { InputEnum } from './input.enum';
 export interface IInputAttribute extends ITypeAttribute {
   type: keyof typeof InputEnum,
 }

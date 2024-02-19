@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeDetails } from './details.interface';
+import type { ITypeDetails } from './details.interface';
 export abstract class TypeDetails extends TypeHtml implements ITypeDetails {
   nodeName: 'details';
   dom: HTMLDetailsElement;

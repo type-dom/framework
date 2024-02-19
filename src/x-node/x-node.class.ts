@@ -1,6 +1,6 @@
 import { TypeNode } from '../type-node/type-node.abstract';
-import { INodeAttr } from '../type-node/type-node.interface';
-import { IXNode } from './x-node.interface';
+import type { INodeAttr } from '../type-node/type-node.interface';
+import type { IXNode } from './x-node.interface';
 /**
  * 只有 type-node-parser 解析时用到，
  * 不要与自定义类混合使用

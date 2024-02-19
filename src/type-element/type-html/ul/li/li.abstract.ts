@@ -1,5 +1,5 @@
 import { TypeHtml } from '../../type-html.abstract';
-import { ITypeLI } from './li.interface';
+import type { ITypeLI } from './li.interface';
 /**
  * 列表项 list item
  */

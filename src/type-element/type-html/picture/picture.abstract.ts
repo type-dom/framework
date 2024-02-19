@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypePicture } from './picture.interface';
+import type { ITypePicture } from './picture.interface';
 export abstract class TypePicture extends TypeHtml implements ITypePicture {
   nodeName: 'picture';
   dom: HTMLPictureElement;

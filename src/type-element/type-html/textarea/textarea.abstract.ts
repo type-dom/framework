@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeTextarea } from './textarea.interface';
+import type { ITypeTextarea } from './textarea.interface';
 export abstract class TypeTextarea extends TypeHtml implements ITypeTextarea {
   nodeName: 'textarea';
   dom: HTMLTextAreaElement;

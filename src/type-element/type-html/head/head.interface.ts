@@ -1,4 +1,4 @@
-import { ITypeHtml } from '../type-html.interface';
+import type { ITypeHtml } from '../type-html.interface';
 /**
  * <h1-h6> 标题信息
  */

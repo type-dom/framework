@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeU } from './u.interface';
+import type { ITypeU } from './u.interface';
 export abstract class TypeU extends TypeHtml implements ITypeU {
   nodeName: 'u';
   dom: HTMLElement;

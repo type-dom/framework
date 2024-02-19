@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeTable } from './table.interface';
+import type { ITypeTable } from './table.interface';
 export abstract class TypeTable extends TypeHtml implements ITypeTable {
   nodeName: 'table';
   dom: HTMLTableElement;

@@ -1,4 +1,4 @@
-import { ITypeMap } from '../../../type-element/type-html/map/map.interface';
+import type { ITypeMap } from '../../../type-element/type-html/map/map.interface';
 export interface IMap extends ITypeMap {
   className: 'Map'
 }

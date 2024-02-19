@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeBr } from './br.interface';
+import type { ITypeBr } from './br.interface';
 export abstract class TypeBr extends TypeHtml implements ITypeBr {
   nodeName: 'br';
   dom: HTMLBRElement;

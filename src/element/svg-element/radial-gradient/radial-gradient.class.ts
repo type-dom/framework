@@ -1,7 +1,7 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
 import { SvgStop } from '../stop/stop.class';
 import { SvgDefs } from '../defs/defs.class';
-import { ISvgRadialGradient } from './radial-gradient.interface';
+import type { ISvgRadialGradient } from './radial-gradient.interface';
 export class SvgRadialGradient extends TypeSvg implements ISvgRadialGradient {
   nodeName: 'radialGradient';
   className: 'SvgRadialGradient';

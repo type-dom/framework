@@ -1,7 +1,7 @@
 import { TextNode } from '../../../text-node/text-node.class';
 import { TypeSvgSvg } from '../../../type-element/type-svg/svg/svg.abstract';
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
-import { ISvgText, ISvgTextProperty } from './text.interface';
+import type { ISvgText, ISvgTextProperty } from './text.interface';
 export class SvgText extends TypeSvg implements ISvgText {
   nodeName: 'text';
   dom: SVGTextElement;

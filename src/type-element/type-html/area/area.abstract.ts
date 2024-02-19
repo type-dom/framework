@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeArea } from './area.interface';
+import type { ITypeArea } from './area.interface';
 export abstract class TypeArea extends TypeHtml implements ITypeArea {
   nodeName: 'area';
   dom: HTMLAreaElement;

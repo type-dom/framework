@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeVar } from './var.interface';
+import type { ITypeVar } from './var.interface';
 export abstract class TypeVar extends TypeHtml implements ITypeVar {
   nodeName: 'var';
   dom: HTMLElement;

@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeHead } from './head.interface';
+import type { ITypeHead } from './head.interface';
 export abstract class TypeHead extends TypeHtml implements ITypeHead {
   nodeName: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
   dom: HTMLElement;

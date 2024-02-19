@@ -2,7 +2,7 @@ import { TypeNode } from '../../../type-node/type-node.abstract';
 import { TextNode } from '../../../text-node/text-node.class';
 import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
 import { TypeSelect } from '../../../type-element/type-html/select/select.abstract';
-import { IOption } from './option.interface';
+import type { IOption } from './option.interface';
 export class Option extends TypeHtml implements IOption {
   nodeName: 'option';
   className: 'Option';

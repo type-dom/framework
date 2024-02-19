@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeTime } from './time.interface';
+import type { ITypeTime } from './time.interface';
 export abstract class TypeTime extends TypeHtml implements ITypeTime {
   nodeName: 'time';
   dom: HTMLTimeElement;

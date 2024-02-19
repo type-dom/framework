@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeBdo } from './bdo.interface';
+import type { ITypeBdo } from './bdo.interface';
 export abstract class TypeBdo extends TypeHtml implements ITypeBdo {
   nodeName: 'bdo';
   dom: HTMLElement;

@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeWbr } from './wbr.interface';
+import type { ITypeWbr } from './wbr.interface';
 export abstract class TypeWbr extends TypeHtml implements ITypeWbr {
   nodeName: 'wbr';
   dom: HTMLElement;

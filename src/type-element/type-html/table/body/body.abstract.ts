@@ -1,6 +1,6 @@
 import { TypeHtml } from '../../type-html.abstract';
 import { TypeTableRow } from '../row/row.abstract';
-import { ITypeTableBody } from './body.interface';
+import type { ITypeTableBody } from './body.interface';
 
 export abstract class TypeTableBody extends TypeHtml implements ITypeTableBody {
   nodeName: 'tbody';

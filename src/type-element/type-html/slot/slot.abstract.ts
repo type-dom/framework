@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeSlot } from './slot.interface';
+import type { ITypeSlot } from './slot.interface';
 export abstract class TypeSlot extends TypeHtml implements ITypeSlot {
   nodeName: 'slot';
   dom: HTMLSlotElement;

@@ -68,13 +68,13 @@ export interface IStyle {
   backgroundSize: string;
 
   // 尺寸 (Dimension)
-  width: string;
-  height: string;
+  width: string | number;
+  height: string | number;
   lineHeight: string; // 设置行高。
   maxHeight: string;
   maxWidth: string;
   minHeight: string;
-  minWidth: string;
+  minWidth: string | number;
   // 文本 text
   textAlign: string; // 对齐元素中的文本。
   textAlignLast: string; //
@@ -144,7 +144,7 @@ export interface IStyle {
   boxShadow: string;
   boxSizing: string; // 'content-box' | 'border-box';
   animation: string;
-  flexDirection: string;
+  flexDirection: string; // row column
 
   fill: string;
   fillOpacity: number;
@@ -153,6 +153,8 @@ export interface IStyle {
   strokeOpacity: number;
   transformOrigin: string;
   flexWrap: string; // wrap
+  flexShrink: number,
+  flexBasis: string, // auto
   justifyContent: string;
   alignItems: string;
   transition: string;
@@ -168,5 +170,4 @@ export interface IStyle {
   stopColor: string,
   stopOpacity: number,
   textOverflow: string,
-  clipPath: string,
 }

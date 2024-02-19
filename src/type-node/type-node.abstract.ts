@@ -1,49 +1,8 @@
 import { Subscription } from 'rxjs';
-import { ITypeProperty } from '../type-element/type-element.interface';
+import { encodeToXmlString, humpToMiddleLine } from '@type-dom/utils';
+import type { ITypeProperty } from '../type-element/type-element.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
-import { INodeAttr, IPath, ITypeNode } from './type-node.interface';
-const Entities: Record<number, string> = {
-  /* < */ 0x3c: '&lt;',
-  /* > */ 0x3e: '&gt;',
-  /* & */ 0x26: '&amp;',
-  /* " */ 0x22: '&quot;',
-  /* ' */ 0x27: '&apos;',
-};
-function encodeToDomString(str: string) {
-  const buffer = [];
-  let start = 0;
-  for (let i = 0, ii = str.length; i < ii; i++) {
-    const char = str.codePointAt(i)!;
-    if (0x20 <= char && char <= 0x7e) {
-      // ascii
-      const entity = Entities[char];
-      if (entity) {
-        if (start < i) {
-          buffer.push(str.substring(start, i));
-        }
-        buffer.push(entity);
-        start = i + 1;
-      }
-    } else {
-      if (start < i) {
-        buffer.push(str.substring(start, i));
-      }
-      buffer.push(`&#x${char.toString(16).toUpperCase()};`);
-      if (char > 0xd7ff && (char < 0xe000 || char > 0xfffd)) {
-        // char is represented by two u16
-        i++;
-      }
-      start = i + 1;
-    }
-  }
-  if (buffer.length === 0) {
-    return str;
-  }
-  if (start < str.length) {
-    buffer.push(str.substring(start, str.length));
-  }
-  return buffer.join('');
-}
+import type { INodeAttr, IPath, ITypeNode } from './type-node.interface';
 /**
  * 虚拟DOM，TypeNode 抽象节点类, 所有节点类的抽象类；
  * abstract syntax tree 抽象语法树 抽象节点类
@@ -57,7 +16,7 @@ export abstract class TypeNode implements ITypeNode {
    * 在生成dom字符串时，可以转为 attributes 的一个元素 { name: 'className', value: string }
    * 在定义ClassName时，要把当前类写入到TypeMap中；
    */
-  abstract className: string; // 最终实体类的名称，解析转换时需要创建对应的类；
+  abstract className?: string; // 最终实体类的名称，解析转换时需要创建对应的类；
   abstract nodeName?: string;
   abstract nodeValue?: string;
   abstract childNodes?: TypeNode[];
@@ -80,6 +39,8 @@ export abstract class TypeNode implements ITypeNode {
   attributes?: INodeAttr[];
   configs?: Record<string, any>;
   data?: Record<string, any>;
+  methods?: Record<string, any>;
+  template?: string;
   events?: Subscription[];
   // protected constructor() {
   //   Object.defineProperty(this, "parentNode", { value: null, writable: true });
@@ -182,7 +143,6 @@ export abstract class TypeNode implements ITypeNode {
     }
     const component = paths[pos];
     const stack: [TypeNode, number][] = [];
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
     let node: TypeNode = this;
     while (true) {
       if (component.name === node.nodeName) {
@@ -231,15 +191,42 @@ export abstract class TypeNode implements ITypeNode {
     }
   }
   dump(buffer: string[]): void {
+    // console.log('type-node dump . ');
     if (this.nodeName === '#text') {
-      buffer.push(encodeToDomString(this.nodeValue?.toString() || ''));
+      buffer.push(encodeToXmlString(this.nodeValue?.toString() || ''));
       return;
     }
     buffer.push(`<${this.nodeName}`);
+    if (this.propObj?.attrObj) {
+      for (let key in this.propObj.attrObj) {
+        if (
+          key !== 'viewBox' &&
+          key !== 'spreadMethod' &&
+          key !== 'gradientUnits'
+        ) {
+          key = humpToMiddleLine(key);
+        }
+        // todo
+        buffer.push(
+          ` ${key}="${encodeToXmlString(String(this.propObj.attrObj[key]))}"`
+        );
+      }
+    }
+    if (this.propObj?.styleObj) {
+      let style = '';
+      for (const key in this.propObj.styleObj) {
+        style += `${humpToMiddleLine(key)}: ${encodeToXmlString(String((this.propObj.styleObj as any)[key]))};`;
+      }
+      if (style !== '') {
+        buffer.push(
+          ` style="${style}"`
+        );
+      }
+    }
     if (this.attributes) {
       for (const attribute of this.attributes) {
         buffer.push(
-          ` ${attribute.name}="${encodeToDomString(attribute.value.toString())}"`
+          ` ${attribute.name}="${encodeToXmlString(attribute.value.toString())}"`
         );
       }
     }
@@ -251,8 +238,8 @@ export abstract class TypeNode implements ITypeNode {
         }
       }
       buffer.push(`</${this.nodeName}>`);
-    } else if (this.nodeValue) {
-      buffer.push(`>${encodeToDomString(this.nodeValue.toString())}</${this.nodeName}>`);
+    } else if (this.nodeValue !== undefined) {
+      buffer.push(`>${encodeToXmlString(this.nodeValue.toString())}</${this.nodeName}>`);
     } else {
       buffer.push('/>');
     }

@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeHGroup } from './hgroup.interface';
+import type { ITypeHGroup } from './hgroup.interface';
 /**
  * <hgroup> HTML 元素代表文档标题和与标题相关联的内容，它将一个 <h1>–<h6> 元素与一个或多个 <p> 元素组合在一起。
  */

@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeHeader } from './header.interface';
+import type { ITypeHeader } from './header.interface';
 export abstract class TypeHeader extends TypeHtml implements ITypeHeader {
   nodeName: 'header';
   dom: HTMLElement;

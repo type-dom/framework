@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeData } from './data.interface';
+import type { ITypeData } from './data.interface';
 export abstract class TypeData extends TypeHtml implements ITypeData {
   nodeName: 'data';
   dom: HTMLDataElement;

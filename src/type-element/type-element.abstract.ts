@@ -1,21 +1,19 @@
 import { Subscription } from 'rxjs';
 import { humpToMiddleLine } from '@type-dom/utils';
+import { RouterView } from '../router/router-view';
 import { Parser } from '../parser/parser.class';
+import { XElement } from '../element/x-element/x-element.class';
+import type { ITypeNode } from '../type-node/type-node.interface';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TextNode } from '../text-node/text-node.class';
 import { StyleCursor, StyleDisplay } from '../style/style.enum';
-import { IStyle } from '../style/style.interface';
-import { XElement } from '../element/x-element/x-element.class';
-import {
+import type { IStyle } from '../style/style.interface';
+import type {
   ITypeAttribute,
   IBoundBox,
   ITypeElement,
   ITypeProperty,
 } from './type-element.interface';
-
-import { IXElementOption } from '../element/x-element/x-element.interface';
-
-import { ITypeNode } from '../type-node/type-node.interface';
 /**
  * 虚拟元素Element的数据结构
  * 可以对应到虚拟dom树。 createDom(tag, attr, children)
@@ -25,51 +23,56 @@ import { ITypeNode } from '../type-node/type-node.interface';
 const vHash = Math.round(Math.random() * 1000000);
 export abstract class TypeElement extends TypeNode implements ITypeElement {
   abstract override className: string;
-  abstract override parent?: TypeElement;
   abstract override dom?: HTMLElement | SVGElement;
   abstract override nodeName: string;
+  parent?: TypeElement;
   nodeValue: undefined;
   declare propObj: ITypeProperty;
   // attributes: INodeAttr[];
   childNodes: TypeNode[];
+  routerView?: RouterView;
   declare events: Subscription[];
   initEvents?(): void;
   protected constructor() {
     super();
     this.propObj = {
       attrObj: {},
-      styleObj: {}
+      styleObj: {},
     };
     this.addAttrObj({
-      ['data-v-' + vHash]: true
+      ['data-v-' + vHash]: true,
     });
     // this.nodeName = nodeName;
     this.attributes = [];
     this.childNodes = [];
     this.events = [];
   }
-  get tempItem(): any {
-    if (this.data) {
-      return this;
+  // 获取包含methods属性的组件
+  // 对应到包含template的组件
+  get itemMethods(): Record<string, any> | undefined {
+    if (this.methods) {
+      return this.methods;
     } else if (this.parent === this) {
-      return this;
+      // todo 这是？？？
+      // parent === this 有几种情况 ？？？
+      return this.methods;
     } else {
-      return this.parent?.tempItem;
+      return this.parent?.itemMethods;
     }
   }
   get itemData(): Record<string, any> | undefined {
     if (this.data) {
       return this.data;
     } else if (this.parent === this) {
-      return this;
+      return this.data;
     } else if (this.parent) {
       return this.parent.itemData;
     } else {
-      return this;
+      return undefined;
     }
   }
   get length(): number {
-    return this.childNodes.length;
+    return this.children.length;
   }
   get index(): number {
     return this.parent ? this.parent.findChildIndex(this) : -1;
@@ -80,11 +83,9 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   get styleObj(): Partial<IStyle> {
     return this.propObj.styleObj;
   }
-
   override get firstChild(): TypeNode {
     return this.children[0];
   }
-
   get lastChild(): TypeNode {
     return this.children[this.length - 1];
   }
@@ -105,7 +106,6 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   //   const itemHeight = this.dom.offsetHeight + marginTop + marginBottom;
   //   return (itemHeight / mm2pxRatio).toFixed(2) + "mm"; // px ---> mm
   // }
-
   get id(): string {
     return this.attrObj.id as string;
   }
@@ -123,23 +123,33 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   // }
   setCursor(cursor: StyleCursor) {
     this.setStyleObj({
-      cursor
+      cursor,
     });
   }
   setAttrId(id: string): void {
     this.addAttrId(id);
     this.renderAttrId(id);
   }
-
   addAttrId(id: string): void {
     this.propObj.attrObj.id = id;
   }
   renderAttrId(id: string): void {
     this.dom?.setAttribute('id', id);
   }
+  setAttrClass(className: string): void {
+    this.addAttrClass(className);
+    this.renderAttrClass(className);
+  }
+  addAttrClass(className: string): void {
+    this.addAttribute('class',  className);
+  }
+  renderAttrClass(className: string) {
+    this.dom?.setAttribute('class', className);
+  }
   // 设置属性 会清理原有属性
   setPropObj(propObj: ITypeProperty): void {
-    if (this.propObj) {  // 清理原有属性
+    if (this.propObj) {
+      // 清理原有属性
       for (const key in this.propObj.attrObj) {
         this.removeAttribute(key);
       }
@@ -152,7 +162,6 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.setAttrObj(propObj.attrObj);
     this.setStyleObj(propObj.styleObj);
   }
-
   // todo 类型验证 set ???----> replace
   // todo 累加
   setStyleObj(styles: Partial<IStyle>): TypeElement {
@@ -203,7 +212,8 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     // Object.defineProperty(this.propObj.styleObj, key, value);
   }
   addStyle(key: keyof IStyle, value: string | number | boolean): void {
-    (this.propObj.styleObj as Record<string, string | number | boolean>)[key] = value;
+    (this.propObj.styleObj as Record<string, string | number | boolean>)[key] =
+      value;
   }
   renderStyle(key: keyof IStyle, value: string | number | boolean): void {
     this.dom?.style.setProperty(humpToMiddleLine(key), String(value)); // 要转中划线
@@ -257,19 +267,23 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     return this;
   }
   // 设置属性 dom 属性同步变化
-  setAttribute(key: string, value: string| number | boolean): TypeElement {
+  setAttribute(key: string, value: string | number | boolean): TypeElement {
     this.addAttribute(key, value);
     this.renderAttribute(key, value);
     return this;
   }
   // 添加属性
-  addAttribute(key: string, value: string| number | boolean): void {
+  addAttribute(key: string, value: string | number | boolean): void {
     this.propObj.attrObj[key] = value;
   }
   // 渲染属性
-  renderAttribute(key: string, value: string| number | boolean): void {
+  renderAttribute(key: string, value: string | number | boolean): void {
     // dom渲染时， 驼峰转中划线连接
-    if (key !== 'viewBox' && key !== 'spreadMethod' && key !== 'gradientUnits') {
+    if (
+      key !== 'viewBox' &&
+      key !== 'spreadMethod' &&
+      key !== 'gradientUnits'
+    ) {
       key = humpToMiddleLine(key);
     }
     if (value === true) {
@@ -325,10 +339,9 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   // abstract appendChild(newChild: TypeElement | TextNode): TypeElement | TextNode;
   appendChild(newChild: TypeNode): void {
     newChild.setParent(this); // 如果不是子类，是其它地方的对象加过来，要重设其父类。
-    this.renderChild(newChild);
+    this.renderChild(newChild); // todo this.render() 现在这样可能不渲染；
     // this.dom.appendChild(newChild.render().dom);
   }
-
   /**
    * 从前面添加子元素
    * @param newChild
@@ -365,12 +378,10 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * @param child
    * @param index 要插入的目标位置
    */
-  // insertChild(child: TypeElement | TextNode, index: number) {
-  //   this.childNodes.splice(index, 0, child);
-  //   child.setParent(this);
-  //   return child;
-  // }
-
+  insertChild(child: TypeElement | TextNode, index: number): void {
+    this.childNodes.splice(index, 0, child);
+    child.setParent(this);
+  }
   /**
    * 在子元素指定下标位置插入Dom节点
    * 不再与数据层操作直接绑定了。
@@ -409,6 +420,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.removeChildDomAtIndex(index, length);
     this.childNodes.splice(index, length);
   }
+
   /**
    * 移除指定下标的dom子节点。
    * WebPage的removeChildDom相对特殊，要单独处理。
@@ -424,6 +436,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       }
     }
   }
+
   /**
    * 从父级中删除
    */
@@ -434,6 +447,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       console.error('this.parent is null . ');
     }
   }
+
   /**
    * 清理子节点
    */
@@ -441,6 +455,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.clearChildNodes();
     this.clearChildDom();
   }
+
   /**
    * 清除dom所有子节点
    * render时使用
@@ -452,19 +467,31 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       first = this.dom?.firstElementChild;
     }
   }
-  // 替换
-  // replaceChild(newNode: TypeElement, oldNode: TypeElement): void {
-  //   const index = this.childNodes.indexOf(oldNode);
-  //   if (index > -1) {
-  //     // 替换操作
-  //     this.childNodes.splice(index, 1, newNode);
-  //     oldNode.parent = undefined;
-  //     newNode.parent = this;
-  //     return;
-  //   }
-  //   throw Error('node to be replaced is not a child of the current node . ');
-  // }
 
+  /**
+   *  替换指定的子元素
+   */
+  replaceChild(newNode: TypeElement, oldNode: TypeElement): void {
+    const index = this.childNodes.indexOf(oldNode);
+    if (index > -1) {
+      // 替换操作
+      this.childNodes.splice(index, 1, newNode);
+      oldNode.parent = undefined;
+      newNode.parent = this;
+      return;
+    }
+    throw Error('node to be replaced is not a child of the current node . ');
+  }
+  /**
+   * 替换指定位置的子元素
+   * @param newNode
+   * @param index
+   */
+  replaceChildIndex(newNode: TypeElement, index: number): void {
+    // 替换操作
+    this.childNodes.splice(index, 1, newNode);
+    newNode.parent = this;
+  }
   // 清理子节点
   clearChildNodes(): void {
     this.childNodes = [];
@@ -520,36 +547,41 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   }
 
   findChildIndex(child: TypeElement | TextNode): number {
-    return this.childNodes.findIndex(item => item === child);
+    return this.childNodes.findIndex((item) => item === child);
   }
+
   removeEvents(): void {
-    this.events.forEach(event => {
+    this.events.forEach((event) => {
       event.unsubscribe();
     });
     this.events = [];
   }
+
   // 移除监听
   clearEvents(): void {
-    this.events.map(item => item.unsubscribe());
+    this.events.map((item) => item.unsubscribe());
+    this.events = [];
   }
+
   get boundBox(): IBoundBox {
     if (this.dom === undefined) {
       return {
         left: '0',
         top: '0',
         width: '0',
-        height: '0'
+        height: '0',
       };
     }
-    const { left, top, width, height } = this.dom?.getBoundingClientRect();
+    const { left, top, width, height } = this.dom.getBoundingClientRect();
     // console.log('left is ', left, 'top is ', top, 'width is ', width, 'height is ', height);
     return {
       left: left + 'px',
       top: top + 'px',
       width: width + 'px',
-      height: height + 'px'
+      height: height + 'px',
     };
   }
+
   // 子类中有需要的地方覆写
   // setConfig(config?: Record<string, any>) {
   //   if (config) {
@@ -575,9 +607,14 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       this.childNodes.length = length;
     }
   }
-  createItem<T extends(TextNode | TypeElement)>(parent: TypeElement, node: ITypeNode): T {
+
+  createItem<T extends TextNode | TypeElement>(
+    parent: TypeElement,
+    node: ITypeNode
+  ): T {
     let item: T;
-    if (node.nodeValue !== undefined) { // 如果是文本节点，则退出迭代
+    if (node.nodeValue !== undefined) {
+      // 如果是文本节点，则退出迭代
       item = new TextNode(node.nodeValue) as T;
       parent.addChild(item);
       return item;
@@ -634,6 +671,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
     return item;
   }
+
   // createItems(parent: TypeElement, nodes: ITypeNode[]): TypeNode[] {
   //   const items: TypeNode[] = [];
   //   for (const node of nodes) {
@@ -655,6 +693,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * afterRedner 渲染后
    */
   beforeRender?(): void;
+
   /**
    * 渲染方法
    * 要调用 this.clearChildDom
@@ -674,6 +713,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
     // console.log('this.dom is ', this.dom);
     this.afterRender && this.afterRender();
+    this.clearEvents();
     this.initEvents && this.initEvents();
   }
   afterRender?(): void;

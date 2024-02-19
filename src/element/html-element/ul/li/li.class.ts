@@ -1,5 +1,5 @@
 
-import { ILI } from './li.interface';
+import type { ILI } from './li.interface';
 import { TypeHtml } from '../../../../type-element/type-html/type-html.abstract';
 import { TextNode } from '../../../../text-node/text-node.class';
 export class LI extends TypeHtml implements ILI {

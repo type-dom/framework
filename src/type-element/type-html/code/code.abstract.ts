@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeCode } from './code.interface';
+import type { ITypeCode } from './code.interface';
 export abstract class TypeCode extends TypeHtml implements ITypeCode {
   nodeName: 'code';
   dom: HTMLElement;

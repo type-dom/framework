@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeAddress } from './address.interface';
+import type { ITypeAddress } from './address.interface';
 export abstract class TypeAddress extends TypeHtml implements ITypeAddress {
   nodeName: 'address';
   dom: HTMLElement;

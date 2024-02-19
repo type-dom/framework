@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeMeter } from './meter.interface';
+import type { ITypeMeter } from './meter.interface';
 export abstract class TypeMeter extends TypeHtml implements ITypeMeter {
   nodeName: 'meter';
   dom: HTMLMeterElement;

@@ -1,6 +1,6 @@
-import { ITypeAttribute, ITypeProperty } from '../../../type-element/type-element.interface';
-import { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
-import { IStyle } from '../../../style/style.interface';
+import type { ITypeAttribute, ITypeProperty } from '../../../type-element/type-element.interface';
+import type { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
+import type { IStyle } from '../../../style/style.interface';
 /**
  * width 和 height 属性可定义矩形的高度和宽度
  * x 属性定义矩形的左侧位置（例如，x="0" 定义矩形到浏览器窗口左侧的距离是 0px）

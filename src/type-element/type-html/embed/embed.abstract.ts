@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeEmbed } from './embed.interface';
+import type { ITypeEmbed } from './embed.interface';
 export abstract class TypeEmbed extends TypeHtml implements ITypeEmbed {
   nodeName: 'embed';
   dom: HTMLEmbedElement;

@@ -1,7 +1,7 @@
 import { TextNode } from '../../../text-node/text-node.class';
 import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
 import { TypeHead } from '../../../type-element/type-html/head/head.abstract';
-import { IHeading } from './heading.interface';
+import type { IHeading } from './heading.interface';
 import { XElement } from '../../x-element/x-element.class';
 
 // h1,h2,h3,h4,h5
