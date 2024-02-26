@@ -11,7 +11,7 @@ export class SvgRect extends TypeSvg implements ISvgRect {
   width = 60;
   height = 60;
   declare childNodes: [];
-  constructor(public parent: TypeSvgSvg) {
+  constructor(public parent?: TypeSvgSvg) {
     super();
     this.nodeName = 'rect';
     this.className = 'SvgRect';

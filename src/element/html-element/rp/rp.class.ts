@@ -4,7 +4,7 @@ import { XElement } from '../../x-element/x-element.class';
 import type { IRp } from './rp.interface';
 export class Rp extends TypeRp implements IRp {
   className: 'Rp';
-  constructor(public parent: TypeHtml | XElement) {
+  constructor(public parent?: TypeHtml | XElement) {
     super();
     this.className = 'Rp';
   }

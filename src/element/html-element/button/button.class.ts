@@ -4,7 +4,7 @@ import { XElement } from '../../x-element/x-element.class';
 import type { IButton } from './button.interface';
 export class Button extends TypeButton implements IButton {
   className: 'Button';
-  constructor(public parent: TypeHtml | XElement) {
+  constructor(public parent?: TypeHtml | XElement) {
     super();
     this.className = 'Button';
   }

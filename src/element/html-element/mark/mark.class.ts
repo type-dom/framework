@@ -4,7 +4,7 @@ import { XElement } from '../../x-element/x-element.class';
 import type { IMark } from './mark.interface';
 export class Mark extends TypeMark implements IMark {
   className: 'Mark';
-  constructor(public parent: TypeHtml | XElement) {
+  constructor(public parent?: TypeHtml | XElement) {
     super();
     this.className = 'Mark';
   }

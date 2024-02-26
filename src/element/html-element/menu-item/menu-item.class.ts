@@ -10,7 +10,7 @@ import type { IMenuItem } from './menu-item.interface';
  */
 export class MenuItem extends TypeMenuItem implements IMenuItem {
   className: 'MenuItem';
-  constructor(public parent: TypeHtml | XElement) {
+  constructor(public parent?: TypeHtml | XElement) {
     super();
     this.className = 'MenuItem';
   }

@@ -4,7 +4,7 @@ import { XElement } from '../../x-element/x-element.class';
 import type { IBlockQuote } from './block-quote.interface';
 export class BlockQuote extends TypeBlockQuote implements IBlockQuote {
   className: 'BlockQuote';
-  constructor(public parent: TypeHtml | XElement) {
+  constructor(public parent?: TypeHtml | XElement) {
     super();
     this.className = 'BlockQuote';
   }

@@ -11,7 +11,7 @@ export class SvgLine extends TypeSvg implements ISvgLine {
   x2 = 0;
   y1 = 0;
   y2 = 0;
-  constructor(public parent: TypeSvgSvg) {
+  constructor(public parent?: TypeSvgSvg) {
     super();
     this.nodeName = 'line';
     this.className = 'SvgLine';

@@ -4,7 +4,7 @@ import { XElement } from '../../x-element/x-element.class';
 import type { ISource } from './source.interface';
 export class Source extends TypeSource implements ISource {
   className: 'Source';
-  constructor(public parent: TypeHtml | XElement) {
+  constructor(public parent?: TypeHtml | XElement) {
     super();
     this.className = 'Source';
   }

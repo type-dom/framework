@@ -4,7 +4,7 @@ import { XElement } from '../../x-element/x-element.class';
 import type { IPre } from './pre.interface';
 export class Pre extends TypePre implements IPre {
   className: 'Pre';
-  constructor(public parent: TypeHtml | XElement) {
+  constructor(public parent?: TypeHtml | XElement) {
     super();
     this.className = 'Pre';
   }

@@ -4,7 +4,7 @@ import { XElement } from '../../x-element/x-element.class';
 import type { IUnorderedList } from './unordered-list.interface';
 export class UnorderedList extends TypeUL implements IUnorderedList {
   className: 'UnorderedList';
-  constructor(public parent: TypeHtml | XElement) {
+  constructor(public parent?: TypeHtml | XElement) {
     super();
     this.className = 'UnorderedList';
   }

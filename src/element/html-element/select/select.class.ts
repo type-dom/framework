@@ -8,7 +8,7 @@ export class Select extends TypeSelect implements ISelect {
   className: 'Select';
   declare childNodes: Option[];
   value?: string | number | boolean;
-  constructor(public parent: TypeHtml | XElement) {
+  constructor(public parent?: TypeHtml | XElement) {
     super();
     this.className = 'Select';
     this.childNodes = [];

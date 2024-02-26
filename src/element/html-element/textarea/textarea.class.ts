@@ -5,7 +5,7 @@ import type { ITextarea } from './textarea.interface';
 export class Textarea extends TypeTextarea implements ITextarea {
   className: 'TextArea';
   value: string | number | boolean | undefined;
-  constructor(public parent: TypeHtml | XElement) {
+  constructor(public parent?: TypeHtml | XElement) {
     super();
     this.className = 'TextArea';
   }

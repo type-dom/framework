@@ -4,7 +4,7 @@ import { XElement } from '../../x-element/x-element.class';
 import type { IArea } from './area.interface';
 export class Area extends TypeArea implements IArea {
   className: 'Area';
-  constructor(public parent: TypeHtml | XElement) {
+  constructor(public parent?: TypeHtml | XElement) {
     super();
     this.className = 'Area';
   }

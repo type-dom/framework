@@ -5,7 +5,7 @@ import { StyleDisplay } from '../../../style/style.enum';
 import type { ISection } from './section.interface';
 export class Section extends TypeSection implements ISection {
   className: 'Section';
-  constructor(public parent: TypeHtml | XElement) {
+  constructor(public parent?: TypeHtml | XElement) {
     super();
     this.className = 'Section';
     this.propObj = {

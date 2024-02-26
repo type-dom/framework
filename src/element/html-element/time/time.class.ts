@@ -4,7 +4,7 @@ import { XElement } from '../../x-element/x-element.class';
 import type { ITime } from './time.interface';
 export class Time extends TypeTime implements ITime {
   className: 'Time';
-  constructor(public parent: TypeHtml | XElement) {
+  constructor(public parent?: TypeHtml | XElement) {
     super();
     this.className = 'Time';
   }

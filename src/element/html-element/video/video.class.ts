@@ -4,7 +4,7 @@ import { XElement } from '../../x-element/x-element.class';
 import type { IVideo } from './video.interface';
 export class Video extends TypeVideo implements IVideo {
   className: 'Video';
-  constructor(public parent: TypeHtml | XElement) {
+  constructor(public parent?: TypeHtml | XElement) {
     super();
     this.className = 'Video';
   }

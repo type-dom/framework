@@ -4,7 +4,7 @@ import { XElement } from '../../x-element/x-element.class';
 import type { IRuby } from './ruby.interface';
 export class Ruby extends TypeRuby implements IRuby {
   className: 'Ruby';
-  constructor(public parent: TypeHtml | XElement) {
+  constructor(public parent?: TypeHtml | XElement) {
     super();
     this.className = 'Ruby';
   }

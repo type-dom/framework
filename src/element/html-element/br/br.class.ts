@@ -4,7 +4,7 @@ import { XElement } from '../../x-element/x-element.class';
 import type { IBr } from './br.interface';
 export class Br extends TypeBr implements IBr {
   className: 'Br';
-  constructor(public parent: TypeHtml | XElement) {
+  constructor(public parent?: TypeHtml | XElement) {
     super();
     this.className = 'Br';
   }

@@ -4,7 +4,7 @@ import { XElement } from '../../x-element/x-element.class';
 import type { IProgress } from './progress.interface';
 export class Progress extends TypeProgress implements IProgress {
   className: 'Progress';
-  constructor(public parent: TypeHtml | XElement) {
+  constructor(public parent?: TypeHtml | XElement) {
     super();
     this.className = 'Progress';
   }

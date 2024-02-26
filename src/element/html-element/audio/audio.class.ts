@@ -4,7 +4,7 @@ import { XElement } from '../../x-element/x-element.class';
 import type { IAudio } from './audio.interface';
 export class Audio extends TypeAudio implements IAudio {
   className: 'Audio';
-  constructor(public parent: TypeHtml | XElement) {
+  constructor(public parent?: TypeHtml | XElement) {
     super();
     this.className = 'Audio';
   }

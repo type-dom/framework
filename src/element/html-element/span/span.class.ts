@@ -4,7 +4,7 @@ import { XElement } from '../../x-element/x-element.class';
 import type { ISpan } from './span.interface';
 export class Span extends TypeSpan implements ISpan {
   className: 'Span';
-  constructor(public parent: TypeHtml | XElement) {
+  constructor(public parent?: TypeHtml | XElement) {
     super();
     this.className = 'Span';
   }

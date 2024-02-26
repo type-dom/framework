@@ -7,7 +7,7 @@ export class SvgPath extends TypeSvg implements ISvgPath {
   className: 'SvgPath';
   declare propObj: ISvgPathProperty;
   declare childNodes: [];
-  constructor(public parent: TypeSvgSvg) {
+  constructor(public parent?: TypeSvgSvg) {
     super();
     this.nodeName = 'path';
     this.dom = document.createElementNS('http://www.w3.org/2000/svg', this.nodeName);

@@ -8,7 +8,7 @@ export class SvgDefs extends TypeSvg implements ISvgDefs {
   className: 'SvgDefs';
   dom: SVGDefsElement;
   declare childNodes: TypeSvg[];
-  constructor(public parent: TypeSvgSvg) {
+  constructor(public parent?: TypeSvgSvg) {
     super();
     this.nodeName = 'defs';
     this.className = 'SvgDefs';

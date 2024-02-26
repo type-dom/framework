@@ -4,7 +4,7 @@ import { XElement } from '../../x-element/x-element.class';
 import type { IFigCaption } from './fig-caption.interface';
 export class FigCaption extends TypeFigCaption implements IFigCaption {
   className: 'FigCaption';
-  constructor(public parent: TypeHtml | XElement) {
+  constructor(public parent?: TypeHtml | XElement) {
     super();
     this.className = 'FigCaption';
   }

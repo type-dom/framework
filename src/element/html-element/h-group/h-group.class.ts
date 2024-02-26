@@ -4,7 +4,7 @@ import { XElement } from '../../x-element/x-element.class';
 import type { IHGroup } from './h-group.interface';
 export class HGroup extends TypeHGroup implements IHGroup {
   className: 'HGroup';
-  constructor(public parent: TypeHtml | XElement) {
+  constructor(public parent?: TypeHtml | XElement) {
     super();
     this.className = 'HGroup';
   }

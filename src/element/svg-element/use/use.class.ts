@@ -6,7 +6,7 @@ export class SvgUse extends TypeSvg implements ISvgUse {
   className: 'SvgUse';
   dom: SVGUseElement;
   declare childNodes: [];
-  constructor(public parent: TypeSvgSvg) {
+  constructor(public parent?: TypeSvgSvg) {
     super();
     this.nodeName = 'use';
     this.className = 'SvgUse';

@@ -4,7 +4,7 @@ import { XElement } from '../../x-element/x-element.class';
 import type { IEmbed } from './embed.interface';
 export class Embed extends TypeEmbed implements IEmbed {
   className: 'Embed';
-  constructor(public parent: TypeHtml | XElement) {
+  constructor(public parent?: TypeHtml | XElement) {
     super();
     this.className = 'Embed';
   }

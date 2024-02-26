@@ -4,7 +4,7 @@ import { XElement } from '../../x-element/x-element.class';
 import type { ISub } from './sub.interface';
 export class Sub extends TypeSub implements ISub {
   className: 'Sub';
-  constructor(public parent: TypeHtml | XElement) {
+  constructor(public parent?: TypeHtml | XElement) {
     super();
     this.className = 'Sub';
   }

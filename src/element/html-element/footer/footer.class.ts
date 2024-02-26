@@ -4,7 +4,7 @@ import { XElement } from '../../x-element/x-element.class';
 import type { IFooter } from './footer.interface';
 export class Footer extends TypeFooter implements IFooter {
   className: 'Footer';
-  constructor(public parent: TypeHtml | XElement) {
+  constructor(public parent?: TypeHtml | XElement) {
     super();
     this.className = 'Footer';
   }

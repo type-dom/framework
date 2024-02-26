@@ -161,7 +161,7 @@
 //    "resolveJsonModule": true, // 允许从 .json 中导入、导出其类型 TS5071: Option '--resolveJsonModule' can only be specified when module code generation is 'commonjs', 'amd', 'es2015' or 'esNext'.
     "skipLibCheck": true, // 忽略所有的声明文件（*.d.ts）的类型检查。
     "noLib": false, // 不包含默认的库文件（lib.d.ts）。
-    "noImplicitOverride": true
+    "noImplicitOverride": false
   },
   // 指定一个匹配列表（属于自动指定该路径下的所有ts相关文件）
   // include也可以指定要编译的路径列表，但是和files的区别在于，这里的路径可以是文件夹，也可以是文件，

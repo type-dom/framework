@@ -4,7 +4,7 @@ import { XElement } from '../../x-element/x-element.class';
 import type { IFieldset } from './fieldset.interface';
 export class Fieldset extends TypeFieldset implements IFieldset {
   className: 'Fieldset';
-  constructor(public parent: TypeHtml | XElement) {
+  constructor(public parent?: TypeHtml | XElement) {
     super();
     this.className = 'Fieldset';
   }

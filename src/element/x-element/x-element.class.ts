@@ -26,7 +26,7 @@ export class XElement extends TypeElement implements IXElement {
    * 在 Parser 中使用 XElement 时， 限制了不能直接使用 parent 参数。
    * @param config
    */
-  constructor(config: ITypeNode) {
+  constructor(config: ITypeNode = {}) {
     super();
     this.className = 'XElement';
     this.nodeName = config.nodeName || 'div';
