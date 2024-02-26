@@ -1,2 +1,2 @@
 export { Parser } from './parser.class';
-export * from './parser.interface';
+export type * from './parser.interface';

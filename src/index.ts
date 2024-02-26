@@ -7,7 +7,7 @@ export type { IXNode } from './x-node/x-node.interface';
 export { TextNode } from './text-node/text-node.class';
 export type { ITextNode } from './text-node/text-node.interface';
 export { TypeRoot } from './type-root/type-root.abstract';
-export * from './type-root/type-root.interface';
+export type * from './type-root/type-root.interface';
 export * from './type-element';
 export * from './element';
 export * from './parser';

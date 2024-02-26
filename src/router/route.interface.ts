@@ -1,5 +1,4 @@
 import { TypeElement } from '../type-element/type-element.abstract';
-import { TypeSvgSvg } from '../type-element';
 export interface IRoute {
   name: string,
   path: string;

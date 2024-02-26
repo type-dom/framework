@@ -190,6 +190,12 @@ export abstract class TypeNode implements ITypeNode {
       }
     }
   }
+
+  /**
+   * 拼接出DOM字符串对应的数组。
+   * buffer.join(''), 获得对应的字符串。
+   * @param buffer
+   */
   dump(buffer: string[]): void {
     // console.log('type-node dump . ');
     if (this.nodeName === '#text') {
@@ -197,6 +203,7 @@ export abstract class TypeNode implements ITypeNode {
       return;
     }
     buffer.push(`<${this.nodeName}`);
+    // 下面组装 属性 和 样式
     if (this.propObj?.attrObj) {
       for (let key in this.propObj.attrObj) {
         if (
@@ -223,6 +230,7 @@ export abstract class TypeNode implements ITypeNode {
         );
       }
     }
+    // todo this.attributes may be repeated with this.propObj.attrObj
     if (this.attributes) {
       for (const attribute of this.attributes) {
         buffer.push(
