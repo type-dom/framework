@@ -4,7 +4,7 @@
  */
 import { TypeHtml } from '../type-element/type-html/type-html.abstract';
 import type { ITypeRoot, ITypeRootConfig } from './type-root.interface';
-import { ITypeNode } from '../type-node/type-node.interface';
+// import { ITypeNode } from '../type-node/type-node.interface';
 /**
  * el 元素对象或ID；
  * parent 只有自己 TypeRoot
