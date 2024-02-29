@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeRt } from './rt.interface';
+import type { ITypeRt } from './rt.interface';
 export abstract class TypeRt extends TypeHtml implements ITypeRt {
   nodeName: 'rt';
   dom: HTMLElement;

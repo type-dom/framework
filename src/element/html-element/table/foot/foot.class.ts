@@ -1,7 +1,7 @@
 import { TypeTableFoot } from '../../../../type-element/type-html/table/foot/foot.abstract';
 import { TableRow } from '../row/row.class';
 import { Table } from '../table.class';
-import { ITableFoot } from './foot.interface';
+import type { ITableFoot } from './foot.interface';
 
 export class TableFoot extends TypeTableFoot implements ITableFoot {
   className: 'TableFoot';

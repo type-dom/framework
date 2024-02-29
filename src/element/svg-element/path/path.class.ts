@@ -1,13 +1,13 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
 import { TypeSvgSvg } from '../../../type-element/type-svg/svg/svg.abstract';
-import { ISvgPath, ISvgPathProperty } from './path.interface';
+import type { ISvgPath, ISvgPathProperty } from './path.interface';
 export class SvgPath extends TypeSvg implements ISvgPath {
   nodeName: 'path';
   dom: SVGPathElement;
   className: 'SvgPath';
   declare propObj: ISvgPathProperty;
   declare childNodes: [];
-  constructor(public parent: TypeSvgSvg) {
+  constructor(public parent?: TypeSvgSvg) {
     super();
     this.nodeName = 'path';
     this.dom = document.createElementNS('http://www.w3.org/2000/svg', this.nodeName);

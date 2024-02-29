@@ -1,6 +1,6 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
 import { TypeSvgSvg } from '../../../type-element/type-svg/svg/svg.abstract';
-import { ISvgLine, ISvgLineProperty } from './line.interface';
+import type { ISvgLine, ISvgLineProperty } from './line.interface';
 export class SvgLine extends TypeSvg implements ISvgLine {
   nodeName: 'line';
   className: 'SvgLine';
@@ -11,7 +11,7 @@ export class SvgLine extends TypeSvg implements ISvgLine {
   x2 = 0;
   y1 = 0;
   y2 = 0;
-  constructor(public parent: TypeSvgSvg) {
+  constructor(public parent?: TypeSvgSvg) {
     super();
     this.nodeName = 'line';
     this.className = 'SvgLine';

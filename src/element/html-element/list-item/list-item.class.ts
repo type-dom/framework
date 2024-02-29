@@ -1,6 +1,6 @@
 import { TextNode } from '../../../text-node/text-node.class';
 import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
-import { IListItem } from './list-item.interface';
+import type { IListItem } from './list-item.interface';
 export class ListItem extends TypeHtml implements IListItem {
   nodeName: 'li';
   className: 'ListItem';

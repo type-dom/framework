@@ -8,8 +8,8 @@
  * </text>
  * transform="rotate(30 20,40)"
  */
-import { ITextNode } from '../../../text-node/text-node.interface';
-import { ITypeElement, ITypeProperty } from '../../../type-element/type-element.interface';
+import type { ITextNode } from '../../../text-node/text-node.interface';
+import type { ITypeElement, ITypeProperty } from '../../../type-element/type-element.interface';
 export interface ISvgTextProperty extends ITypeProperty {
   styleObj: {
     fontFamily?: string, // rgb(0,0,255) blue

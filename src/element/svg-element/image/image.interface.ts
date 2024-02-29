@@ -1,5 +1,5 @@
-import { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
-import { ITypeProperty } from '../../../type-element/type-element.interface';
+import type { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
+import type { ITypeProperty } from '../../../type-element/type-element.interface';
 /**
  * width
  * height

@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeIFrame } from './iframe.interface';
+import type { ITypeIFrame } from './iframe.interface';
 export abstract class TypeIFrame extends TypeHtml implements ITypeIFrame {
   nodeName: 'iframe';
   dom: HTMLIFrameElement;

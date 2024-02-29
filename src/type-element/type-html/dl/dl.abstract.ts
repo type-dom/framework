@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeDL } from './dl.interface';
+import type { ITypeDL } from './dl.interface';
 /**
  * 定义列表（definition list）
  * <dl> 元素 （或 HTML 描述列表元素）是一个包含术语定义以及描述的列表，通常用于展示词汇表或者元数据 (键 - 值对列表)。

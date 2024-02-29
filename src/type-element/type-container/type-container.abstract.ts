@@ -1,7 +1,7 @@
 import { TypeElement } from '../type-element.abstract';
 import { TypeHtml } from '../type-html/type-html.abstract';
 import { TypeDiv } from '../type-html/div/div.abstract';
-import { ITypeContainer } from './type-container.interface';
+import type { ITypeContainer } from './type-container.interface';
 /**
  * 组件基类
  * 子节点是 TypeElement, 不包括 TextNode

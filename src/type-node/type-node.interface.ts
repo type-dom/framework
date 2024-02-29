@@ -1,4 +1,4 @@
-import { ITypeProperty } from '../type-element/type-element.interface';
+import type { ITypeProperty } from '../type-element/type-element.interface';
 import { TypeElement } from '../type-element';
 export interface INodeAttr {
   name: string,
@@ -50,6 +50,6 @@ export interface ITypeNode {
   // 绑定的事件集合, TypeElement 才有
   // 生成json时，基于events生成；
   // 反向转为类时，要转为events的值
-  methods?: Record<string, Function>,
+  methods?: Record<string, any>,
   config?: Record<string, any>, // config不会转为json
 }

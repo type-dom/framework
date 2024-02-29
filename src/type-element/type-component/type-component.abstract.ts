@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html/type-html.abstract';
-import { ITypeComponent } from './type-component.interface';
+import type { ITypeComponent } from './type-component.interface';
 /**
  * 组件基类
  */

@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeOutput } from './output.interface';
+import type { ITypeOutput } from './output.interface';
 export abstract class TypeOutput extends TypeHtml implements ITypeOutput {
   nodeName: 'output';
   dom: HTMLOutputElement;

@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeMap } from './map.interface';
+import type { ITypeMap } from './map.interface';
 export abstract class TypeMap extends TypeHtml implements ITypeMap {
   nodeName: 'map';
   dom: HTMLMapElement;

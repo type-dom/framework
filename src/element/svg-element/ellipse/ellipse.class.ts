@@ -1,6 +1,5 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
-import { ISvgEllipse, ISvgEllipseProperty } from './ellipse.interface';
-
+import type { ISvgEllipse, ISvgEllipseProperty } from './ellipse.interface';
 export class SvgEllipse extends TypeSvg implements ISvgEllipse {
   nodeName: 'ellipse';
   className: 'SvgEllipse';
@@ -30,7 +29,6 @@ export class SvgEllipse extends TypeSvg implements ISvgEllipse {
       }
     };
   }
-
   reset(cx: number, cy: number, rx: number, ry: number): SvgEllipse {
     this.cx = cx;
     this.cy = cy;

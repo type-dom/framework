@@ -1,8 +1,8 @@
 /**
  * 虚拟dom的数据结构字面量接口。
  */
-import { ITypeNode } from '../type-node/type-node.interface';
-import { IStyle } from '../style/style.interface';
+import type { ITypeNode } from '../type-node/type-node.interface';
+import type { IStyle } from '../style/style.interface';
 import {
   A,
   Area,
@@ -49,11 +49,10 @@ import {
   Track, UnorderedList, Video
 } from '../element';
 export interface ITypeAttribute {
-  // id?: string;
+  id?: string;
   class?: string,
   name?: string,
   type?: string,
-  start?: string,
   [key: string]: string | number | boolean | unknown | undefined;
 }
 export interface ITypeProperty {
@@ -73,13 +72,13 @@ export interface ITypeElement extends ITypeNode {
 export interface IBoundBox {
   top: string,
   left: string,
-  width: string,
-  height: string,
+  width: string | number,
+  height: string | number,
 }
 export interface IXItem extends ITypeNode {
   template: string,
   // data: Record<string, any>,
-  // methods: Record<string, Function>
+  // methods: Record<string, never>
 }
 export interface IElementItem extends ITypeNode {
   TypeClass: typeof A | typeof Area | typeof Article | typeof Aside | typeof Audio

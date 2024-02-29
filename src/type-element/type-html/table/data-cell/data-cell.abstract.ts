@@ -1,5 +1,5 @@
 import { TypeHtml } from '../../type-html.abstract';
-import { ITypeTableDataCell } from './data-cell.interface';
+import type { ITypeTableDataCell } from './data-cell.interface';
 export abstract class TypeTableDataCell extends TypeHtml implements ITypeTableDataCell {
   nodeName: 'td';
   dom: HTMLElement;

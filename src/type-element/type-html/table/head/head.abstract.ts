@@ -1,6 +1,6 @@
 import { TypeHtml } from '../../type-html.abstract';
 import { TypeTableHeaderCell } from '../header-cell/header-cell.abstract';
-import { ITypeTableHead } from './head.interface';
+import type { ITypeTableHead } from './head.interface';
 
 // 表格页眉
 export abstract class TypeTableHead extends TypeHtml implements ITypeTableHead {

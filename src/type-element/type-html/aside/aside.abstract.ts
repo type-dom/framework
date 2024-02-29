@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeAside } from './aside.interface';
+import type { ITypeAside } from './aside.interface';
 export abstract class TypeAside extends TypeHtml implements ITypeAside {
   nodeName: 'aside';
   dom: HTMLElement;

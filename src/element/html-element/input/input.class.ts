@@ -1,5 +1,5 @@
 import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
-import { IInput } from './input.interface';
+import type { IInput } from './input.interface';
 
 export class Input extends TypeHtml implements IInput {
   nodeName: 'input';

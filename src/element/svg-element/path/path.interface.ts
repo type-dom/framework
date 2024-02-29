@@ -1,6 +1,6 @@
-import { ITypeAttribute, ITypeProperty } from '../../../type-element/type-element.interface';
-import { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
-import { IStyle } from '../../../style/style.interface';
+import type { ITypeAttribute, ITypeProperty } from '../../../type-element/type-element.interface';
+import type { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
+import type { IStyle } from '../../../style/style.interface';
 export interface ISvgPathStyle extends IStyle {
   fill: string; // white;
   stroke: string; // red;
@@ -10,6 +10,7 @@ export interface ISvgPathAttribute extends ITypeAttribute {
   d: string, // M250 150 L150 350 L350 350 Z
   fill: string,
   strokeWidth: number,
+  fillRule?: 'nonzero' | 'evenodd' | 'inherit', // Default value	nonzero
 }
 export interface ISvgPathProperty extends ITypeProperty {
   styleObj: Partial<ISvgPathStyle>,

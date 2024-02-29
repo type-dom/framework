@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeLabel } from './label.interface';
+import type { ITypeLabel } from './label.interface';
 export abstract class TypeLabel extends TypeHtml implements ITypeLabel {
   nodeName: 'label';
   dom: HTMLLabelElement;

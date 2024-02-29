@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeKbd } from './kbd.interface';
+import type { ITypeKbd } from './kbd.interface';
 export abstract class TypeKbd extends TypeHtml implements ITypeKbd {
   nodeName: 'kbd';
   dom: HTMLElement;

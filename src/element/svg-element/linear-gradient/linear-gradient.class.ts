@@ -1,7 +1,7 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
 import { SvgStop } from '../stop/stop.class';
 import { SvgDefs } from '../defs/defs.class';
-import { ISvgLinearGradient, ISvgLinearGradientPropObj } from './linear-gradient.interface';
+import type { ISvgLinearGradient, ISvgLinearGradientPropObj } from './linear-gradient.interface';
 export class SvgLinearGradient extends TypeSvg implements ISvgLinearGradient {
   nodeName: 'linearGradient';
   className: 'SvgLinearGradient';

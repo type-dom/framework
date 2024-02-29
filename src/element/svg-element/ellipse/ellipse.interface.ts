@@ -1,6 +1,6 @@
-import { ITypeAttribute, ITypeProperty } from '../../../type-element/type-element.interface';
-import { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
-import { IStyle } from '../../../style/style.interface';
+import type { ITypeAttribute, ITypeProperty } from '../../../type-element/type-element.interface';
+import type { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
+import type { IStyle } from '../../../style/style.interface';
 /**
  * cx 属性定义圆点的 x 坐标
  * cy 属性定义圆点的 y 坐标

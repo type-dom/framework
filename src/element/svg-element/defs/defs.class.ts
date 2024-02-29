@@ -1,6 +1,6 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
 import { TypeSvgSvg } from '../../../type-element/type-svg/svg/svg.abstract';
-import { ISvgDefs } from './defs.interface';
+import type { ISvgDefs } from './defs.interface';
 
 // todo 有文字内容的
 export class SvgDefs extends TypeSvg implements ISvgDefs {
@@ -8,7 +8,7 @@ export class SvgDefs extends TypeSvg implements ISvgDefs {
   className: 'SvgDefs';
   dom: SVGDefsElement;
   declare childNodes: TypeSvg[];
-  constructor(public parent: TypeSvgSvg) {
+  constructor(public parent?: TypeSvgSvg) {
     super();
     this.nodeName = 'defs';
     this.className = 'SvgDefs';

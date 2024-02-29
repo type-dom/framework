@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeDataList } from './data-list.interface';
+import type { ITypeDataList } from './data-list.interface';
 export abstract class TypeDataList extends TypeHtml implements ITypeDataList {
   nodeName: 'datalist';
   dom: HTMLDataListElement;

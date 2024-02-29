@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeArticle } from './article.interface';
+import type { ITypeArticle } from './article.interface';
 export abstract class TypeArticle extends TypeHtml implements ITypeArticle {
   nodeName: 'article';
   dom: HTMLElement;

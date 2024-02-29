@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeDel } from './del.interface';
+import type { ITypeDel } from './del.interface';
 export abstract class TypeDel extends TypeHtml implements ITypeDel {
   nodeName: 'del';
   dom: HTMLModElement;

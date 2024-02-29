@@ -3,29 +3,47 @@
  * 作为前端项目的入口文件要继承根节点抽象类，并挂载到对应的 ID 上。
  */
 import { TypeHtml } from '../type-element/type-html/type-html.abstract';
-import { ITypeRoot, ITypeRootOption } from './type-root.interface';
+import type { ITypeRoot, ITypeRootConfig } from './type-root.interface';
+// import { ITypeNode } from '../type-node/type-node.interface';
 /**
  * el 元素对象或ID；
  * parent 只有自己 TypeRoot
  */
 export abstract class TypeRoot extends TypeHtml implements ITypeRoot {
-  parent: TypeRoot;
   nodeName: string;
   dom: HTMLElement;
-  protected constructor(option: ITypeRootOption) {
+  // el?: HTMLElement;
+  protected constructor(option = {} as ITypeRootConfig) {
     super();
-    this.parent = this;
+    // this.parent = this;
     this.nodeName = option.nodeName || 'div';
     this.dom = document.createElement(this.nodeName);
-    if (option.el instanceof HTMLElement) {
-      option.el.appendChild(this.dom);
+    // if (option.el instanceof HTMLElement) {
+    //   option.el.appendChild(this.dom);
+    // } else {
+    //   const appEl = document.querySelector<Element>(option.el);
+    //   if (appEl) {
+    //     appEl.appendChild(this.dom);
+    //   } else {
+    //     throw Error('Can not find id . ');
+    //   }
+    // }
+  }
+  mount(el: string | HTMLElement | ShadowRoot) {
+    // if (!this.dom) {
+    //   this.dom = document.createElement(this.nodeName);
+    //   // this.render();
+    // }
+    if (el instanceof HTMLElement || el instanceof ShadowRoot) {
+      el.appendChild(this.dom);
     } else {
-      const appEl = document.querySelector<Element>(option.el);
+      const appEl = document.querySelector<HTMLElement>(el);
       if (appEl) {
         appEl.appendChild(this.dom);
       } else {
         throw Error('Can not find id . ');
       }
     }
+    return this;
   }
 }

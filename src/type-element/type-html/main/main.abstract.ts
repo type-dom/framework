@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeMain } from './main.interface';
+import type { ITypeMain } from './main.interface';
 export abstract class TypeMain extends TypeHtml implements ITypeMain {
   nodeName: 'main';
   dom: HTMLElement;

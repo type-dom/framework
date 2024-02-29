@@ -24,23 +24,28 @@
         –	类实例
 
     2、项目结构
-        –	build
-        –	public
-        –	src
+        – build
+        – public
+        – src
             – element 元素具体类，节点名称固定
-              - html-element html标签类
-              - svg-element svg标签类
-              - x-element 通用元素具体类，需指定节点名称
+                - html-element html标签类
+                - svg-element svg标签类
+                - x-element 通用元素具体类，需指定节点名称
             - parser 解析类，解析模板字符串
+            - root-node 根节点类，创建APP的根节点，挂载在index.html的标签上
+            - router 路由管理类，挂载路由
             - style 样式枚举、样式接口
             - text-node 文本具体类
             - type-element 元素抽象类
-              - type-component 组件抽象类
-              - type-container 容器抽象类
-              - type-html html标签抽象类
-              - type-svg svg标签抽象类
+                - type-component 组件抽象类
+                - type-container 容器抽象类
+                - type-html html标签抽象类
+                - type-svg svg标签抽象类
             - type-node 节点抽象类，最基础的类，其它抽象类或具体类的母类
             - type-root 根节点抽象类，项目根节点必须继承这个抽象类
+            - x-node 通用节点类，创建虚拟节点
+            - utils.ts 工具类
+        - test 测试类
 
 ## Introduction
 
@@ -73,7 +78,7 @@ TypeDom supports all browsers that are [ES5-compliant](https://kangax.github.io/
 
 ```bash
 # or pnpm or yarn
-npm install type-dom.ts
+npm install @type-dom/framework
 ```
 
 ## Usage
@@ -85,7 +90,7 @@ Create a hello world page to app:
 ```ts
 // Typescript
 // Br,Division,TypeRoot,TextNode等都是框架定义好的类
-import {Br, Division, TypeRoot, TextNode} from 'type-dom.ts';
+import {Br, Division, TypeRoot, TextNode} from '@type-dom/framework';
 // svgs-root.ts 项目根节点，继承TypeRoot（根节点抽象类）
 export class AppElement extends TypeRoot {
   className: 'AppElement';
@@ -159,7 +164,7 @@ fromEvent(document, 'DOMContentLoaded').subscribe(() => {
 
 ## Documentation
 
-To check out [live examples](https://type-dom.org/examples/) and docs, visit [type-dom.org](https://type-dom.org).
+To check out [live examples](https://) and docs, visit [type-dom.org](https://).
 
 ## Questions
 

@@ -1,6 +1,6 @@
 import { TypeHtml } from '../../type-html.abstract';
 import { TypeTableRow } from '../row/row.abstract';
-import { ITypeTableFoot } from './foot.interface';
+import type { ITypeTableFoot } from './foot.interface';
 export abstract class TypeTableFoot extends TypeHtml implements ITypeTableFoot {
   nodeName: 'tfoot';
   dom: HTMLElement;

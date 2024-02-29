@@ -1,12 +1,12 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
 import { TypeSvgSvg } from '../../../type-element/type-svg/svg/svg.abstract';
-import { ISvgCircle } from './circle.interface';
+import type { ISvgCircle } from './circle.interface';
 export class SvgCircle extends TypeSvg implements ISvgCircle {
   nodeName: 'circle';
   className: 'SvgCircle';
   dom: SVGCircleElement;
   declare childNodes: [];
-  constructor(public parent: TypeSvgSvg) {
+  constructor(public parent?: TypeSvgSvg) {
     super();
     this.nodeName = 'circle';
     this.className = 'SvgCircle';

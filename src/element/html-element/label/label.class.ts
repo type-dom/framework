@@ -1,8 +1,8 @@
 import { TextNode } from '../../../text-node/text-node.class';
 import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
 import { TypeLabel } from '../../../type-element/type-html/label/label.abstract';
-import { Input } from '../input/input.class';
-import { ILabel } from './label.interface';
+import type { Input } from '../input/input.class';
+import type { ILabel } from './label.interface';
 export class Label extends TypeLabel implements ILabel {
   className: 'Label';
   declare childNodes: (Input | TextNode)[];

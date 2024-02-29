@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeCite } from './cite.interface';
+import type { ITypeCite } from './cite.interface';
 export abstract class TypeCite extends TypeHtml implements ITypeCite {
   nodeName: 'cite';
   dom: HTMLElement;

@@ -1,7 +1,7 @@
 import { mustache } from '@type-dom/utils';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TypeElement } from '../type-element/type-element.abstract';
-import { ITextNode } from './text-node.interface';
+import type { ITextNode } from './text-node.interface';
 /**
  * 虚拟文本节点。
  * ----> 本身不会渲染成标签。没有对应的HTML标签。

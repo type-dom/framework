@@ -1,5 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeDfn } from './dfn.interface';
+import type { ITypeDfn } from './dfn.interface';
 export abstract class TypeDfn extends TypeHtml implements ITypeDfn {
   nodeName: 'dfn';
   dom: HTMLElement;

@@ -1,7 +1,7 @@
 import { TextNode } from '../../../text-node/text-node.class';
 import { TypeSvgSvg } from '../../../type-element/type-svg/svg/svg.abstract';
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
-import { ISvgText, ISvgTextProperty } from './text.interface';
+import type { ISvgText, ISvgTextProperty } from './text.interface';
 export class SvgText extends TypeSvg implements ISvgText {
   nodeName: 'text';
   dom: SVGTextElement;
@@ -9,7 +9,7 @@ export class SvgText extends TypeSvg implements ISvgText {
   declare propObj: ISvgTextProperty;
   declare childNodes: TextNode[];
   textNode: TextNode;
-  constructor(public parent: TypeSvgSvg) {
+  constructor(public parent?: TypeSvgSvg) {
     super();
     this.nodeName = 'text';
     this.dom = document.createElementNS('http://www.w3.org/2000/svg', this.nodeName);
