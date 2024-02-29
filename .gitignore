@@ -9,4 +9,5 @@ dist
 lib
 js
 coverage-ts
+*.log
 
