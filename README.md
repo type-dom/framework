@@ -57,21 +57,21 @@ TypeDom supports all browsers that are [ES5-compliant](https://kangax.github.io/
 
 ## Ecosystem
 
-| Project              | Status                                                     | Description             |
-|----------------------|------------------------------------------------------------|-------------------------|
-| [type-dom-svgs]      | [![type-dom-svgs-status]][type-dom-svgs-package]           | Svgs based on TypeDom   |
-| [type-dom-ui]        | [![type-dom-ui-status]][type-dom-ui-package]               | Ui component management |
-| [type-form-designer] | [![type-form-designer-status]][type-form-designer-package] | Dynamic Form project    |
+| Project                   | Status                                                              | Description             |
+|---------------------------|---------------------------------------------------------------------|-------------------------|
+| [@type-dom/svgs]          | [![@type-dom/svgs-status]][type-dom/svgs-package]                   | Svgs based on TypeDom   |
+| [@type-dom/ui]            | [![@type-dom/ui-status]][type-dom/ui-package]                       | Ui component management |
+| [@type-dom/form-designer] | [![@type-dom/form-designer-status]][type-dom/form-designer-package] | Dynamic Form project    |
 
-[type-dom-svgs]: https://github.com/xjf7711/type-dom-svgs
-[type-dom-ui]: https://github.com/xjf7711/type-dom-ui
-[type-form-designer]: https://github.com/xjf7711/type-form-designer
-[type-dom-svgs-status]: https://img.shields.io/npm/v/vue-router.svg
-[type-dom-ui-status]: https://img.shields.io/npm/v/vuex.svg
-[type-form-designer-status]: https://img.shields.io/npm/v/@vue/cli.svg
-[type-dom-svgs-package]: https://npmjs.com/package/type-dom-svgs
-[type-dom-ui-package]: https://npmjs.com/package/type-dom-ui
-[type-form-designer-package]: https://npmjs.com/package/type-form-designer
+[@type-dom/svgs]: https://github.com/type-dom/svgs
+[@type-dom/ui]: https://github.com/type-dom/ui
+[@type-dom/form-designer]: https://github.com/type-dom/form-designer
+[@type-dom/svgs-status]: https://img.shields.io/npm/v/vue-router.svg
+[@type-dom/ui-status]: https://img.shields.io/npm/v/vuex.svg
+[@type-dom/form-designer-status]: https://img.shields.io/npm/v/@vue/cli.svg
+[type-dom/svgs-package]: https://npmjs.com/package/type-dom/svgs
+[type-dom-ui-package]: https://npmjs.com/package/type-dom/ui
+[type-form-designer-package]: https://npmjs.com/package/type-dom/form-designer
 
 
 ## Installation
