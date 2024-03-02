@@ -29,21 +29,4 @@ export abstract class TypeRoot extends TypeHtml implements ITypeRoot {
     //   }
     // }
   }
-  mount(el: string | HTMLElement | ShadowRoot) {
-    // if (!this.dom) {
-    //   this.dom = document.createElement(this.nodeName);
-    //   // this.render();
-    // }
-    if (el instanceof HTMLElement || el instanceof ShadowRoot) {
-      el.appendChild(this.dom);
-    } else {
-      const appEl = document.querySelector<HTMLElement>(el);
-      if (appEl) {
-        appEl.appendChild(this.dom);
-      } else {
-        throw Error('Can not find id . ');
-      }
-    }
-    return this;
-  }
 }

@@ -687,6 +687,27 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   //   return items;
   // }
   /**
+   * 挂载到正式DOM
+   * 需要手动挂载组件时使用，一般是挂载到框架外的DOM元素时。
+   * @param el
+   */
+  mount(el: string | HTMLElement | ShadowRoot) {
+    if (!this.dom) {
+      this.dom = document.createElement(this.nodeName);
+    }
+    if (el instanceof HTMLElement || el instanceof ShadowRoot) {
+      el.appendChild(this.dom);
+    } else {
+      const appEl = document.querySelector<HTMLElement>(el);
+      if (appEl) {
+        appEl.appendChild(this.dom);
+      } else {
+        throw Error('Can not find id . ');
+      }
+    }
+    return this;
+  }
+  /**
    * 生命周期
    * beforeRender 渲染前
    * render 渲染
