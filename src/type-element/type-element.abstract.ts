@@ -83,12 +83,6 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   get styleObj(): Partial<IStyle> {
     return this.propObj.styleObj;
   }
-  override get firstChild(): TypeNode {
-    return this.children[0];
-  }
-  get lastChild(): TypeNode {
-    return this.children[this.length - 1];
-  }
 
   // get clientHeight(): string {
   //   return (this.dom.clientHeight / mm2pxRatio).toFixed(2) + "mm"; // px ---> mm
@@ -126,26 +120,6 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       cursor,
     });
   }
-  setAttrId(id: string): void {
-    this.addAttrId(id);
-    this.renderAttrId(id);
-  }
-  addAttrId(id: string): void {
-    this.propObj.attrObj.id = id;
-  }
-  renderAttrId(id: string): void {
-    this.dom?.setAttribute('id', id);
-  }
-  setAttrClass(className: string): void {
-    this.addAttrClass(className);
-    this.renderAttrClass(className);
-  }
-  addAttrClass(className: string): void {
-    this.addAttribute('class',  className);
-  }
-  renderAttrClass(className: string) {
-    this.dom?.setAttribute('class', className);
-  }
   // 设置属性 会清理原有属性
   setPropObj(propObj: ITypeProperty): void {
     if (this.propObj) {
@@ -164,7 +138,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   }
   // todo 类型验证 set ???----> replace
   // todo 累加
-  setStyleObj(styles: Partial<IStyle>): TypeElement {
+  setStyleObj(styles: Partial<IStyle>): void {
     for (const key in styles) {
       if (Object.hasOwnProperty.call(styles, key)) {
         // todo 如何优化
@@ -172,7 +146,6 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
         this.setStyle(key as keyof IStyle, value);
       }
     }
-    return this;
   }
   addStyleObj(styles: Partial<IStyle>): void {
     for (const key in styles) {
@@ -238,7 +211,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.setStyle('display', 'none');
   }
   // 不影响已有的，但是没有传的属性
-  setAttrObj(attrObj: Partial<ITypeAttribute>): TypeElement {
+  setAttrObj(attrObj: Partial<ITypeAttribute>): void {
     for (const key in attrObj) {
       if (Object.hasOwnProperty.call(attrObj, key)) {
         // todo 如何优化
@@ -246,31 +219,27 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
         this.setAttribute(key, value);
       }
     }
-    return this;
   }
-  addAttrObj(attrObj: Partial<ITypeAttribute>): TypeElement {
+  addAttrObj(attrObj: Partial<ITypeAttribute>): void {
     for (const key in attrObj) {
       if (Object.hasOwnProperty.call(attrObj, key)) {
         const value = attrObj[key] as string | number;
         this.addAttribute(key, value);
       }
     }
-    return this;
   }
-  renderAttrObj(attrObj: Partial<ITypeAttribute>): TypeElement {
+  renderAttrObj(attrObj: Partial<ITypeAttribute>): void {
     for (const key in attrObj) {
       if (Object.hasOwnProperty.call(attrObj, key)) {
         const value = attrObj[key] as string | number;
         this.renderAttribute(key, value);
       }
     }
-    return this;
   }
   // 设置属性 dom 属性同步变化
-  setAttribute(key: string, value: string | number | boolean): TypeElement {
+  setAttribute(key: string, value: string | number | boolean): void {
     this.addAttribute(key, value);
     this.renderAttribute(key, value);
-    return this;
   }
   // 添加属性
   addAttribute(key: string, value: string | number | boolean): void {
@@ -298,10 +267,15 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       this.dom?.setAttribute(key, val);
     }
   }
-  setAttrName(value: string): TypeElement {
+  removeAttribute(key: string): void {
+    if (this.propObj.attrObj[key]) {
+      delete this.propObj.attrObj[key];
+    }
+    this.dom?.removeAttribute(key);
+  }
+  setAttrName(value: string): void {
     this.addAttrName(value);
     this.renderAttrName(value);
-    return this;
   }
   addAttrName(value: string): void {
     this.propObj.attrObj.name = value;
@@ -309,26 +283,34 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   renderAttrName(value: string): void {
     this.dom?.setAttribute('name', value);
   }
-  removeAttribute(key: string): TypeElement {
-    if (this.propObj.attrObj[key]) {
-      delete this.propObj.attrObj[key];
-    }
-    this.dom?.removeAttribute(key);
-    return this;
+  setAttrId(id: string): void {
+    this.addAttrId(id);
+    this.renderAttrId(id);
   }
-  addDomClassName(className: string): TypeElement {
+  addAttrId(id: string): void {
+    this.propObj.attrObj.id = id;
+  }
+  renderAttrId(id: string): void {
+    this.dom?.setAttribute('id', id);
+  }
+  setAttrClass(className: string): void {
+    this.addAttrClass(className);
+    this.renderAttrClass(className);
+  }
+  addAttrClass(className: string): void {
     // 要先判断className是否已经存在
     if (this.propObj.attrObj?.class?.indexOf(className) === -1) {
       this.propObj.attrObj.class += ' ' + className;
+    } else {
+      this.addAttribute('class',  className);
     }
-    this.dom?.classList.add(className);
-    // this.dom.setAttribute('class', String(this.propObj.attrObj.class).trim());
-    return this;
   }
-  removeDomClassName(className: string): TypeElement {
+  renderAttrClass(className: string) {
+    this.dom?.setAttribute('class', className);
+  }
+  removeAttrClass(className: string): void {
     String(this.propObj.attrObj.class).replace(className, '');
     this.dom?.classList.remove(className);
-    return this;
   }
   /**
    * 在最后位置添加一个子节点。
@@ -691,7 +673,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * 需要手动挂载组件时使用，一般是挂载到框架外的DOM元素时。
    * @param el
    */
-  mount(el: string | HTMLElement | ShadowRoot) {
+  mount(el: string | HTMLElement | ShadowRoot): TypeElement {
     if (!this.dom) {
       this.dom = document.createElement(this.nodeName);
     }

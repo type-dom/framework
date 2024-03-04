@@ -48,6 +48,11 @@ export abstract class TypeNode implements ITypeNode {
   get firstChild(): TypeNode | undefined {
     return this.childNodes && this.childNodes[0];
   }
+
+  get lastChild(): TypeNode | undefined {
+    return this.childNodes && this.childNodes[this.childNodes.length - 1];
+  }
+
   get nextSibling(): TypeNode | undefined {
     const childNodes = this.parent?.childNodes;
     if (!childNodes) {
