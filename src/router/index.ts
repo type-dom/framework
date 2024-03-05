@@ -1,4 +1,5 @@
 import { BehaviorSubject } from 'rxjs';
+
 export { Router } from './router.class';
 export type { IRouterOption } from './router.interface';
 export { RouterView } from './router-view';

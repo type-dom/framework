@@ -1,12 +1,19 @@
 import type { ITextNode } from '../../text-node/text-node.interface';
-import type { ITypeAttribute, ITypeElement, ITypeProperty } from '../type-element.interface';
+import type {
+  ITypeAttribute,
+  ITypeElement,
+  ITypeProperty,
+} from '../type-element.interface';
+
 export interface ITypeSvg extends ITypeElement {
-  propObj: ITypeSvgProperty,
-  childNodes: (ITypeSvg | ITextNode)[],
+  propObj: ITypeSvgProperty;
+  childNodes: (ITypeSvg | ITextNode)[];
 }
+
 export interface ITypeSvgProperty extends ITypeProperty {
   attrObj: Partial<ITypeSvgAttribute>;
 }
+
 export interface ITypeSvgAttribute extends ITypeAttribute {
   // start?: string,
   /**
@@ -28,7 +35,7 @@ export interface ITypeSvgAttribute extends ITypeAttribute {
    *
    * 通过这些指令和它们的参数，可以创建复杂的形状和路径。
    */
-  d?: string,
+  d?: string;
   /**
    * stroke-linejoin属性用于设置线段连接的方式。
    *
@@ -37,7 +44,7 @@ export interface ITypeSvgAttribute extends ITypeAttribute {
    * bevel：表示斜角。
    * inherit：表示继承父元素的属性。
    */
-  strokeLinejoin?: string,
+  strokeLinejoin?: string;
   /**
    * stroke-linecap属性用于定义在打开子路径末尾使用的形状。具体用法为：stroke-linecap: butt | round | square | initial | inherit。属性值有：
    *
@@ -45,14 +52,14 @@ export interface ITypeSvgAttribute extends ITypeAttribute {
    * round：使子路径的末端呈圆形。
    * square：使子路径的末端呈方形。
    */
-  strokeLinecap?: string,
+  strokeLinecap?: string;
   /**
    * stroke-dashoffset属性在SVG中主要用于控制虚线线段的绘制。
    * 当其值大于0时，线段会向左偏移相应的距离，表现为空白间距。
    * 当其值为0时，显示的是完整的线段。
    * 这个属性主要应用于进度条等需要动态展示进度的场合。
    */
-  strokeDashoffset?: string,
+  strokeDashoffset?: string;
   /**
    * stroke-dasharray属性用于描述Shape类型轮廓的虚线和间隔的样式。
    * 它的写法为stroke-dasharray=”str”。str是虚线和间隙的值的集合，奇数项为虚线长度，
@@ -61,5 +68,5 @@ export interface ITypeSvgAttribute extends ITypeAttribute {
    * 如：stroke-dasharray=”12 12”，由此可见网状格子的虚线，长为12，虚线间空缺为12。
    * stroke-dasharray=”12 2”，由此可见网状格子的虚线，长为12，虚线间空缺为2。
    */
-  strokeDasharray: string,
+  strokeDasharray: string;
 }

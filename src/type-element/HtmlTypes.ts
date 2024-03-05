@@ -176,7 +176,7 @@ import {
   TypeTableFoot,
   TypeTableHead,
   TypeTableHeaderCell,
-  TypeTableRow
+  TypeTableRow,
 } from './type-html/table';
 import { TypeSummary } from './type-html/summary/summary.abstract';
 import { TypeSup } from './type-html/sup/sup.abstract';
@@ -184,125 +184,125 @@ import { TypeTemplate } from './type-html/template/template.abstract';
 import { TypeSlot } from './type-html/slot/slot.abstract';
 
 export interface HtmlTypes {
-  a: TypeA,
-  abbr: TypeAbbr,
-  address: TypeAddress,
+  a: TypeA;
+  abbr: TypeAbbr;
+  address: TypeAddress;
   // applet:TypeApplet,
-  area: TypeArea,
-  article: TypeArticle,
-  aside: TypeAside,
-  audio: TypeAudio,
-  b: TypeB,
-  base: TypeBase,
+  area: TypeArea;
+  article: TypeArticle;
+  aside: TypeAside;
+  audio: TypeAudio;
+  b: TypeB;
+  base: TypeBase;
   // basefont:TypeBaseFont,
-  bdi: TypeBdi,
-  bdo: TypeBdo,
-  blockquote: TypeBlockQuote,
+  bdi: TypeBdi;
+  bdo: TypeBdo;
+  blockquote: TypeBlockQuote;
   // body:TypeBody,
-  br: TypeBr,
-  button: TypeButton,
-  canvas: TypeCanvas,
-  caption: TypeTableCaption,
-  cite: TypeCite,
-  code: TypeCode,
-  col: TypeTableCol,
-  colgroup: TypeTableColGroup,
-  data: TypeData,
-  datalist: TypeDataList,
-  dd: TypeDD,
-  del: TypeDel,
-  details: TypeDetails,
-  dfn: TypeDfn,
-  dialog: TypeDialog,
+  br: TypeBr;
+  button: TypeButton;
+  canvas: TypeCanvas;
+  caption: TypeTableCaption;
+  cite: TypeCite;
+  code: TypeCode;
+  col: TypeTableCol;
+  colgroup: TypeTableColGroup;
+  data: TypeData;
+  datalist: TypeDataList;
+  dd: TypeDD;
+  del: TypeDel;
+  details: TypeDetails;
+  dfn: TypeDfn;
+  dialog: TypeDialog;
   // dir:TypeDir,
-  div: TypeDiv,
-  dl: TypeDL,
-  dt: TypeDT,
-  em: TypeEm,
-  embed: TypeEmbed,
-  fieldset: TypeFieldset,
-  figcaption: TypeFigCaption,
-  figure: TypeFigure,
+  div: TypeDiv;
+  dl: TypeDL;
+  dt: TypeDT;
+  em: TypeEm;
+  embed: TypeEmbed;
+  fieldset: TypeFieldset;
+  figcaption: TypeFigCaption;
+  figure: TypeFigure;
   // font:TypeFont,
-  footer: TypeFooter,
-  form: TypeForm,
+  footer: TypeFooter;
+  form: TypeForm;
   // frame:TypeFrame,
   // frameset:TypeFrameSet,
-  h1: TypeHead,
-  h2: TypeHead,
-  h3: TypeHead,
-  h4: TypeHead,
-  h5: TypeHead,
-  h6: TypeHead,
-  head: TypeHead,
-  header: TypeHeader,
-  hgroup: TypeHGroup,
-  hr: TypeHr,
+  h1: TypeHead;
+  h2: TypeHead;
+  h3: TypeHead;
+  h4: TypeHead;
+  h5: TypeHead;
+  h6: TypeHead;
+  head: TypeHead;
+  header: TypeHeader;
+  hgroup: TypeHGroup;
+  hr: TypeHr;
   // html:TypeHtml,
-  i: TypeI,
-  iframe: TypeIFrame,
-  img: TypeImg,
-  input: TypeInput,
-  ins: TypeIns,
-  kbd: TypeKbd,
-  label: TypeLabel,
-  legend: TypeLegend,
-  li: TypeLI,
+  i: TypeI;
+  iframe: TypeIFrame;
+  img: TypeImg;
+  input: TypeInput;
+  ins: TypeIns;
+  kbd: TypeKbd;
+  label: TypeLabel;
+  legend: TypeLegend;
+  li: TypeLI;
   // link:TypeLink,
-  main: TypeMain,
-  map: TypeMap,
-  mark: TypeMark,
+  main: TypeMain;
+  map: TypeMap;
+  mark: TypeMark;
   // marquee:TypeMarquee,
-  menu: TypeMenu,
+  menu: TypeMenu;
   // meta:TypeMeta,
-  meter: TypeMeter,
-  nav: TypeNav,
+  meter: TypeMeter;
+  nav: TypeNav;
   // noscript:TypeNoscript,
   // object:TypeObject,
-  ol: TypeOL,
-  optgroup: TypeOptGroup,
-  option: TypeOption,
-  output: TypeOutput,
-  p: TypeP,
+  ol: TypeOL;
+  optgroup: TypeOptGroup;
+  option: TypeOption;
+  output: TypeOutput;
+  p: TypeP;
   // param:TypeParam,
-  picture: TypePicture,
-  pre: TypePre,
-  progress: TypeProgress,
-  q: TypeQ,
+  picture: TypePicture;
+  pre: TypePre;
+  progress: TypeProgress;
+  q: TypeQ;
   // rb:TypeRb,
-  rp: TypeRp,
-  rt: TypeRt,
+  rp: TypeRp;
+  rt: TypeRt;
   // rtc:TypeRtc,
-  ruby: TypeRuby,
-  s: TypeS,
-  samp: TypeSamp,
+  ruby: TypeRuby;
+  s: TypeS;
+  samp: TypeSamp;
   // script:TypeScript,
-  section: TypeSection,
-  select: TypeSelect,
-  slot: TypeSlot,
-  small: TypeSmall,
-  source: TypeSource,
-  span: TypeSpan,
-  strong: TypeStrong,
+  section: TypeSection;
+  select: TypeSelect;
+  slot: TypeSlot;
+  small: TypeSmall;
+  source: TypeSource;
+  span: TypeSpan;
+  strong: TypeStrong;
   // style:TypeStyle,
-  sub: TypeSub,
-  summary: TypeSummary,
-  sup: TypeSup,
-  table: TypeTable,
-  tbody: TypeTableBody,
-  td: TypeTableDataCell,
-  template: TypeTemplate,
-  textarea: TypeTextarea,
-  tfoot: TypeTableFoot,
-  th: TypeTableHeaderCell,
-  thead: TypeTableHead,
-  time: TypeTime,
-  title: TypeTitle,
-  tr: TypeTableRow,
-  track: TypeTrack,
-  u: TypeU,
-  ul: TypeUL,
-  var: TypeVar,
-  video: TypeVideo,
-  wbr: TypeWbr
+  sub: TypeSub;
+  summary: TypeSummary;
+  sup: TypeSup;
+  table: TypeTable;
+  tbody: TypeTableBody;
+  td: TypeTableDataCell;
+  template: TypeTemplate;
+  textarea: TypeTextarea;
+  tfoot: TypeTableFoot;
+  th: TypeTableHeaderCell;
+  thead: TypeTableHead;
+  time: TypeTime;
+  title: TypeTitle;
+  tr: TypeTableRow;
+  track: TypeTrack;
+  u: TypeU;
+  ul: TypeUL;
+  var: TypeVar;
+  video: TypeVideo;
+  wbr: TypeWbr;
 }

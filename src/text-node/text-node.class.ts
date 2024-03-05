@@ -2,6 +2,7 @@ import { mustache } from '@type-dom/utils';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TypeElement } from '../type-element/type-element.abstract';
 import type { ITextNode } from './text-node.interface';
+
 /**
  * 虚拟文本节点。
  * ----> 本身不会渲染成标签。没有对应的HTML标签。
@@ -14,20 +15,24 @@ export class TextNode extends TypeNode implements ITextNode {
   nodeValue: string;
   // text: string;
   dom?: Text;
+
   // template?: string;
   /**
    *
    * @param text
    */
-  constructor(text = '\u200c', parent?: TypeElement) { // \u200c
+  constructor(text = '\u200c', parent?: TypeElement) {
+    // \u200c
     super();
     this.className = 'TextNode';
     this.nodeName = '#text';
     this.nodeValue = text;
   }
+
   get itemData() {
     return this.data || this.parent?.itemData;
   }
+
   // get textContentLength(): number {
   //   return this.textContent.length;
   // }
@@ -36,6 +41,7 @@ export class TextNode extends TypeNode implements ITextNode {
   get index(): number {
     return this.parent ? this.parent?.findChildIndex(this) : -1;
   }
+
   // todo delete
   // get textContent(): string {
   //   return this.nodeValue;
@@ -43,10 +49,12 @@ export class TextNode extends TypeNode implements ITextNode {
   get length(): number {
     return this.nodeValue.length;
   }
+
   setText(text: string): void {
     this.nodeValue = text;
     this.render();
   }
+
   /**
    * 把新内容添加到 this.textContent 末尾。
    * 注： this.render()有问题
@@ -61,6 +69,7 @@ export class TextNode extends TypeNode implements ITextNode {
     // this.render();
     this.parent?.render();
   }
+
   /**
    * 调用 String自带slice方法
    * 根据指定位置，切分出内容中的一部分。
@@ -74,6 +83,7 @@ export class TextNode extends TypeNode implements ITextNode {
     return this.nodeValue.slice(startOffset, endOffset);
     // return this.textContent.substring(startIndex, endIndex);
   }
+
   /**
    * 光标状态或选择状态下的插入。
    * 在指定下标插入新的文本或节点。
@@ -92,6 +102,7 @@ export class TextNode extends TypeNode implements ITextNode {
     // this.render(); //
     this.parent?.render();
   }
+
   /**
    * 光标状态和选中状态的不同处理
    * @param startOffset ---> 与editor.startOffset的关系
@@ -100,7 +111,8 @@ export class TextNode extends TypeNode implements ITextNode {
   deleteText(startOffset: number, endOffset = startOffset): void {
     // todo startOffset === 0时。
     //  delete事件中处理。删除该文本节点，或与之前的文本节点合并，或合并段落，或没有操作等等
-    if (startOffset === 0) { // 光标在头部
+    if (startOffset === 0) {
+      // 光标在头部
       return;
     }
     let preContent;
@@ -113,7 +125,8 @@ export class TextNode extends TypeNode implements ITextNode {
       //  todo 直接设置editor.startOffset
       // startOffset -= 1;
       // endOffset -= 1;
-    } else { // 选择状态 删除选中的文字
+    } else {
+      // 选择状态 删除选中的文字
       preContent = this.nodeValue.slice(0, startOffset);
       // console.log('preContent is ', preContent);
       // console.log('endOffset is ', endOffset);
@@ -128,6 +141,7 @@ export class TextNode extends TypeNode implements ITextNode {
     // this.render();
     this.parent?.render();
   }
+
   // 这个方法是没有地方触发的
   createItem(parent: TypeElement, node: ITextNode): TextNode {
     const item = new TextNode(node.nodeValue, parent); // 创建类实例
@@ -147,6 +161,7 @@ export class TextNode extends TypeNode implements ITextNode {
     // }
     return item;
   }
+
   render(): void {
     // 渲染出来的值，在 模板语法中需要转换的。
     let text = this.nodeValue;
@@ -156,8 +171,7 @@ export class TextNode extends TypeNode implements ITextNode {
     if (this.dom === undefined) {
       this.dom = document.createTextNode(text.toString());
     } else {
-      this.dom.textContent = text || '';  // '\u200b'; // &zwnj; \u200c &zwsp;
+      this.dom.textContent = text || ''; // '\u200b'; // &zwnj; \u200c &zwsp;
     }
   }
 }
-

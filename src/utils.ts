@@ -1,6 +1,7 @@
 import { TypeElement } from './type-element/type-element.abstract';
 import type { ITypeElement } from './type-element/type-element.interface';
 import type { ITextNode } from './text-node/text-node.interface';
+
 /**
  * 保存数据时使用。
  * 把当前数据层对象转换为 JSON 字面量。
@@ -16,7 +17,7 @@ export function toJSON(element: TypeElement): ITypeElement {
       attrObj: Object.assign({}, element.attrObj),
     },
     // items, page ----> 不起作用
-    childNodes: element.childNodes.map(child => {
+    childNodes: element.childNodes.map((child) => {
       if (child instanceof TypeElement) {
         return toJSON(child);
       } else {
@@ -26,14 +27,15 @@ export function toJSON(element: TypeElement): ITypeElement {
           nodeValue: child.nodeValue, // textContent
         } as ITextNode;
       }
-    })
+    }),
   } as ITypeElement;
 }
+
 export function mustache(template: string, data: Record<string, string>) {
   const pattern = /\{\{([\w\s\.]+)\}\}/g;
   let result = template;
   let match;
-  while (match = pattern.exec(template)) {
+  while ((match = pattern.exec(template))) {
     const keys = match[1].trim().split('.');
     let value: any = data[keys[0]];
     for (let i = 1; i < keys.length; i++) {
@@ -45,10 +47,12 @@ export function mustache(template: string, data: Record<string, string>) {
   }
   return result;
 }
+
 // 驼峰转中划线
 export function humpToMiddleLine(str: string): string {
   return str.replace(/([A-Z])/g, '-$1').toLowerCase();
 }
+
 export const XMLParserErrorCode = {
   NoError: 0,
   EndOfDocument: -1,
@@ -62,6 +66,7 @@ export const XMLParserErrorCode = {
   UnterminatedElement: -9,
   ElementNeverBegun: -10,
 };
+
 /**
  * 是否空格
  * Checks if ch is one of the following characters: SPACE, TAB, CR or LF.
@@ -73,6 +78,7 @@ export function isWhitespace(str: string, index: number): boolean {
   return ch === ' ' || ch === '\n' || ch === '\r' || ch === '\t';
   // return ch === 0x20 || ch === 0x09 || ch === 0x0d || ch === 0x0a;
 }
+
 /**
  * 是否连续的空格符
  * @param str
@@ -85,6 +91,7 @@ export function isWhitespaceString(str: string): boolean {
   }
   return true;
 }
+
 export const XMLEntities = {
   /* < */ 0x3c: '&lt;',
   /* > */ 0x3e: '&gt;',
@@ -92,11 +99,14 @@ export const XMLEntities = {
   /* " */ 0x22: '&quot;',
   /* ' */ 0x27: '&apos;',
 };
+
 /**
  * 转为xml字符串
  * @param value
  */
-export function encodeToXmlString(value: string | number | boolean = ''): string {
+export function encodeToXmlString(
+  value: string | number | boolean = ''
+): string {
   const buffer = [];
   let start = 0;
   const str = String(value);

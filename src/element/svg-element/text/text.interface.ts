@@ -9,25 +9,30 @@
  * transform="rotate(30 20,40)"
  */
 import type { ITextNode } from '../../../text-node/text-node.interface';
-import type { ITypeElement, ITypeProperty } from '../../../type-element/type-element.interface';
+import type {
+  ITypeElement,
+  ITypeProperty,
+} from '../../../type-element/type-element.interface';
+
 export interface ISvgTextProperty extends ITypeProperty {
   styleObj: {
-    fontFamily?: string, // rgb(0,0,255) blue
-    fontSize?: string,
-    stroke?: string, // rgb(0,0,0) pink
-    fill?: string, // #0000ff;"
-  },
+    fontFamily?: string; // rgb(0,0,255) blue
+    fontSize?: string;
+    stroke?: string; // rgb(0,0,0) pink
+    fill?: string; // #0000ff;"
+  };
   attrObj: {
-    x: number,
-    y: number,
-    dx?: number,
-    dy?: number,
-    transform?: string,
-  }
+    x: number;
+    y: number;
+    dx?: number;
+    dy?: number;
+    transform?: string;
+  };
 }
+
 export interface ISvgText extends ITypeElement {
-  nodeName: 'text',
-  propObj: ISvgTextProperty,
-  className: 'SvgText',
-  childNodes: ITextNode[]
+  nodeName: 'text';
+  propObj: ISvgTextProperty;
+  className: 'SvgText';
+  childNodes: ITextNode[];
 }

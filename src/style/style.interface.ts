@@ -1,4 +1,9 @@
-import { StyleCursor, StyleDisplay, StylePosition, StyleJustifyContent } from './style.enum';
+import {
+  StyleCursor,
+  StyleDisplay,
+  StylePosition,
+  StyleJustifyContent,
+} from './style.enum';
 
 /**
  * 字体格式设置
@@ -49,7 +54,7 @@ export interface IStyle {
   paddingBottom: string;
   paddingLeft: string;
   paddingRight: string;
-  paddingInlineStart: string, // ul
+  paddingInlineStart: string; // ul
 
   // font 字体
   color: string; // 颜色
@@ -98,7 +103,7 @@ export interface IStyle {
   textDecorationColor: string; //
 
   direction: string; // ltr默认。文本方向从左到右。 rtl文本方向从右到左。 inherit
-  unicodeBidi: string;  // 设置文本方向
+  unicodeBidi: string; // 设置文本方向
   writingMode: string; // 只东亚字体
   textOrientation: string; // 英文字体等
   // outline 轮廓
@@ -153,8 +158,8 @@ export interface IStyle {
   strokeOpacity: number;
   transformOrigin: string;
   flexWrap: string; // wrap
-  flexShrink: number,
-  flexBasis: string, // auto
+  flexShrink: number;
+  flexBasis: string; // auto
   justifyContent: string;
   alignItems: string;
   transition: string;
@@ -164,10 +169,10 @@ export interface IStyle {
   scrollBehavior: string;
   userSelect: string;
   pointerEvents: string;
-  src: string,
-  rowGap: string,
-  filter: string,
-  stopColor: string,
-  stopOpacity: number,
-  textOverflow: string,
+  src: string;
+  rowGap: string;
+  filter: string;
+  stopColor: string;
+  stopOpacity: number;
+  textOverflow: string;
 }

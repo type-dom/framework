@@ -1,8 +1,13 @@
-import { XMLParserErrorCode, isWhitespace, isWhitespaceString } from '@type-dom/utils';
+import {
+  XMLParserErrorCode,
+  isWhitespace,
+  isWhitespaceString,
+} from '@type-dom/utils';
 import { TextNode, XElement } from '../index';
 // import { XElement } from "../element/x-element/x-element.class"; // todo 这样会报错。上面引入没问题；
 import type { INodeAttr } from '../index';
 import type { IContent, IInstruction, IParserParam } from './parser.interface';
+
 /**
  * The code for XMLParser copied from pdf.js
  * 虚拟DOM/XML字符串解析工具
@@ -16,6 +21,7 @@ export class Parser {
   private errorCode: number;
   private readonly hasAttributes: boolean | undefined;
   private readonly lowerCaseName: boolean | undefined;
+
   constructor(param?: IParserParam) {
     this.currentFragment = [];
     this.stack = [];
@@ -23,6 +29,7 @@ export class Parser {
     this.hasAttributes = param?.hasAttributes || true;
     this.lowerCaseName = param?.lowerCaseName || false;
   }
+
   resolveEntities(s: string): string {
     return s.replace(/&([^;]+);/g, (all, entity) => {
       if (entity.substring(0, 2) === '#x') {
@@ -45,6 +52,7 @@ export class Parser {
       return this.onResolveEntity(entity);
     });
   }
+
   /**
    * 解析字符串，----> (XElement | TextNode)
    * @param s
@@ -123,13 +131,16 @@ export class Parser {
       parsed: pos - start,
     };
   }
+
   _parseProcessingInstruction(s: string, start: number): IInstruction {
     let pos = start;
+
     function skipWs() {
       while (pos < s.length && isWhitespace(s, pos)) {
         ++pos;
       }
     }
+
     while (
       pos < s.length &&
       !isWhitespace(s, pos) &&
@@ -152,6 +163,7 @@ export class Parser {
       parsed: pos - start,
     };
   }
+
   /**
    * 解析dom字符串
    * @param s
@@ -268,18 +280,23 @@ export class Parser {
       i = j;
     }
   }
+
   onResolveEntity(name: string): string {
     return `&${name};`;
   }
+
   onPi(name: string, value: string): void {
     console.log('onPi name is ' + name + ' value is ' + value);
   }
+
   onComment(text: string): void {
     console.log('onComment text is ', text);
   }
+
   onDoctype(doctypeContent: string): void {
     console.log('doctypeContent is ', doctypeContent);
   }
+
   /**
    * 在解析Ajax请求获取页面时，也可以用的
    * 将 dom字符串，解析为 虚拟dom
@@ -306,6 +323,7 @@ export class Parser {
     }
     return documentElement;
   }
+
   // 文本节点
   onText(text: string): void {
     if (isWhitespaceString(text)) {
@@ -314,6 +332,7 @@ export class Parser {
     const node = new TextNode(text);
     this.currentFragment.push(node);
   }
+
   onCdata(text: string): void {
     const node = new TextNode(text);
     this.currentFragment.push(node);
@@ -325,7 +344,11 @@ export class Parser {
    * @param attributes
    * @param isEmpty
    */
-  onBeginElement(name: string, attributes: INodeAttr[], isEmpty?: boolean): void {
+  onBeginElement(
+    name: string,
+    attributes: INodeAttr[],
+    isEmpty?: boolean
+  ): void {
     if (this.lowerCaseName) {
       name = name.toLowerCase();
     }
@@ -365,6 +388,7 @@ export class Parser {
     // console.log('lastElement is ', lastElement);
     return lastElement;
   }
+
   onError(code: number): void {
     this.errorCode = code;
   }

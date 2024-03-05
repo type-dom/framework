@@ -1,6 +1,7 @@
 # TypeDom
 
-##  一种完全面向对象的typescript前端框架,完全基于抽象类/具体类/实例的方式组织的前端框架.
+## 一种完全面向对象的typescript前端框架,完全基于抽象类/具体类/实例的方式组织的前端框架.
+
     基于虚拟DOM技术，参考Ext.js框架，创建的面向对象的前端框架。
     在开发流式编辑器、ofd编辑器和动态表单编辑器的过程中，发现Vue、Extjs这些框架无法满足需求。
     
@@ -57,22 +58,29 @@ TypeDom supports all browsers that are [ES5-compliant](https://kangax.github.io/
 
 ## Ecosystem
 
-| Project              | Status                                                     | Description             |
-|----------------------|------------------------------------------------------------|-------------------------|
-| [type-dom-svgs]      | [![type-dom-svgs-status]][type-dom-svgs-package]           | Svgs based on TypeDom   |
-| [type-dom-ui]        | [![type-dom-ui-status]][type-dom-ui-package]               | Ui component management |
-| [type-form-designer] | [![type-form-designer-status]][type-form-designer-package] | Dynamic Form project    |
+| Project                   | Status                                                              | Description             |
+|---------------------------|---------------------------------------------------------------------|-------------------------|
+| [@type-dom/svgs]          | [![@type-dom/svgs-status]][type-dom/svgs-package]                   | Svgs based on TypeDom   |
+| [@type-dom/ui]            | [![@type-dom/ui-status]][type-dom/ui-package]                       | Ui component management |
+| [@type-dom/form-designer] | [![@type-dom/form-designer-status]][type-dom/form-designer-package] | Dynamic Form project    |
 
-[type-dom-svgs]: https://github.com/xjf7711/type-dom-svgs
-[type-dom-ui]: https://github.com/xjf7711/type-dom-ui
-[type-form-designer]: https://github.com/xjf7711/type-form-designer
-[type-dom-svgs-status]: https://img.shields.io/npm/v/vue-router.svg
-[type-dom-ui-status]: https://img.shields.io/npm/v/vuex.svg
-[type-form-designer-status]: https://img.shields.io/npm/v/@vue/cli.svg
-[type-dom-svgs-package]: https://npmjs.com/package/type-dom-svgs
-[type-dom-ui-package]: https://npmjs.com/package/type-dom-ui
-[type-form-designer-package]: https://npmjs.com/package/type-form-designer
+[@type-dom/svgs]: https://github.com/type-dom/svgs
 
+[@type-dom/ui]: https://github.com/type-dom/ui
+
+[@type-dom/form-designer]: https://github.com/type-dom/form-designer
+
+[@type-dom/svgs-status]: https://img.shields.io/npm/v/vue-router.svg
+
+[@type-dom/ui-status]: https://img.shields.io/npm/v/vuex.svg
+
+[@type-dom/form-designer-status]: https://img.shields.io/npm/v/@vue/cli.svg
+
+[type-dom/svgs-package]: https://npmjs.com/package/type-dom/svgs
+
+[type-dom-ui-package]: https://npmjs.com/package/type-dom/ui
+
+[type-form-designer-package]: https://npmjs.com/package/type-dom/form-designer
 
 ## Installation
 
@@ -91,49 +99,149 @@ Create a hello world page to app:
 // Typescript
 // Br,Division,TypeRoot,TextNode等都是框架定义好的类
 import {Br, Division, TypeRoot, TextNode} from '@type-dom/framework';
-// svgs-root.ts 项目根节点，继承TypeRoot（根节点抽象类）
-export class AppElement extends TypeRoot {
-  className: 'AppElement';
-  // 构造函数，rootEl是绑定的Dom元素，对应到index.html中的页面元素
-  constructor(rootEl: HTMLElement) { 
-    super(rootEl);
-    this.className = 'AppElement';  // 类名，不是样式类
-    this.addAttrObj({ // 设置根节点的属性
-      name: 'app-root' // 节点名称
-    })
-    this.addStyleObj({ // 设置根节点样式
-      padding: '30px',
-      border: '20px solid #dddddd'
+import { TypeRoot, RouterView } from '@type-dom/framework';
+import type { ITypeNode } from '@type-dom/framework';
+import { router } from '../router';
+import { Menus } from '../layout/menus';
+import { TdAside, TdContainer, TdFooter, TdHeader, TdMain } from '@type-dom/ui';
+
+/**
+ * AppRoot.ts
+ * 应用类，挂载全局属性和方法。
+ * 根节点，继承 TypeRoot;
+ * 因为属性和方法要全局调用，所以全部设置为静态 static; 包括get也设置为静态
+ */
+export class AppRoot extends TypeRoot {
+  className: 'AppRoot';
+  static el: HTMLElement | string;
+
+  constructor(option?: ITypeNode) {
+    super(option);
+    this.className = 'AppRoot';
+    this.addAttrName('app-root');
+    this.addStyleObj({
+      display: 'flex',
+      flexDirection: 'column',
+      // padding: '10px',
+      // border: '10px solid #dddddd',
     });
-    // createItems 是一个创建子节点的方法
-    // 第一个参数是父节点对象，
-    // 第二个参数是个数组，包括了要创建的所有子节点的配置属性
-    this.createItems(this, [ // 添加子节点
+    this.events = [];
+    this.createItems(this, [
       {
-        TypeClass: Division, // 具体类，TypeClass 指定对应的类，要显式的引用，即import进来。
-        propObj: {
-            attrObj: { // 设置属性参数
-                name: 'first-item'
+        TypeClass: TdContainer,
+        childNodes: [
+          {
+            TypeClass: TdAside,
+            config: {
+              width: 250,
+              name: 'td-aside'
             },
-            styleObj: { // 设置样式
-                padding: '10px',
-                color: '#F00',
-                background: '#FF0'
-            }
-        },
-        childNodes: [ // 第一项子节点的子元素
-          { // 文本类
-            nodeValue: ' hello world ! ' // 文本内容
+            childNodes: [
+              {
+                TypeClass: Menus,
+                propObj: {
+                  attrObj: {
+                    name: 'menus'
+                  },
+                  styleObj: {
+                    backgroundColor: '#eee',
+                    // width: '250px',
+                  },
+                },
+              },
+            ],
           },
-        ]
+          {
+            TypeClass: TdContainer,
+            propObj: {
+              attrObj: {
+                name: 'container'
+              },
+              styleObj: {
+                flexDirection: 'column',
+              },
+            },
+            childNodes: [
+              {
+                TypeClass: TdHeader,
+                childNodes: [
+                  {
+                    nodeValue: 'header',
+                  },
+                ],
+              },
+              {
+                TypeClass: TdMain,
+                childNodes: [
+                  {
+                    TypeClass: RouterView,
+                    propObj: {
+                      attrObj: {},
+                      styleObj: {
+                        display: 'block',
+                        boxSizing: 'border-box',
+                        margin: '0',
+                        padding: '0',
+                        // width: 'calc(100% - ' + menusWidth + 'px)',
+                      }
+                    }
+                  }
+                ],
+              },
+              {
+                TypeClass: TdFooter,
+                childNodes: [
+                  {
+                    nodeValue: 'footer',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       },
-      {
-        TypeClass: Br // 换行
-      }
     ]);
-    this.render(); // 渲染
+    this.routerView = this.childNodes[0].childNodes[1].childNodes[1].childNodes[0] as RouterView;
+  }
+
+  useRouter() {
+    // 路由器初始化，并挂载到当前页
+    router.init(this);
+    return this;
   }
 }
+
+// app.element.ts
+import './app.element.scss';
+import { AppRoot } from './app-root';
+/**
+ * 这个类其实就是一个真实DOM
+ */
+export class AppElement extends HTMLElement {
+  public static observedAttributes = [];
+  /**
+   * connectedCallback会在 custom element 首次被插入到文档 DOM 节点上时被调用，
+   * 而 attributeChangedCallback则会在 custom element 增加、删除或者修改某个属性时被调用。
+   */
+  connectedCallback() { // 省去了监听document加载完毕
+    const title = 'type-app';
+    const appRoot = new AppRoot();
+    appRoot.setAttrName(title);
+    // 使用路由
+    appRoot.useRouter();
+    const shadowRoot = this.attachShadow({mode: 'open'}); // mode "closed" | "open"
+    // 挂载
+    appRoot.mount(shadowRoot);
+    // 渲染
+    appRoot.render();
+    console.log('appRoot is ', appRoot);
+    const buff = [];
+    appRoot.dump(buff);
+    console.log('appRoot.dump() buff.join("") is ', buff.join(''));
+  }
+}
+customElements.define('app-root', AppElement);
+
 
 // main.ts 项目主程序
 import {fromEvent} from 'rxjs';
@@ -145,6 +253,7 @@ fromEvent(document, 'DOMContentLoaded').subscribe(() => {
   }
 });
 ```
+
 ```html
 // index.html
 <!DOCTYPE html>
@@ -161,22 +270,25 @@ fromEvent(document, 'DOMContentLoaded').subscribe(() => {
 </html>
 ```
 
-
 ## Documentation
 
 To check out [live examples](https://) and docs, visit [type-dom.org](https://).
 
 ## Questions
 
-For questions and support please use [the official forum](https://forum.***.org) or [community chat](https://chat.***.org/). The issue list of this repo is **exclusively** for bug reports and feature requests.
+For questions and support please use [the official forum](https://forum.***.org)
+or [community chat](https://chat.***.org/). The issue list of this repo is **exclusively** for bug reports and feature
+requests.
 
 ## Issues
 
-Please make sure to read the [Issue Reporting Checklist](https://github.com/xjf7711/type-dom/blob/dev/.github/CONTRIBUTING.md#issue-reporting-guidelines) before opening an issue. Issues not conforming to the guidelines may be closed immediately.
+Please make sure to read
+the [Issue Reporting Checklist](https://github.com/type-dom/framework/blob/dev/.github/CONTRIBUTING.md#issue-reporting-guidelines)
+before opening an issue. Issues not conforming to the guidelines may be closed immediately.
 
 ## Changelog
 
-Detailed changes for each release are documented in the [release notes](https://github.com/xjf7711/type-dom/releases).
+Detailed changes for each release are documented in the [release notes](https://github.com/type-dom/framework/releases).
 
 ## Stay In Touch
 
@@ -184,11 +296,14 @@ Detailed changes for each release are documented in the [release notes](https://
 
 ## Contribution
 
-Please make sure to read the [Contributing Guide](https://github.com/xjf7711/type-dom/blob/dev/.github/CONTRIBUTING.md) before making a pull request. If you have a TypeDom-related project/component/tool, add it with a pull request to [this curated list](https://github.com/xfj7711/awesome-type-dom)!
+Please make sure to read
+the [Contributing Guide](https://github.com/type-dom/framework/blob/dev/.github/CONTRIBUTING.md) before making a pull
+request. If you have a TypeDom-related project/component/tool, add it with a pull request
+to [this curated list](https://github.com/type-dom/awesome-type-dom)!
 
 Thank you to all the people who already contributed to Vue!
 
-<a href="https://github.com/vuejs/vue/graphs/contributors"><img src="" /></a>
+<a href="https://github.com/type-dom/framework/graphs/contributors"><img src="" /></a>
 
 ## License
 

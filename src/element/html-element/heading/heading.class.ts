@@ -10,7 +10,11 @@ export class Heading extends TypeHead implements IHeading {
   declare dom: HTMLHeadingElement;
   className: 'Heading';
   declare childNodes: TextNode[];
-  constructor(public parent: TypeHtml | XElement, nodeName: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6') {
+
+  constructor(
+    public parent: TypeHtml | XElement,
+    nodeName: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
+  ) {
     super(nodeName);
     this.nodeName = nodeName;
     this.dom = document.createElement(this.nodeName);

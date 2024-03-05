@@ -4,6 +4,7 @@
  */
 import { TypeHtml } from '../type-element/type-html/type-html.abstract';
 import type { ITypeRoot, ITypeRootConfig } from './type-root.interface';
+
 // import { ITypeNode } from '../type-node/type-node.interface';
 /**
  * el 元素对象或ID；
@@ -12,6 +13,7 @@ import type { ITypeRoot, ITypeRootConfig } from './type-root.interface';
 export abstract class TypeRoot extends TypeHtml implements ITypeRoot {
   nodeName: string;
   dom: HTMLElement;
+
   // el?: HTMLElement;
   protected constructor(option = {} as ITypeRootConfig) {
     super();
@@ -28,22 +30,5 @@ export abstract class TypeRoot extends TypeHtml implements ITypeRoot {
     //     throw Error('Can not find id . ');
     //   }
     // }
-  }
-  mount(el: string | HTMLElement | ShadowRoot) {
-    // if (!this.dom) {
-    //   this.dom = document.createElement(this.nodeName);
-    //   // this.render();
-    // }
-    if (el instanceof HTMLElement || el instanceof ShadowRoot) {
-      el.appendChild(this.dom);
-    } else {
-      const appEl = document.querySelector<HTMLElement>(el);
-      if (appEl) {
-        appEl.appendChild(this.dom);
-      } else {
-        throw Error('Can not find id . ');
-      }
-    }
-    return this;
   }
 }

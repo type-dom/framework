@@ -4,6 +4,7 @@
  */
 import type { ITypeNode } from '../../type-node/type-node.interface';
 import type { ITypeElement } from '../type-element.interface';
+
 export interface ITypeHtml extends ITypeElement {
   childNodes: Array<ITypeNode>;
 }

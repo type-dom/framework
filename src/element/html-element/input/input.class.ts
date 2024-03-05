@@ -6,6 +6,7 @@ export class Input extends TypeHtml implements IInput {
   dom: HTMLInputElement;
   className: 'Input';
   declare childNodes: [];
+
   // value: string | number | boolean | undefined;
   constructor(public parent: TypeHtml) {
     super();
@@ -36,6 +37,7 @@ export class Input extends TypeHtml implements IInput {
   get value(): string {
     return this.dom.value;
   }
+
   // set value(value: string | number | boolean) {
   //   this.setAttribute('value', value);
   //   this.dom.value = String(value);
@@ -48,15 +50,14 @@ export class Input extends TypeHtml implements IInput {
     if (this.type === 'date') {
       console.log('isNaN(Number(value)) is ', isNaN(Number(value)));
       if (isNaN(Number(value))) {
-      //
+        //
       } else {
         // const timeStamp = new Date().getTime();
         // console.error('timestamp is ', timeStamp);
         if (String(value).length === 13) {
           const d = new Date(value as string);
-          value = (d.getFullYear()) + '-' +
-            (d.getMonth() + 1) + '-' +
-            (d.getDate()); // + ' ' +
+          value =
+            d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); // + ' ' +
           // (d.getHours()) + ':' +
           // (d.getMinutes()) + ':' +
           // (d.getSeconds());

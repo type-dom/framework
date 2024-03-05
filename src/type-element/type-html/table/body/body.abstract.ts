@@ -6,6 +6,7 @@ export abstract class TypeTableBody extends TypeHtml implements ITypeTableBody {
   nodeName: 'tbody';
   dom: HTMLTableSectionElement;
   declare childNodes: TypeTableRow[];
+
   protected constructor() {
     super();
     this.nodeName = 'tbody';

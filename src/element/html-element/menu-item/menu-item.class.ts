@@ -2,6 +2,7 @@ import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
 import { TypeMenuItem } from '../../../type-element/type-html/menu-item/menu-item.abstract';
 import { XElement } from '../../x-element/x-element.class';
 import type { IMenuItem } from './menu-item.interface';
+
 /**
  * HTML5.2: 不再推荐使用该特性。虽然一些浏览器仍然支持它，
  * 但也许已从相关的 web 标准中移除，也许正准备移除或出于兼容性而保留。
@@ -10,6 +11,7 @@ import type { IMenuItem } from './menu-item.interface';
  */
 export class MenuItem extends TypeMenuItem implements IMenuItem {
   className: 'MenuItem';
+
   constructor(public parent?: TypeHtml | XElement) {
     super();
     this.className = 'MenuItem';

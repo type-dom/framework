@@ -1,14 +1,16 @@
 import { TypeHtml } from '../../type-html/type-html.abstract';
 import { TypeSvg } from '../type-svg.abstract';
 import type { ITypeSvgSvg } from './svg.interface';
+
 export abstract class TypeSvgSvg extends TypeSvg implements ITypeSvgSvg {
-  abstract declare className: string;
-  abstract declare parent?: TypeHtml;
+  declare abstract className: string;
+  declare abstract parent?: TypeHtml;
   nodeName: 'svg';
   dom: SVGSVGElement;
   declare childNodes: TypeSvg[];
   width: string | number = '100%';
   height: string | number = '100%';
+
   protected constructor() {
     super();
     this.nodeName = 'svg';
