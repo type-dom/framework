@@ -3,15 +3,18 @@ import { TypeElement } from '../type-element/type-element.abstract';
 import { currentRoute$, handleRouteChange, RouterView } from './index';
 import type { IRoute } from './route.interface';
 import type { IRouterOption } from './router.interface';
+
 /**
  * 创建一个路由器类
  */
 export class Router {
   root?: TypeElement;
   routes: IRoute[];
+
   constructor(option: IRouterOption) {
     this.routes = option.routes;
   }
+
   /**
    * router的根不一定是 TypeRoot, 也可以是某个页面
    * @param root 根路由挂载的对象
@@ -43,6 +46,7 @@ export class Router {
         }
       });
   }
+
   /**
    * 处理嵌套子路由刷新问题
    * 否则，嵌套子路由刷新，页面会为空。因为父级的routerView没有渲染。
@@ -67,6 +71,7 @@ export class Router {
       }
     }
   }
+
   /**
    * 通过路由找的对应的route对象
    * @param path 路由字符串
@@ -94,6 +99,7 @@ export class Router {
     }
     return undefined;
   }
+
   /**
    * 将route.component全部挂载到具体的RouterView对象上
    * @param component 必须是包含的routerView属性的组件
@@ -114,6 +120,7 @@ export class Router {
       }
     });
   }
+
   navigateTo(path: string) {
     console.log('navigateTo path is ', path);
     window.history.pushState(null, '', path);

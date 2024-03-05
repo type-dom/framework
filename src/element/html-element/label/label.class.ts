@@ -3,19 +3,22 @@ import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
 import { TypeLabel } from '../../../type-element/type-html/label/label.abstract';
 import type { Input } from '../input/input.class';
 import type { ILabel } from './label.interface';
+
 export class Label extends TypeLabel implements ILabel {
   className: 'Label';
   declare childNodes: (Input | TextNode)[];
   textNode: TextNode;
+
   constructor(public parent: TypeHtml) {
     super();
     this.className = 'Label';
     this.propObj.attrObj = {
-      name: 'label'
+      name: 'label',
     };
     this.textNode = new TextNode();
     this.childNodes = [];
   }
+
   // createInstance(labelLiteral: ILabel): void {
   //   this.setPropObj(labelLiteral.propObj);
   //   for (const idx in labelLiteral.childNodes) {

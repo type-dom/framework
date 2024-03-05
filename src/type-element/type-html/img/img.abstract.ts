@@ -1,8 +1,10 @@
 import { TypeHtml } from '../type-html.abstract';
 import type { ITypeImg } from './img.interface';
+
 export abstract class TypeImg extends TypeHtml implements ITypeImg {
   nodeName: 'img';
   dom: HTMLImageElement;
+
   protected constructor() {
     super();
     this.nodeName = 'img';

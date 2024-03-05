@@ -1,11 +1,12 @@
 import { TypeHtml } from '../type-html/type-html.abstract';
 import type { ITypeComponent } from './type-component.interface';
+
 /**
  * 组件基类
  */
 export abstract class TypeComponent extends TypeHtml implements ITypeComponent {
-  abstract declare parent?: TypeHtml;
-  nodeName : string;
+  declare abstract parent?: TypeHtml;
+  nodeName: string;
   dom: HTMLElement;
   // childNodes: TypeNode[];
   // abstract setConfig(config: any): void
@@ -15,6 +16,7 @@ export abstract class TypeComponent extends TypeHtml implements ITypeComponent {
     this.dom = document.createElement(nodeName);
     this.childNodes = [];
   }
+
   // createItem<T extends TypeElement>(parent: TypeHtml, node: IComponent): T {
   //   console.log('type-component createItem . ');
   //   if (node.TypeClass === undefined) {

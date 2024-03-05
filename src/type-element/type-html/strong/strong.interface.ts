@@ -1,4 +1,5 @@
 import type { ITypeHtml } from '../type-html.interface';
+
 export interface ITypeStrong extends ITypeHtml {
-  nodeName: 'strong',
+  nodeName: 'strong';
 }

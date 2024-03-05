@@ -1,6 +1,7 @@
 # TypeDom
 
-##  一种完全面向对象的typescript前端框架,完全基于抽象类/具体类/实例的方式组织的前端框架.
+## 一种完全面向对象的typescript前端框架,完全基于抽象类/具体类/实例的方式组织的前端框架.
+
     基于虚拟DOM技术，参考Ext.js框架，创建的面向对象的前端框架。
     在开发流式编辑器、ofd编辑器和动态表单编辑器的过程中，发现Vue、Extjs这些框架无法满足需求。
     
@@ -64,15 +65,22 @@ TypeDom supports all browsers that are [ES5-compliant](https://kangax.github.io/
 | [@type-dom/form-designer] | [![@type-dom/form-designer-status]][type-dom/form-designer-package] | Dynamic Form project    |
 
 [@type-dom/svgs]: https://github.com/type-dom/svgs
-[@type-dom/ui]: https://github.com/type-dom/ui
-[@type-dom/form-designer]: https://github.com/type-dom/form-designer
-[@type-dom/svgs-status]: https://img.shields.io/npm/v/vue-router.svg
-[@type-dom/ui-status]: https://img.shields.io/npm/v/vuex.svg
-[@type-dom/form-designer-status]: https://img.shields.io/npm/v/@vue/cli.svg
-[type-dom/svgs-package]: https://npmjs.com/package/type-dom/svgs
-[type-dom-ui-package]: https://npmjs.com/package/type-dom/ui
-[type-form-designer-package]: https://npmjs.com/package/type-dom/form-designer
 
+[@type-dom/ui]: https://github.com/type-dom/ui
+
+[@type-dom/form-designer]: https://github.com/type-dom/form-designer
+
+[@type-dom/svgs-status]: https://img.shields.io/npm/v/vue-router.svg
+
+[@type-dom/ui-status]: https://img.shields.io/npm/v/vuex.svg
+
+[@type-dom/form-designer-status]: https://img.shields.io/npm/v/@vue/cli.svg
+
+[type-dom/svgs-package]: https://npmjs.com/package/type-dom/svgs
+
+[type-dom-ui-package]: https://npmjs.com/package/type-dom/ui
+
+[type-form-designer-package]: https://npmjs.com/package/type-dom/form-designer
 
 ## Installation
 
@@ -245,6 +253,7 @@ fromEvent(document, 'DOMContentLoaded').subscribe(() => {
   }
 });
 ```
+
 ```html
 // index.html
 <!DOCTYPE html>
@@ -261,18 +270,21 @@ fromEvent(document, 'DOMContentLoaded').subscribe(() => {
 </html>
 ```
 
-
 ## Documentation
 
 To check out [live examples](https://) and docs, visit [type-dom.org](https://).
 
 ## Questions
 
-For questions and support please use [the official forum](https://forum.***.org) or [community chat](https://chat.***.org/). The issue list of this repo is **exclusively** for bug reports and feature requests.
+For questions and support please use [the official forum](https://forum.***.org)
+or [community chat](https://chat.***.org/). The issue list of this repo is **exclusively** for bug reports and feature
+requests.
 
 ## Issues
 
-Please make sure to read the [Issue Reporting Checklist](https://github.com/type-dom/framework/blob/dev/.github/CONTRIBUTING.md#issue-reporting-guidelines) before opening an issue. Issues not conforming to the guidelines may be closed immediately.
+Please make sure to read
+the [Issue Reporting Checklist](https://github.com/type-dom/framework/blob/dev/.github/CONTRIBUTING.md#issue-reporting-guidelines)
+before opening an issue. Issues not conforming to the guidelines may be closed immediately.
 
 ## Changelog
 
@@ -284,7 +296,10 @@ Detailed changes for each release are documented in the [release notes](https://
 
 ## Contribution
 
-Please make sure to read the [Contributing Guide](https://github.com/type-dom/framework/blob/dev/.github/CONTRIBUTING.md) before making a pull request. If you have a TypeDom-related project/component/tool, add it with a pull request to [this curated list](https://github.com/type-dom/awesome-type-dom)!
+Please make sure to read
+the [Contributing Guide](https://github.com/type-dom/framework/blob/dev/.github/CONTRIBUTING.md) before making a pull
+request. If you have a TypeDom-related project/component/tool, add it with a pull request
+to [this curated list](https://github.com/type-dom/awesome-type-dom)!
 
 Thank you to all the people who already contributed to Vue!
 

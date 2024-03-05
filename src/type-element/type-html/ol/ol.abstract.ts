@@ -2,6 +2,7 @@ import { TypeHtml } from '../type-html.abstract';
 import type { ITypeOL } from './ol.interface';
 import { TypeLI } from '../ul/li/li.abstract';
 import { TypeUL } from '../ul/ul.abstract';
+
 /**
  * 有序列表，ordered list
  * HTML <ol> 元素表示有序列表，通常渲染为一个带编号的列表
@@ -16,6 +17,7 @@ export abstract class TypeOL extends TypeHtml implements ITypeOL {
   nodeName: 'ol';
   dom: HTMLOListElement;
   declare childNodes: (TypeLI | TypeUL)[];
+
   // type, start 在属性中单独配置，不需要在构造函数中传参
   protected constructor() {
     super();

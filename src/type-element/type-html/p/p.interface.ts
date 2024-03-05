@@ -1,4 +1,5 @@
 import type { ITypeHtml } from '../type-html.interface';
+
 export interface ITypeP extends ITypeHtml {
-  nodeName: 'p',
+  nodeName: 'p';
 }

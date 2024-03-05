@@ -14,6 +14,7 @@ import type {
   ITypeElement,
   ITypeProperty,
 } from './type-element.interface';
+
 /**
  * 虚拟元素Element的数据结构
  * 可以对应到虚拟dom树。 createDom(tag, attr, children)
@@ -21,6 +22,7 @@ import type {
  * todo 是否需要把相关的操作也添加进来。
  */
 const vHash = Math.round(Math.random() * 1000000);
+
 export abstract class TypeElement extends TypeNode implements ITypeElement {
   abstract override className: string;
   abstract override dom?: HTMLElement | SVGElement;
@@ -32,7 +34,9 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   childNodes: TypeNode[];
   routerView?: RouterView;
   declare events: Subscription[];
+
   initEvents?(): void;
+
   protected constructor() {
     super();
     this.propObj = {
@@ -47,6 +51,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.childNodes = [];
     this.events = [];
   }
+
   // 获取包含methods属性的组件
   // 对应到包含template的组件
   get itemMethods(): Record<string, any> | undefined {
@@ -60,6 +65,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       return this.parent?.itemMethods;
     }
   }
+
   get itemData(): Record<string, any> | undefined {
     if (this.data) {
       return this.data;
@@ -71,15 +77,19 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       return undefined;
     }
   }
+
   get length(): number {
     return this.children.length;
   }
+
   get index(): number {
     return this.parent ? this.parent.findChildIndex(this) : -1;
   }
+
   get attrObj(): Partial<ITypeAttribute> {
     return this.propObj.attrObj;
   }
+
   get styleObj(): Partial<IStyle> {
     return this.propObj.styleObj;
   }
@@ -103,6 +113,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   get id(): string {
     return this.attrObj.id as string;
   }
+
   // get value(): string | undefined {
   //   return this.attrObj.value ? this.attrObj.value as string : undefined;
   // }
@@ -120,24 +131,30 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       cursor,
     });
   }
-  // 设置属性 会清理原有属性
+
+  /**
+   * 重新设置属性 会清理原有属性
+   * @param propObj
+   */
   setPropObj(propObj: ITypeProperty): void {
     if (this.propObj) {
       // 清理原有属性
       for (const key in this.propObj.attrObj) {
         this.removeAttribute(key);
       }
-      // for (const style in this.propObj.styleObj) {
-      //   this.removeStyle(style as keyof IStyle);
-      // }
       this.dom?.removeAttribute('style');
     }
     this.propObj = propObj;
     this.setAttrObj(propObj.attrObj);
     this.setStyleObj(propObj.styleObj);
   }
-  // todo 类型验证 set ???----> replace
-  // todo 累加
+
+  /**
+   * 设置样式对象
+   * 替换已有的样式；
+   * 没有传的样式，不变；
+   * @param styles
+   */
   setStyleObj(styles: Partial<IStyle>): void {
     for (const key in styles) {
       if (Object.hasOwnProperty.call(styles, key)) {
@@ -147,6 +164,11 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       }
     }
   }
+
+  /**
+   * 添加样式对象；
+   * @param styles
+   */
   addStyleObj(styles: Partial<IStyle>): void {
     for (const key in styles) {
       if (Object.hasOwnProperty.call(styles, key)) {
@@ -156,6 +178,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       }
     }
   }
+
   renderStyleObj(styles: Partial<IStyle>): void {
     for (const key in styles) {
       if (Object.hasOwnProperty.call(styles, key)) {
@@ -165,32 +188,34 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       }
     }
   }
+
   setStyle(key: keyof IStyle, value: string | number | boolean): void {
-    // todo 是否要删除属性。
-    // if (!value) {
-    //   delete this.propObj.styleObj[key];
-    // }
-    // if (key === 'display') {
-    //   console.warn('key === display, value is ', value);
-    // }
     // todo type ???
     if (value !== undefined) {
       this.addStyle(key, value);
       // 直接dom操作
       this.renderStyle(key, value);
-    } else {
+    } else { // todo 空字符怎么处理？
       this.removeStyle(key);
     }
-    // todo error
-    // Object.defineProperty(this.propObj.styleObj, key, value);
   }
+
   addStyle(key: keyof IStyle, value: string | number | boolean): void {
-    (this.propObj.styleObj as Record<string, string | number | boolean>)[key] =
-      value;
+    // (this.propObj.styleObj as Record<string, string | number | boolean>)[key] =
+    //   value;
+    Object.assign(this.propObj.styleObj, { [key]: value });
+    // Object.defineProperty(this.propObj.styleObj, key, {
+    //   value: value,
+    //   writable: true,
+    //   enumerable: true,
+    //   configurable: true
+    // });
   }
+
   renderStyle(key: keyof IStyle, value: string | number | boolean): void {
     this.dom?.style.setProperty(humpToMiddleLine(key), String(value)); // 要转中划线
   }
+
   // 删除样式
   removeStyle(key: keyof IStyle): void {
     if (this.propObj.styleObj[key]) {
@@ -199,6 +224,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.dom?.style.removeProperty(humpToMiddleLine(key));
     // delete this.dom.style[key as keyof CSSStyleDeclaration];
   }
+
   /**
    * 默认显示是  block
    * 可指定具体显示模式
@@ -207,9 +233,11 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   show(mode?: StyleDisplay): void {
     this.setStyle('display', mode || 'block'); // flex block inline-block
   }
+
   hide(): void {
     this.setStyle('display', 'none');
   }
+
   // 不影响已有的，但是没有传的属性
   setAttrObj(attrObj: Partial<ITypeAttribute>): void {
     for (const key in attrObj) {
@@ -220,6 +248,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       }
     }
   }
+
   addAttrObj(attrObj: Partial<ITypeAttribute>): void {
     for (const key in attrObj) {
       if (Object.hasOwnProperty.call(attrObj, key)) {
@@ -228,6 +257,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       }
     }
   }
+
   renderAttrObj(attrObj: Partial<ITypeAttribute>): void {
     for (const key in attrObj) {
       if (Object.hasOwnProperty.call(attrObj, key)) {
@@ -236,15 +266,18 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       }
     }
   }
+
   // 设置属性 dom 属性同步变化
   setAttribute(key: string, value: string | number | boolean): void {
     this.addAttribute(key, value);
     this.renderAttribute(key, value);
   }
+
   // 添加属性
   addAttribute(key: string, value: string | number | boolean): void {
     this.propObj.attrObj[key] = value;
   }
+
   // 渲染属性
   renderAttribute(key: string, value: string | number | boolean): void {
     // dom渲染时， 驼峰转中划线连接
@@ -267,53 +300,65 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       this.dom?.setAttribute(key, val);
     }
   }
+
   removeAttribute(key: string): void {
     if (this.propObj.attrObj[key]) {
       delete this.propObj.attrObj[key];
     }
     this.dom?.removeAttribute(key);
   }
+
   setAttrName(value: string): void {
     this.addAttrName(value);
     this.renderAttrName(value);
   }
+
   addAttrName(value: string): void {
     this.propObj.attrObj.name = value;
   }
+
   renderAttrName(value: string): void {
     this.dom?.setAttribute('name', value);
   }
+
   setAttrId(id: string): void {
     this.addAttrId(id);
     this.renderAttrId(id);
   }
+
   addAttrId(id: string): void {
     this.propObj.attrObj.id = id;
   }
+
   renderAttrId(id: string): void {
     this.dom?.setAttribute('id', id);
   }
+
   setAttrClass(className: string): void {
     this.addAttrClass(className);
     this.renderAttrClass(className);
   }
+
   addAttrClass(className: string): void {
     // 要先判断className是否已经存在
     if (this.propObj.attrObj?.class?.indexOf(className) === -1) {
       this.propObj.attrObj.class += ' ' + className;
     } else {
-      this.addAttribute('class',  className);
+      this.addAttribute('class', className);
     }
   }
+
   renderAttrClass(className: string) {
     this.dom?.setAttribute('class', className);
   }
+
   removeAttrClass(className: string): void {
-    String(this.propObj.attrObj.class).replace(className, '');
+    this.propObj.attrObj.class && this.propObj.attrObj.class.replace(className, '');
     this.dom?.classList.remove(className);
   }
+
   /**
-   * 在最后位置添加一个子节点。
+   * 在最后位置添加一个子节点，并渲染；
    * 如果newChild.parent存在，则可能需要执行newChild?.parent.removeChild(newChild)。需要根据业务逻辑判断。
    * 渲染到dom上
    * @param newChild
@@ -321,9 +366,10 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   // abstract appendChild(newChild: TypeElement | TextNode): TypeElement | TextNode;
   appendChild(newChild: TypeNode): void {
     newChild.setParent(this); // 如果不是子类，是其它地方的对象加过来，要重设其父类。
-    this.renderChild(newChild); // todo this.render() 现在这样可能不渲染；
+    this.renderChild(newChild); // todo this.render() 现在这样可能不渲染；自身DOM可能没有创建；
     // this.dom.appendChild(newChild.render().dom);
   }
+
   /**
    * 从前面添加子元素
    * @param newChild
@@ -331,12 +377,15 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   unshiftChild(newChild: TypeNode): void {
     this.childNodes.unshift(newChild);
   }
+
   addChild(newChild: TypeNode): void {
     this.childNodes.push(newChild);
   }
-  addChildren(...newChildren: TypeNode[]): void {
+
+  addChildren(newChildren: TypeNode[]): void {
     this.childNodes.push(...newChildren);
   }
+
   /**
    * 通常与appendChild同时使用，但也有可能，分离开来使用
    * dom子节点会被重新渲染一遍。
@@ -364,6 +413,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.childNodes.splice(index, 0, child);
     child.setParent(this);
   }
+
   /**
    * 在子元素指定下标位置插入Dom节点
    * 不再与数据层操作直接绑定了。
@@ -424,7 +474,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    */
   removeFromParent(): void {
     if (this.parent) {
-      this.parent.childNodes.splice(this.index, 1);
+      this.parent.childNodes.splice(this.index, 1); // todo DOM没有删除
     } else {
       console.error('this.parent is null . ');
     }
@@ -433,16 +483,16 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   /**
    * 清理子节点
    */
-  clearChild(): void {
+  clearChildren(): void {
     this.clearChildNodes();
-    this.clearChildDom();
+    this.clearChildrenDom();
   }
 
   /**
    * 清除dom所有子节点
    * render时使用
    */
-  clearChildDom(): void {
+  clearChildrenDom(): void {
     let first = this.dom?.firstElementChild;
     while (first) {
       first.remove();
@@ -464,6 +514,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
     throw Error('node to be replaced is not a child of the current node . ');
   }
+
   /**
    * 替换指定位置的子元素
    * @param newNode
@@ -474,6 +525,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.childNodes.splice(index, 1, newNode);
     newNode.parent = this;
   }
+
   // 清理子节点
   clearChildNodes(): void {
     this.childNodes = [];
@@ -528,15 +580,13 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     return this.childNodes[index] || null;
   }
 
+  /**
+   * 查找子节点的index
+   * 注：子节点有index属性，直接child.index。 可能子节点没有设置parent。
+   * @param child
+   */
   findChildIndex(child: TypeElement | TextNode): number {
     return this.childNodes.findIndex((item) => item === child);
-  }
-
-  removeEvents(): void {
-    this.events.forEach((event) => {
-      event.unsubscribe();
-    });
-    this.events = [];
   }
 
   // 移除监听
@@ -564,12 +614,13 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     };
   }
 
-  // 子类中有需要的地方覆写
+  // 子类中有需要的地方覆写 todo
   // setConfig(config?: Record<string, any>) {
   //   if (config) {
   //     this.setAttrObj(config as Partial<ITypeAttribute>);
   //   }
   // }
+
   /**
    * 默认初始化方法
    * 清理多余的对象。
@@ -668,9 +719,11 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   //   }
   //   return items;
   // }
+
   /**
-   * 挂载到正式DOM
+   * 挂载到真实DOM；
    * 需要手动挂载组件时使用，一般是挂载到框架外的DOM元素时。
+   * 框架内的对象直接addChild就可以了。
    * @param el
    */
   mount(el: string | HTMLElement | ShadowRoot): TypeElement {
@@ -689,6 +742,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
     return this;
   }
+
   /**
    * 生命周期
    * beforeRender 渲染前
@@ -704,10 +758,10 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    */
   render(): void {
     // console.log('this.styleObj is ', this.styleObj);
-    this.beforeRender && this.beforeRender();
+    this.beforeRender && this.beforeRender(); // 渲染前处理；
     this.setStyleObj(this.styleObj);
     this.setAttrObj(this.attrObj);
-    this.clearChildDom();
+    this.clearChildrenDom();
     // children/childNodes可能是不一样的。
     // 如CollapsibleBox中，contents重新赋值后，children会变，而childNodes是不变的。
     for (const child of this.children) {
@@ -715,9 +769,11 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       this.renderChild(child);
     }
     // console.log('this.dom is ', this.dom);
-    this.afterRender && this.afterRender();
+    this.afterRender && this.afterRender(); // 渲染后处理
     this.clearEvents();
     this.initEvents && this.initEvents();
   }
+
   afterRender?(): void;
+  //   todo update 组件更新
 }

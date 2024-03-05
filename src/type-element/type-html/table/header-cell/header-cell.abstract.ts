@@ -3,10 +3,14 @@ import { TypeHtml } from '../../type-html.abstract';
 import type { ITypeTableHeaderCell } from './header-cell.interface';
 
 // 表格表头 table header cell
-export abstract class TypeTableHeaderCell extends TypeHtml implements ITypeTableHeaderCell {
+export abstract class TypeTableHeaderCell
+  extends TypeHtml
+  implements ITypeTableHeaderCell
+{
   nodeName: 'th';
   dom: HTMLElement;
   declare childNodes: TextNode[];
+
   protected constructor() {
     super();
     this.nodeName = 'th';

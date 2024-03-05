@@ -1,4 +1,5 @@
 import type { ITypeHtml } from '../type-html.interface';
+
 export interface ITypeMenuItem extends ITypeHtml {
-  nodeName: 'menuitem',
+  nodeName: 'menuitem';
 }

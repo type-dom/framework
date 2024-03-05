@@ -154,7 +154,7 @@ export enum StyleDisplay {
   tableColumnGroup = 'table-column-group',
   tableColumn = 'table-column',
   tableCell = 'table-cell',
-  tableCaption = 'table-caption'
+  tableCaption = 'table-caption',
 }
 
 /**
@@ -194,5 +194,5 @@ export enum StyleCursor {
   text = 'text',
   wait = 'wait',
   help = 'help',
-  notAllowed = 'not-allowed'
+  notAllowed = 'not-allowed',
 }

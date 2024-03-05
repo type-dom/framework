@@ -178,7 +178,7 @@ import {
   TableFoot,
   TableHead,
   TableHeaderCell,
-  TableRow
+  TableRow,
 } from './table';
 import { Summary } from './summary/summary.class';
 import { Sup } from './sup/sup.class';
@@ -186,125 +186,125 @@ import { Template } from './template/template.class';
 import { Slot } from './slot/slot.class';
 
 export interface HtmlTypes {
-  a: A,
-  abbr: Abbr,
-  address: Address,
+  a: A;
+  abbr: Abbr;
+  address: Address;
   // applet:TypeApplet,
-  area: Area,
-  article: Article,
-  aside: Aside,
-  audio: Audio,
-  b: B,
-  base: Base,
+  area: Area;
+  article: Article;
+  aside: Aside;
+  audio: Audio;
+  b: B;
+  base: Base;
   // basefont:TypeBaseFont,
-  bdi: Bdi,
-  bdo: Bdo,
-  blockquote: BlockQuote,
+  bdi: Bdi;
+  bdo: Bdo;
+  blockquote: BlockQuote;
   // body:TypeBody,
-  br: Br,
-  button: Button,
-  canvas: Canvas,
-  caption: TableCaption,
-  cite: Cite,
-  code: Code,
-  col: TableCol,
-  colgroup: TableColGroup,
-  data: Data,
-  datalist: DataList,
-  dd: DD,
-  del: Del,
-  details: Details,
-  dfn: Dfn,
-  dialog: Dialog,
+  br: Br;
+  button: Button;
+  canvas: Canvas;
+  caption: TableCaption;
+  cite: Cite;
+  code: Code;
+  col: TableCol;
+  colgroup: TableColGroup;
+  data: Data;
+  datalist: DataList;
+  dd: DD;
+  del: Del;
+  details: Details;
+  dfn: Dfn;
+  dialog: Dialog;
   // dir:TypeDir,
-  div: Div,
-  dl: DL,
-  dt: DT,
-  em: Em,
-  embed: Embed,
-  fieldset: Fieldset,
-  figcaption: FigCaption,
-  figure: Figure,
+  div: Div;
+  dl: DL;
+  dt: DT;
+  em: Em;
+  embed: Embed;
+  fieldset: Fieldset;
+  figcaption: FigCaption;
+  figure: Figure;
   // font:TypeFont,
-  footer: Footer,
-  form: Form,
+  footer: Footer;
+  form: Form;
   // frame:TypeFrame,
   // frameset:TypeFrameSet,
-  h1: Head,
-  h2: Head,
-  h3: Head,
-  h4: Head,
-  h5: Head,
-  h6: Head,
-  head: Head,
-  header: Header,
-  hgroup: HGroup,
-  hr: Hr,
+  h1: Head;
+  h2: Head;
+  h3: Head;
+  h4: Head;
+  h5: Head;
+  h6: Head;
+  head: Head;
+  header: Header;
+  hgroup: HGroup;
+  hr: Hr;
   // html:TypeHtml,
-  i: I,
-  iframe: IFrame,
-  img: Img,
-  input: Input,
-  ins: Ins,
-  kbd: Kbd,
-  label: Label,
-  legend: Legend,
-  li: LI,
+  i: I;
+  iframe: IFrame;
+  img: Img;
+  input: Input;
+  ins: Ins;
+  kbd: Kbd;
+  label: Label;
+  legend: Legend;
+  li: LI;
   // link:TypeLink,
-  main: Main,
-  map: Map,
-  mark: Mark,
+  main: Main;
+  map: Map;
+  mark: Mark;
   // marquee:TypeMarquee,
-  menu: Menu,
+  menu: Menu;
   // meta:TypeMeta,
-  meter: Meter,
-  nav: Nav,
+  meter: Meter;
+  nav: Nav;
   // noscript:TypeNoscript,
   // object:TypeObject,
-  ol: OL,
-  optgroup: OptGroup,
-  option: Option,
-  output: Output,
-  p: P,
+  ol: OL;
+  optgroup: OptGroup;
+  option: Option;
+  output: Output;
+  p: P;
   // param:TypeParam,
-  picture: Picture,
-  pre: Pre,
-  progress: Progress,
-  q: Q,
+  picture: Picture;
+  pre: Pre;
+  progress: Progress;
+  q: Q;
   // rb:TypeRb,
-  rp: Rp,
-  rt: Rt,
+  rp: Rp;
+  rt: Rt;
   // rtc:TypeRtc,
-  ruby: Ruby,
-  s: S,
-  samp: Samp,
+  ruby: Ruby;
+  s: S;
+  samp: Samp;
   // script:TypeScript,
-  section: Section,
-  select: Select,
-  slot: Slot,
-  small: Small,
-  source: Source,
-  span: Span,
-  strong: Strong,
+  section: Section;
+  select: Select;
+  slot: Slot;
+  small: Small;
+  source: Source;
+  span: Span;
+  strong: Strong;
   // style:TypeStyle,
-  sub: Sub,
-  summary: Summary,
-  sup: Sup,
-  table: Table,
-  tbody: TableBody,
-  td: TableDataCell,
-  template: Template,
-  textarea: Textarea,
-  tfoot: TableFoot,
-  th: TableHeaderCell,
-  thead: TableHead,
-  time: Time,
-  title: Title,
-  tr: TableRow,
-  track: Track,
-  u: U,
-  ul: UL,
-  var: Var,
-  video: Video,
-  wbr: Wbr
+  sub: Sub;
+  summary: Summary;
+  sup: Sup;
+  table: Table;
+  tbody: TableBody;
+  td: TableDataCell;
+  template: Template;
+  textarea: Textarea;
+  tfoot: TableFoot;
+  th: TableHeaderCell;
+  thead: TableHead;
+  time: Time;
+  title: Title;
+  tr: TableRow;
+  track: Track;
+  u: U;
+  ul: UL;
+  var: Var;
+  video: Video;
+  wbr: Wbr;
 }

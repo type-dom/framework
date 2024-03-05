@@ -1,5 +1,9 @@
 export { TypeNode } from './type-node/type-node.abstract';
-export type { ITypeNode, INodeAttr, IPath } from './type-node/type-node.interface';
+export type {
+  ITypeNode,
+  INodeAttr,
+  IPath,
+} from './type-node/type-node.interface';
 export type { IStyle } from './style/style.interface';
 export * from './style/style.enum';
 export { XNode } from './x-node/x-node.class';
@@ -13,4 +17,3 @@ export * from './element';
 export * from './parser';
 export * from './router';
 export * from './utils';
-

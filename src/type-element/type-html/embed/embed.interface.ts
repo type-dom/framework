@@ -1,4 +1,5 @@
 import type { ITypeHtml } from '../type-html.interface';
+
 export interface ITypeEmbed extends ITypeHtml {
-  nodeName: 'embed',
+  nodeName: 'embed';
 }

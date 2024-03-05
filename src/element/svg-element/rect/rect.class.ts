@@ -1,6 +1,7 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
 import { TypeSvgSvg } from '../../../type-element/type-svg/svg/svg.abstract';
 import type { ISvgRect, ISvgRectProperty } from './rect.interface';
+
 export class SvgRect extends TypeSvg implements ISvgRect {
   nodeName: 'rect';
   className: 'SvgRect';
@@ -11,11 +12,15 @@ export class SvgRect extends TypeSvg implements ISvgRect {
   width = 60;
   height = 60;
   declare childNodes: [];
+
   constructor(public parent?: TypeSvgSvg) {
     super();
     this.nodeName = 'rect';
     this.className = 'SvgRect';
-    this.dom = document.createElementNS('http://www.w3.org/2000/svg', this.nodeName);
+    this.dom = document.createElementNS(
+      'http://www.w3.org/2000/svg',
+      this.nodeName
+    );
     this.childNodes = [];
     this.propObj = {
       styleObj: {},
@@ -26,10 +31,11 @@ export class SvgRect extends TypeSvg implements ISvgRect {
         x: this.x,
         y: this.y,
         width: this.width,
-        height: this.height
-      }
+        height: this.height,
+      },
     };
   }
+
   // 单位是px
   reset(x: number, y: number, width: number, height: number): void {
     this.x = x;
@@ -40,7 +46,7 @@ export class SvgRect extends TypeSvg implements ISvgRect {
       x,
       y,
       width,
-      height
+      height,
     });
   }
 }

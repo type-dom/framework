@@ -1,21 +1,28 @@
-import type { ITypeAttribute, ITypeProperty } from '../../../type-element/type-element.interface';
+import type {
+  ITypeAttribute,
+  ITypeProperty,
+} from '../../../type-element/type-element.interface';
 import type { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
 import type { IStyle } from '../../../style/style.interface';
+
 export interface ISvgPathStyle extends IStyle {
   fill: string; // white;
   stroke: string; // red;
-  strokeWidth: number // 2
+  strokeWidth: number; // 2
 }
+
 export interface ISvgPathAttribute extends ITypeAttribute {
-  d: string, // M250 150 L150 350 L350 350 Z
-  fill: string,
-  strokeWidth: number,
-  fillRule?: 'nonzero' | 'evenodd' | 'inherit', // Default value	nonzero
+  d: string; // M250 150 L150 350 L350 350 Z
+  fill: string;
+  strokeWidth: number;
+  fillRule?: 'nonzero' | 'evenodd' | 'inherit'; // Default value	nonzero
 }
+
 export interface ISvgPathProperty extends ITypeProperty {
-  styleObj: Partial<ISvgPathStyle>,
-  attrObj: Partial<ISvgPathAttribute>
+  styleObj: Partial<ISvgPathStyle>;
+  attrObj: Partial<ISvgPathAttribute>;
 }
+
 /**
  * <path> 标签用来定义路径。
  *
@@ -33,8 +40,8 @@ export interface ISvgPathProperty extends ITypeProperty {
  *  注释：以上所有命令均允许小写字母。大写表示绝对定位，小写表示相对定位。
  */
 export interface ISvgPath extends ITypeSvg {
-  nodeName: 'path',
-  propObj: ISvgPathProperty
-  className: 'SvgPath',
-  childNodes: []
+  nodeName: 'path';
+  propObj: ISvgPathProperty;
+  className: 'SvgPath';
+  childNodes: [];
 }

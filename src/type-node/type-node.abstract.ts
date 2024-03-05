@@ -3,6 +3,7 @@ import { encodeToXmlString, humpToMiddleLine } from '@type-dom/utils';
 import type { ITypeProperty } from '../type-element/type-element.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
 import type { INodeAttr, IPath, ITypeNode } from './type-node.interface';
+
 /**
  * 虚拟DOM，TypeNode 抽象节点类, 所有节点类的抽象类；
  * abstract syntax tree 抽象语法树 抽象节点类
@@ -22,10 +23,12 @@ export abstract class TypeNode implements ITypeNode {
   abstract childNodes?: TypeNode[];
   abstract dom?: HTMLElement | SVGElement | Text;
   abstract parent?: TypeElement;
+
   /**
    * 渲染出真实DOM
    */
   abstract render(): void;
+
   // abstract setConfig?(config: any): void
   /**
    * 不独立为一个函数，是因为在这里，可以直接 this. 的方式调用。
@@ -34,7 +37,8 @@ export abstract class TypeNode implements ITypeNode {
    * @param parent 不一定是this，还可以是父级、子级等等。
    * @param node
    */
-  abstract createItem(parent: TypeNode, node: ITypeNode): TypeNode
+  abstract createItem(parent: TypeNode, node: ITypeNode): TypeNode;
+
   propObj?: ITypeProperty;
   attributes?: INodeAttr[];
   configs?: Record<string, any>;
@@ -64,6 +68,7 @@ export abstract class TypeNode implements ITypeNode {
     }
     return childNodes[index + 1];
   }
+
   get textContent(): string | number | boolean {
     if (!this.childNodes) {
       return this.nodeValue || '';
@@ -74,9 +79,11 @@ export abstract class TypeNode implements ITypeNode {
       })
       .join('');
   }
+
   get children(): TypeNode[] {
     return this.childNodes || [];
   }
+
   // 在定义className时，要把当前类写入到TypeMap中；
   //   todo 创建类实例时都要运行一遍。
   // setClassName(className: string, TypeClass: any) {
@@ -97,9 +104,11 @@ export abstract class TypeNode implements ITypeNode {
     this.parent = parent;
     parent.addChild(this);
   }
+
   appendParent(parent: TypeElement): void {
     parent.addChild(this);
   }
+
   /**
    * 创建子节点
    * 与创建组件不同
@@ -112,12 +121,16 @@ export abstract class TypeNode implements ITypeNode {
   createItems(parent: TypeNode, nodes: ITypeNode[]): TypeNode[] {
     const items: TypeNode[] = [];
     for (const node of nodes) {
-      if (node.TypeClass === undefined
-        && node.template === undefined
-        && node.nodeValue === undefined) {
-        console.error('node.TypeClass === undefined' +
-          '  && node.template === undefined' +
-          ' && node.nodeValue === undefined. ');
+      if (
+        node.TypeClass === undefined &&
+        node.template === undefined &&
+        node.nodeValue === undefined
+      ) {
+        console.error(
+          'node.TypeClass === undefined' +
+            '  && node.template === undefined' +
+            ' && node.nodeValue === undefined. '
+        );
         continue;
       }
       const item = this.createItem(parent, node);
@@ -127,9 +140,11 @@ export abstract class TypeNode implements ITypeNode {
     }
     return items;
   }
+
   hasChildNodes(): boolean {
     return this.childNodes ? this.childNodes.length > 0 : false;
   }
+
   /**
    * Search a node in the tree with the given path
    * foo.bar[nnn], i.e. find the nnn-th node named
@@ -227,19 +242,21 @@ export abstract class TypeNode implements ITypeNode {
     if (this.propObj?.styleObj) {
       let style = '';
       for (const key in this.propObj.styleObj) {
-        style += `${humpToMiddleLine(key)}: ${encodeToXmlString(String((this.propObj.styleObj as any)[key]))};`;
+        style += `${humpToMiddleLine(key)}: ${encodeToXmlString(
+          String((this.propObj.styleObj as any)[key])
+        )};`;
       }
       if (style !== '') {
-        buffer.push(
-          ` style="${style}"`
-        );
+        buffer.push(` style="${style}"`);
       }
     }
     // todo this.attributes may be repeated with this.propObj.attrObj
     if (this.attributes) {
       for (const attribute of this.attributes) {
         buffer.push(
-          ` ${attribute.name}="${encodeToXmlString(attribute.value.toString())}"`
+          ` ${attribute.name}="${encodeToXmlString(
+            attribute.value.toString()
+          )}"`
         );
       }
     }
@@ -252,11 +269,14 @@ export abstract class TypeNode implements ITypeNode {
       }
       buffer.push(`</${this.nodeName}>`);
     } else if (this.nodeValue !== undefined) {
-      buffer.push(`>${encodeToXmlString(this.nodeValue.toString())}</${this.nodeName}>`);
+      buffer.push(
+        `>${encodeToXmlString(this.nodeValue.toString())}</${this.nodeName}>`
+      );
     } else {
       buffer.push('/>');
     }
   }
+
   /**
    * 保存json数据时使用。
    * 把当前数据层对象转换为 JSON 字面量。
@@ -269,7 +289,7 @@ export abstract class TypeNode implements ITypeNode {
       nodeName: this.nodeName,
       nodeValue: this.nodeValue,
       attributes: this.attributes,
-      childNodes: this.children.map(child => {
+      childNodes: this.children.map((child) => {
         if (child.nodeName === '#text') {
           return {
             // className: 'TextNode',
@@ -279,7 +299,7 @@ export abstract class TypeNode implements ITypeNode {
         } else {
           return child.toJSON();
         }
-      })
+      }),
     } as ITypeNode;
   }
 }

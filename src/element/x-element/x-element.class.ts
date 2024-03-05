@@ -4,6 +4,7 @@ import { TextNode } from '../../text-node/text-node.class';
 import { TypeElement } from '../../type-element/type-element.abstract';
 import { Parser } from '../../parser/parser.class';
 import type { IXElement } from './x-element.interface';
+
 /**
  * XElement是一个通用元素节点类，可以是其它类的父节点，也可以是其它类的子节点
  * DOM/XML
@@ -22,6 +23,7 @@ export class XElement extends TypeElement implements IXElement {
   config?: Record<string, any>; // config不会转为json
   dom?: HTMLElement | SVGElement;
   declare attributes: INodeAttr[];
+
   /**
    * 在 Parser 中使用 XElement 时， 限制了不能直接使用 parent 参数。
    * @param config
@@ -65,6 +67,7 @@ export class XElement extends TypeElement implements IXElement {
         }
       }) || [];
   }
+
   override beforeRender(): void {
     console.log('XElement beforeRender . ');
     // todo nodejs下没有document，Parser可能会用到
@@ -100,6 +103,7 @@ export class XElement extends TypeElement implements IXElement {
       }
     }
   }
+
   //   绑定事件
   initEvents() {
     for (const attr of this.attributes) {
@@ -111,7 +115,8 @@ export class XElement extends TypeElement implements IXElement {
         if (this.itemMethods !== undefined && attr.value !== undefined) {
           if (this.itemMethods[attr.value]) {
             if (this.dom !== undefined) {
-              this.events.push( // events数组方式方便卸载
+              this.events.push(
+                // events数组方式方便卸载
                 fromEvent(this.dom, attrName).subscribe((evt) => {
                   // todo 没有下面的if，则报错 TS2532: Object is possibly undefined
                   if (

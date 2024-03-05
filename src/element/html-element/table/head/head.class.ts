@@ -7,6 +7,7 @@ import type { ITableHead } from './head.interface';
 export class TableHead extends TypeTableHead implements ITableHead {
   className: 'TableHead';
   declare childNodes: TableHeaderCell[];
+
   constructor(public parent: Table) {
     super();
     this.className = 'TableHead';
