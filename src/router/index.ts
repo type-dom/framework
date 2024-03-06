@@ -2,7 +2,7 @@ import { BehaviorSubject } from 'rxjs';
 
 export { Router } from './router.class';
 export type { IRouterOption } from './router.interface';
-export { RouterView } from './router-view';
+export { RouterView } from './router-view/router-view.class';
 export type { IRoute } from './route.interface';
 // 创建一个可观察的路由状态
 export const currentRoute$ = new BehaviorSubject(window.location.pathname);
