@@ -1,8 +1,9 @@
+import { TypeHtml } from '../../type-element/type-html/type-html.abstract';
 import { ITypeConfig } from '../../config.interface';
-import { TypeElement } from '../../type-element/type-element.abstract';
+
 
 export interface IRouterViewConfig extends ITypeConfig {
-  parent: TypeElement;
+  parent: TypeHtml;
   nodeName: string;
   name: string;
   height: string; // default 60px

@@ -1,4 +1,3 @@
-import { TypeElement } from '../../type-element/type-element.abstract';
 import { TypeHtml } from '../../type-element';
 import { IRouterViewConfig } from './router-view.interface';
 
@@ -7,7 +6,6 @@ import { IRouterViewConfig } from './router-view.interface';
  */
 export class RouterView extends TypeHtml {
   className = 'RouterView';
-  parent: TypeElement | undefined;
   nodeName: string;
   // childNodes: TypeNode[];
   dom: HTMLElement;
