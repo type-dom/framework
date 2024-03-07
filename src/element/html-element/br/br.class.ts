@@ -1,13 +1,13 @@
 import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
 import { TypeBr } from '../../../type-element/type-html/br/br.abstract';
-import { XElement } from '../../x-element/x-element.class';
-import type { IBr } from './br.interface';
+import { IBr, IBrConfig } from './br.interface';
 
 export class Br extends TypeBr implements IBr {
   className: 'Br';
 
-  constructor(public parent?: TypeHtml | XElement) {
+  constructor(config?: Partial<IBrConfig>) {
     super();
     this.className = 'Br';
+    this.setConfig(config);
   }
 }

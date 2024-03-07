@@ -1,4 +1,7 @@
-// export class and interface
+/**
+ * TypeDom框架的html类基础组件
+ * export class and interface
+ */
 export { A } from './a/a.class';
 export type { IA } from './a/a.interface';
 export { Area } from './area/area.class';
