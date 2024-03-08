@@ -1,11 +1,11 @@
 {
   "name": "@type-dom/framework",
-  "version": "0.1.28",
+  "version": "0.0.9",
   "description": "一种基于抽象类和具体类的typescript的轻量级前端框架。A lightweight typescript front-end framework based on abstract classes, concrete classes. ",
   "main": "src/index.ts",
   "scripts": {
     "build": "tsc",
-    "postversion": "rimraf dist && tsc && cp README.md package.json dist && cd dist && npm publish",
+    "publish": "rimraf dist && tsc && copy README.md package.json dist && cd dist && npm publish",
     "test": "jest",
     "lint": "eslint src",
     "lint-fix": "eslint 'src/**/*.{ts,js,tsx,jsx}' --fix -o eslint_log.log",
@@ -53,7 +53,7 @@
   },
   "dependencies": {
     "rxjs": "^7.8.1",
-    "@type-dom/utils": "*"
+    "@type-dom/utils": "^0.0.6"
   },
   "typeCoverage": {
     "atLeast": 99,
