@@ -6,16 +6,17 @@ import { Parser } from '../../parser/parser.class';
 import type { IXElement } from './x-element.interface';
 
 /**
- * XElement是一个通用元素节点类，可以是其它类的父节点，也可以是其它类的子节点
+ * XElement是一个通用元素基础组件，是其它类组件的子节点
  * DOM/XML
  * 不包括 文本节点类
  * 模板页面时用到，解析文本DOM。
  * 也要能转为 json 格式字符串或文本DOM。
+ * 注：这其实也是一个特殊的组件
  */
 export class XElement extends TypeElement implements IXElement {
   className: 'XElement';
   nodeName: string;
-  parent?: TypeElement; // 在解析时，onEndElement时，重新赋值。
+  // parent?: XElement; // 在解析时，onEndElement时，重新赋值。
   declare childNodes: (XElement | TextNode)[];
   declare template?: string;
   // data?: Record<string, any>;
