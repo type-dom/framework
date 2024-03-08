@@ -1,3 +1,6 @@
+/**
+ * TypeDom的svg类基础组件
+ */
 export { SvgCircle } from './circle/circle.class';
 export type { ISvgCircle } from './circle/circle.interface';
 export { SvgDefs } from './defs/defs.class';

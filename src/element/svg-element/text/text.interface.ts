@@ -13,6 +13,7 @@ import type {
   ITypeElement,
   ITypeProperty,
 } from '../../../type-element/type-element.interface';
+import { ITypeConfig } from '../../../config.interface';
 
 export interface ISvgTextProperty extends ITypeProperty {
   styleObj: {
@@ -35,4 +36,8 @@ export interface ISvgText extends ITypeElement {
   propObj: ISvgTextProperty;
   className: 'SvgText';
   childNodes: ITextNode[];
+}
+
+export interface ISvgTextConfig extends ITypeConfig {
+  text: string,
 }

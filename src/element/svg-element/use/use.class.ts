@@ -1,14 +1,15 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
-import { TypeSvgSvg } from '../../../type-element/type-svg/svg/svg.abstract';
 import type { ISvgUse } from './use.interface';
+import { ITypeConfig } from '../../../config.interface';
 
 export class SvgUse extends TypeSvg implements ISvgUse {
-  nodeName: 'use';
   className: 'SvgUse';
+  nodeName: 'use';
+  // declare parent?: TypeSvgSvg;
   dom: SVGUseElement;
   declare childNodes: [];
 
-  constructor(public parent?: TypeSvgSvg) {
+  constructor(config: ITypeConfig) {
     super();
     this.nodeName = 'use';
     this.className = 'SvgUse';
@@ -17,5 +18,6 @@ export class SvgUse extends TypeSvg implements ISvgUse {
       this.nodeName
     );
     this.childNodes = [];
+    this.setConfig(config);
   }
 }

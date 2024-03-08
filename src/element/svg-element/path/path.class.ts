@@ -1,15 +1,17 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
 import { TypeSvgSvg } from '../../../type-element/type-svg/svg/svg.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import type { ISvgPath, ISvgPathProperty } from './path.interface';
 
 export class SvgPath extends TypeSvg implements ISvgPath {
   nodeName: 'path';
   dom: SVGPathElement;
   className: 'SvgPath';
+  declare parent?: TypeSvgSvg;
   declare propObj: ISvgPathProperty;
   declare childNodes: [];
 
-  constructor(public parent?: TypeSvgSvg) {
+  constructor(config: ITypeConfig) {
     super();
     this.nodeName = 'path';
     this.dom = document.createElementNS(
@@ -24,6 +26,7 @@ export class SvgPath extends TypeSvg implements ISvgPath {
       },
     };
     this.childNodes = [];
+    this.setConfig(config);
   }
 
   get pathData(): string {

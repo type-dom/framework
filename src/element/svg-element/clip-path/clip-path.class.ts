@@ -1,5 +1,6 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
 import { ISvgClipPath } from './clip-path.interface';
+import { ITypeConfig } from '../../../config.interface';
 
 // todo 有文字内容的
 export class SvgClipPath extends TypeSvg implements ISvgClipPath {
@@ -8,7 +9,7 @@ export class SvgClipPath extends TypeSvg implements ISvgClipPath {
   dom: SVGClipPathElement;
   declare childNodes: TypeSvg[];
 
-  constructor(public parent: TypeSvg) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.nodeName = 'clipPath';
     this.className = 'SvgClipPath';
@@ -18,5 +19,6 @@ export class SvgClipPath extends TypeSvg implements ISvgClipPath {
     );
     // this.textNode = new WebTextNode(this, '字');
     this.childNodes = [];
+    this.setConfig(config);
   }
 }
