@@ -4,7 +4,7 @@ import type { ITypeSvgSvg } from './svg.interface';
 
 export abstract class TypeSvgSvg extends TypeSvg implements ITypeSvgSvg {
   declare abstract className: string;
-  declare abstract parent?: TypeHtml;
+  declare parent?: TypeHtml;
   nodeName: 'svg';
   dom: SVGSVGElement;
   declare childNodes: TypeSvg[];

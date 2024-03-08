@@ -99,10 +99,10 @@ Create a hello world page to app:
 // Typescript
 // Br,Division,TypeRoot,TextNode等都是框架定义好的类
 import {Br, Division, TypeRoot, TextNode} from '@type-dom/framework';
-import { TypeRoot, RouterView } from '@type-dom/framework';
+import { TypeRoot, RouterViewClass } from '@type-dom/framework';
 import type { ITypeNode } from '@type-dom/framework';
 import { router } from '../router';
-import { Menus } from '../layout/menus';
+import { MenusClass } from '../layout/menus';
 import { TdAside, TdContainer, TdFooter, TdHeader, TdMain } from '@type-dom/ui';
 
 /**
@@ -138,7 +138,7 @@ export class AppRoot extends TypeRoot {
             },
             childNodes: [
               {
-                TypeClass: Menus,
+                TypeClass: MenusClass,
                 propObj: {
                   attrObj: {
                     name: 'menus'
@@ -174,7 +174,7 @@ export class AppRoot extends TypeRoot {
                 TypeClass: TdMain,
                 childNodes: [
                   {
-                    TypeClass: RouterView,
+                    TypeClass: RouterViewClass,
                     propObj: {
                       attrObj: {},
                       styleObj: {
@@ -201,7 +201,7 @@ export class AppRoot extends TypeRoot {
         ],
       },
     ]);
-    this.routerView = this.childNodes[0].childNodes[1].childNodes[1].childNodes[0] as RouterView;
+    this.routerView = this.childNodes[0].childNodes[1].childNodes[1].childNodes[0] as RouterViewClass;
   }
 
   useRouter() {

@@ -17,3 +17,4 @@ export * from './element';
 export * from './parser';
 export * from './router';
 export * from './utils';
+export type { ITypeConfig } from './config.interface';
