@@ -1,12 +1,13 @@
-import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import { TypeBase } from '../../../type-element/type-html/base/base.abstract';
 import type { IBase } from './base.interface';
 
 export class Base extends TypeBase implements IBase {
   className: 'Base';
 
-  constructor(public parent?: TypeHtml) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'Base';
+    this.setConfig(config);
   }
 }

@@ -5,8 +5,7 @@ import type { ITableHeaderCell } from './header-cell.interface';
 // 表格表头
 export class TableHeaderCell
   extends TypeTableHeaderCell
-  implements ITableHeaderCell
-{
+  implements ITableHeaderCell {
   className: 'TableHeaderCell';
 
   constructor(public parent: TableHead) {

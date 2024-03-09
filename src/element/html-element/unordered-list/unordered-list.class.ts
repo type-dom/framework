@@ -1,12 +1,13 @@
-import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import { TypeUL } from '../../../type-element/type-html/ul/ul.abstract';
 import type { IUnorderedList } from './unordered-list.interface';
 
 export class UnorderedList extends TypeUL implements IUnorderedList {
   className: 'UnorderedList';
 
-  constructor(public parent?: TypeHtml) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'UnorderedList';
+    this.setConfig(config);
   }
 }

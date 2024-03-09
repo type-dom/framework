@@ -1,12 +1,13 @@
 import { TypeImg } from '../../../type-element/type-html/img/img.abstract';
-import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import type { IImg } from './img.interface';
 
 export class Img extends TypeImg implements IImg {
   className: 'Img';
 
-  constructor(public parent?: TypeHtml) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'Img';
+    this.setConfig(config);
   }
 }

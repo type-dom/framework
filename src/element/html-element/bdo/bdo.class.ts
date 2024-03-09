@@ -1,12 +1,13 @@
-import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import { TypeBdo } from '../../../type-element/type-html/bdo/bdo.abstract';
 import type { IBdo } from './bdo.interface';
 
 export class Bdo extends TypeBdo implements IBdo {
   className: 'Bdo';
 
-  constructor(public parent?: TypeHtml) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'Bdo';
+    this.setConfig(config);
   }
 }

@@ -1,12 +1,13 @@
-import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import { TypeDfn } from '../../../type-element/type-html/dfn/dfn.abstract';
 import type { IDfn } from './dfn.interface';
 
 export class Dfn extends TypeDfn implements IDfn {
   className: 'Dfn';
 
-  constructor(public parent?: TypeHtml) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'Dfn';
+    this.setConfig(config);
   }
 }

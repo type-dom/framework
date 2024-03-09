@@ -1,4 +1,4 @@
-import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import { TypeMenuItem } from '../../../type-element/type-html/menu-item/menu-item.abstract';
 import type { IMenuItem } from './menu-item.interface';
 
@@ -11,8 +11,9 @@ import type { IMenuItem } from './menu-item.interface';
 export class MenuItem extends TypeMenuItem implements IMenuItem {
   className: 'MenuItem';
 
-  constructor(public parent?: TypeHtml) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'MenuItem';
+    this.setConfig(config);
   }
 }

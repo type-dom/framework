@@ -1,12 +1,13 @@
-import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import { TypeFooter } from '../../../type-element/type-html/footer/footer.abstract';
 import type { IFooter } from './footer.interface';
 
 export class Footer extends TypeFooter implements IFooter {
   className: 'Footer';
 
-  constructor(public parent?: TypeHtml) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'Footer';
+    this.setConfig(config);
   }
 }

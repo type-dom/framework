@@ -1,12 +1,13 @@
-import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import { TypeCode } from '../../../type-element/type-html/code/code.abstract';
 import type { ICode } from './code.interface';
 
 export class Code extends TypeCode implements ICode {
   className: 'Code';
 
-  constructor(public parent?: TypeHtml) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'Code';
+    this.setConfig(config);
   }
 }

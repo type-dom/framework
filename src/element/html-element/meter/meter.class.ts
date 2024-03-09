@@ -1,12 +1,13 @@
-import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import { TypeMeter } from '../../../type-element/type-html/meter/meter.abstract';
 import type { IMeter } from './meter.interface';
 
 export class Meter extends TypeMeter implements IMeter {
   className: 'Meter';
 
-  constructor(public parent?: TypeHtml) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'Meter';
+    this.setConfig(config);
   }
 }

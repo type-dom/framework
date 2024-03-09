@@ -4,6 +4,7 @@ import { ITypeConfig } from '../../../config.interface';
 export interface ISlot extends ITypeSlot {
   className: 'Slot';
 }
+
 export interface ISlotConfig extends ITypeConfig {
   slotName: string,
 }

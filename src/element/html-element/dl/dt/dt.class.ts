@@ -1,12 +1,13 @@
-import { TypeHtml } from '../../../../type-element/type-html/type-html.abstract';
+import { ITypeConfig } from '../../../../config.interface';
 import { TypeDT } from '../../../../type-element/type-html/dl/dt/dt.abstract';
 import type { IDT } from './dt.interface';
 
 export class DT extends TypeDT implements IDT {
   className: 'DT';
 
-  constructor(public parent?: TypeHtml) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'DT';
+    this.setConfig(config);
   }
 }

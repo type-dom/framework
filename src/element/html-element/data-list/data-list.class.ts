@@ -1,12 +1,13 @@
-import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import { TypeDataList } from '../../../type-element/type-html/data-list/data-list.abstract';
 import type { IDataList } from './data-list.interface';
 
 export class DataList extends TypeDataList implements IDataList {
   className: 'DataList';
 
-  constructor(public parent?: TypeHtml) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'DataList';
+    this.setConfig(config);
   }
 }

@@ -1,12 +1,13 @@
-import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import { TypeProgress } from '../../../type-element/type-html/progress/progress.abstract';
 import type { IProgress } from './progress.interface';
 
 export class Progress extends TypeProgress implements IProgress {
   className: 'Progress';
 
-  constructor(public parent?: TypeHtml) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'Progress';
+    this.setConfig(config);
   }
 }

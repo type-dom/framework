@@ -1,12 +1,13 @@
-import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import { TypeWbr } from '../../../type-element/type-html/wbr/wbr.abstract';
 import type { IWbr } from './wbr.interface';
 
 export class Wbr extends TypeWbr implements IWbr {
   className: 'Wbr';
 
-  constructor(public parent?: TypeHtml) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'Wbr';
+    this.setConfig(config);
   }
 }

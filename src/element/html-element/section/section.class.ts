@@ -1,4 +1,4 @@
-import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import { TypeSection } from '../../../type-element/type-html/section/section.abstract';
 import { StyleDisplay } from '../../../style/style.enum';
 import type { ISection } from './section.interface';
@@ -6,17 +6,18 @@ import type { ISection } from './section.interface';
 export class Section extends TypeSection implements ISection {
   className: 'Section';
 
-  constructor(public parent?: TypeHtml) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'Section';
     this.propObj = {
       styleObj: {
         display: StyleDisplay.flex,
-        justifyContent: 'space-between',
+        justifyContent: 'space-between'
       },
       attrObj: {
-        name: 'section',
-      },
+        name: 'section'
+      }
     };
+    this.setConfig(config);
   }
 }

@@ -5,6 +5,7 @@ import { TypeHtml } from '../../../type-element';
 export interface IBr extends ITypeBr {
   className: 'Br';
 }
+
 export interface IBrConfig extends ITypeConfig {
   parent: TypeHtml;
   attrObj: never;

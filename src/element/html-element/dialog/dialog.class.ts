@@ -1,12 +1,13 @@
-import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import { TypeDialog } from '../../../type-element/type-html/dialog/dialog.abstract';
 import type { IDialog } from './dialog.interface';
 
 export class Dialog extends TypeDialog implements IDialog {
   className: 'Dialog';
 
-  constructor(public parent?: TypeHtml) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'Dialog';
+    this.setConfig(config);
   }
 }

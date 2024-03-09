@@ -1,5 +1,5 @@
 import { TypeTable } from '../../../type-element/type-html/table/table.abstract';
-import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import { TableRow } from './row/row.class';
 import { TableHead } from './head/head.class';
 import type { ITable } from './table.interface';
@@ -8,9 +8,10 @@ export class Table extends TypeTable implements ITable {
   className: 'Table';
   declare childNodes: (TableHead | TableRow)[];
 
-  constructor(public parent: TypeHtml) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'Table';
     this.childNodes = [];
+    this.setConfig(config);
   }
 }

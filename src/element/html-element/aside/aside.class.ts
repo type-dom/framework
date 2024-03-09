@@ -1,12 +1,13 @@
-import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import { TypeAside } from '../../../type-element/type-html/aside/aside.abstract';
 import type { IAside } from './aside.interface';
 
 export class Aside extends TypeAside implements IAside {
   className: 'Aside';
 
-  constructor(public parent?: TypeHtml) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'Aside';
+    this.setConfig(config);
   }
 }

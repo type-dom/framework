@@ -1,5 +1,6 @@
 import { TextNode } from '../../../text-node/text-node.class';
 import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import type { IListItem } from './list-item.interface';
 
 export class ListItem extends TypeHtml implements IListItem {
@@ -8,7 +9,7 @@ export class ListItem extends TypeHtml implements IListItem {
   dom: HTMLLIElement;
   declare childNodes: (TypeHtml | TextNode)[];
 
-  constructor(public parent: TypeHtml) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.nodeName = 'li';
     this.dom = document.createElement(this.nodeName);
@@ -21,11 +22,12 @@ export class ListItem extends TypeHtml implements IListItem {
         padding: '6px 14px',
         borderRadius: '4px 4px 0px 0px',
         borderBottom: 'none',
-        boxSizing: 'border-box',
+        boxSizing: 'border-box'
       },
       attrObj: {
-        name: 'list-item',
-      },
+        name: 'list-item'
+      }
     };
+    this.setConfig(config);
   }
 }

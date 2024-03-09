@@ -4,8 +4,9 @@ import { IBr, IBrConfig } from './br.interface';
 
 export class Br extends TypeBr implements IBr {
   className: 'Br';
+  parent?: TypeHtml;
 
-  constructor(config?: Partial<IBrConfig>) {
+  constructor(config?: IBrConfig) {
     super();
     this.className = 'Br';
     this.setConfig(config);

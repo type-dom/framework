@@ -1,12 +1,13 @@
-import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import { TypeIFrame } from '../../../type-element/type-html/iframe/iframe.abstract';
 import type { IIFrame } from './iframe.interface';
 
 export class IFrame extends TypeIFrame implements IIFrame {
   className: 'IFrame';
 
-  constructor(public parent?: TypeHtml) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'IFrame';
+    this.setConfig(config);
   }
 }

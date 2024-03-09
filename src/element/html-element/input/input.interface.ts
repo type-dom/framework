@@ -1,6 +1,6 @@
 import type {
   ITypeAttribute,
-  ITypeElement,
+  ITypeElement
 } from '../../../type-element/type-element.interface';
 import type { InputEnum } from './input.enum';
 

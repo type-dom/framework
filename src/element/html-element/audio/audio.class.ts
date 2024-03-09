@@ -1,12 +1,13 @@
-import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import { TypeAudio } from '../../../type-element/type-html/audio/audio.abstract';
 import type { IAudio } from './audio.interface';
 
 export class Audio extends TypeAudio implements IAudio {
   className: 'Audio';
 
-  constructor(public parent?: TypeHtml) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'Audio';
+    this.setConfig(config);
   }
 }

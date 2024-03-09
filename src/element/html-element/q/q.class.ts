@@ -1,12 +1,13 @@
-import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import { TypeQ } from '../../../type-element/type-html/q/q.abstract';
 import type { IQ } from './q.interface';
 
 export class Q extends TypeQ implements IQ {
   className: 'Q';
 
-  constructor(public parent?: TypeHtml) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'Q';
+    this.setConfig(config);
   }
 }

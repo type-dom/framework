@@ -1,4 +1,5 @@
 import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import type { IInput } from './input.interface';
 
 export class Input extends TypeHtml implements IInput {
@@ -8,12 +9,13 @@ export class Input extends TypeHtml implements IInput {
   declare childNodes: [];
 
   // value: string | number | boolean | undefined;
-  constructor(public parent: TypeHtml) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.nodeName = 'input';
     this.dom = document.createElement(this.nodeName);
     this.className = 'Input';
     this.childNodes = [];
+    this.setConfig(config);
   }
 
   /**

@@ -1,12 +1,13 @@
-import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import { TypeTime } from '../../../type-element/type-html/time/time.abstract';
 import type { ITime } from './time.interface';
 
 export class Time extends TypeTime implements ITime {
   className: 'Time';
 
-  constructor(public parent?: TypeHtml) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'Time';
+    this.setConfig(config);
   }
 }

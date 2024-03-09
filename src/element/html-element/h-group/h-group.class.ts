@@ -1,12 +1,13 @@
-import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import { TypeHGroup } from '../../../type-element/type-html/hgroup/hgroup.abstract';
 import type { IHGroup } from './h-group.interface';
 
 export class HGroup extends TypeHGroup implements IHGroup {
   className: 'HGroup';
 
-  constructor(public parent?: TypeHtml) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'HGroup';
+    this.setConfig(config);
   }
 }

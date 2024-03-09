@@ -30,8 +30,6 @@ export { Division } from './division/division.class';
 export type { IDivision } from './division/division.interface';
 export { Header } from './header/header.class';
 export type { IHeader } from './header/header.interface';
-export { Heading } from './heading/heading.class';
-export type { IHeading } from './heading/heading.interface';
 export { Hr } from './hr/hr.class';
 export type { IHr } from './hr/hr.interface';
 export { I } from './i/i.class';

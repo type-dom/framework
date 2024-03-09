@@ -1,12 +1,13 @@
-import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import { TypeDel } from '../../../type-element/type-html/del/del.abstract';
 import type { IDel } from './del.interface';
 
 export class Del extends TypeDel implements IDel {
   className: 'Del';
 
-  constructor(public parent?: TypeHtml) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'Del';
+    this.setConfig(config);
   }
 }
