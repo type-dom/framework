@@ -5,7 +5,7 @@ import type { ISpan } from './span.interface';
 
 export class Span extends TypeSpan implements ISpan {
   className: 'Span';
-  parent?: TypeHtml;
+  declare parent?: TypeHtml;
 
   constructor(config?: Partial<ITypeConfig>) {
     super();

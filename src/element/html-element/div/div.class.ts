@@ -5,7 +5,6 @@ import type { IDiv } from './div.interface';
 
 export class Div extends TypeDiv implements IDiv {
   className: 'Div';
-  parent?: TypeHtml;
 
   constructor(config: Partial<ITypeConfig>) {
     super();

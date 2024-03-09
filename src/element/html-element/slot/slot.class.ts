@@ -4,7 +4,7 @@ import type { ISlot, ISlotConfig } from './slot.interface';
 
 export class Slot extends TypeSlot implements ISlot {
   className: 'Slot';
-  parent?: TypeHtml;
+  declare parent?: TypeHtml;
 
   constructor(config?: Partial<ISlotConfig>) {
     super();
