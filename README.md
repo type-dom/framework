@@ -98,7 +98,7 @@ Create a hello world page to app:
 ```ts
 // Typescript
 // Br,Division,TypeRoot,TextNode等都是框架定义好的类
-import {Br, Division, TypeRoot, TextNode} from '@type-dom/framework';
+import { Br, Division, TypeRoot, TextNode } from '@type-dom/framework';
 import { TypeRoot, RouterViewClass } from '@type-dom/framework';
 import type { ITypeNode } from '@type-dom/framework';
 import { router } from '../router';
@@ -214,11 +214,13 @@ export class AppRoot extends TypeRoot {
 // app.element.ts
 import './app.element.scss';
 import { AppRoot } from './app-root';
+
 /**
  * 这个类其实就是一个真实DOM
  */
 export class AppElement extends HTMLElement {
   public static observedAttributes = [];
+
   /**
    * connectedCallback会在 custom element 首次被插入到文档 DOM 节点上时被调用，
    * 而 attributeChangedCallback则会在 custom element 增加、删除或者修改某个属性时被调用。
@@ -229,7 +231,7 @@ export class AppElement extends HTMLElement {
     appRoot.setAttrName(title);
     // 使用路由
     appRoot.useRouter();
-    const shadowRoot = this.attachShadow({mode: 'open'}); // mode "closed" | "open"
+    const shadowRoot = this.attachShadow({ mode: 'open' }); // mode "closed" | "open"
     // 挂载
     appRoot.mount(shadowRoot);
     // 渲染
@@ -240,12 +242,14 @@ export class AppElement extends HTMLElement {
     console.log('appRoot.dump() buff.join("") is ', buff.join(''));
   }
 }
+
 customElements.define('app-root', AppElement);
 
 
 // main.ts 项目主程序
-import {fromEvent} from 'rxjs';
-import {AppElement} from "./app-root";
+import { fromEvent } from 'rxjs';
+import { AppElement } from "./app-root";
+
 fromEvent(document, 'DOMContentLoaded').subscribe(() => {
   const uiEl = document.querySelector('#example-ref') as HTMLElement;
   if (uiEl) {
