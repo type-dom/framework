@@ -1,7 +1,6 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
 import { SvgStop } from '../stop/stop.class';
-import { SvgDefs } from '../defs/defs.class';
-import type { ISvgRadialGradient } from './radial-gradient.interface';
+import type { ISvgRadialGradient, ISvgRadialGradientConfig } from './radial-gradient.interface';
 
 export class SvgRadialGradient extends TypeSvg implements ISvgRadialGradient {
   nodeName: 'radialGradient';
@@ -9,7 +8,7 @@ export class SvgRadialGradient extends TypeSvg implements ISvgRadialGradient {
   dom: SVGRadialGradientElement;
   declare childNodes: SvgStop[];
 
-  constructor(public parent: SvgDefs) {
+  constructor(config?: Partial<ISvgRadialGradientConfig>) {
     super();
     this.nodeName = 'radialGradient';
     this.className = 'SvgRadialGradient';
@@ -19,11 +18,12 @@ export class SvgRadialGradient extends TypeSvg implements ISvgRadialGradient {
     );
     this.childNodes = [];
     this.events = [];
+    this.setConfig(config);
   }
 
   reset(id: string): void {
     this.setAttrObj({
-      id,
+      id
     });
   }
 }

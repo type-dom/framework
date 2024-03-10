@@ -1,5 +1,5 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
-import { TypeSvgSvg } from '../../../type-element/type-svg/svg/svg.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import type { ISvgLine, ISvgLineProperty } from './line.interface';
 
 export class SvgLine extends TypeSvg implements ISvgLine {
@@ -13,7 +13,7 @@ export class SvgLine extends TypeSvg implements ISvgLine {
   y1 = 0;
   y2 = 0;
 
-  constructor(public parent?: TypeSvgSvg) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.nodeName = 'line';
     this.className = 'SvgLine';
@@ -30,9 +30,10 @@ export class SvgLine extends TypeSvg implements ISvgLine {
         x1: this.x1,
         y1: this.y1,
         x2: this.x2,
-        y2: this.y2,
-      },
+        y2: this.y2
+      }
     };
+    this.setConfig(config);
   }
 
   reset(x1: number, y1: number, x2: number, y2: number): SvgLine {
@@ -44,7 +45,7 @@ export class SvgLine extends TypeSvg implements ISvgLine {
       x1,
       y1,
       x2,
-      y2,
+      y2
     });
     return this;
   }

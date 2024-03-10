@@ -1,6 +1,6 @@
 import type {
   ITypeAttribute,
-  ITypeProperty,
+  ITypeProperty
 } from '../../../type-element/type-element.interface';
 import type { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
 import type { IStyle } from '../../../style/style.interface';

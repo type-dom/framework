@@ -1,9 +1,11 @@
 import type {
   ITypeAttribute,
-  ITypeProperty,
+  ITypeProperty
 } from '../../../type-element/type-element.interface';
 import type { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
 import type { IStyle } from '../../../style/style.interface';
+import { ITypeConfig } from '../../../config.interface';
+import { TypeSvg } from '../../../type-element';
 
 /**
  * cx 属性定义圆点的 x 坐标
@@ -39,4 +41,8 @@ export interface ISvgEllipse extends ITypeSvg {
   className: 'SvgEllipse';
   propObj: ISvgEllipseProperty;
   childNodes: [];
+}
+
+export interface ISvgEllipseConfig extends ITypeConfig {
+  parent: TypeSvg;
 }

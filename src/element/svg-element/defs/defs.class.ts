@@ -1,5 +1,5 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
-import { TypeSvgSvg } from '../../../type-element/type-svg/svg/svg.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import type { ISvgDefs } from './defs.interface';
 
 // todo 有文字内容的
@@ -9,7 +9,7 @@ export class SvgDefs extends TypeSvg implements ISvgDefs {
   dom: SVGDefsElement;
   declare childNodes: TypeSvg[];
 
-  constructor(public parent?: TypeSvgSvg) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.nodeName = 'defs';
     this.className = 'SvgDefs';
@@ -19,5 +19,6 @@ export class SvgDefs extends TypeSvg implements ISvgDefs {
     );
     // this.textNode = new WebTextNode(this, '字');
     this.childNodes = [];
+    this.setConfig(config);
   }
 }

@@ -1,9 +1,11 @@
+import { ITypeConfig } from '../../../config.interface';
 import type { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
 import type {
   ITypeAttribute,
-  ITypeProperty,
+  ITypeProperty
 } from '../../../type-element/type-element.interface';
 import type { ISvgStop } from '../stop/stop.interface';
+import { SvgDefs } from '../defs/defs.class';
 
 export interface ISvgLinearGradientAttribute extends ITypeAttribute {
   id: string;
@@ -23,4 +25,8 @@ export interface ISvgLinearGradient extends ITypeSvg {
   propObj: ISvgLinearGradientPropObj;
   className: 'SvgLinearGradient';
   childNodes: ISvgStop[];
+}
+
+export interface ISvgLinearGradientConfig extends ITypeConfig {
+  parent: SvgDefs;
 }

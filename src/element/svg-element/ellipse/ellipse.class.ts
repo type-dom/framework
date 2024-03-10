@@ -1,5 +1,5 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
-import type { ISvgEllipse, ISvgEllipseProperty } from './ellipse.interface';
+import type { ISvgEllipse, ISvgEllipseConfig, ISvgEllipseProperty } from './ellipse.interface';
 
 export class SvgEllipse extends TypeSvg implements ISvgEllipse {
   nodeName: 'ellipse';
@@ -12,7 +12,7 @@ export class SvgEllipse extends TypeSvg implements ISvgEllipse {
   rx: number = 0;
   ry: number = 0;
 
-  constructor(public parent: TypeSvg) {
+  constructor(config?: Partial<ISvgEllipseConfig>) {
     super();
     this.nodeName = 'ellipse';
     this.className = 'SvgEllipse';
@@ -30,9 +30,10 @@ export class SvgEllipse extends TypeSvg implements ISvgEllipse {
         cx: this.cx,
         cy: this.cy,
         rx: this.rx,
-        ry: this.ry,
-      },
+        ry: this.ry
+      }
     };
+    this.setConfig(config);
   }
 
   reset(cx: number, cy: number, rx: number, ry: number): SvgEllipse {
@@ -44,7 +45,7 @@ export class SvgEllipse extends TypeSvg implements ISvgEllipse {
       cx,
       cy,
       rx,
-      ry,
+      ry
     });
     return this;
   }

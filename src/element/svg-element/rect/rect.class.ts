@@ -1,5 +1,5 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
-import { TypeSvgSvg } from '../../../type-element/type-svg/svg/svg.abstract';
+import { ITypeConfig } from '../../../config.interface';
 import type { ISvgRect, ISvgRectProperty } from './rect.interface';
 
 export class SvgRect extends TypeSvg implements ISvgRect {
@@ -13,7 +13,7 @@ export class SvgRect extends TypeSvg implements ISvgRect {
   height = 60;
   declare childNodes: [];
 
-  constructor(public parent?: TypeSvgSvg) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.nodeName = 'rect';
     this.className = 'SvgRect';
@@ -31,9 +31,10 @@ export class SvgRect extends TypeSvg implements ISvgRect {
         x: this.x,
         y: this.y,
         width: this.width,
-        height: this.height,
-      },
+        height: this.height
+      }
     };
+    this.setConfig(config);
   }
 
   // 单位是px
@@ -46,7 +47,7 @@ export class SvgRect extends TypeSvg implements ISvgRect {
       x,
       y,
       width,
-      height,
+      height
     });
   }
 }

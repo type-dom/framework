@@ -11,7 +11,7 @@ export class SvgPath extends TypeSvg implements ISvgPath {
   declare propObj: ISvgPathProperty;
   declare childNodes: [];
 
-  constructor(config: ITypeConfig) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.nodeName = 'path';
     this.dom = document.createElementNS(
@@ -22,8 +22,8 @@ export class SvgPath extends TypeSvg implements ISvgPath {
     this.propObj = {
       styleObj: {},
       attrObj: {
-        d: '',
-      },
+        d: ''
+      }
     };
     this.childNodes = [];
     this.setConfig(config);
@@ -57,7 +57,7 @@ export class SvgPath extends TypeSvg implements ISvgPath {
    */
   setFill(color: string) {
     this.addAttrObj({
-      fill: color,
+      fill: color
     });
   }
 }

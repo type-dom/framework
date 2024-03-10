@@ -7,9 +7,9 @@ export class SvgText extends TypeSvg implements ISvgText {
   nodeName: 'text';
   dom: SVGTextElement;
   className: 'SvgText';
-  declare parent?: TypeSvgSvg;
   declare propObj: ISvgTextProperty;
   declare childNodes: TextNode[];
+  declare parent?: TypeSvgSvg;
   textNode: TextNode;
 
   constructor(config: Partial<ISvgTextConfig>) {
@@ -24,8 +24,8 @@ export class SvgText extends TypeSvg implements ISvgText {
       styleObj: {},
       attrObj: {
         x: 0,
-        y: 0,
-      },
+        y: 0
+      }
     };
     this.textNode = new TextNode();
     this.childNodes = [this.textNode];

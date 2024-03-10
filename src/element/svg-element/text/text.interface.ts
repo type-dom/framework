@@ -11,7 +11,7 @@
 import type { ITextNode } from '../../../text-node/text-node.interface';
 import type {
   ITypeElement,
-  ITypeProperty,
+  ITypeProperty
 } from '../../../type-element/type-element.interface';
 import { ITypeConfig } from '../../../config.interface';
 

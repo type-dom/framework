@@ -1,5 +1,6 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
 import { ISvgG } from './g.interface';
+import { ITypeConfig } from '../../../config.interface';
 
 export class SvgG extends TypeSvg implements ISvgG {
   nodeName: 'g';
@@ -7,7 +8,7 @@ export class SvgG extends TypeSvg implements ISvgG {
   dom: SVGGElement;
   declare childNodes: TypeSvg[];
 
-  constructor(public parent: TypeSvg) {
+  constructor(config?: Partial<ITypeConfig>) {
     super();
     this.nodeName = 'g';
     this.className = 'SvgG';
@@ -16,5 +17,6 @@ export class SvgG extends TypeSvg implements ISvgG {
       this.nodeName
     );
     this.childNodes = [];
+    this.setConfig(config);
   }
 }
