@@ -96,7 +96,12 @@ npm install @type-dom/framework
 Create a hello world page to app:
 
 ```ts
-// Typescript
+/**
+ * AppRoot.ts
+ * 应用类，挂载全局属性和方法。
+ * 根节点，继承 TypeRoot;
+ * 因为属性和方法要全局调用，所以全部设置为静态 static; 包括get也设置为静态
+ */
 // Br,Division,TypeRoot,TextNode等都是框架定义好的类
 import { Br, Division, TypeRoot, TextNode } from '@type-dom/framework';
 import { TypeRoot, RouterViewClass } from '@type-dom/framework';
@@ -105,12 +110,6 @@ import { router } from '../router';
 import { MenusClass } from '../layout/menus';
 import { TdAside, TdContainer, TdFooter, TdHeader, TdMain } from '@type-dom/ui';
 
-/**
- * AppRoot.ts
- * 应用类，挂载全局属性和方法。
- * 根节点，继承 TypeRoot;
- * 因为属性和方法要全局调用，所以全部设置为静态 static; 包括get也设置为静态
- */
 export class AppRoot extends TypeRoot {
   className: 'AppRoot';
   static el: HTMLElement | string;
