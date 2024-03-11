@@ -1,6 +1,6 @@
 import type {
   ITypeElement,
-  ITypeProperty,
+  ITypeProperty
 } from '../../type-element/type-element.interface';
 import type { ITypeNode } from '../../type-node/type-node.interface';
 import type { ITextNode } from '../../text-node/text-node.interface';

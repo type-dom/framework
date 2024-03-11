@@ -62,7 +62,7 @@ export class XElement extends TypeElement implements IXElement {
             return new XElement({
               parent: this,
               nodeName: child.nodeName,
-              childNodes: child.childNodes,
+              childNodes: child.childNodes
             });
           }
         }
@@ -90,7 +90,7 @@ export class XElement extends TypeElement implements IXElement {
             }
             if (value !== undefined) {
               this.addAttrObj({
-                [attrName]: value,
+                [attrName]: value
               });
             }
           }
@@ -99,7 +99,7 @@ export class XElement extends TypeElement implements IXElement {
         // 过滤掉，不加入属性中。专门绑定事件时处理。
       } else {
         this.addAttrObj({
-          [attr.name]: attr.value,
+          [attr.name]: attr.value
         });
       }
     }
