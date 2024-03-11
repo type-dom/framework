@@ -5,7 +5,6 @@ import type { IDivision } from './division.interface';
 export class Division extends TypeDiv implements IDivision {
   className: 'Division';
 
-  // declare parent?: TypeHtml
   constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'Division';

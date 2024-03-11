@@ -21,7 +21,7 @@ export class Label extends TypeLabel implements ILabel {
   }
 
   // createInstance(labelLiteral: ILabel): void {
-  //   this.setPropObj(labelLiteral.propObj);
+  //   this.resetPropObj(labelLiteral.propObj);
   //   for (const idx in labelLiteral.childNodes) {
   //     if (this.childNodes[idx]) {
   //       this.childNodes[0].setText(labelLiteral.childNodes[0].nodeValue);
