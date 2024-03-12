@@ -1,3 +1,4 @@
+import { TypeElement } from '../../type-element/type-element.abstract';
 import { TypeHtml } from '../../type-element';
 import { IRouterViewConfig } from './router-view.interface';
 
@@ -10,16 +11,16 @@ export class RouterView extends TypeHtml {
   // childNodes: TypeNode[];
   dom: HTMLElement;
 
-  constructor(config: Partial<IRouterViewConfig> = {}) {
+  constructor(config: IRouterViewConfig) {
     super();
-    this.parent = config.parent;
-    this.nodeName = config.nodeName || 'div';
-    if (config.name) {
-      this.addAttrName(config.name);
-    }
-    this.setConfig(config);
-    this.childNodes = [];
+    this.nodeName = config?.nodeName || 'div';
     this.dom = document.createElement(this.nodeName);
+    this.setConfig(config);
+    if (!config.parent) {
+      throw new Error('RouterView must have a parent');
+    }
+    this.setParent(config.parent);
+    // this.childNodes = [];
   }
 
   // render(component) {

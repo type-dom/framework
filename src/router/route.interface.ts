@@ -1,4 +1,6 @@
 import { TypeElement } from '../type-element/type-element.abstract';
+import { TypeSvgSvg } from '../type-element/type-svg/svg/svg.abstract';
+
 
 export interface IRoute {
   name: string;
@@ -8,5 +10,5 @@ export interface IRoute {
   redirect?: string;
   children?: IRoute[];
   parent?: IRoute;
-  svg?: any; // TypeSvgSvg,
+  svgObj?: TypeSvgSvg,
 }
