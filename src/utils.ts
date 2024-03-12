@@ -14,7 +14,7 @@ export function toJSON(element: TypeElement): ITypeElement {
     className: element.className,
     propObj: {
       styleObj: Object.assign({}, element.styleObj), // 两层。浅拷贝
-      attrObj: Object.assign({}, element.attrObj),
+      attrObj: Object.assign({}, element.attrObj)
     },
     // items, page ----> 不起作用
     childNodes: element.childNodes.map((child) => {
@@ -24,10 +24,10 @@ export function toJSON(element: TypeElement): ITypeElement {
         return {
           className: 'TextNode',
           nodeName: '#text',
-          nodeValue: child.nodeValue, // textContent
+          nodeValue: child.nodeValue // textContent
         } as ITextNode;
       }
-    }),
+    })
   } as ITypeElement;
 }
 
@@ -64,7 +64,7 @@ export const XMLParserErrorCode = {
   OutOfMemory: -7,
   UnterminatedAttributeValue: -8,
   UnterminatedElement: -9,
-  ElementNeverBegun: -10,
+  ElementNeverBegun: -10
 };
 
 /**
@@ -97,7 +97,7 @@ export const XMLEntities = {
   /* > */ 0x3e: '&gt;',
   /* & */ 0x26: '&amp;',
   /* " */ 0x22: '&quot;',
-  /* ' */ 0x27: '&apos;',
+  /* ' */ 0x27: '&apos;'
 };
 
 /**
