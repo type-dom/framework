@@ -5,9 +5,9 @@ import type { ITypeSvgSvg } from './svg.interface';
 export abstract class TypeSvgSvg extends TypeSvg implements ITypeSvgSvg {
   declare abstract className: string;
   declare parent?: TypeHtml;
+  declare childNodes: TypeSvg[];
   nodeName: 'svg';
   dom: SVGSVGElement;
-  declare childNodes: TypeSvg[];
   width: string | number = '100%';
   height: string | number = '100%';
 
@@ -19,7 +19,7 @@ export abstract class TypeSvgSvg extends TypeSvg implements ITypeSvgSvg {
       version: '1.1',
       xmlns: 'http://www.w3.org/2000/svg',
       width: this.width,
-      height: this.height,
+      height: this.height
       // viewBox: '0 0 1024 1024'
     });
     this.childNodes = [];
@@ -28,7 +28,7 @@ export abstract class TypeSvgSvg extends TypeSvg implements ITypeSvgSvg {
   resetSize(width: string | number, height: string | number): void {
     this.setAttrObj({
       width,
-      height,
+      height
     });
   }
 }
