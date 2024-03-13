@@ -5,8 +5,7 @@ import type { ITypeTableHeaderCell } from './header-cell.interface';
 // 表格表头 table header cell
 export abstract class TypeTableHeaderCell
   extends TypeHtml
-  implements ITypeTableHeaderCell
-{
+  implements ITypeTableHeaderCell {
   nodeName: 'th';
   dom: HTMLElement;
   declare childNodes: TextNode[];

@@ -8,5 +8,5 @@ export const buttonStyle: Partial<IStyle> = {
   margin: '0',
   height: '32px',
   lineHeight: '1.5',
-  transition: '0.1s',
+  transition: '0.1s'
 };

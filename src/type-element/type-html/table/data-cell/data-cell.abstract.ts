@@ -3,8 +3,7 @@ import type { ITypeTableDataCell } from './data-cell.interface';
 
 export abstract class TypeTableDataCell
   extends TypeHtml
-  implements ITypeTableDataCell
-{
+  implements ITypeTableDataCell {
   nodeName: 'td';
   dom: HTMLElement;
 

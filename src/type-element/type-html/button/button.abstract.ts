@@ -1,4 +1,5 @@
 import { TextNode } from '../../../text-node/text-node.class';
+import { XElement } from '../../../element/x-element/x-element.class';
 import { TypeHtml } from '../type-html.abstract';
 import { buttonStyle } from './button.const';
 import type { ITypeButton } from './button.interface';
@@ -17,8 +18,8 @@ export abstract class TypeButton extends TypeHtml implements ITypeButton {
     this.propObj = {
       styleObj: Object.assign({}, buttonStyle),
       attrObj: {
-        type: 'button',
-      },
+        type: 'button'
+      }
     };
     this.textNode = new TextNode('按钮');
     this.childNodes = [this.textNode]; // 默认值

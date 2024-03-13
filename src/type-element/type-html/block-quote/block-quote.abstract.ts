@@ -3,8 +3,7 @@ import type { ITypeBlockQuote } from './block-quote.interface';
 
 export abstract class TypeBlockQuote
   extends TypeHtml
-  implements ITypeBlockQuote
-{
+  implements ITypeBlockQuote {
   nodeName: 'blockquote';
   dom: HTMLQuoteElement;
 
