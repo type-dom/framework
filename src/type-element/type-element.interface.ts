@@ -18,7 +18,6 @@ import {
   Division,
   Form,
   Header,
-  Heading,
   Hr,
   I,
   Img,
@@ -57,7 +56,7 @@ import {
   Title,
   Track,
   UnorderedList,
-  Video,
+  Video
 } from '../element';
 
 export interface ITypeAttribute {
@@ -114,7 +113,6 @@ export interface IElementItem extends ITypeNode {
     | typeof Division
     | typeof Form
     | typeof Header
-    | typeof Heading
     | typeof Hr
     | typeof I
     | typeof Img

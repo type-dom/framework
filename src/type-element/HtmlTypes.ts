@@ -176,7 +176,7 @@ import {
   TypeTableFoot,
   TypeTableHead,
   TypeTableHeaderCell,
-  TypeTableRow,
+  TypeTableRow
 } from './type-html/table';
 import { TypeSummary } from './type-html/summary/summary.abstract';
 import { TypeSup } from './type-html/sup/sup.abstract';
