@@ -2,7 +2,7 @@ import {
   StyleCursor,
   StyleDisplay,
   StylePosition,
-  StyleJustifyContent,
+  StyleJustifyContent
 } from './style.enum';
 
 /**
