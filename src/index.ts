@@ -2,7 +2,7 @@ export { TypeNode } from './type-node/type-node.abstract';
 export type {
   ITypeNode,
   INodeAttr,
-  IPath,
+  IPath
 } from './type-node/type-node.interface';
 export type { IStyle } from './style/style.interface';
 export * from './style/style.enum';
