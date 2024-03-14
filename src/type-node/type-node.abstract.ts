@@ -74,7 +74,7 @@ export abstract class TypeNode implements ITypeNode {
       return this.nodeValue || '';
     }
     return this.childNodes
-      .map(function (child) {
+      .map(function(child) {
         return child.textContent;
       })
       .join('');
@@ -128,8 +128,8 @@ export abstract class TypeNode implements ITypeNode {
       ) {
         console.error(
           'node.TypeClass === undefined' +
-            '  && node.template === undefined' +
-            ' && node.nodeValue === undefined. '
+          '  && node.template === undefined' +
+          ' && node.nodeValue === undefined. '
         );
         continue;
       }
@@ -294,12 +294,12 @@ export abstract class TypeNode implements ITypeNode {
           return {
             // className: 'TextNode',
             // nodeName: '#text',
-            nodeValue: child.nodeValue, // textContent
+            nodeValue: child.nodeValue // textContent
           };
         } else {
           return child.toJSON();
         }
-      }),
+      })
     } as ITypeNode;
   }
 }
