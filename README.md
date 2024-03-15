@@ -96,24 +96,20 @@ npm install @type-dom/framework
 Create a hello world page to app:
 
 ```ts
+import { TypeRoot } from '@type-dom/framework';
+import type { ITypeNode } from '@type-dom/framework';
+import { router } from '../router';
+import { Layout } from '../layout/layout.class';
+
 /**
- * AppRoot.ts
  * 应用类，挂载全局属性和方法。
  * 根节点，继承 TypeRoot;
  * 因为属性和方法要全局调用，所以全部设置为静态 static; 包括get也设置为静态
  */
-// Br,Division,TypeRoot,TextNode等都是框架定义好的类
-import { Br, Division, TypeRoot, TextNode } from '@type-dom/framework';
-import { TypeRoot, RouterViewClass } from '@type-dom/framework';
-import type { ITypeNode } from '@type-dom/framework';
-import { router } from '../router';
-import { MenusClass } from '../layout/menus';
-import { TdAside, TdContainer, TdFooter, TdHeader, TdMain } from '@type-dom/ui';
-
 export class AppRoot extends TypeRoot {
   className: 'AppRoot';
   static el: HTMLElement | string;
-
+  childNodes: [Layout];
   constructor(option?: ITypeNode) {
     super(option);
     this.className = 'AppRoot';
@@ -125,90 +121,15 @@ export class AppRoot extends TypeRoot {
       // border: '10px solid #dddddd',
     });
     this.events = [];
-    this.createItems(this, [
-      {
-        TypeClass: TdContainer,
-        childNodes: [
-          {
-            TypeClass: TdAside,
-            config: {
-              width: 250,
-              name: 'td-aside'
-            },
-            childNodes: [
-              {
-                TypeClass: MenusClass,
-                propObj: {
-                  attrObj: {
-                    name: 'menus'
-                  },
-                  styleObj: {
-                    backgroundColor: '#eee',
-                    // width: '250px',
-                  },
-                },
-              },
-            ],
-          },
-          {
-            TypeClass: TdContainer,
-            propObj: {
-              attrObj: {
-                name: 'container'
-              },
-              styleObj: {
-                flexDirection: 'column',
-              },
-            },
-            childNodes: [
-              {
-                TypeClass: TdHeader,
-                childNodes: [
-                  {
-                    nodeValue: 'header',
-                  },
-                ],
-              },
-              {
-                TypeClass: TdMain,
-                childNodes: [
-                  {
-                    TypeClass: RouterViewClass,
-                    propObj: {
-                      attrObj: {},
-                      styleObj: {
-                        display: 'block',
-                        boxSizing: 'border-box',
-                        margin: '0',
-                        padding: '0',
-                        // width: 'calc(100% - ' + menusWidth + 'px)',
-                      }
-                    }
-                  }
-                ],
-              },
-              {
-                TypeClass: TdFooter,
-                childNodes: [
-                  {
-                    nodeValue: 'footer',
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    ]);
-    this.routerView = this.childNodes[0].childNodes[1].childNodes[1].childNodes[0] as RouterViewClass;
-  }
-
-  useRouter() {
+    const layout = new Layout();
+    this.routerView = layout.routerView;
+    this.addChild(layout);
+    // 使用路由
     // 路由器初始化，并挂载到当前页
     router.init(this);
-    return this;
   }
 }
+
 
 // app.element.ts
 import './app.element.scss';
@@ -235,26 +156,13 @@ export class AppElement extends HTMLElement {
     appRoot.mount(shadowRoot);
     // 渲染
     appRoot.render();
-    console.log('appRoot is ', appRoot);
-    const buff = [];
-    appRoot.dump(buff);
-    console.log('appRoot.dump() buff.join("") is ', buff.join(''));
   }
 }
-
 customElements.define('app-root', AppElement);
 
-
 // main.ts 项目主程序
-import { fromEvent } from 'rxjs';
-import { AppElement } from "./app-root";
+import './app/app.element';
 
-fromEvent(document, 'DOMContentLoaded').subscribe(() => {
-  const uiEl = document.querySelector('#example-ref') as HTMLElement;
-  if (uiEl) {
-    const view = new AppElement(uiEl);
-  }
-});
 ```
 
 ```html
@@ -268,7 +176,7 @@ fromEvent(document, 'DOMContentLoaded').subscribe(() => {
     <title>type dom example</title>
   </head>
   <body>
-    <div id="example-ref"></div>
+    <app-root></app-root>
   </body> 
 </html>
 ```
