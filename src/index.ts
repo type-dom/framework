@@ -1,20 +1,20 @@
-export { TypeNode } from './type-node/type-node.abstract';
+export { TypeNode } from './lib/type-node/type-node.abstract';
 export type {
   ITypeNode,
   INodeAttr,
   IPath
-} from './type-node/type-node.interface';
-export type { IStyle } from './style/style.interface';
-export * from './style/style.enum';
-export { XNode } from './x-node/x-node.class';
-export type { IXNode } from './x-node/x-node.interface';
-export { TextNode } from './text-node/text-node.class';
-export type { ITextNode } from './text-node/text-node.interface';
-export { TypeRoot } from './type-root/type-root.abstract';
-export type * from './type-root/type-root.interface';
-export * from './type-element';
-export * from './element';
-export * from './parser';
-export * from './router';
-export * from './utils';
-export type { ITypeConfig } from './config.interface';
+} from './lib/type-node/type-node.interface';
+export type { IStyle } from './lib/style/style.interface';
+export * from './lib/style/style.enum';
+export { XNode } from './lib/x-node/x-node.class';
+export type { IXNode } from './lib/x-node/x-node.interface';
+export { TextNode } from './lib/text-node/text-node.class';
+export type { ITextNode } from './lib/text-node/text-node.interface';
+export { TypeRoot } from './lib/type-root/type-root.abstract';
+export type * from './lib/type-root/type-root.interface';
+export * from './lib/type-element';
+export * from './lib/element';
+export * from './lib/parser';
+export * from './lib/router';
+export * from './lib/utils';
+export type { ITypeConfig } from './lib/config.interface';

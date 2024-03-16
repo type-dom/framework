@@ -58,10 +58,10 @@ TypeDom supports all browsers that are [ES5-compliant](https://kangax.github.io/
 
 ## Ecosystem
 
-| Project                   | Status                                                              | Description             |
-|---------------------------|---------------------------------------------------------------------|-------------------------|
-| [@type-dom/svgs]          | [![@type-dom/svgs-status]][type-dom/svgs-package]                   | Svgs based on TypeDom   |
-| [@type-dom/ui]            | [![@type-dom/ui-status]][type-dom/ui-package]                       | Ui component management |
+| Project                   | Status                                                             | Description             |
+|---------------------------|--------------------------------------------------------------------|-------------------------|
+| [@type-dom/svgs]          | [![@type-dom/svgs-status]][type-dom/svgs-package]                  | Svgs based on TypeDom   |
+| [@type-dom/ui]            | [![@type-dom/ui-status]][type-dom/ui-package]                      | Ui component management |
 | [@type-dom/form-designer] | [![@type-dom/form-designer-status]][type-dom/form-designer-package] | Dynamic Form project    |
 
 [@type-dom/svgs]: https://github.com/type-dom/svgs
@@ -76,11 +76,11 @@ TypeDom supports all browsers that are [ES5-compliant](https://kangax.github.io/
 
 [@type-dom/form-designer-status]: https://img.shields.io/npm/v/@vue/cli.svg
 
-[type-dom/svgs-package]: https://npmjs.com/package/type-dom/svgs
+[type-dom/svgs-package]: https://npmjs.com/package/@type-dom/svgs
 
-[type-dom-ui-package]: https://npmjs.com/package/type-dom/ui
+[type-dom-ui-package]: https://npmjs.com/package/@type-dom/ui
 
-[type-form-designer-package]: https://npmjs.com/package/type-dom/form-designer
+[type-form-designer-package]: https://npmjs.com/package/@type-dom/form-designer
 
 ## Installation
 
