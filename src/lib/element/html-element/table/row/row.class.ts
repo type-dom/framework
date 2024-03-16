@@ -7,7 +7,7 @@ export class TableRow extends TypeTableRow implements ITableRow {
   className: 'TableRow';
   declare childNodes: TableDataCell[];
 
-  constructor(public parent: Table) {
+  constructor(public override parent: Table) {
     super();
     this.className = 'TableRow';
     this.childNodes = [];

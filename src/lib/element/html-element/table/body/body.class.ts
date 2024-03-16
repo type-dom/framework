@@ -7,7 +7,7 @@ export class TableBody extends TypeTableBody implements ITableBody {
   className: 'TableBody';
   declare childNodes: TableRow[];
 
-  constructor(public parent: Table) {
+  constructor(public override parent: Table) {
     super();
     this.className = 'TableBody';
     this.childNodes = [];

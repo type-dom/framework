@@ -5,7 +5,7 @@ import type { ITableDataCell } from './data-cell.interface';
 export class TableDataCell extends TypeTableDataCell implements ITableDataCell {
   className: 'TableDataCell';
 
-  constructor(public parent: TableRow) {
+  constructor(public override parent: TableRow) {
     super();
     this.className = 'TableDataCell';
     this.childNodes = [];

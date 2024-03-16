@@ -10,7 +10,7 @@ export class SvgStop extends TypeSvg implements ISvgStop {
   declare propObj: ISvgStopProperty;
   declare childNodes: [];
 
-  constructor(public parent: SvgLinearGradient | SvgRadialGradient) {
+  constructor(public override parent: SvgLinearGradient | SvgRadialGradient) {
     super();
     this.nodeName = 'stop';
     this.className = 'SvgStop';
@@ -23,8 +23,8 @@ export class SvgStop extends TypeSvg implements ISvgStop {
       styleObj: {},
       attrObj: {
         offset: '0%',
-        stopColor: '#000'
-      }
+        stopColor: '#000',
+      },
     };
     this.events = [];
   }
@@ -32,7 +32,7 @@ export class SvgStop extends TypeSvg implements ISvgStop {
   reset(offset: number, stopColor: string): void {
     this.setAttrObj({
       offset,
-      stopColor
+      stopColor,
     });
   }
 }
