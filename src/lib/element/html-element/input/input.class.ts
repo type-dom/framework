@@ -6,7 +6,7 @@ export class Input extends TypeHtml implements IInput {
   nodeName: 'input';
   dom: HTMLInputElement;
   className: 'Input';
-  declare childNodes: [];
+  override childNodes: [];
 
   // value: string | number | boolean | undefined;
   constructor(config?: Partial<ITypeConfig>) {

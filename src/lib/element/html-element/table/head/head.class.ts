@@ -6,7 +6,7 @@ import type { ITableHead } from './head.interface';
 // 表格页眉
 export class TableHead extends TypeTableHead implements ITableHead {
   className: 'TableHead';
-  declare childNodes: TableHeaderCell[];
+  override childNodes: TableHeaderCell[];
 
   constructor(public override parent: Table) {
     super();

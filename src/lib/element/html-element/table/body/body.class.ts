@@ -5,7 +5,7 @@ import type { ITableBody } from './body.interface';
 
 export class TableBody extends TypeTableBody implements ITableBody {
   className: 'TableBody';
-  declare childNodes: TableRow[];
+  override childNodes: TableRow[];
 
   constructor(public override parent: Table) {
     super();

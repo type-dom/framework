@@ -9,14 +9,12 @@ export class Section extends TypeSection implements ISection {
   constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'Section';
-    this.propObj = {
-      styleObj: {
-        display: StyleDisplay.flex,
-        justifyContent: 'space-between'
-      },
-      attrObj: {
-        name: 'section'
-      }
+    this.styleObj = {
+      display: StyleDisplay.flex,
+      justifyContent: 'space-between'
+    };
+    this.attrObj = {
+      name: 'section'
     };
     this.setConfig(config);
   }

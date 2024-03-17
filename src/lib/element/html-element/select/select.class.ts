@@ -5,7 +5,7 @@ import type { ISelect } from './select.interface';
 
 export class Select extends TypeSelect implements ISelect {
   className: 'Select';
-  declare childNodes: Option[];
+  override childNodes: Option[];
   value?: string | number | boolean;
 
   constructor(config?: Partial<ITypeConfig>) {

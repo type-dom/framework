@@ -6,7 +6,7 @@ import type { ITable } from './table.interface';
 
 export class Table extends TypeTable implements ITable {
   className: 'Table';
-  declare childNodes: (TableHead | TableRow)[];
+  override childNodes: (TableHead | TableRow)[];
 
   constructor(config?: Partial<ITypeConfig>) {
     super();

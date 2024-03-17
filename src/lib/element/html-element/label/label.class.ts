@@ -6,14 +6,14 @@ import type { ILabel } from './label.interface';
 
 export class Label extends TypeLabel implements ILabel {
   className: 'Label';
-  declare childNodes: (Input | TextNode)[];
+  override childNodes: (Input | TextNode)[];
   textNode: TextNode;
 
   constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'Label';
-    this.propObj.attrObj = {
-      name: 'label'
+    this.attrObj = {
+      name: 'label',
     };
     this.textNode = new TextNode();
     this.childNodes = [];
@@ -21,7 +21,8 @@ export class Label extends TypeLabel implements ILabel {
   }
 
   // createInstance(labelLiteral: ILabel): void {
-  //   this.resetPropObj(labelLiteral.propObj);
+  // this.resetAttrObj(labelLiteral.attrObj);
+  // this.resetStyleObj(labelLiteral.styleObj);
   //   for (const idx in labelLiteral.childNodes) {
   //     if (this.childNodes[idx]) {
   //       this.childNodes[0].setText(labelLiteral.childNodes[0].nodeValue);

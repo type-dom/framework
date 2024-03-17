@@ -7,7 +7,7 @@ export class Option extends TypeHtml implements IOption {
   nodeName: 'option';
   className: 'Option';
   dom: HTMLOptionElement;
-  declare childNodes: TypeNode[];
+  override childNodes: TypeNode[];
   text: TextNode;
 
   constructor(config?: Partial<IOptionConfig>) {
@@ -15,8 +15,8 @@ export class Option extends TypeHtml implements IOption {
     this.nodeName = 'option';
     this.dom = document.createElement(this.nodeName);
     this.className = 'Option';
-    this.propObj.attrObj = {
-      name: 'option'
+    this.attrObj = {
+      name: 'option',
     };
     this.text = new TextNode('一个选项');
     this.childNodes = [this.text];
