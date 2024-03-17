@@ -1,6 +1,5 @@
 import type {
   ITypeAttribute,
-  ITypeProperty
 } from '../../../type-element/type-element.interface';
 import type { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
 import type { IStyle } from '../../../style/style.interface';
@@ -36,14 +35,10 @@ export interface ISvgRectAttribute extends ITypeAttribute {
   height: number; // px
 }
 
-export interface ISvgRectProperty extends ITypeProperty {
-  styleObj: Partial<ISvgRectStyle>;
-  attrObj: Partial<ISvgRectAttribute>;
-}
-
 export interface ISvgRect extends ITypeSvg {
   nodeName: 'rect';
   className: 'SvgRect';
-  propObj: ISvgRectProperty;
+  styleObj: Partial<ISvgRectStyle>;
+  attrObj: Partial<ISvgRectAttribute>;
   childNodes: [];
 }

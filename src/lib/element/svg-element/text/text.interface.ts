@@ -10,30 +10,29 @@
  */
 import type { ITextNode } from '../../../text-node/text-node.interface';
 import type {
-  ITypeElement,
-  ITypeProperty
+  ITypeAttribute,
+  ITypeElement
 } from '../../../type-element/type-element.interface';
 import { ITypeConfig } from '../../../config.interface';
+import { IStyle } from '../../../style/style.interface';
 
-export interface ISvgTextProperty extends ITypeProperty {
-  styleObj: {
-    fontFamily?: string; // rgb(0,0,255) blue
-    fontSize?: string;
-    stroke?: string; // rgb(0,0,0) pink
-    fill?: string; // #0000ff;"
-  };
-  attrObj: {
-    x: number;
-    y: number;
-    dx?: number;
-    dy?: number;
-    transform?: string;
-  };
+export interface ISvgTextStyle extends Partial<IStyle> {
+  fontFamily?: string; // rgb(0,0,255) blue
+  fontSize?: string;
+  stroke?: string; // rgb(0,0,0) pink
+  fill?: string; // #0000ff;"
 }
-
+export interface ISvgTextAttribute extends Partial<ITypeAttribute> {
+  x: number;
+  y: number;
+  dx?: number;
+  dy?: number;
+  transform?: string;
+}
 export interface ISvgText extends ITypeElement {
   nodeName: 'text';
-  propObj: ISvgTextProperty;
+  styleObj: ISvgTextStyle;
+  attrObj: ISvgTextAttribute;
   className: 'SvgText';
   childNodes: ITextNode[];
 }

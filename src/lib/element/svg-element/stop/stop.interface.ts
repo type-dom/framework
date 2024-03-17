@@ -1,7 +1,6 @@
 import type { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
 import type {
-  ITypeAttribute,
-  ITypeProperty
+  ITypeAttribute
 } from '../../../type-element/type-element.interface';
 import type { IStyle } from '../../../style/style.interface';
 
@@ -12,14 +11,9 @@ export interface ISvgStopAttribute extends ITypeAttribute {
   stopColor: string;
 }
 
-export interface ISvgStopProperty extends ITypeProperty {
-  styleObj: Partial<IStyle>;
-  attrObj: ISvgStopAttribute;
-}
-
 export interface ISvgStop extends ITypeSvg {
   nodeName: 'stop';
   className: 'SvgStop';
-  propObj: ISvgStopProperty;
+  attrObj: ISvgStopAttribute;
   childNodes: [];
 }

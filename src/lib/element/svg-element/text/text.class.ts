@@ -1,15 +1,15 @@
 import { TextNode } from '../../../text-node/text-node.class';
 import { TypeSvgSvg } from '../../../type-element/type-svg/svg/svg.abstract';
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
-import type { ISvgText, ISvgTextConfig, ISvgTextProperty } from './text.interface';
+import type { ISvgText, ISvgTextAttribute, ISvgTextConfig, ISvgTextStyle } from './text.interface';
 
 export class SvgText extends TypeSvg implements ISvgText {
   nodeName: 'text';
   dom: SVGTextElement;
   className: 'SvgText';
-  declare propObj: ISvgTextProperty;
-  declare childNodes: TextNode[];
-  declare parent?: TypeSvgSvg;
+  override attrObj: ISvgTextAttribute;
+  override childNodes: TextNode[];
+  override parent?: TypeSvgSvg;
   textNode: TextNode;
 
   constructor(config: Partial<ISvgTextConfig>) {
@@ -20,12 +20,9 @@ export class SvgText extends TypeSvg implements ISvgText {
       this.nodeName
     );
     this.className = 'SvgText';
-    this.propObj = {
-      styleObj: {},
-      attrObj: {
-        x: 0,
-        y: 0
-      }
+    this.attrObj = {
+      x: 0,
+      y: 0,
     };
     this.textNode = new TextNode();
     this.childNodes = [this.textNode];

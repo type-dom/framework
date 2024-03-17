@@ -6,9 +6,9 @@ import { ITypeConfig } from '../../../config.interface';
 export class SvgUse extends TypeSvg implements ISvgUse {
   className: 'SvgUse';
   nodeName: 'use';
-  declare parent?: TypeSvgSvg;
   dom: SVGUseElement;
-  declare childNodes: [];
+  override parent?: TypeSvgSvg;
+  override childNodes: [];
 
   constructor(config: Partial<ITypeConfig>) {
     super();

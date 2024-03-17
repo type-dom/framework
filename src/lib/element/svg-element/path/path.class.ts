@@ -1,15 +1,15 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
 import { TypeSvgSvg } from '../../../type-element/type-svg/svg/svg.abstract';
 import { ITypeConfig } from '../../../config.interface';
-import type { ISvgPath, ISvgPathProperty } from './path.interface';
+import type { ISvgPath, ISvgPathAttribute } from './path.interface';
 
 export class SvgPath extends TypeSvg implements ISvgPath {
   nodeName: 'path';
   dom: SVGPathElement;
   className: 'SvgPath';
-  declare parent?: TypeSvgSvg;
-  declare propObj: ISvgPathProperty;
-  declare childNodes: [];
+  override parent?: TypeSvgSvg;
+  override attrObj: Partial<ISvgPathAttribute>;
+  override childNodes: [];
 
   constructor(config?: Partial<ITypeConfig>) {
     super();
@@ -19,11 +19,8 @@ export class SvgPath extends TypeSvg implements ISvgPath {
       this.nodeName
     );
     this.className = 'SvgPath';
-    this.propObj = {
-      styleObj: {},
-      attrObj: {
-        d: ''
-      }
+    this.attrObj = {
+      d: '',
     };
     this.childNodes = [];
     this.setConfig(config);
@@ -57,7 +54,7 @@ export class SvgPath extends TypeSvg implements ISvgPath {
    */
   setFill(color: string) {
     this.addAttrObj({
-      fill: color
+      fill: color,
     });
   }
 }

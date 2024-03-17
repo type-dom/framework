@@ -2,7 +2,6 @@ import { ITypeConfig } from '../../../config.interface';
 import type { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
 import type {
   ITypeAttribute,
-  ITypeProperty
 } from '../../../type-element/type-element.interface';
 import type { ISvgStop } from '../stop/stop.interface';
 import { SvgDefs } from '../defs/defs.class';
@@ -16,13 +15,9 @@ export interface ISvgLinearGradientAttribute extends ITypeAttribute {
   spreadMethod?: string;
 }
 
-export interface ISvgLinearGradientPropObj extends ITypeProperty {
-  attrObj: ISvgLinearGradientAttribute;
-}
-
 export interface ISvgLinearGradient extends ITypeSvg {
   nodeName: 'linearGradient';
-  propObj: ISvgLinearGradientPropObj;
+  attrObj: ISvgLinearGradientAttribute;
   className: 'SvgLinearGradient';
   childNodes: ISvgStop[];
 }

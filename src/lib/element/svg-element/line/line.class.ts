@@ -1,13 +1,13 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
 import { ITypeConfig } from '../../../config.interface';
-import type { ISvgLine, ISvgLineProperty } from './line.interface';
+import type { ISvgLine, ISvgLineAttribute } from './line.interface';
 
 export class SvgLine extends TypeSvg implements ISvgLine {
   nodeName: 'line';
   className: 'SvgLine';
   dom: SVGLineElement;
-  declare propObj: ISvgLineProperty;
-  declare childNodes: [];
+  override attrObj: ISvgLineAttribute;
+  override childNodes: [];
   x1 = 0;
   x2 = 0;
   y1 = 0;
@@ -22,16 +22,13 @@ export class SvgLine extends TypeSvg implements ISvgLine {
       this.nodeName
     );
     this.childNodes = [];
-    this.propObj = {
-      styleObj: {},
-      attrObj: {
-        strokeWidth: 1,
-        stroke: '#000',
-        x1: this.x1,
-        y1: this.y1,
-        x2: this.x2,
-        y2: this.y2
-      }
+    this.attrObj = {
+      strokeWidth: 1,
+      stroke: '#000',
+      x1: this.x1,
+      y1: this.y1,
+      x2: this.x2,
+      y2: this.y2,
     };
     this.setConfig(config);
   }
@@ -45,7 +42,7 @@ export class SvgLine extends TypeSvg implements ISvgLine {
       x1,
       y1,
       x2,
-      y2
+      y2,
     });
     return this;
   }

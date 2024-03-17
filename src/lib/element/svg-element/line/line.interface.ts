@@ -1,6 +1,5 @@
 import type {
-  ITypeAttribute,
-  ITypeProperty
+  ITypeAttribute
 } from '../../../type-element/type-element.interface';
 import type { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
 import type { IStyle } from '../../../style/style.interface';
@@ -28,14 +27,10 @@ export interface ISvgLineAttribute extends ITypeAttribute {
   y2: number;
 }
 
-export interface ISvgLineProperty extends ITypeProperty {
-  styleObj: Partial<ISvgLineAttribute>;
-  attrObj: Partial<ISvgLineAttribute>;
-}
-
 export interface ISvgLine extends ITypeSvg {
   nodeName: 'line';
   className: 'SvgLine';
-  propObj: ISvgLineProperty;
+  styleObj: Partial<ISvgLineStyle>;
+  attrObj: Partial<ISvgLineAttribute>;
   childNodes: [];
 }

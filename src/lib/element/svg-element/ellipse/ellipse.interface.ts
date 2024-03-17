@@ -1,6 +1,5 @@
 import type {
-  ITypeAttribute,
-  ITypeProperty
+  ITypeAttribute
 } from '../../../type-element/type-element.interface';
 import type { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
 import type { IStyle } from '../../../style/style.interface';
@@ -31,15 +30,11 @@ export interface ISvgEllipseAttribute extends ITypeAttribute {
   ry: number;
 }
 
-export interface ISvgEllipseProperty extends ITypeProperty {
-  styleObj: Partial<ISvgEllipseStyle>;
-  attrObj: Partial<ISvgEllipseAttribute>;
-}
-
 export interface ISvgEllipse extends ITypeSvg {
   nodeName: 'ellipse';
   className: 'SvgEllipse';
-  propObj: ISvgEllipseProperty;
+  styleObj: Partial<ISvgEllipseStyle>;
+  attrObj: Partial<ISvgEllipseAttribute>;
   childNodes: [];
 }
 

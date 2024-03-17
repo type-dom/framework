@@ -6,7 +6,7 @@ export class SvgRadialGradient extends TypeSvg implements ISvgRadialGradient {
   nodeName: 'radialGradient';
   className: 'SvgRadialGradient';
   dom: SVGRadialGradientElement;
-  declare childNodes: SvgStop[];
+  override childNodes: SvgStop[];
 
   constructor(config?: Partial<ISvgRadialGradientConfig>) {
     super();
@@ -23,7 +23,7 @@ export class SvgRadialGradient extends TypeSvg implements ISvgRadialGradient {
 
   reset(id: string): void {
     this.setAttrObj({
-      id
+      id,
     });
   }
 }

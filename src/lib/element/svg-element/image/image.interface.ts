@@ -1,27 +1,28 @@
 import type { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
-import type { ITypeProperty } from '../../../type-element/type-element.interface';
+import { ITypeAttribute } from '../../../type-element';
+import { IStyle } from '../../../style/style.interface';
 
 /**
  * width
  * height
  * href
  */
-export interface ISvgImageProperty extends ITypeProperty {
-  styleObj: {
-    fontWeight?: string;
-    fontSize?: string;
-    fontFamily?: string;
-  };
-  attrObj: {
-    width?: number | string;
-    height?: number | string;
-    href?: string; // white;
-  };
+export interface ISvgImageStyle extends Partial<IStyle> {
+  fontWeight?: string;
+  fontSize?: string;
+  fontFamily?: string;
+}
+
+export interface ISvgImageAttribute extends Partial<ITypeAttribute> {
+  width?: number | string;
+  height?: number | string;
+  href?: string; // white;
 }
 
 export interface ISvgImage extends ITypeSvg {
   nodeName: 'image';
   className: 'SvgImage';
-  propObj: ISvgImageProperty;
+  attrObj: Partial<ISvgImageAttribute>;
+  styleObj: Partial<ISvgImageStyle>;
   childNodes: [];
 }

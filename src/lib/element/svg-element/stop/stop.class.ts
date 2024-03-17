@@ -1,14 +1,15 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
 import { SvgRadialGradient } from '../radial-gradient/radial-gradient.class';
 import { SvgLinearGradient } from '../linear-gradient/linear-gradient.class';
-import type { ISvgStop, ISvgStopProperty } from './stop.interface';
+import type { ISvgStop, ISvgStopAttribute } from './stop.interface';
+import { IStyle } from '../../../style/style.interface';
 
 export class SvgStop extends TypeSvg implements ISvgStop {
   nodeName: 'stop';
   className: 'SvgStop';
   dom: SVGStopElement;
-  declare propObj: ISvgStopProperty;
-  declare childNodes: [];
+  override attrObj: ISvgStopAttribute;
+  override childNodes: [];
 
   constructor(public override parent: SvgLinearGradient | SvgRadialGradient) {
     super();
@@ -19,12 +20,9 @@ export class SvgStop extends TypeSvg implements ISvgStop {
       this.nodeName
     );
     this.childNodes = [];
-    this.propObj = {
-      styleObj: {},
-      attrObj: {
-        offset: '0%',
-        stopColor: '#000',
-      },
+    this.attrObj = {
+      offset: '0%',
+      stopColor: '#000',
     };
     this.events = [];
   }
