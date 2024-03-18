@@ -14,11 +14,9 @@ export abstract class TypeButton extends TypeHtml implements ITypeButton {
     super();
     this.nodeName = 'button';
     this.dom = document.createElement(this.nodeName);
-    this.propObj = {
-      styleObj: Object.assign({}, buttonStyle),
-      attrObj: {
-        type: 'button'
-      }
+    this.styleObj = Object.assign({}, buttonStyle);
+    this.attrObj = {
+      type: 'button'
     };
     this.textNode = new TextNode('按钮');
     this.childNodes = [this.textNode]; // 默认值

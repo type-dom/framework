@@ -8,7 +8,7 @@ export abstract class TypeTableHeaderCell
   implements ITypeTableHeaderCell {
   nodeName: 'th';
   dom: HTMLElement;
-  declare childNodes: TextNode[];
+  override childNodes: TextNode[];
 
   protected constructor() {
     super();

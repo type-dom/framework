@@ -5,7 +5,7 @@ import type { ITypeUL } from './ul.interface';
 export abstract class TypeUL extends TypeHtml implements ITypeUL {
   nodeName: 'ul';
   dom: HTMLUListElement;
-  declare childNodes: TypeLI[];
+  override childNodes: TypeLI[];
 
   protected constructor() {
     super();

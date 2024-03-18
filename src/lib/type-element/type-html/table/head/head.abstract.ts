@@ -6,7 +6,7 @@ import type { ITypeTableHead } from './head.interface';
 export abstract class TypeTableHead extends TypeHtml implements ITypeTableHead {
   nodeName: 'thead';
   dom: HTMLTableSectionElement;
-  declare childNodes: TypeTableHeaderCell[];
+  override childNodes: TypeTableHeaderCell[];
 
   protected constructor() {
     super();

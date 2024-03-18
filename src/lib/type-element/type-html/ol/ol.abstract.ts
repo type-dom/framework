@@ -16,15 +16,15 @@ import { TypeUL } from '../ul/ul.abstract';
 export abstract class TypeOL extends TypeHtml implements ITypeOL {
   nodeName: 'ol';
   dom: HTMLOListElement;
-  declare childNodes: (TypeLI | TypeUL)[];
+  override childNodes: (TypeLI | TypeUL)[];
 
   // type, start 在属性中单独配置，不需要在构造函数中传参
   protected constructor() {
     super();
     this.nodeName = 'ol';
     this.dom = document.createElement(this.nodeName);
-    // this.propObj.attrObj.type = type;
-    // this.propObj.attrObj.start = start;
+    // this.attrObj.type = type;
+    // this.attrObj.start = start;
     // this.addAttrObj({
     //   type,
     //   start,

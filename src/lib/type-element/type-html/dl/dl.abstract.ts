@@ -14,8 +14,8 @@ export abstract class TypeDL extends TypeHtml implements ITypeDL {
     super();
     this.nodeName = 'dl';
     this.dom = document.createElement(this.nodeName);
-    // this.propObj.attrObj.type = type;
-    // this.propObj.attrObj.start = start;
+    // this.attrObj.type = type;
+    // this.attrObj.start = start;
     // this.addAttrObj({
     //   type,
     //   start,
