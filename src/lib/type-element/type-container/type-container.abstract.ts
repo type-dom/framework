@@ -8,8 +8,8 @@ import type { ITypeContainer } from './type-container.interface';
  * 子节点是 TypeElement, 不包括 TextNode
  */
 export abstract class TypeContainer extends TypeDiv implements ITypeContainer {
-  declare abstract parent: TypeHtml;
-  declare childNodes: TypeElement[]; // 没有TextNode
+  abstract override parent: TypeHtml;
+  override childNodes: TypeElement[]; // 没有TextNode
   protected constructor() {
     super();
     this.childNodes = [];
