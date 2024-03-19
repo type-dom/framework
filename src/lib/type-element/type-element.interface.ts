@@ -64,13 +64,7 @@ export interface ITypeAttribute {
   name?: string;
   type?: string;
 
-  [key: string]: string | number | boolean | unknown | undefined;
-}
-
-export interface ITypeProperty {
-  attrObj: Partial<ITypeAttribute>;
-  styleObj: Partial<IStyle>;
-  classes?: string[];
+  [key: string]: string | number | boolean | unknown | undefined | never;
 }
 
 /**
@@ -80,7 +74,8 @@ export interface ITypeElement extends ITypeNode {
   className: string; // todo enum ??
   nodeName: string;
   nodeValue?: undefined;
-  propObj: ITypeProperty;
+  attrObj: Partial<ITypeAttribute>;
+  styleObj: Partial<IStyle>;
   childNodes: Array<ITypeNode>; // contents
 }
 

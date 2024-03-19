@@ -1,17 +1,12 @@
 import type { ITextNode } from '../../text-node/text-node.interface';
 import type {
   ITypeAttribute,
-  ITypeElement,
-  ITypeProperty
+  ITypeElement
 } from '../type-element.interface';
 
 export interface ITypeSvg extends ITypeElement {
-  propObj: ITypeSvgProperty;
-  childNodes: (ITypeSvg | ITextNode)[];
-}
-
-export interface ITypeSvgProperty extends ITypeProperty {
   attrObj: Partial<ITypeSvgAttribute>;
+  childNodes: (ITypeSvg | ITextNode)[];
 }
 
 export interface ITypeSvgAttribute extends ITypeAttribute {
