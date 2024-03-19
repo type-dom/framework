@@ -12,10 +12,8 @@ export function toJSON(element: TypeElement): ITypeElement {
     // nodeName: element.nodeName,
     nodeName: element.nodeName,
     className: element.className,
-    propObj: {
-      styleObj: Object.assign({}, element.styleObj), // 两层。浅拷贝
-      attrObj: Object.assign({}, element.attrObj)
-    },
+    styleObj: Object.assign({}, element.styleObj), // 两层。浅拷贝
+    attrObj: Object.assign({}, element.attrObj),
     // items, page ----> 不起作用
     childNodes: element.childNodes.map((child) => {
       if (child instanceof TypeElement) {
