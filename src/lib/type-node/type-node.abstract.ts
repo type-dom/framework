@@ -1,9 +1,10 @@
 import { Subscription } from 'rxjs';
 import { encodeToXmlString, humpToMiddleLine } from '@type-dom/utils';
-import type { ITypeProperty } from '../type-element/type-element.interface';
+import type { ITypeAttribute } from '../type-element/type-element.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
 import type { INodeAttr, IPath, ITypeNode } from './type-node.interface';
 import { TypeRoot } from '../type-root/type-root.abstract';
+import { IStyle } from '../style/style.interface';
 
 /**
  * 虚拟DOM，TypeNode 抽象节点类, 所有节点类的抽象类；
@@ -41,7 +42,8 @@ export abstract class TypeNode implements ITypeNode {
   abstract createItem(parent: TypeNode, node: ITypeNode): TypeNode;
 
   isRoot?: boolean; // 是否是根节点 只有TypeRoot才为true
-  propObj?: ITypeProperty;
+  attrObj?: Partial<ITypeAttribute>;
+  styleObj?: Partial<IStyle>;
   attributes?: INodeAttr[];
   configs?: Record<string, any>;
   data?: Record<string, any>;
@@ -288,8 +290,8 @@ export abstract class TypeNode implements ITypeNode {
     }
     buffer.push(`<${this.nodeName}`);
     // 下面组装 属性 和 样式
-    if (this.propObj?.attrObj) {
-      for (let key in this.propObj.attrObj) {
+    if (this?.attrObj) {
+      for (let key in this.attrObj) {
         if (
           key !== 'viewBox' &&
           key !== 'spreadMethod' &&
@@ -299,22 +301,22 @@ export abstract class TypeNode implements ITypeNode {
         }
         // todo
         buffer.push(
-          ` ${key}="${encodeToXmlString(String(this.propObj.attrObj[key]))}"`
+          ` ${key}="${encodeToXmlString(String(this.attrObj[key]))}"`
         );
       }
     }
-    if (this.propObj?.styleObj) {
+    if (this?.styleObj) {
       let style = '';
-      for (const key in this.propObj.styleObj) {
+      for (const key in this.styleObj) {
         style += `${humpToMiddleLine(key)}: ${encodeToXmlString(
-          String((this.propObj.styleObj as any)[key])
+          String((this.styleObj as any)[key])
         )};`;
       }
       if (style !== '') {
         buffer.push(` style="${style}"`);
       }
     }
-    // todo this.attributes may be repeated with this.propObj.attrObj
+    // todo this.attributes may be repeated with this.attrObj
     if (this.attributes) {
       for (const attribute of this.attributes) {
         buffer.push(

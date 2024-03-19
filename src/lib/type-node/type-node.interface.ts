@@ -1,6 +1,7 @@
-import type { ITypeProperty } from '../type-element/type-element.interface';
+import type { ITypeAttribute } from '../type-element/type-element.interface';
 import { TypeElement } from '../type-element';
 import { ITypeConfig } from '../config.interface';
+import { IStyle } from '../style/style.interface';
 
 export interface INodeAttr {
   name: string;
@@ -28,6 +29,7 @@ export interface ITypeNode {
   /**
    * 构造函数 new (config: ITypeConfig) , 没有parent参数
    *   todo 如何设置？？？ 这个不会转为json
+   *    这个属性的类型不好设置。
    * @param config
    */
   TypeClass?: any;
@@ -38,10 +40,13 @@ export interface ITypeNode {
    */
   parent?: TypeElement;
   /**
-   * attributes只在XElement中有，并会转换为 attrObj。
-   * TextNode 没有 attributes和propObj
+   * 属性对象，除了style对应的属性之外的其他属性。
    */
-  propObj?: ITypeProperty;
+  attrObj?: Partial<ITypeAttribute>;
+  /**
+   * 样式对象。
+   */
+  styleObj?: Partial<IStyle>;
   // TextNode 没有 childNodes
   childNodes?: ITypeNode[];
   /**
