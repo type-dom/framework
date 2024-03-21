@@ -1,6 +1,6 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
 import { TypeSvgSvg } from '../../../type-element/type-svg/svg/svg.abstract';
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import type { ISvgPath, ISvgPathAttribute } from './path.interface';
 
 export class SvgPath extends TypeSvg implements ISvgPath {

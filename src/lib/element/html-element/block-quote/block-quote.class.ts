@@ -1,4 +1,4 @@
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TypeBlockQuote } from '../../../type-element/type-html/block-quote/block-quote.abstract';
 import type { IBlockQuote } from './block-quote.interface';
 

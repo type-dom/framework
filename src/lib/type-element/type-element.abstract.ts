@@ -1,9 +1,7 @@
 import { Subscription } from 'rxjs';
 import { humpToMiddleLine } from '@type-dom/utils';
 import { RouterView } from '../router/router-view/router-view.class';
-import { Parser } from '../parser/parser.class';
-import { XElement } from '../element/x-element/x-element.class';
-import type { ITypeNode } from '../type-node/type-node.interface';
+import type { ITypeConfig } from '../type-node/type-node.interface';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TextNode } from '../text-node/text-node.class';
 import { StyleCursor, StyleDisplay } from '../style/style.enum';
@@ -13,7 +11,8 @@ import type {
   IBoundBox,
   ITypeElement
 } from './type-element.interface';
-import { ITypeConfig } from '../config.interface';
+
+const vHash = Math.round(Math.random() * 1000000);
 
 /**
  * 虚拟元素Element的数据结构
@@ -21,12 +20,10 @@ import { ITypeConfig } from '../config.interface';
  * 与对应的导出时的数据结构是不一样的。
  * todo 是否需要把相关的操作也添加进来。
  */
-const vHash = Math.round(Math.random() * 1000000);
-
 export abstract class TypeElement extends TypeNode implements ITypeElement {
-  abstract override className: string;
-  abstract override dom?: HTMLElement | SVGElement;
-  abstract override nodeName: string;
+  abstract override className: string; // 必然有；
+  abstract override dom?: HTMLElement | SVGElement; // 不会是Text；
+  abstract override nodeName: string; // 必然有；
   parent?: TypeElement;
   nodeValue: undefined;
   override attrObj: Partial<ITypeAttribute>;
@@ -146,7 +143,13 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       this.addAttrName(config.name);
     }
     if (config?.text) {
-      this.addChild(new TextNode(config.text));
+      // 先判断子元素是否有TextNode，有的话就不再添加
+      const textNode = this.findNode('TextNode') as TextNode;
+      if (textNode) {
+        textNode.setText(config.text);
+      } else {
+        this.addChild(new TextNode(config.text));
+      }
     }
     if (config?.attrObj) {
       this.addAttrObj(config.attrObj);
@@ -708,91 +711,6 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       this.childNodes.length = length;
     }
   }
-
-  createItem<T extends TextNode | TypeElement>(
-    parent: TypeElement,
-    node: ITypeNode
-  ): T {
-    let item: T;
-    if (node.nodeValue !== undefined) {
-      // 如果是文本节点，则退出迭代
-      item = new TextNode(node.nodeValue) as T;
-      parent.addChild(item);
-      return item;
-    } else if (node.template !== undefined) {
-      const parser = new Parser();
-      item = parser.parseFromString(node.template) as T;
-      //   todo 绑定和指令等
-      if (node.data !== undefined) {
-        console.log('node.data is ', node.data);
-        item.data = node.data;
-      }
-      if (node.methods !== undefined) {
-        console.log('node.on is ', node.methods);
-        (item as XElement).methods = node.methods;
-      }
-    } else {
-      // todo TypeClass 为 XElement时的处理
-      //    XElement(config) ??? there is not parent .
-      // if (node.TypeClass === XElement) { // Uncaught ReferenceError: Cannot access 'TypeElement' before initialization
-      //   item = new node.TypeClass(node) as T; // 创建类实例
-      // } else {
-      item = new node.TypeClass(node.config) as T; // 创建类实例
-      // }
-    }
-    // console.log('item is ', item);
-    item.setParent(parent);
-    // todo
-    // if (node.config && item instanceof TypeElement) { // new 时已经传过了。
-    //   item.setConfig(node.config);
-    // }
-    if (node.attrObj) {
-      if (item instanceof TypeElement) {
-        item.addAttrObj(node.attrObj);
-      } else {
-        throw Error('TextNode attrObj is undefined . ');
-      }
-    }
-    if (node.styleObj) {
-      if (item instanceof TypeElement) {
-        item.setStyleObj(node.styleObj);
-      } else {
-        throw Error('TextNode styleObj is undefined . ');
-      }
-    }
-    // XElement时，可以单独传nodeName.
-    if (node.nodeName) {
-      item.nodeName = node.nodeName;
-      item.dom = document.createElement(this.nodeName);
-    }
-    if (node.childNodes) {
-      if (item.childNodes !== undefined) {
-        if (item instanceof TypeElement) {
-          item.childNodes = item.createItems(item, node.childNodes);
-        } else {
-          throw Error('item is TextNode , do not have childNodes . ');
-        }
-      } else {
-        throw Error('TypeClass is TextNode, but has childNodes . ');
-      }
-    }
-    return item;
-  }
-
-  // createItems(parent: TypeElement, nodes: ITypeNode[]): TypeNode[] {
-  //   const items: TypeNode[] = [];
-  //   for (const node of nodes) {
-  //     if (node.TypeClass === undefined) {
-  //       console.error('node.TypeClass is undefined . ');
-  //       continue;
-  //     }
-  //     const item = this.createItem(parent, node);
-  //     if (item) {
-  //       items.push(item);
-  //     }
-  //   }
-  //   return items;
-  // }
 
   /**
    * 挂载到真实DOM；

@@ -1,4 +1,4 @@
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TypeVideo } from '../../../type-element/type-html/video/video.abstract';
 import type { IVideo } from './video.interface';
 

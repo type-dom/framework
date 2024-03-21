@@ -1,4 +1,4 @@
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TypeMenuItem } from '../../../type-element/type-html/menu-item/menu-item.abstract';
 import type { IMenuItem } from './menu-item.interface';
 

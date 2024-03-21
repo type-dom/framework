@@ -1,4 +1,4 @@
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TypeOL } from '../../../type-element/type-html/ol/ol.abstract';
 import type { IOL } from './ol.interface';
 

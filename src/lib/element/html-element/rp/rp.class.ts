@@ -1,4 +1,4 @@
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TypeRp } from '../../../type-element/type-html/rp/rp.abstract';
 import type { IRp } from './rp.interface';
 

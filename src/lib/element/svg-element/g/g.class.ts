@@ -1,6 +1,6 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import { ISvgG } from './g.interface';
-import { ITypeConfig } from '../../../config.interface';
 
 export class SvgG extends TypeSvg implements ISvgG {
   nodeName: 'g';

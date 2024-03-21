@@ -1,7 +1,7 @@
 import type { ITypeAttribute } from '../type-element/type-element.interface';
-import { TypeElement } from '../type-element';
-import { ITypeConfig } from '../config.interface';
+import { TypeElement } from '../type-element/type-element.abstract';
 import { IStyle } from '../style/style.interface';
+import { TextNode } from '../text-node/text-node.class';
 
 export interface INodeAttr {
   name: string;
@@ -14,7 +14,22 @@ export interface IPath {
 }
 
 /**
- * json格式的接口，也是json存储的数据结构
+ * TypeDom 最基础的接口，所有节点都实现了这个接口。
+ * 这个接口定义了节点的基本属性，如：
+ * 1. 节点类名
+ * 2. 节点属性数组  数组形式的属性名和值，如：[{name: 'id', value: '123'}, {name: 'class', value: 'active'}]，解析dom字符串时，会将属性名和值分开。
+ * 3. 节点值
+ * 4. 节点类型
+ * 5. 父节点
+ * 6. 节点属性对象 (除了style对应的属性之外的其他属性) 要挂载到DOM的属性上的
+ * 7. 节点样式对象
+ * 8. 子节点数组
+ * 9. 节点模板
+ * 10. 节点数据
+ * 11. 节点方法
+ * 12. 节点配置
+ *
+ * 同时可以对应json格式的接口，也是json存储的数据结构（除去parent/TypeClass）
  */
 export interface ITypeNode {
   className?: string;
@@ -27,18 +42,12 @@ export interface ITypeNode {
   nodeValue?: string | undefined;
 
   /**
-   * 构造函数 new (config: ITypeConfig) , 没有parent参数
-   *   todo 如何设置？？？ 这个不会转为json
-   *    这个属性的类型不好设置。
-   * @param config
-   */
-  TypeClass?: any;
-  /**
    * parent 可选
    * 且为 TypeElement
    * XNode 如何处理 ———————— 不设 parent， === undefined
    */
   parent?: TypeElement;
+  isRoot?: boolean; // 是否是根节点 一般TypeRoot才为true，其他为false。也可以自定义。
   /**
    * 属性对象，除了style对应的属性之外的其他属性。
    */
@@ -60,7 +69,13 @@ export interface ITypeNode {
   // 反向转为类时，要转为events的值
   methods?: Record<string, any>;
   config?: Record<string, any>; // config不会转为json
-  // 主要时createItem中用到。
-  // config?: Partial<ITypeConfig>; // todo 与attrObj,styleObj,childNodes属性有重叠;作为参数可以，如果作为存储数据不太合理。
   // type?: string;
+}
+
+// 参数为 ITypeConfig
+export interface ITypeConfig extends ITypeNode {
+  name?: string;
+  text?: string; // 只是简单的添加一个文本节点时用，
+  // todo 可能是类实例对象；也可能是json对象；
+  childNodes?: (TypeElement | TextNode)[];
 }

@@ -2,8 +2,7 @@ import { Subscription } from 'rxjs';
 import { encodeToXmlString, humpToMiddleLine } from '@type-dom/utils';
 import type { ITypeAttribute } from '../type-element/type-element.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
-import type { INodeAttr, IPath, ITypeNode } from './type-node.interface';
-import { TypeRoot } from '../type-root/type-root.abstract';
+import type { INodeAttr, ITypeNode } from './type-node.interface';
 import { IStyle } from '../style/style.interface';
 
 /**
@@ -32,14 +31,6 @@ export abstract class TypeNode implements ITypeNode {
   abstract render(): void;
 
   // abstract setConfig?(config: any): void
-  /**
-   * 不独立为一个函数，是因为在这里，可以直接 this. 的方式调用。
-   * 在子类，如UI组件中会重写
-   * 子类有： TypeElement,XElement,TextNode
-   * @param parent 不一定是this，还可以是父级、子级等等。
-   * @param node
-   */
-  abstract createItem(parent: TypeNode, node: ITypeNode): TypeNode;
 
   isRoot?: boolean; // 是否是根节点 只有TypeRoot才为true
   attrObj?: Partial<ITypeAttribute>;
@@ -50,9 +41,6 @@ export abstract class TypeNode implements ITypeNode {
   methods?: Record<string, any>;
   template?: string;
   events?: Subscription[];
-  // protected constructor() {
-  //   Object.defineProperty(this, "parentNode", { value: null, writable: true });
-  // }
   /**
    * 获取根节点;
    * 在应用项目中才会用到，在框架中是用不到的。
@@ -127,42 +115,9 @@ export abstract class TypeNode implements ITypeNode {
     parent.addChild(this);
   }
 
-  /**
-   * 创建子节点
-   * 与创建组件不同
-   * 基于json对象创建类实例
-   *   todo 运行时，类可能还没有写入 typeMap ????
-   *      默认加载XElement,TextNode,其它类要 TypeClass显式调用
-   * @param parent
-   * @param nodes
-   */
-  createItems(parent: TypeNode, nodes: ITypeNode[]): TypeNode[] {
-    const items: TypeNode[] = [];
-    for (const node of nodes) {
-      if (
-        node.TypeClass === undefined &&
-        node.template === undefined &&
-        node.nodeValue === undefined
-      ) {
-        console.error(
-          'node.TypeClass === undefined' +
-          '  && node.template === undefined' +
-          ' && node.nodeValue === undefined. '
-        );
-        continue;
-      }
-      const item = this.createItem(parent, node);
-      if (item) {
-        items.push(item);
-      }
-    }
-    return items;
-  }
-
   hasChildNodes(): boolean {
     return this.childNodes ? this.childNodes.length > 0 : false;
   }
-
 
   /**
    * 找到指定类名的节点
@@ -178,103 +133,6 @@ export abstract class TypeNode implements ITypeNode {
       }
     }
     return null;
-  }
-
-  /**
-   * Search a node in the tree with the given path
-   * foo.bar[nnn], i.e. find the nnn-th node named
-   * bar under a node named foo.
-   * 假设我们有一个如下的XML树状结构简化版（实际应用中可能是更复杂的XFA文档结构）：
-   * <root>
-   *   <foo>
-   *     <bar>Item 1</bar>
-   *     <bar>Item 2</bar>
-   *     <baz>Another Item</baz>
-   *   </foo>
-   *   <foo>
-   *     <bar>Item 3</bar>
-   *   </foo>
-   * </root>
-   * 我们想要通过路径表达式 "foo.bar[1]" 查找第二个 <bar> 节点下的内容，即 "Item 2"。
-   *
-   * 首先，parseXFAPath("foo.bar[1]") 会返回一个类似于这样的路径数组：
-   *
-   * Javascript
-   * [
-   *   { name: "foo", pos: 0 },
-   *   { name: "bar", pos: 1 }
-   * ]
-   * 然后调用 searchNode 方法：
-   *
-   * Javascript
-   * let resultNode = root.searchNode([
-   *   { name: "foo", pos: 0 },
-   *   { name: "bar", pos: 1 }
-   * ], 0);
-   * 方法首先处理根节点 root，并将它作为当前节点 node。
-   * 它会检查 node 是否有名为 foo 的子节点，并找到第一个 <foo> 节点。
-   * 接着，方法会对 <foo> 节点递归调用自身，此时 pos 递增为 1。
-   * 在新的 pos 下，方法会查找 <foo> 节点下名为 bar 且位置为 1（即第二个 <bar> 子节点）的节点。
-   * 最终，方法会找到并返回包含 "Item 2" 的 <bar> 节点。
-   * @param {Array} paths - an array of objects as
-   * returned by {parseXFAPath}.
-   * @param {number} pos - the current position in
-   * the paths array.
-   * @returns {TypeNode} The node corresponding
-   * to the path or null if not found.
-   */
-  searchNode(paths: IPath[], pos: number): TypeNode | null {
-    if (pos >= paths.length) {
-      return this;
-    }
-    const component = paths[pos];
-    const stack: [TypeNode, number][] = [];
-    let node: TypeNode = this;
-    while (true) {
-      if (component.name === node.nodeName) {
-        if (component.pos === 0) {
-          const res = node.searchNode(paths, pos + 1);
-          if (res !== null) {
-            return res;
-          }
-        } else if (stack.length === 0) {
-          return null;
-        } else {
-          const [parent] = stack.pop()!;
-          let siblingPos = 0;
-          for (const child of parent.children) {
-            if (component.name === child.nodeName) {
-              if (siblingPos === component.pos) {
-                return child.searchNode(paths, pos + 1);
-              }
-              siblingPos++;
-            }
-          }
-          // We didn't find the correct sibling
-          // so just return the first found node
-          return node.searchNode(paths, pos + 1);
-        }
-      }
-      if (node.childNodes && node.childNodes.length !== 0) {
-        stack.push([node, 0]);
-        node = node.childNodes[0];
-      } else if (stack.length === 0) {
-        return null;
-      } else {
-        while (stack.length !== 0) {
-          const [parent, currentPos] = stack.pop()!;
-          const newPos = currentPos + 1;
-          if (newPos < parent.childNodes!.length) {
-            stack.push([parent, newPos]);
-            node = parent.childNodes![newPos];
-            break;
-          }
-        }
-        if (stack.length === 0) {
-          return null;
-        }
-      }
-    }
   }
 
   /**

@@ -1,4 +1,4 @@
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TypeMark } from '../../../type-element/type-html/mark/mark.abstract';
 import type { IMark } from './mark.interface';
 

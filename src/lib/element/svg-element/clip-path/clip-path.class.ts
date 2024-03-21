@@ -1,6 +1,6 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
 import { ISvgClipPath } from './clip-path.interface';
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 
 // todo 有文字内容的
 export class SvgClipPath extends TypeSvg implements ISvgClipPath {

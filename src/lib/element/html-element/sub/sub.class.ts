@@ -1,4 +1,4 @@
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TypeSub } from '../../../type-element/type-html/sub/sub.abstract';
 import type { ISub } from './sub.interface';
 

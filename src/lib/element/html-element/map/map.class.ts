@@ -1,4 +1,4 @@
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TypeMap } from '../../../type-element/type-html/map/map.abstract';
 import type { IMap } from './map.interface';
 

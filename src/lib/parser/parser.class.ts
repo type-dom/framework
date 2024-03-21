@@ -13,7 +13,8 @@ import type { IContent, IInstruction, IParserParam } from './parser.interface';
  * 虚拟DOM/XML字符串解析工具
  * DOM/XML对象和String字符串之间的转换
  * 字符串解析为(XElement | TextNode)对象。
- * ？？？？todo 解析为 className 对应的类。 ———— 好像不行，className 对应的类可能是后创建的。
+ * 解析XElement的template属性的字符串，解析为(XElement | TextNode)对象。
+ * 注：解析为 className 对应的类，应该是项目中自定义的类，而不是框架中的类。
  */
 export class Parser {
   private currentFragment: (XElement | TextNode)[];

@@ -1,7 +1,7 @@
 import type { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
 import type { ITypeAttribute } from '../../../type-element/type-element.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import type { ISvgStop } from '../stop/stop.interface';
-import { ITypeConfig } from '../../../config.interface';
 import { SvgDefs } from '../defs/defs.class';
 
 // cx, cy 和 r 属性定义了最外面的圆，fx 和 fy 定义了最里面的圆

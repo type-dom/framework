@@ -1,4 +1,4 @@
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TypeDialog } from '../../../type-element/type-html/dialog/dialog.abstract';
 import type { IDialog } from './dialog.interface';
 

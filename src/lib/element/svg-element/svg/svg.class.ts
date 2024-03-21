@@ -1,5 +1,5 @@
 import { TypeSvgSvg } from '../../../type-element/type-svg/svg/svg.abstract';
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import type { ISvgSvg } from './svg.interface';
 
 // scalable vector graphic 可伸缩矢量图型

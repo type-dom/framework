@@ -1,4 +1,4 @@
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import type { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
 import type {
   ITypeAttribute,

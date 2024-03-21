@@ -1,4 +1,4 @@
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import type { ITypeHead } from '../../../type-element/type-html/head/head.interface';
 
 

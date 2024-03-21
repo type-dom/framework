@@ -1,4 +1,4 @@
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TypeDataList } from '../../../type-element/type-html/data-list/data-list.abstract';
 import type { IDataList } from './data-list.interface';
 

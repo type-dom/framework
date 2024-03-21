@@ -1,4 +1,4 @@
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TypeLegend } from '../../../type-element/type-html/legend/legend.abstract';
 import type { ILegend } from './legend.interface';
 

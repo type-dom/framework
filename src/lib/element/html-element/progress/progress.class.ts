@@ -1,4 +1,4 @@
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TypeProgress } from '../../../type-element/type-html/progress/progress.abstract';
 import type { IProgress } from './progress.interface';
 

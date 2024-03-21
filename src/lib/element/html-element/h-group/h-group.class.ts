@@ -1,4 +1,4 @@
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TypeHGroup } from '../../../type-element/type-html/hgroup/hgroup.abstract';
 import type { IHGroup } from './h-group.interface';
 

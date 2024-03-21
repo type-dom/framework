@@ -1,4 +1,4 @@
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TypeTime } from '../../../type-element/type-html/time/time.abstract';
 import type { ITime } from './time.interface';
 

@@ -5,7 +5,7 @@ import type { ITextNode } from './text-node.interface';
 
 /**
  * 虚拟文本节点。
- * ----> 本身不会渲染成标签。没有对应的HTML标签。
+ * ----> 本身会渲染成Text。
  */
 export class TextNode extends TypeNode implements ITextNode {
   className: 'TextNode';
@@ -15,11 +15,11 @@ export class TextNode extends TypeNode implements ITextNode {
   nodeValue: string;
   // text: string;
   dom?: Text;
-
-  // template?: string;
+  override template?: undefined;
   /**
    *
    * @param text
+   * @param parent
    */
   constructor(text = '\u200c', parent?: TypeElement) {
     // \u200c
@@ -27,6 +27,9 @@ export class TextNode extends TypeNode implements ITextNode {
     this.className = 'TextNode';
     this.nodeName = '#text';
     this.nodeValue = text;
+    if (parent) {
+      this.parent = parent;
+    }
   }
 
   get itemData() {
@@ -140,26 +143,6 @@ export class TextNode extends TypeNode implements ITextNode {
     // TODO 不能直接用 this.render(); 光标调到行程头部。
     // this.render();
     this.parent?.render();
-  }
-
-  // 这个方法是没有地方触发的
-  createItem(parent: TypeElement, node: ITextNode): TextNode {
-    const item = new TextNode(node.nodeValue, parent); // 创建类实例
-    console.log('item is ', item);
-    // item.setParent(parent);
-    // todo ??? 需要吗 ？？？
-    // if (node.nodeValue !== undefined) {
-    //   item.setText(node.nodeValue);
-    // }
-    // if (node.nodeValue !== undefined) { // 如果是文本节点，则退出迭代; XNode,TextNode会有
-    //   if (item.nodeValue !== undefined) {
-    //     item.nodeValue = node.nodeValue;
-    //     return item;
-    //   } else {
-    //     throw Error('TypeClass is not TextNode, but nodeValue exist. ');
-    //   }
-    // }
-    return item;
   }
 
   render(): void {

@@ -1,5 +1,5 @@
 import { TypeA } from '../../../type-element/type-html/a/a.abstract';
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import type { IA } from './a.interface';
 
 export class A extends TypeA implements IA {

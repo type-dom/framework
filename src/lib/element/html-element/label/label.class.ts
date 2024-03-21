@@ -1,5 +1,5 @@
 import { TextNode } from '../../../text-node/text-node.class';
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TypeLabel } from '../../../type-element/type-html/label/label.abstract';
 import type { Input } from '../input/input.class';
 import type { ILabel } from './label.interface';

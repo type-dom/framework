@@ -1,5 +1,5 @@
 import { TypeSpan } from '../../../type-element/type-html/span/span.abstract';
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import type { ISpan } from './span.interface';
 
 export class Span extends TypeSpan implements ISpan {

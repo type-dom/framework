@@ -1,4 +1,4 @@
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TypeCanvas } from '../../../type-element/type-html/canvas/canvas.abstract';
 import type { ICanvas } from './canvas.interface';
 

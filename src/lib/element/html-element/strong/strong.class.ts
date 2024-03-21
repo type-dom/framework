@@ -1,4 +1,4 @@
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TypeStrong } from '../../../type-element/type-html/strong/strong.abstract';
 import type { IStrong } from './strong.interface';
 

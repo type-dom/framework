@@ -1,7 +1,7 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
 import { TypeSvgSvg } from '../../../type-element/type-svg/svg/svg.abstract';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import type { ISvgCircle } from './circle.interface';
-import { ITypeConfig } from '../../../config.interface';
 
 export class SvgCircle extends TypeSvg implements ISvgCircle {
   nodeName: 'circle';

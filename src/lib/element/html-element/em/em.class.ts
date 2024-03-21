@@ -1,4 +1,4 @@
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TypeEm } from '../../../type-element/type-html/em/em.abstract';
 import type { IEm } from './em.interface';
 

@@ -1,4 +1,4 @@
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TypeTextarea } from '../../../type-element/type-html/textarea/textarea.abstract';
 import type { ITextarea } from './textarea.interface';
 

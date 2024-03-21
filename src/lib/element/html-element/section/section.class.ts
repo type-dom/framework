@@ -1,4 +1,4 @@
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TypeSection } from '../../../type-element/type-html/section/section.abstract';
 import { StyleDisplay } from '../../../style/style.enum';
 import type { ISection } from './section.interface';

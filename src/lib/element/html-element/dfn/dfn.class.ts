@@ -1,4 +1,4 @@
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TypeDfn } from '../../../type-element/type-html/dfn/dfn.abstract';
 import type { IDfn } from './dfn.interface';
 

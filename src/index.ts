@@ -2,7 +2,8 @@ export { TypeNode } from './lib/type-node/type-node.abstract';
 export type {
   ITypeNode,
   INodeAttr,
-  IPath
+  IPath,
+  ITypeConfig,
 } from './lib/type-node/type-node.interface';
 export type { IStyle } from './lib/style/style.interface';
 export * from './lib/style/style.enum';
@@ -17,4 +18,3 @@ export * from './lib/element';
 export * from './lib/parser';
 export * from './lib/router';
 export * from './lib/utils';
-export type { ITypeConfig } from './lib/config.interface';

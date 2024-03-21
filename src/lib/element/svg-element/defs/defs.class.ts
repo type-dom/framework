@@ -1,5 +1,5 @@
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import type { ISvgDefs } from './defs.interface';
 
 // todo 有文字内容的

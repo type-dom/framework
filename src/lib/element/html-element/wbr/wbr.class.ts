@@ -1,4 +1,4 @@
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TypeWbr } from '../../../type-element/type-html/wbr/wbr.abstract';
 import type { IWbr } from './wbr.interface';
 

@@ -1,5 +1,5 @@
 import { TypeForm } from '../../../type-element/type-html/form/form.abstract';
-import { ITypeConfig } from '../../../config.interface';
+import { ITypeConfig } from '../../../type-node/type-node.interface';
 import type { IForm } from './form.interface';
 
 export class Form extends TypeForm implements IForm {
