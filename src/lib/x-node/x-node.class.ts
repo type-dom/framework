@@ -1,5 +1,5 @@
 import { TypeNode } from '../type-node/type-node.abstract';
-import type { INodeAttr } from '../type-node/type-node.interface';
+import type { IAttr } from '../type-node/type-node.interface';
 import type { IXNode } from './x-node.interface';
 
 /**
@@ -11,7 +11,7 @@ export class XNode extends TypeNode implements IXNode {
   parent: undefined;
   nodeName?: string;
   nodeValue?: string;
-  override attributes: INodeAttr[] = [];
+  override attributes: IAttr[] = [];
   childNodes?: XNode[];
   // 只有渲染后才会生成真实dom
   dom?: HTMLElement | SVGElement | Text;
