@@ -29,6 +29,11 @@ export function toJSON(element: TypeElement): ITypeElement {
   } as ITypeElement;
 }
 
+/**
+ * mustache模板渲染, 参考：https://github.com/janl/mustache.js/blob/master/mustache.js
+ * @param template
+ * @param data
+ */
 export function mustache(template: string, data: Record<string, string>) {
   const pattern = /\{\{([\w\s\.]+)\}\}/g;
   let result = template;
