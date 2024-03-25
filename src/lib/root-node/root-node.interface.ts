@@ -1,10 +1,11 @@
-import type { ITypeElement } from '../type-element/type-element.interface';
-import { ITypeNode } from '../type-node/type-node.interface';
+import { ITypeHtml } from '../type-element/type-html/type-html.interface';
+import { ITypeConfig } from '../type-node/type-node.interface';
 
-export interface IRootNode extends ITypeElement {
+
+export interface IRootNode extends ITypeHtml {
   el?: HTMLElement;
 }
 
-export interface IRootNodeConfig extends ITypeNode {
+export interface IRootNodeConfig extends ITypeConfig {
   el?: HTMLElement;
 }

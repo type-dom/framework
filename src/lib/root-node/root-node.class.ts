@@ -14,10 +14,10 @@ export class RootNode extends TypeHtml implements IRootNode {
   nodeName: string;
   dom: HTMLElement;
 
-  protected constructor(option = {} as IRootNodeConfig) {
+  protected constructor(config = {} as IRootNodeConfig) {
     super();
     this.className = 'RootNode';
-    this.nodeName = option.nodeName || 'div';
+    this.nodeName = config.nodeName || 'div';
     this.dom = document.createElement(this.nodeName);
   }
 }
