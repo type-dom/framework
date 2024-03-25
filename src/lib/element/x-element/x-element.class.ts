@@ -1,5 +1,5 @@
 import { fromEvent } from 'rxjs';
-import type { INodeAttr } from '../../type-node/type-node.interface';
+import type { IAttr } from '../../type-node/type-node.interface';
 import { TextNode } from '../../text-node/text-node.class';
 import { Parser } from '../../parser/parser.class';
 import { TypeElement } from '../../type-element/type-element.abstract';
@@ -23,7 +23,7 @@ export class XElement extends TypeElement implements IXElement {
   // data?: Record<string, any>;
   // override methods?: Record<string, any>;
   // config?: Record<string, any>; // config不会转为json
-  override attributes: INodeAttr[]; // 去掉了?号；
+  override attributes: IAttr[]; // 去掉了?号；
   dom?: HTMLElement | SVGElement;
 
   /**
@@ -84,7 +84,7 @@ export class XElement extends TypeElement implements IXElement {
         const attrName = attr.name.substring(1);
         console.log('this.itemData is ', this.itemData);
         if (this.itemData && attr.value !== undefined) {
-          const keys = attr.value.split('.');
+          const keys = attr.value?.split('.');
           let value = this.itemData[keys[0]];
           if (value !== undefined) {
             for (let i = 1; i < keys.length; i++) {
