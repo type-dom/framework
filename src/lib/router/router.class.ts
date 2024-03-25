@@ -2,12 +2,12 @@ import { map } from 'rxjs';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { currentRoute$, handleRouteChange, RouterView } from './index';
 import type { IRoute } from './route.interface';
-import type { IRouterOption } from './router.interface';
+import type { IRouterOption, IRouter } from './router.interface';
 
 /**
  * 创建一个路由器类
  */
-export class Router {
+export class Router implements IRouter {
   root?: TypeElement;
   routes: IRoute[];
 
