@@ -5,7 +5,7 @@ import {
 } from '@type-dom/utils';
 import { TextNode, XElement } from '../../index';
 // import { XElement } from "../element/x-element/x-element.class"; // todo 这样会报错。上面引入没问题；
-import type { INodeAttr } from '../../index';
+import type { IAttr } from '../type-node/type-node.interface';
 import type { IContent, IInstruction, IParserParam } from './parser.interface';
 
 /**
@@ -61,7 +61,7 @@ export class Parser {
    */
   _parseContent(s: string, start: number): IContent | null {
     // console.log('_parseContent . ')
-    const attributes: INodeAttr[] = [];
+    const attributes: IAttr[] = [];
     let pos = start;
 
     function skipWs() {
@@ -347,7 +347,7 @@ export class Parser {
    */
   onBeginElement(
     name: string,
-    attributes: INodeAttr[],
+    attributes: IAttr[],
     isEmpty?: boolean
   ): void {
     if (this.lowerCaseName) {
