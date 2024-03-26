@@ -17,7 +17,7 @@ export class TextNode extends TypeNode implements ITextNode {
   dom?: Text;
   override template?: undefined;
   /**
-   *
+   * 构造函数  文本节点
    * @param text
    * @param parent
    */
