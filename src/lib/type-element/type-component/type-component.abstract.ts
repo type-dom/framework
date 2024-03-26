@@ -10,7 +10,7 @@ export abstract class TypeComponent extends TypeHtml implements ITypeComponent {
   dom: HTMLElement;
   // childNodes: TypeNode[];
   // abstract setConfig(config: any): void
-  protected constructor(nodeName: string = 'div') {
+  protected constructor(nodeName = 'div') {
     super();
     this.nodeName = nodeName;
     this.dom = document.createElement(nodeName);
