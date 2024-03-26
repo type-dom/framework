@@ -62,6 +62,7 @@ export interface IStyle {
   fontSize: string; // 字号
   fontStyle: string; // 风格 斜体 normal - 文本正常显示 italic - 文本斜体显示 oblique - 文本倾斜显示
   fontWeight: string | number; // 字重 100 400 700 900 粗体/bold
+
   // background 背景
   background: string;
   backgroundColor: string;
@@ -79,6 +80,7 @@ export interface IStyle {
   maxWidth: string;
   minHeight: string;
   minWidth: string | number;
+
   // 文本 text
   textAlign: string; // 对齐元素中的文本。
   textAlignLast: string; //
@@ -105,6 +107,7 @@ export interface IStyle {
   unicodeBidi: string; // 设置文本方向
   writingMode: string; // 只东亚字体
   textOrientation: string; // 英文字体等
+
   // outline 轮廓
   outline: string;
   outlineColor: string;
@@ -117,6 +120,7 @@ export interface IStyle {
   // directionality, and text orientation. It corresponds to the margin-top, margin-right, margin-bottom,
   // or margin-left property depending on the values defined for writing-mode, direction, and text-orientation.
   marginInlineEnd: string;
+
   // 定位 (Positioning)
   position: keyof typeof StylePosition; // 因为form表单中存储的json中有该值，不能直接用enum类型。
   left: string;
