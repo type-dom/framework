@@ -3,9 +3,34 @@ import { TypeElement } from '../type-element/type-element.abstract';
 import { IStyle } from '../style/style.interface';
 import { TextNode } from '../text-node/text-node.class';
 
-export interface INodeAttr {
+export interface IAttr {
   name: string;
-  value: string;
+  value: string; // | number | boolean; // | undefined | unknown;
+}
+
+export interface IAttrID extends IAttr {
+  name: 'id';
+  // value: string | number;
+}
+export interface IAttrClass extends IAttr {
+  name: 'class';
+  // value: string | number;
+}
+export interface IAttrStyle extends IAttr {
+  name: 'style';
+  // value: Partial<IStyle>;
+}
+export interface IAttrName extends IAttr {
+  name: 'name';
+  // value: string | number;
+}
+export interface IAttrType extends IAttr {
+  name: 'type';
+  // value: string | number;
+}
+export interface IAttrValue extends IAttr {
+  name: 'value';
+  // value: string | number;
 }
 
 export interface IPath {
@@ -33,7 +58,7 @@ export interface IPath {
  */
 export interface ITypeNode {
   className?: string;
-  attributes?: INodeAttr[];
+  attributes?: IAttr[];
   nodeName?: string;
   /**
    * nodeValue只在 TextNode中才有。
@@ -59,7 +84,7 @@ export interface ITypeNode {
   // TextNode 没有 childNodes
   childNodes?: ITypeNode[];
   /**
-   * 属性值必须用 ' or " 包起来
+   * 属性值必须用 ' 或 " 包起来
    * 标签必须闭合， 如 <input /> 这样才能闭合。
    */
   template?: string; // 模板 默认TypeClass为XElement

@@ -2,7 +2,7 @@ import { Subscription } from 'rxjs';
 import { encodeToXmlString, humpToMiddleLine } from '@type-dom/utils';
 import type { ITypeAttribute } from '../type-element/type-element.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
-import type { INodeAttr, ITypeNode } from './type-node.interface';
+import type { IAttr, ITypeNode } from './type-node.interface';
 import { IStyle } from '../style/style.interface';
 
 /**
@@ -35,7 +35,7 @@ export abstract class TypeNode implements ITypeNode {
   isRoot?: boolean; // 是否是根节点 只有TypeRoot才为true
   attrObj?: Partial<ITypeAttribute>;
   styleObj?: Partial<IStyle>;
-  attributes?: INodeAttr[];
+  attributes?: IAttr[];
   configs?: Record<string, any>;
   data?: Record<string, any>;
   methods?: Record<string, any>;
@@ -179,7 +179,7 @@ export abstract class TypeNode implements ITypeNode {
       for (const attribute of this.attributes) {
         buffer.push(
           ` ${attribute.name}="${encodeToXmlString(
-            attribute.value.toString()
+            attribute.value?.toString()
           )}"`
         );
       }
