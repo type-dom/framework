@@ -11,4 +11,4 @@ export type { ITypeSvgSvg } from './type-svg/svg/svg.interface';
 export * from './type-html';
 export type { HtmlTypes } from './HtmlTypes';
 export { TypeElement } from './type-element.abstract';
-export * from './type-element.interface';
+export type * from './type-element.interface';
