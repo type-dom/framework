@@ -1,7 +1,7 @@
 export { TypeNode } from './lib/type-node/type-node.abstract';
 export type {
   ITypeNode,
-  INodeAttr,
+  IAttr,
   IPath,
   ITypeConfig,
 } from './lib/type-node/type-node.interface';
