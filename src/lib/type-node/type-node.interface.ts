@@ -93,7 +93,7 @@ export interface ITypeNode {
   // 生成json时，基于events生成；
   // 反向转为类时，要转为events的值
   methods?: Record<string, any>;
-  config?: Record<string, any>; // config不会转为json
+  configs?: Record<string, any>; // config不会转为json
   // type?: string;
 }
 

@@ -90,6 +90,14 @@ export abstract class TypeNode implements ITypeNode {
     return this.childNodes || [];
   }
 
+  setConfigsItem(key: string, value: unknown) {
+    if (this.configs) {
+      this.configs[key] = value;
+    } else {
+      this.configs = { [key]: value };
+    }
+  }
+
   // 在定义className时，要把当前类写入到TypeMap中；
   //   todo 创建类实例时都要运行一遍。
   // setClassName(className: string, TypeClass: any) {
