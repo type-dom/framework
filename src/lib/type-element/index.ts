@@ -2,8 +2,6 @@ export { TypeHtml } from './type-html/type-html.abstract';
 export type { ITypeHtml } from './type-html/type-html.interface';
 export { TypeComponent } from './type-component/type-component.abstract';
 export type { ITypeComponent } from './type-component/type-component.interface';
-export { TypeContainer } from './type-container/type-container.abstract';
-export type { ITypeContainer } from './type-container/type-container.interface';
 export { TypeSvg } from './type-svg/type-svg.abstract';
 export type { ITypeSvg } from './type-svg/type-svg.interface';
 export { TypeSvgSvg } from './type-svg/svg/svg.abstract';
