@@ -3,6 +3,9 @@ import { IRouterViewConfig } from './router-view.interface';
 
 /**
  * 路由视图组件
+ * @author <xjf> <<xjf7711@qq.com>>
+ * @example
+ *
  */
 export class RouterView extends TypeHtml {
   className = 'RouterView';
