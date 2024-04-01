@@ -1,9 +1,9 @@
 # TypeDom
 
-## 一种完全以面向对象（OOP）作为设计思路的typescript前端框架,完全基于抽象类/具体类/实例的方式组织的前端框架.
+## 一种完全以面向对象（OOP）作为设计思路的,完全基于抽象类/具体类/实例的方式组织的typescript前端框架。
 
-    A typescript front-end framework that is designed entirely based on object-oriented programming (OOP),
-    and is organized entirely in the form of abstract classes/concrete classes/instances
+    A typescript front-end framework that is designed entirely based on object-oriented programming (OOP)
+    and organized entirely on abstract/concrete classes/instances.
 
 ## 框架目标
 
