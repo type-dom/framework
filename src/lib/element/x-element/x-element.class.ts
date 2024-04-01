@@ -36,6 +36,8 @@ export class XElement extends TypeElement implements IXElement {
     this.className = 'XElement';
     this.nodeName = config?.nodeName || 'div';
     this.parent = config?.parent || undefined;
+    this.attrObj = config?.attrObj || {};
+    this.styleObj = config?.styleObj || {};
     this.attributes = config?.attributes || [];
     console.log('x-element . ');
     if (config?.template !== undefined) {
