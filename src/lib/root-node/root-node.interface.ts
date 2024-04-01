@@ -1,8 +1,7 @@
-import { ITypeHtml } from '../type-element/type-html/type-html.interface';
+import { ITypeRoot } from '../type-root/type-root.interface';
 import { ITypeConfig } from '../type-node/type-node.interface';
 
-
-export interface IRootNode extends ITypeHtml {
+export interface IRootNode extends ITypeRoot {
   el?: HTMLElement;
 }
 
