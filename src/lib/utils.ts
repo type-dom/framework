@@ -15,15 +15,15 @@ export function toJSON(element: TypeElement): ITypeElement {
     className: element.className,
     styleObj: deepClone(element.styleObj), // 深拷贝
     attrObj: deepClone(element.attrObj), // 深拷贝
-    configs: element?.configs,
+    settings: element?.settings,
     // items, page ----> 不起作用
     childNodes: element.childNodes.map((child) => {
       if (child instanceof TypeElement) {
         return toJSON(child);
       } else {
         return {
-          className: 'TextNode',
-          nodeName: '#text',
+          // className: 'TextNode',
+          // nodeName: '#text',
           nodeValue: child.nodeValue // textContent
         } as ITextNode;
       }
