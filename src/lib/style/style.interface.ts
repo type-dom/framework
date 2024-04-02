@@ -98,10 +98,10 @@ export interface IStyle {
   letterSpacing: string; // 用于设置文本字符的间距表现。 normal | <length>
   textTransform: string; // 指定如何将元素的文本大写。它可以用于使文本显示为全大写或全小写，也可单独对每一个单词进行操作。
   // none | capitalize首字母大写 | uppercase | lowercase | full-width | full-size-kana
-
-  textDecoration: StyleJustifyContent; // none underline;下划线 overline;顶划线 line-through;删除线
+  textDecoration: 'none' | 'underline' | 'overline' | 'line-through'; // none underline,下划线; overline 顶划线; line-through 删除线;
   textDecorationStyle: string; // wavy solid double dotted dashed 几乎所有的主流浏览器都不支持 text-decoration-style 属性。
   textDecorationColor: string; //
+  alignSelf: string; // 定义了 flex 元素自身在 flex 容器的对齐方式。
 
   direction: string; // ltr默认。文本方向从左到右。 rtl文本方向从右到左。 inherit
   unicodeBidi: string; // 设置文本方向
@@ -178,4 +178,7 @@ export interface IStyle {
   stopColor: string;
   stopOpacity: number;
   textOverflow: string;
+
+  '-webkit-line-clamp': number | string;
+  '-webkit-box-orient': string;
 }

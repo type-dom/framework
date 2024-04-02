@@ -31,7 +31,7 @@ export enum StyleTextDecoration {
  * thaiDistribute   Thai Language Justification
  * Horizontal      Alignment Type
  * w:jc
- * todo 属性大写 ？？
+ * todo 属性大写 ？？有问题，属性值不对。
  */
 export enum StyleJustifyContent {
   left = 'left',
