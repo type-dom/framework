@@ -93,8 +93,31 @@ export interface ITypeNode {
   // 生成json时，基于events生成；
   // 反向转为类时，要转为events的值
   methods?: Record<string, any>;
-  configs?: Record<string, any>; // config不会转为json
+  settings?: ISettings; // config不会转为json
   // type?: string;
+}
+
+export interface IOptionSet {
+  label: string,
+  value: string | number | boolean,
+  checked?: boolean, // radio checkbox
+  selected?: boolean, // select
+  options?: IOptionSet[]
+}
+
+export type ISetting = string | number | boolean | ISettings | IOptionSet[] | undefined;
+
+export interface ISettings {
+  // fieldSetting?: IOptionSetting;
+  [key: string]: ISetting;
+}
+
+export interface IOptionSetting extends ISettings {
+  name: string;
+  // selectedOption: string | number | boolean,
+  // 在级联控件中，resultValue应该是带 . 的值，是不同层级值拼接出来的。
+  resultValue: string | number | boolean; // 不应该根据这个排队选中后的值，因为有可能是多选。
+  options: IOptionSet[];
 }
 
 // 参数为 ITypeConfig

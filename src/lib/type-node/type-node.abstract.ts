@@ -2,7 +2,7 @@ import { Subscription } from 'rxjs';
 import { encodeToXmlString, humpToMiddleLine } from '@type-dom/utils';
 import type { ITypeAttribute } from '../type-element/type-element.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
-import type { IAttr, ITypeNode } from './type-node.interface';
+import type { IAttr, ISetting, ISettings, ITypeNode } from './type-node.interface';
 import { IStyle } from '../style/style.interface';
 
 /**
@@ -36,7 +36,7 @@ export abstract class TypeNode implements ITypeNode {
   attrObj?: Partial<ITypeAttribute>;
   styleObj?: Partial<IStyle>;
   attributes?: IAttr[];
-  configs?: Record<string, any>;
+  settings?: ISettings;
   data?: Record<string, any>;
   methods?: Record<string, any>;
   template?: string;
@@ -90,12 +90,19 @@ export abstract class TypeNode implements ITypeNode {
     return this.childNodes || [];
   }
 
-  setConfigsItem(key: string, value: unknown) {
-    if (this.configs) {
-      this.configs[key] = value;
+  setSetting(key: string, value: ISetting) {
+    if (this.settings) {
+      this.settings[key] = value;
     } else {
-      this.configs = { [key]: value };
+      this.settings = { [key]: value };
     }
+    if (value === undefined) {
+      delete this.settings?.fieldSetting;
+    }
+  }
+
+  resetSettings(settings: ISettings) {
+    this.settings = settings;
   }
 
   // 在定义className时，要把当前类写入到TypeMap中；
