@@ -1,7 +1,7 @@
 import { TextNode } from '../../../text-node/text-node.class';
 import { TypeSvgSvg } from '../../../type-element/type-svg/svg/svg.abstract';
 import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
-import type { ISvgText, ISvgTextAttribute, ISvgTextConfig, ISvgTextStyle } from './text.interface';
+import type { ISvgText, ISvgTextAttribute, ISvgTextConfig } from './text.interface';
 
 export class SvgText extends TypeSvg implements ISvgText {
   nodeName: 'text';
@@ -10,7 +10,7 @@ export class SvgText extends TypeSvg implements ISvgText {
   override attrObj: ISvgTextAttribute;
   override childNodes: TextNode[];
   override parent?: TypeSvgSvg;
-  textNode: TextNode;
+  override textNode: TextNode;
 
   constructor(config: Partial<ISvgTextConfig>) {
     super();
