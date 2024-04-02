@@ -8,7 +8,7 @@ export abstract class TypeButton extends TypeHtml implements ITypeButton {
   abstract override className: string;
   nodeName: 'button';
   dom: HTMLButtonElement;
-  textNode: TextNode;
+  override textNode: TextNode;
 
   protected constructor() {
     super();
@@ -16,7 +16,7 @@ export abstract class TypeButton extends TypeHtml implements ITypeButton {
     this.dom = document.createElement(this.nodeName);
     this.styleObj = Object.assign({}, buttonStyle);
     this.attrObj = {
-      type: 'button'
+      type: 'button',
     };
     this.textNode = new TextNode('按钮');
     this.childNodes = [this.textNode]; // 默认值
