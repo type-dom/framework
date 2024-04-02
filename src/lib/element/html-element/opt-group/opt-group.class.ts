@@ -8,7 +8,7 @@ export class OptGroup extends TypeHtml implements IOptGroup {
   className: 'OptGroup';
   dom: HTMLOptGroupElement;
   override childNodes: TypeNode[];
-  text: TextNode;
+  override textNode: TextNode;
 
   constructor(config: Partial<IOptGroupConfig>) {
     super();
@@ -18,8 +18,8 @@ export class OptGroup extends TypeHtml implements IOptGroup {
     this.attrObj = {
       name: 'option',
     };
-    this.text = new TextNode('一个选项');
-    this.childNodes = [this.text];
+    this.textNode = new TextNode('一个选项');
+    this.childNodes = [this.textNode];
     this.setConfig(config);
   }
 

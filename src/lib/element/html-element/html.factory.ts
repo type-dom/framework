@@ -46,8 +46,6 @@ import { Dialog } from './dialog/dialog.class';
 import type { IDialog } from './dialog/dialog.interface';
 import { Div } from './div/div.class';
 import type { IDiv } from './div/div.interface';
-import { Division } from './division/division.class';
-import type { IDivision } from './division/division.interface';
 import { DL } from './dl/dl.class';
 import type { IDL } from './dl/dl.interface';
 import { DD } from './dl/dd/dd.class';

@@ -7,7 +7,7 @@ import type { ILabel } from './label.interface';
 export class Label extends TypeLabel implements ILabel {
   className: 'Label';
   override childNodes: (Input | TextNode)[];
-  textNode: TextNode;
+  override textNode: TextNode;
 
   constructor(config?: Partial<ITypeConfig>) {
     super();
