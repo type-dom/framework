@@ -1,4 +1,4 @@
-import { Subscription } from 'rxjs';
+import { fromEvent, Subscription } from 'rxjs';
 import { humpToMiddleLine } from '@type-dom/utils';
 import { RouterView } from '../router/router-view/router-view.class';
 import type { ITypeConfig } from '../type-node/type-node.interface';
@@ -33,8 +33,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   override attrObj: Partial<ITypeAttribute>;
   override styleObj: Partial<IStyle>;
   override events: Subscription[];
-
-  initEvents?(): void;
+  config?: Partial<ITypeConfig>;
 
   protected constructor() {
     super();
@@ -137,6 +136,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   }
 
   setConfig(config?: Partial<ITypeConfig>) {
+    this.config = config;
     if (config?.parent) {
       this.parent = config.parent;
     }
@@ -160,8 +160,30 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       this.addStyleObj(config.styleObj);
     }
     if (config?.childNodes) {
+      // 父元素为当前元素，子元素为config.childNodes
+      config.childNodes.forEach((item) => {
+        item.parent = this;
+      });
       this.addChildren(...config.childNodes);
     }
+  }
+
+
+  initEvents() {
+     if (this.config?.events) {
+       for (const key in this.config?.events) {
+         const eventFun = this.config?.events[key];
+         // if (Object.hasOwnProperty.call(this.config?.events, key)) {
+           if (this.dom) {
+             this.events.push(fromEvent(this.dom, key).subscribe(() => {
+               if (eventFun) {
+                 eventFun(this);
+               }
+             }));
+           }
+         }
+       // }
+     }
   }
 
   setCursor(cursor: StyleCursor) {
@@ -454,7 +476,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    */
   // abstract appendChild(newChild: TypeElement | TextNode): TypeElement | TextNode;
   appendChild(newChild: TypeNode): void {
-    newChild.setParent(this); // 如果不是子类，是其它地方的对象加过来，要重设其父类。
+    newChild.appendParent(this); // 如果不是子类，是其它地方的对象加过来，要重设其父类。
     this.renderChild(newChild); // todo this.render() 现在这样可能不渲染；因为自身DOM可能没有创建；
     // this.dom.appendChild(newChild.render().dom);
   }
@@ -475,8 +497,12 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.childNodes.push(newChild);
   }
 
+  /**
+   * 新增子元素，并设定parent
+   * @param newChildren
+   */
   addChildren(...newChildren: TypeNode[]): void {
-    this.childNodes.push(...newChildren);
+    newChildren.map(child => child.appendParent(this));
   }
 
   /**
@@ -504,7 +530,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    */
   insertChild(child: TypeElement | TextNode, index: number): void {
     this.childNodes.splice(index, 0, child);
-    child.setParent(this);
+    child.appendParent(this);
   }
 
   /**
@@ -532,7 +558,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
 
   // insertChildren(children: Array<TypeElement | WebText>, index: number) {
   //   this.childNodes.splice(index, 0, ...children);
-  //   children.map(child => child.setParent(this));
+  //   children.map(child => child.appendParent(this));
   //   return children;
   // }
 
