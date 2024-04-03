@@ -4,6 +4,9 @@ export type {
   IAttr,
   IPath,
   ITypeConfig,
+  IOptionSet,
+  ISettings,
+  IOptionSetting,
 } from './lib/type-node/type-node.interface';
 export type { IStyle } from './lib/style/style.interface';
 export * from './lib/style/style.enum';
