@@ -161,6 +161,7 @@ export interface IStyle {
   strokeOpacity: number;
   transformOrigin: string;
   flexWrap: string; // wrap
+  flexGrow: number;
   flexShrink: number;
   flexBasis: string; // auto
   justifyContent: string;
@@ -174,11 +175,12 @@ export interface IStyle {
   pointerEvents: string;
   src: string;
   rowGap: string;
+  columnGap: string;
   filter: string;
   stopColor: string;
   stopOpacity: number;
   textOverflow: string;
-
+  content: string;
   '-webkit-line-clamp': number | string;
   '-webkit-box-orient': string;
 }

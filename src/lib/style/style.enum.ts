@@ -48,6 +48,37 @@ export enum StyleJustifyContent {
 }
 
 /**
+ * align-items
+ */
+export enum StyleAlignItems {
+  /* Basic keywords */
+  normal = 'normal',
+  stretch = 'stretch',
+  /* Positional alignment */
+  /* align-items does not take left and right values */
+  center = 'center',
+  start = 'start',
+  end = 'end',
+  flexStart = 'flex-start',
+  flexEnd = 'flex-end',
+  selfStart = 'self-start',
+  selfEnd = 'self-end',
+
+  /* Baseline alignment */
+  baseline = 'baseline',
+  firstBaseline = 'first baseline',
+  lastBaseline = 'last baseline',
+  saferBaseline = 'safe baseline',
+  unsafeBaseline = 'unsafe baseline',
+
+  /* Global values */
+  inherit = 'inherit',
+  initial = 'initial',
+  revert = 'revert',
+  revertLayer = 'revert-layer',
+  unset = 'unset',
+}
+/**
  * Valid    value  Description
  * auto      Automatically Determined Line Height
  * exact    Exact Line Height
