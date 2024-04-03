@@ -123,10 +123,11 @@ export abstract class TypeNode implements ITypeNode {
   // }
   setParent(parent: TypeElement): void {
     this.parent = parent;
-    parent.addChild(this);
+    // parent.addChild(this); // 单一原则
   }
 
   appendParent(parent: TypeElement): void {
+    this.parent = parent;
     parent.addChild(this);
   }
 
@@ -148,6 +149,21 @@ export abstract class TypeNode implements ITypeNode {
       }
     }
     return null;
+  }
+
+  /**
+   * 找到指定类名的全部节点
+   */
+  findAllNodes(className: string): TypeNode[] {
+    const nodes: TypeNode[] = [];
+    for (const child of this.children) {
+      if (child?.className === className) {
+        nodes.push(child);
+      } else if (child.children.length > 0) {
+        nodes.push(...child.findAllNodes(className));
+      }
+    }
+    return nodes;
   }
 
   /**

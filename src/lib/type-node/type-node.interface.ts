@@ -2,6 +2,7 @@ import type { ITypeAttribute } from '../type-element/type-element.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { IStyle } from '../style/style.interface';
 import { TextNode } from '../text-node/text-node.class';
+import { Subscription } from 'rxjs';
 
 export interface IAttr {
   name: string;
@@ -126,4 +127,11 @@ export interface ITypeConfig extends ITypeNode {
   text?: string; // 只是简单的添加一个文本节点时用，
   // todo 可能是类实例对象；也可能是json对象；
   childNodes?: (TypeElement | TextNode)[];
+  events?: Record<string, (element: TypeElement) => void>;
+}
+
+export interface IOptionConfig extends ITypeConfig {
+  label: string,
+  value: string,
+  checked?: boolean,
 }
