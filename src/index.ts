@@ -7,6 +7,7 @@ export type {
   IOptionSet,
   ISettings,
   IOptionSetting,
+  IOptionConfig,
 } from './lib/type-node/type-node.interface';
 export type { IStyle } from './lib/style/style.interface';
 export * from './lib/style/style.enum';
