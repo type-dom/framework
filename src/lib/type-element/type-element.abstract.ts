@@ -26,11 +26,12 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   abstract override nodeName: string; // 必然有；
   parent?: TypeElement;
   nodeValue: undefined;
-  override attrObj: Partial<ITypeAttribute>;
-  override styleObj: Partial<IStyle>;
   // attributes: INodeAttr[];
   childNodes: TypeNode[];
   routerView?: RouterView;
+  textNode?: TextNode;
+  override attrObj: Partial<ITypeAttribute>;
+  override styleObj: Partial<IStyle>;
   override events: Subscription[];
 
   initEvents?(): void;
@@ -144,11 +145,12 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
     if (config?.text) {
       // 先判断子元素是否有TextNode，有的话就不再添加
-      const textNode = this.findNode('TextNode') as TextNode;
-      if (textNode) {
-        textNode.setText(config.text);
+      this.textNode = this.findNode('TextNode') as TextNode;
+      if (this.textNode) {
+        this.textNode.setText(config.text);
       } else {
-        this.addChild(new TextNode(config.text));
+        this.textNode = new TextNode(config.text);
+        this.addChild(this.textNode);
       }
     }
     if (config?.attrObj) {
@@ -173,14 +175,6 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * @param propObj
    */
   resetPropObj(propObj: { attrObj: Partial<ITypeAttribute>; styleObj: Partial<IStyle> }): void {
-    // if (this.propObj) {
-    //   // 清理原有属性
-    //   for (const key in this.attrObj) {
-    //     this.removeAttribute(key);
-    //   }
-    //   this.dom?.removeAttribute('style');
-    // }
-    // this.propObj = propObj;
     this.resetAttrObj(propObj.attrObj);
     this.resetStyleObj(propObj.styleObj);
   }
@@ -232,6 +226,13 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.setStyleObj(styleObj);
   }
 
+  removeStyleObj(styleObj: Partial<IStyle>): void {
+    for (const key in styleObj) {
+      if (Object.hasOwnProperty.call(styleObj, key)) {
+        this.removeStyle(key as keyof IStyle);
+      }
+    }
+  }
   renderStyleObj(styleObj: Partial<IStyle>): void {
     for (const key in styleObj) {
       if (Object.hasOwnProperty.call(styleObj, key)) {
@@ -466,6 +467,10 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.childNodes.unshift(newChild);
   }
 
+  /**
+   * 后面添加子元素
+   * @param newChild
+   */
   addChild(newChild: TypeNode): void {
     this.childNodes.push(newChild);
   }

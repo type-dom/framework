@@ -15,7 +15,6 @@ import type { IStyle } from '../style/style.interface';
 //   Canvas,
 //   Code,
 //   Div,
-//   Division,
 //   Form,
 //   Header,
 //   Hr,
@@ -64,7 +63,7 @@ export interface ITypeAttribute {
   name?: string;
   type?: string;
 
-  [key: string]: string | number | boolean | unknown | undefined | never;
+  [key: string]: string | number | boolean  | undefined | ITypeAttribute;
 }
 
 /**
@@ -99,7 +98,6 @@ export interface IBoundBox {
 //     | typeof Canvas
 //     | typeof Code
 //     | typeof Div
-//     | typeof Division
 //     | typeof Form
 //     | typeof Header
 //     | typeof Hr
