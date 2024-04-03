@@ -21,7 +21,7 @@ export class RouterView extends TypeHtml {
     if (!config.parent) {
       throw new Error('RouterView must have a parent');
     }
-    this.setParent(config.parent);
+    this.appendParent(config.parent);
     // this.childNodes = [];
   }
 
