@@ -2,6 +2,7 @@ import { deepClone } from '@type-dom/utils';
 import { TypeElement } from './type-element/type-element.abstract';
 import type { ITypeElement } from './type-element/type-element.interface';
 import type { ITextNode } from './text-node/text-node.interface';
+import { ITypeNode } from './type-node/type-node.interface';
 
 /**
  * 保存数据时使用。
@@ -29,4 +30,23 @@ export function toJSON(element: TypeElement): ITypeElement {
       }
     })
   } as ITypeElement;
+}
+
+export function mustacheNode(template: string, node: ITypeNode) {
+  console.log('mustacheNode . ')
+  const pattern = /\{\{([\w\s\.]+)\}\}/g;
+  let result = template;
+  let match;
+  while (match = pattern.exec(template)) {
+    const keys = match[1].trim().split('.');
+    // @ts-ignore
+    let value: any = node[keys[0] as string];
+    for (let i = 1; i < keys.length; i++) {
+      value = value[keys[i]];
+    }
+    if (value !== undefined) {
+      result = result.replace(match[0], value);
+    }
+  }
+  return result;
 }
