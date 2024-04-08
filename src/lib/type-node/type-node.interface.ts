@@ -2,7 +2,8 @@ import type { ITypeAttribute } from '../type-element/type-element.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { IStyle } from '../style/style.interface';
 import { TextNode } from '../text-node/text-node.class';
-import { Subscription } from 'rxjs';
+import { TypeNode } from './type-node.abstract';
+import { IXProxyConfig } from '../x-proxy/x-proxy.interface';
 
 export interface IAttr {
   name: string;
@@ -73,6 +74,17 @@ export interface ITypeNode {
    * XNode 如何处理 ———————— 不设 parent， === undefined
    */
   parent?: TypeElement;
+  /**
+   * 上下文，用于查找上下文。
+   * 对应于创建该对象的类对象。
+   * 在setConfig时，对所有子对象进行设置。
+   */
+  context?: TypeNode;
+  /**
+   * 节点类型
+   * 是否根节点；
+   * root()方法返回的节点，就是根节点。
+   */
   isRoot?: boolean; // 是否是根节点 一般TypeRoot才为true，其他为false。也可以自定义。
   /**
    * 属性对象，除了style对应的属性之外的其他属性。
@@ -89,16 +101,24 @@ export interface ITypeNode {
    * 标签必须闭合， 如 <input /> 这样才能闭合。
    */
   template?: string; // 模板 默认TypeClass为XElement
-  data?: Record<string, any>;
+  data?: IXProxyConfig; // 数据
   // 绑定的事件集合, TypeElement 才有
   // 生成json时，基于events生成；
   // 反向转为类时，要转为events的值
-  methods?: Record<string, any>;
+  methods?: IMethods;
   settings?: ISettings; // config不会转为json
   // type?: string;
 }
 
-export interface IOptionSet {
+export interface IMethods {
+  [propName: string]: (...args: any[]) => void;
+}
+
+export interface IXData {
+  [propName: string]: string | number | boolean | undefined | IXData | IXData[];
+}
+
+export interface IOptionSet extends IXData{
   label: string,
   value: string | number | boolean,
   checked?: boolean, // radio checkbox
@@ -108,7 +128,7 @@ export interface IOptionSet {
 
 export type ISetting = string | number | boolean | ISettings | IOptionSet[] | undefined;
 
-export interface ISettings {
+export interface ISettings extends IXData{
   // fieldSetting?: IOptionSetting;
   [key: string]: ISetting;
 }
@@ -121,13 +141,80 @@ export interface IOptionSetting extends ISettings {
   options: IOptionSet[];
 }
 
+export interface IEvents {
+  abort: (evt?: Event, element?: TypeElement) => void;
+  blur: (evt?: Event, element?: TypeElement) => void;
+  change: (evt?: Event, element?: TypeElement) => void;
+  click: (evt?: Event, element?: TypeElement) => void;
+  // canplay: (evt?: Event, element?: TypeElement) => void;
+  // canplaythrough: (evt?: Event, element?: TypeElement) => void;
+  compositionstart: (evt?: Event, element?: TypeElement) => void;
+  compositionupdate: (evt?: Event, element?: TypeElement) => void;
+  compositionend: (evt?: Event, element?: TypeElement) => void;
+  // durationchange: (evt?: Event, element?: TypeElement) => void;
+  // emptied: (evt?: Event, element?: TypeElement) => void;
+  // ended: (evt?: Event, element?: TypeElement) => void;
+  focus: (evt?: Event, element?: TypeElement) => void;
+  dblclick: (evt?: Event, element?: TypeElement) => void;
+  // contextmenu: (evt?: Event, element?: TypeElement) => void;
+  drag: (evt?: Event, element?: TypeElement) => void;
+  dragend: (evt?: Event, element?: TypeElement) => void;
+  dragenter: (evt?: Event, element?: TypeElement) => void;
+  // dragexit: (evt?: Event, element?: TypeElement) => void;
+  dragleave: (evt?: Event, element?: TypeElement) => void;
+  dragover: (evt?: Event, element?: TypeElement) => void;
+  dragstart: (evt?: Event, element?: TypeElement) => void;
+  drop: (evt?: Event, element?: TypeElement) => void;
+  input: (evt?: Event, element?: TypeElement) => void;
+  // inputenter: (evt?: InputEvent, element?: TypeElement) => void;
+  // invalid: (evt?: Event, element?: TypeElement) => void;
+  keydown: (evt?: Event, element?: TypeElement) => void;
+  keyup: (evt?: Event, element?: TypeElement) => void;
+  keypress: (evt?: Event, element?: TypeElement) => void;
+  // keypressenter: (evt?: Event, element?: TypeElement) => void;
+  load: (evt?: Event, element?: TypeElement) => void;
+  // loadeddata: (evt?: Event, element?: TypeElement) => void;
+  // loadedmetadata: (evt?: Event, element?: TypeElement) => void;
+  // loadstart: (evt?: Event, element?: TypeElement) => void;
+  mousedown: (evt?: Event, element?: TypeElement) => void;
+  mouseenter: (evt?: Event, element?: TypeElement) => void;
+  mouseleave: (evt?: Event, element?: TypeElement) => void;
+  mousemove: (evt?: Event, element?: TypeElement) => void;
+  mouseout: (evt?: Event, element?: TypeElement) => void;
+  mouseover: (evt?: Event, element?: TypeElement) => void;
+  mouseup: (evt?: Event, element?: TypeElement) => void;
+  mousewheel: (evt?: Event, element?: TypeElement) => void;
+  // mspointerdown: (evt?: Event, element?: TypeElement) => void;
+  // mspointermove: (evt?: Event, element?: TypeElement) => void;
+  // mspointerup: (evt?: Event, element?: TypeElement) => void;
+  // pointerdown: (evt?: Event, element?: TypeElement) => void;
+  // pointermove: (evt?: Event, element?: TypeElement) => void;
+  // pointerup: (evt?: Event, element?: TypeElement) => void;
+  // pointercancel: (evt?: Event, element?: TypeElement) => void;
+  // pointerover: (evt?: Event, element?: TypeElement) => void;
+  // pointerout: (evt?: Event, element?: TypeElement) => void;
+  // pointerenter: (evt?: Event, element?: TypeElement) => void;
+  // pointerleave: (evt?: Event, element?: TypeElement) => void;
+  select: (evt?: Event, element?: TypeElement) => void;
+  touchcancel: (evt?: Event, element?: TypeElement) => void;
+  touchend: (evt?: Event, element?: TypeElement) => void;
+  touchmove: (evt?: Event, element?: TypeElement) => void;
+  touchstart: (evt?: Event, element?: TypeElement) => void;
+  // touchevent: (evt?: Event, element?: TypeElement) => void;
+  // wheel: (evt?: Event, element?: TypeElement) => void;
+  scroll: (evt?: Event, element?: TypeElement) => void;
+}
+
 // 参数为 ITypeConfig
 export interface ITypeConfig extends ITypeNode {
   name?: string;
   text?: string; // 只是简单的添加一个文本节点时用，
   // todo 可能是类实例对象；也可能是json对象；
   childNodes?: (TypeElement | TextNode)[];
-  events?: Record<string, (element: TypeElement) => void>;
+  // 设置子元素的属性，并根据属性创建子元素；
+  items?: ITypeConfig[];
+  // 事件集合，key为事件名，value为回调函数
+  events?: Partial<IEvents>
 }
 
 export interface IOptionConfig extends ITypeConfig {

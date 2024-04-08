@@ -2,8 +2,10 @@ import { Subscription } from 'rxjs';
 import { encodeToXmlString, humpToMiddleLine } from '@type-dom/utils';
 import type { ITypeAttribute } from '../type-element/type-element.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
-import type { IAttr, ISetting, ISettings, ITypeNode } from './type-node.interface';
 import { IStyle } from '../style/style.interface';
+import { IXProxyConfig } from '../x-proxy/x-proxy.interface';
+import type { IAttr, IMethods, ISetting, ISettings, ITypeNode } from './type-node.interface';
+import { XObservable } from '../x-observable/x-observable.class';
 
 /**
  * 虚拟DOM，TypeNode 抽象节点类, 所有节点类的抽象类；
@@ -24,6 +26,7 @@ export abstract class TypeNode implements ITypeNode {
   abstract childNodes?: TypeNode[];
   abstract dom?: HTMLElement | SVGElement | Text;
   abstract parent?: TypeElement;
+  isContext?: boolean;
 
   /**
    * 渲染出真实DOM
@@ -37,10 +40,11 @@ export abstract class TypeNode implements ITypeNode {
   styleObj?: Partial<IStyle>;
   attributes?: IAttr[];
   settings?: ISettings;
-  data?: Record<string, any>;
-  methods?: Record<string, any>;
+  data?: IXProxyConfig;
+  methods?: IMethods;
   template?: string;
   events?: Subscription[];
+  // data$?: XObservable<IXProxyConfig>
   /**
    * 获取根节点;
    * 在应用项目中才会用到，在框架中是用不到的。
@@ -90,6 +94,32 @@ export abstract class TypeNode implements ITypeNode {
     return this.childNodes || [];
   }
 
+  setRoot(isRoot: boolean) {
+    this.isRoot = isRoot;
+  }
+
+  getRoot<T extends TypeNode>() : T | undefined {
+    if (this.isRoot) {
+      return this as unknown as T;
+    } else {
+      // 要保证parent不为null，否则会获取不到。要保证应用项目中的parent都设置过了。
+      return this.parent?.getRoot();
+    }
+  }
+
+  setContext(isContext: boolean) {
+    this.isContext = isContext;
+  }
+
+  getContext<T extends TypeNode>(): T | undefined {
+    if (this.isContext) {
+      return this as unknown as T;
+    } else {
+      // 要保证parent不为null，否则会获取不到。要保证应用项目中的parent都设置过了。
+      return this.parent?.getContext();
+    }
+  }
+
   setSetting(key: string, value: ISetting) {
     if (this.settings) {
       this.settings[key] = value;
@@ -121,6 +151,7 @@ export abstract class TypeNode implements ITypeNode {
   //   }
   //   console.log('TypeNode.typeMap is ', TypeNode.typeMap);
   // }
+
   setParent(parent: TypeElement): void {
     this.parent = parent;
     // parent.addChild(this); // 单一原则
@@ -140,7 +171,7 @@ export abstract class TypeNode implements ITypeNode {
    * @param className
    */
   findNode(className: string): TypeNode | null  {
-    console.log('findNode className is ', className);
+    // console.log('findNode className is ', className);
     for (const child of this.children) {
       if (child?.className === className) {
         return child;
