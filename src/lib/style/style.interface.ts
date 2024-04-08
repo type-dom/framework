@@ -183,4 +183,7 @@ export interface IStyle {
   content: string;
   '-webkit-line-clamp': number | string;
   '-webkit-box-orient': string;
+  '-webkit-appearance': string;
+  '-webkit-text-fill-color': string;
+  resize: string;
 }
