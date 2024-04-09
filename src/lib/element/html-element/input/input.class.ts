@@ -45,6 +45,10 @@ export class Input extends TypeHtml implements IInput {
   //   this.dom.value = String(value);
   // }
 
+  focus(): void {
+    this.dom.focus();
+  }
+
   // 日期类型的处理
   setValue(value: string | number | boolean): void {
     // console.error('input setValue . ');
