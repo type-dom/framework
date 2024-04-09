@@ -1,25 +1,50 @@
-import { mustache } from '@type-dom/utils';
+import { isMustache, mustache } from '@type-dom/utils';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TypeElement } from '../type-element/type-element.abstract';
 import type { ITextNode } from './text-node.interface';
+import { mustacheNode } from '../utils';
+import { IXData } from '../type-node/type-node.interface';
 
 /**
- * 虚拟文本节点。
+ * 文本节点类
  * ----> 本身会渲染成Text。
  */
 export class TextNode extends TypeNode implements ITextNode {
+  /**
+   * 节点类型标识，值为 'TextNode'
+   */
   className: 'TextNode';
+  /**
+   * 父级节点，类型为 TypeElement
+   */
   parent?: TypeElement;
+  /**
+   * 子节点，此处未定义
+   */
   childNodes: undefined;
+  /**
+   * 节点名称，值为 '#text'
+   */
   nodeName: '#text';
+  /**
+   * 节点值，类型为字符串
+   */
   nodeValue: string;
   // text: string;
-  dom?: Text;
-  override template?: undefined;
   /**
-   * 构造函数  文本节点
-   * @param text
-   * @param parent
+   * DOM 文本节点对象
+   */
+  dom?: Text;
+  /**
+   * 模板对象，此处未定义
+   */
+  override template?: undefined;
+
+  /**
+   * 构造函数，创建文本节点
+   *
+   * @param text 文本内容，默认为 '\u200c'
+   * @param parent 父级节点
    */
   constructor(text = '\u200c', parent?: TypeElement) {
     // \u200c
@@ -29,6 +54,14 @@ export class TextNode extends TypeNode implements ITextNode {
     this.nodeValue = text;
     if (parent) {
       this.parent = parent;
+    }
+    if (isMustache(text)) {
+    //   todo 订阅 dataItem 变化
+      if (this.itemData) {
+        this.itemData.data$.subscribe((data: IXData) => {
+          this.render();
+        })
+      }
     }
   }
 
@@ -40,7 +73,11 @@ export class TextNode extends TypeNode implements ITextNode {
   //   return this.textContent.length;
   // }
 
-  // run中可能会有多个TextNode 了。
+  /**
+   * 获取节点在父节点中的索引
+   * 注： run中可能会有多个TextNode 了。
+   * @returns 节点索引
+   */
   get index(): number {
     return this.parent ? this.parent?.findChildIndex(this) : -1;
   }
@@ -49,10 +86,21 @@ export class TextNode extends TypeNode implements ITextNode {
   // get textContent(): string {
   //   return this.nodeValue;
   // }
+
+  /**
+   * 获取节点长度
+   *
+   * @returns 节点长度
+   */
   get length(): number {
     return this.nodeValue.length;
   }
 
+  /**
+   * 设置节点文本内容
+   *
+   * @param text 文本内容
+   */
   setText(text: string): void {
     this.nodeValue = text;
     this.render();
@@ -62,6 +110,7 @@ export class TextNode extends TypeNode implements ITextNode {
    * 把新内容添加到 this.textContent 末尾。
    * 注： this.render()有问题
    * 同时父级对象重新渲染。
+   * 在节点文本末尾添加新内容
    * @param content 新内容
    */
   appendText(content: string): void {
@@ -75,9 +124,11 @@ export class TextNode extends TypeNode implements ITextNode {
 
   /**
    * 调用 String自带slice方法
-   * 根据指定位置，切分出内容中的一部分。
-   * @param startOffset
-   * @param endOffset
+   * 根据指定位置，切分出节点文本内容的一部分
+   *
+   *  @param startOffset 起始位置
+   *  @param endOffset 结束位置，默认为节点长度
+   *  @returns 切分出的文本内容
    */
   sliceText(startOffset: number, endOffset = this.length): string {
     if (startOffset >= endOffset) {
@@ -89,7 +140,8 @@ export class TextNode extends TypeNode implements ITextNode {
 
   /**
    * 光标状态或选择状态下的插入。
-   * 在指定下标插入新的文本或节点。
+   * 在指定位置插入新文本或节点
+   *
    * @param text 要插入的文本
    * @param startOffset 起始位置
    * @param endOffset 结束位置
@@ -107,9 +159,11 @@ export class TextNode extends TypeNode implements ITextNode {
   }
 
   /**
+   * 根据起始位置和结束位置删除节点文本内容
    * 光标状态和选中状态的不同处理
-   * @param startOffset ---> 与editor.startOffset的关系
-   * @param endOffset
+   *
+   * @param startOffset 起始位置 ---> 与editor.startOffset的关系
+   * @param endOffset 结束位置，默认为起始位置
    */
   deleteText(startOffset: number, endOffset = startOffset): void {
     // todo startOffset === 0时。
@@ -145,11 +199,24 @@ export class TextNode extends TypeNode implements ITextNode {
     this.parent?.render();
   }
 
+  beforeRender(): void {
+    // todo 渲染前处理
+  }
   render(): void {
     // 渲染出来的值，在 模板语法中需要转换的。
     let text = this.nodeValue;
-    if (this.itemData) {
-      text = mustache(this.nodeValue, this.itemData);
+    if (isMustache(this.nodeValue)) {
+      if (this.nodeValue === '基础用法 {{ title }}') {
+        console.log('this is ', this);
+      }
+      // todo 监听 itemData change
+      if (this.itemData) {
+        text = mustache(this.nodeValue, this.itemData);
+      }
+      const context = this.getContext();
+      if (context) {
+        text = mustacheNode(this.nodeValue, context);
+      }
     }
     if (this.dom === undefined) {
       this.dom = document.createTextNode(text.toString());
