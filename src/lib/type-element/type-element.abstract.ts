@@ -1,7 +1,7 @@
 import { fromEvent, Subscription } from 'rxjs';
-import { humpToMiddleLine } from '@type-dom/utils';
+import { humpToMiddleLine, isNumber } from '@type-dom/utils';
 import { RouterView } from '../router/router-view/router-view.class';
-import type { ITypeConfig } from '../type-node/type-node.interface';
+import type { IEvents, ITypeConfig } from '../type-node/type-node.interface';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TextNode } from '../text-node/text-node.class';
 import { StyleCursor, StyleDisplay } from '../style/style.enum';
@@ -11,6 +11,8 @@ import type {
   IBoundBox,
   ITypeElement
 } from './type-element.interface';
+import { XObservable } from '../x-observable/x-observable.class';
+import { IXProxyConfig, IXProxyProp } from '../x-proxy/x-proxy.interface';
 
 const vHash = Math.round(Math.random() * 1000000);
 
@@ -34,6 +36,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   override styleObj: Partial<IStyle>;
   override events: Subscription[];
   config?: Partial<ITypeConfig>;
+  data$?: XObservable<IXProxyConfig>;
 
   protected constructor() {
     super();
@@ -152,6 +155,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
         this.textNode = new TextNode(config.text);
         this.addChild(this.textNode);
       }
+      this.textNode.setParent(this);
     }
     if (config?.attrObj) {
       this.addAttrObj(config.attrObj);
@@ -166,23 +170,60 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       });
       this.addChildren(...config.childNodes);
     }
+    if (config?.data) {
+      this.setDataObservable(config.data);
+      console.log('this.data$ is ', this.data$);
+    }
   }
 
+  setDataObservable(data: IXProxyConfig) {
+    console.log('setDataObservable . ');
+    this.data = data;
+    this.data$ = new XObservable(data);
+  }
+
+  setDataItem(key: string, value: IXProxyProp) {
+    this.data$?.setDataItem(key, value);
+  }
+  addWidth(width: string | number): void {
+    if (isNumber(width)) {
+      width = width + 'px';
+    }
+    this.addStyleObj({ width });
+  }
+
+  setWidth(width: string | number): void {
+    if (isNumber(width)) {
+      width = width + 'px';
+    }
+    this.setStyleObj({ width });
+  }
+
+  addHeight(height: string | number): void {
+    if (isNumber(height)) {
+      height = height + 'px';
+    }
+    this.addStyleObj({ height });
+  }
+
+  setHeight(height: string | number): void {
+    if (isNumber(height)) {
+      height = height + 'px';
+    }
+    this.setStyleObj({ height });
+  }
+
+  addBackgroundColor(backgroundColor: string): void {
+    this.addStyleObj({ backgroundColor });
+  }
+
+  setBackgroundColor(backgroundColor: string): void {
+    this.setStyleObj({ backgroundColor });
+  }
 
   initEvents() {
      if (this.config?.events) {
-       for (const key in this.config?.events) {
-         const eventFun = this.config?.events[key];
-         // if (Object.hasOwnProperty.call(this.config?.events, key)) {
-           if (this.dom) {
-             this.events.push(fromEvent(this.dom, key).subscribe(() => {
-               if (eventFun) {
-                 eventFun(this);
-               }
-             }));
-           }
-         }
-       // }
+       this.addEvents(this.config.events);
      }
   }
 
@@ -437,7 +478,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.renderAttrId(id);
   }
 
-  addAttrId(id: string): void {
+  addAttrId(id: string | number): void {
     this.addAttribute('id', id);
   }
 
@@ -468,6 +509,23 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.dom?.classList.remove(className);
   }
 
+  /**
+   *
+   */
+  addEvents(events: Partial<IEvents>) {
+    for (const key in events) {
+      const eventFun = events[key as keyof IEvents];
+      // if (Object.hasOwnProperty.call(this.config?.events, key)) {
+      if (this.dom) {
+        this.events.push(fromEvent(this.dom, key).subscribe((evt) => {
+          if (eventFun) {
+            eventFun(evt, this);
+          }
+        }));
+      }
+      // }
+    }
+  }
   /**
    * 在最后位置添加一个子节点，并渲染；
    * 如果newChild.parent存在，则可能需要执行newChild?.parent.removeChild(newChild)。需要根据业务逻辑判断。
@@ -713,13 +771,6 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.events.map((item) => item.unsubscribe());
     this.events = [];
   }
-
-  // 子类中有需要的地方覆写 todo
-  // setConfig(config?: Record<string, any>) {
-  //   if (config) {
-  //     this.setAttrObj(config as Partial<ITypeAttribute>);
-  //   }
-  // }
 
   /**
    * 默认初始化方法
