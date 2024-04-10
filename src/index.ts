@@ -22,3 +22,4 @@ export * from './lib/element';
 export * from './lib/parser';
 export * from './lib/router';
 export * from './lib/utils';
+export * from './lib/hooks/index';
