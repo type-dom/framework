@@ -1,11 +1,13 @@
 import { Subscription } from 'rxjs';
 import { encodeToXmlString, humpToMiddleLine } from '@type-dom/utils';
+import { IJsonData, IObData } from '../../interface';
 import type { ITypeAttribute } from '../type-element/type-element.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { IStyle } from '../style/style.interface';
-import { IXProxyConfig } from '../x-proxy/x-proxy.interface';
+
 import type { IAttr, IMethods, ISetting, ISettings, ITypeNode } from './type-node.interface';
-import { XObservable } from '../x-observable/x-observable.class';
+import { observe } from '../observer/observe';
+import { Observer } from '../observer/observer';
 
 /**
  * 虚拟DOM，TypeNode 抽象节点类, 所有节点类的抽象类；
@@ -40,11 +42,12 @@ export abstract class TypeNode implements ITypeNode {
   styleObj?: Partial<IStyle>;
   attributes?: IAttr[];
   settings?: ISettings;
-  data?: IXProxyConfig;
+  _data?: IJsonData; // IObData;
   methods?: IMethods;
   template?: string;
   events?: Subscription[];
   // data$?: XObservable<IXProxyConfig>
+  data$?: Observer;
   /**
    * 获取根节点;
    * 在应用项目中才会用到，在框架中是用不到的。

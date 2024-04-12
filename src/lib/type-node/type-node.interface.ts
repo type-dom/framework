@@ -3,7 +3,7 @@ import { TypeElement } from '../type-element/type-element.abstract';
 import { IStyle } from '../style/style.interface';
 import { TextNode } from '../text-node/text-node.class';
 import { TypeNode } from './type-node.abstract';
-import { IXProxyConfig } from '../x-proxy/x-proxy.interface';
+import { IJsonData, IObData } from '../../interface';
 
 export interface IAttr {
   name: string;
@@ -101,7 +101,7 @@ export interface ITypeNode {
    * 标签必须闭合， 如 <input /> 这样才能闭合。
    */
   template?: string; // 模板 默认TypeClass为XElement
-  data?: IXProxyConfig; // 数据
+  data?: IJsonData; // 数据
   // 绑定的事件集合, TypeElement 才有
   // 生成json时，基于events生成；
   // 反向转为类时，要转为events的值
