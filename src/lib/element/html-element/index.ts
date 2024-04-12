@@ -36,6 +36,7 @@ export { Img } from './img/img.class';
 export type { IImg } from './img/img.interface';
 export { Input } from './input/input.class';
 export type { IInput } from './input/input.interface';
+export { InputEnum } from './input/input.enum';
 export { Label } from './label/label.class';
 export type { ILabel } from './label/label.interface';
 export { LI } from './li/li.class';

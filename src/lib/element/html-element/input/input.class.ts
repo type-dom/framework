@@ -40,10 +40,10 @@ export class Input extends TypeHtml implements IInput {
     return this.dom.value;
   }
 
-  // set value(value: string | number | boolean) {
-  //   this.setAttribute('value', value);
-  //   this.dom.value = String(value);
-  // }
+  set value(value: string | number | boolean) {
+    this.setAttribute('value', value);
+    this.dom.value = String(value);
+  }
 
   focus(): void {
     this.dom.focus();
@@ -74,8 +74,8 @@ export class Input extends TypeHtml implements IInput {
         }
       }
     }
-    // this.value = value;
-    this.setAttribute('value', value);
-    this.dom.value = String(value);
+    this.value = value;
+    // this.setAttribute('value', value);
+    // this.dom.value = String(value);
   }
 }
