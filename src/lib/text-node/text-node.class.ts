@@ -1,9 +1,9 @@
 import { isMustache, mustache } from '@type-dom/utils';
 import { TypeNode } from '../type-node/type-node.abstract';
-import { TypeElement } from '../type-element/type-element.abstract';
-import type { ITextNode } from './text-node.interface';
-import { mustacheNode } from '../utils';
 import { IXData } from '../type-node/type-node.interface';
+import { TypeElement } from '../type-element/type-element.abstract';
+import { mustacheNode } from '../shared/util';
+import type { ITextNode } from './text-node.interface';
 
 /**
  * 文本节点类
@@ -66,7 +66,7 @@ export class TextNode extends TypeNode implements ITextNode {
   }
 
   get itemData() {
-    return this.data || this.parent?.itemData;
+    return this._data || this.parent?.itemData;
   }
 
   // get textContentLength(): number {
