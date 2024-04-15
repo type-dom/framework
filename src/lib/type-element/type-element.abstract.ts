@@ -1,18 +1,23 @@
 import { fromEvent, Subscription } from 'rxjs';
 import { humpToMiddleLine, isNumber } from '@type-dom/utils';
+import { IJsonData, IObData } from '../../interface';
 import { RouterView } from '../router/router-view/router-view.class';
 import type { IEvents, ITypeConfig } from '../type-node/type-node.interface';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TextNode } from '../text-node/text-node.class';
 import { StyleCursor, StyleDisplay } from '../style/style.enum';
 import type { IStyle } from '../style/style.interface';
+import { XObservable } from '../observer/x-observable.class';
+import { createProxy, XProxy } from '../observer/x-proxy/x-proxy.class';
 import type {
   ITypeAttribute,
   IBoundBox,
   ITypeElement
 } from './type-element.interface';
-import { XObservable } from '../x-observable/x-observable.class';
-import { IXProxyConfig, IXProxyProp } from '../x-proxy/x-proxy.interface';
+// import { Observer } from '../observer/observer';
+import { observe } from '../observer/observe';
+import { Observer } from '../observer/observer';
+import { defineReactive } from '../observer/defineReactive';
 
 const vHash = Math.round(Math.random() * 1000000);
 
@@ -27,7 +32,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   abstract override dom?: HTMLElement | SVGElement; // 不会是Text；
   abstract override nodeName: string; // 必然有；
   parent?: TypeElement;
-  nodeValue: undefined;
+  nodeValue?: undefined;
   // attributes: INodeAttr[];
   childNodes: TypeNode[];
   routerView?: RouterView;
@@ -36,19 +41,39 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   override styleObj: Partial<IStyle>;
   override events: Subscription[];
   config?: Partial<ITypeConfig>;
-  data$?: XObservable<IXProxyConfig>;
+  // data$?: XObservable<IJsonData>;
+  // override data$?: Observer;
 
   protected constructor() {
     super();
     this.attrObj = {};
     this.styleObj = {};
     this.addAttrObj({
-      ['data-v-' + vHash]: true,
+      ['data-v-' + vHash]: true
     });
     // this.nodeName = nodeName;
     this.attributes = [];
     this.childNodes = [];
     this.events = [];
+  }
+
+  get data(): IJsonData | undefined {
+    if (this._data) {
+      // return createProxy(this._data);
+      return this._data;
+    } else {
+      return undefined
+    }
+  }
+
+  set data(value: IJsonData | undefined) {
+    this._data = value;
+    if (this._data && value) {
+      // this.data$ = observe(value);
+      // this._data['__ob__'] = observe(value);
+      // defineReactive(this, 'data', value, undefined, false, false, true)
+      this._data = createProxy(value);
+    }
   }
 
   // 获取包含methods属性的组件
@@ -125,7 +150,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
         left: '0',
         top: '0',
         width: '0',
-        height: '0',
+        height: '0'
       };
     }
     const { left, top, width, height } = this.dom.getBoundingClientRect();
@@ -134,7 +159,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       left: left + 'px',
       top: top + 'px',
       width: width + 'px',
-      height: height + 'px',
+      height: height + 'px'
     };
   }
 
@@ -165,26 +190,36 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
     if (config?.childNodes) {
       // 父元素为当前元素，子元素为config.childNodes
-      config.childNodes.forEach((item) => {
-        item.parent = this;
-      });
+      // config.childNodes.forEach((item) => {
+      //   item.parent = this;
+      //   this.addChild(item);
+      // });
+      // this.childNodes = config.childNodes;
       this.addChildren(...config.childNodes);
     }
     if (config?.data) {
-      this.setDataObservable(config.data);
-      console.log('this.data$ is ', this.data$);
+      // this.setDataObservable(config.data);
+      this.data = config.data;
+      // console.log('this.data$ is ', this.data$);
     }
   }
 
-  setDataObservable(data: IXProxyConfig) {
-    console.log('setDataObservable . ');
-    this.data = data;
-    this.data$ = new XObservable(data);
-  }
+  // setBindData<T extends IJsonData>(data: T) {
+  //   this.data = data;
+  // }
+  // setProxy <T extends IJsonData>(data: IJsonData): void {
+  //   this.data = new XProxy(data);
+  // }
 
-  setDataItem(key: string, value: IXProxyProp) {
-    this.data$?.setDataItem(key, value);
-  }
+  // setDataObservable(data: IJsonData) {
+  //   console.log('setDataObservable . ');
+  //   this.data = data;
+  //   // this.data$ = new XObservable(data);
+  // }
+
+  // setDataItem(key: string, value: IJsonDataProp) {
+  //   this.data$?.setDataItem(key, value);
+  // }
   addWidth(width: string | number): void {
     if (isNumber(width)) {
       width = width + 'px';
@@ -222,14 +257,14 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   }
 
   initEvents() {
-     if (this.config?.events) {
-       this.addEvents(this.config.events);
-     }
+    if (this.config?.events) {
+      this.addEvents(this.config.events);
+    }
   }
 
   setCursor(cursor: StyleCursor) {
     this.setStyleObj({
-      cursor,
+      cursor
     });
   }
 
@@ -296,6 +331,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       }
     }
   }
+
   renderStyleObj(styleObj: Partial<IStyle>): void {
     for (const key in styleObj) {
       if (Object.hasOwnProperty.call(styleObj, key)) {
@@ -389,6 +425,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.cleanAttrObj();
     this.setAttrObj(attrObj);
   }
+
   renderAttrObj(attrObj: Partial<ITypeAttribute>): void {
     for (const key in attrObj) {
       if (Object.hasOwnProperty.call(attrObj, key)) {
@@ -526,6 +563,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       // }
     }
   }
+
   /**
    * 在最后位置添加一个子节点，并渲染；
    * 如果newChild.parent存在，则可能需要执行newChild?.parent.removeChild(newChild)。需要根据业务逻辑判断。
@@ -560,7 +598,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * @param newChildren
    */
   addChildren(...newChildren: TypeNode[]): void {
-    newChildren.map(child => child.appendParent(this));
+    newChildren.forEach(child => child.appendParent(this));
   }
 
   /**
@@ -826,13 +864,38 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   beforeRender?(): void;
 
   /**
+   * preRender函数用于在渲染XElement之前进行准备工作。
+   * 该函数不接受参数，也不返回任何值。
+   * 主要完成以下工作：
+   * 1. 打印日志说明当前处于beforeRender阶段。
+   * 2. 检查dom属性是否已存在，若不存在，则创建一个新的DOM元素。
+   * 3. 遍历当前XElement的所有属性，对以':'和'@'开头的属性进行特殊处理。
+   */
+  preRender() {
+    // console.log('preRender . ');
+    // todo nodejs下没有document，Parser可能会用到
+    if (!this.dom) {
+      this.dom = document.createElement(this.nodeName);
+    }
+    for (const [key, value] of Object.entries(this)) {
+      // console.log(`${key}: ${value}`);
+      if (value instanceof Observer) {
+        //   绑定值
+        console.log('key is ', key);
+
+      }
+    }
+  }
+
+  /**
    * 渲染方法
    * 要调用 this.clearChildDom
    * WebPage要另外处理
    */
   render(): void {
-    // console.log('this.styleObj is ', this.styleObj);
+    this.preRender();
     this.beforeRender && this.beforeRender(); // 渲染前处理；
+    // console.log('this.styleObj is ', this.styleObj);
     this.setStyleObj(this.styleObj);
     this.setAttrObj(this.attrObj);
     this.clearChildrenDom(); // 清理子节点的DOM
@@ -846,6 +909,13 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.clearEvents();
     this.initEvents && this.initEvents();
   }
+
+  /**
+   * 可选的函数，无参数，无返回值。
+   * 该函数用于在渲染完成后执行一些额外的操作。
+   * 如果需要在特定条件下执行渲染完成后的操作，可以实现此函数。
+   * 在子类中覆写
+   */
 
   afterRender?(): void;
 
