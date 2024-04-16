@@ -176,7 +176,7 @@
             - type-node 节点抽象类，最基础的类，其它抽象类或具体类的母类
             - type-root 根节点抽象类，项目根节点必须继承这个抽象类
             - x-node 通用节点类，创建虚拟节点
-            - utils.ts 工具类
+            - util.ts 工具类
         - test 测试类
 
 ## Introduction
