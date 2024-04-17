@@ -1,13 +1,15 @@
 import { Subscription } from 'rxjs';
 import { encodeToXmlString, humpToMiddleLine } from '@type-dom/utils';
-import { IJsonData, IObData } from '../../interface';
+import { IJsonData, type IJsonDataProp, IObData } from '../../interface';
 import type { ITypeAttribute } from '../type-element/type-element.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { IStyle } from '../style/style.interface';
 
-import type { IAttr, IMethods, ISetting, ISettings, ITypeNode } from './type-node.interface';
+import type { IAttr, IMethods, INodeHandler, ISetting, ISettings, ITypeNode } from './type-node.interface';
 import { observe } from '../observer/observe';
 import { Observer } from '../observer/observer';
+import { XProxy } from '../observer';
+import { defineProxyProperty } from '../observer/x-proxy/defineProperty';
 
 /**
  * 虚拟DOM，TypeNode 抽象节点类, 所有节点类的抽象类；
@@ -47,7 +49,7 @@ export abstract class TypeNode implements ITypeNode {
   template?: string;
   events?: Subscription[];
   // data$?: XObservable<IXProxyConfig>
-  data$?: Observer;
+  // data$?: Observer;
   /**
    * 获取根节点;
    * 在应用项目中才会用到，在框架中是用不到的。
@@ -275,6 +277,8 @@ export abstract class TypeNode implements ITypeNode {
   toJSON(): ITypeNode {
     return {
       className: this.className,
+      attrObj: this.attrObj,
+      styleObj: this.styleObj,
       nodeName: this.nodeName,
       nodeValue: this.nodeValue,
       attributes: this.attributes,
@@ -290,5 +294,50 @@ export abstract class TypeNode implements ITypeNode {
         }
       })
     } as ITypeNode;
+  }
+
+  /**
+   * 定义属性
+   * @param node
+   * @param key
+   * @param value
+   * @param handler
+   */
+  defineNodeProperty(
+    node: TypeNode, // this
+    key: keyof TypeNode,
+    value: IJsonDataProp,
+    handler?: INodeHandler<ITypeNode>
+  ) {
+    const property = Object.getOwnPropertyDescriptor(node, key);
+    if (property && property.configurable === false) {
+      return;
+    }
+    Object.defineProperty(node, key, {
+      configurable: true,
+      enumerable: true,
+      get() {
+        // 调用 handler 的 get 方法（如果已实现）
+        if (handler && handler.get) {
+          value = handler.get(node, key);
+        }
+        if (value instanceof XProxy) {
+          console.log(`defineNodeProperty 获取属性 "${key}" 的值，值为：`, value);
+        }
+        return value;
+      },
+      set(newValue) {
+        // console.log(`defineNodeProperty 拦截到了对属性 "${key}" 的赋值操作，新值为：`, newValue);
+        // 自定义逻辑...
+        if (handler && handler.set) {
+          handler.set(node, key, value);
+        }
+        if (newValue instanceof XProxy) {
+          console.log(`defineNodeProperty 拦截到了对属性 "${key}" 的赋值操作，新值为：`, newValue);
+        //   todo 将当前对象加载到 XProxy 中。
+        }
+        (node as any)[key] = newValue;
+      }
+    });
   }
 }

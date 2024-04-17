@@ -3,7 +3,8 @@ import { TypeElement } from '../type-element/type-element.abstract';
 import { IStyle } from '../style/style.interface';
 import { TextNode } from '../text-node/text-node.class';
 import { TypeNode } from './type-node.abstract';
-import { IJsonData, IObData } from '../../interface';
+import { IJsonData, type IJsonDataProp, IObData } from '../../interface';
+import { UnwrapNestedRefs } from '../reactivity/reactive';
 
 export interface IAttr {
   name: string;
@@ -101,7 +102,7 @@ export interface ITypeNode {
    * 标签必须闭合， 如 <input /> 这样才能闭合。
    */
   template?: string; // 模板 默认TypeClass为XElement
-  data?: IJsonData; // 数据
+  data?: UnwrapNestedRefs<IJsonData>; // 数据
   // 绑定的事件集合, TypeElement 才有
   // 生成json时，基于events生成；
   // 反向转为类时，要转为events的值
@@ -221,4 +222,32 @@ export interface IOptionConfig extends ITypeConfig {
   label: string,
   value: string,
   checked?: boolean,
+}
+
+export interface INodeHandler<T extends ITypeNode> {
+  /**
+   * Handle the 'get' operation on the target object.
+   * @param target The original object wrapped by the XProxy instance.
+   * @param prop The name or Symbol of the property to get.
+   * @param receiver
+   * @returns The returned value after applying custom logic.
+   */
+  get?(target: T, prop: string, receiver?: (...rest: string[]) => void): IJsonDataProp;
+
+  /**
+   * Handle the 'set' operation on the target object.
+   * @param target The original object wrapped by the XProxy instance.
+   * @param prop The name or Symbol of the property to set.
+   * @param value The new value to assign to the property.
+   * @param receiver
+   * @returns A Boolean indicating whether the set operation was successful.
+   */
+  set?(target: T, prop: string, value: IJsonDataProp, receiver?: (...rest: string[])=> void): boolean;
+
+  /**
+   * Handle the 'has' operation on the target object.
+   * @param target
+   * @param prop
+   */
+  deleteProperty?(target: T, prop: string): void;
 }
