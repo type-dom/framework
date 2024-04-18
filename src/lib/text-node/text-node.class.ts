@@ -2,7 +2,7 @@ import { isMustache, mustache } from '@type-dom/utils';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { IXData } from '../type-node/type-node.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
-import { mustacheNode } from '../shared/util';
+import { mustacheNode } from '../../shared/util';
 import type { ITextNode } from './text-node.interface';
 
 /**
@@ -199,7 +199,7 @@ export class TextNode extends TypeNode implements ITextNode {
     this.parent?.render();
   }
 
-  beforeRender(): void {
+  beforeCreate(): void {
     // todo 渲染前处理
   }
   render(): void {
