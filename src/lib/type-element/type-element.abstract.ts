@@ -18,6 +18,8 @@ import type {
 import { observe } from '../observer/observe';
 import { Observer } from '../observer/observer';
 import { defineReactive } from '../observer/defineReactive';
+import { reactive } from '../reactivity';
+import { UnwrapNestedRefs } from '../reactivity/reactive';
 
 const vHash = Math.round(Math.random() * 1000000);
 
@@ -41,11 +43,13 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   override styleObj: Partial<IStyle>;
   override events: Subscription[];
   config?: Partial<ITypeConfig>;
+  data?: UnwrapNestedRefs<IJsonData>;
   // data$?: XObservable<IJsonData>;
   // override data$?: Observer;
 
   protected constructor() {
     super();
+    this.beforeCreate();
     this.attrObj = {};
     this.styleObj = {};
     this.addAttrObj({
@@ -57,24 +61,24 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.events = [];
   }
 
-  get data(): IJsonData | undefined {
-    if (this._data) {
-      // return createProxy(this._data);
-      return this._data;
-    } else {
-      return undefined
-    }
-  }
-
-  set data(value: IJsonData | undefined) {
-    this._data = value;
-    if (this._data && value) {
-      // this.data$ = observe(value);
-      // this._data['__ob__'] = observe(value);
-      // defineReactive(this, 'data', value, undefined, false, false, true)
-      this._data = createProxy(value);
-    }
-  }
+  // get data(): IJsonData | undefined {
+  //   if (this._data) {
+  //     // return createProxy(this._data);
+  //     return this._data;
+  //   } else {
+  //     return undefined
+  //   }
+  // }
+  //
+  // set data(value: IJsonData | undefined) {
+  //   this._data = value;
+  //   if (this._data && value) {
+  //     // this.data$ = observe(value);
+  //     // this._data['__ob__'] = observe(value);
+  //     // defineReactive(this, 'data', value, undefined, false, false, true)
+  //     this._data = createProxy(value);
+  //   }
+  // }
 
   // 获取包含methods属性的组件
   // 对应到包含template的组件
@@ -199,7 +203,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
     if (config?.data) {
       // this.setDataObservable(config.data);
-      this.data = config.data;
+      this.data = reactive(config.data);
       // console.log('this.data$ is ', this.data$);
     }
   }
@@ -857,32 +861,46 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
 
   /**
    * 生命周期
-   * beforeRender 渲染前
+   * beforeCreate 渲染前
+   * created 渲染前
    * render 渲染
-   * afterRedner 渲染后
+   * afterRender 渲染后
+   * mounted 挂载后
    */
-  beforeRender?(): void;
-
+  beforeCreate() {/**/}
   /**
-   * preRender函数用于在渲染XElement之前进行准备工作。
+   * created函数用于在渲染TypeElement之前进行准备工作。
    * 该函数不接受参数，也不返回任何值。
    * 主要完成以下工作：
-   * 1. 打印日志说明当前处于beforeRender阶段。
+   * 1. 打印日志说明当前处于created阶段。
    * 2. 检查dom属性是否已存在，若不存在，则创建一个新的DOM元素。
-   * 3. 遍历当前XElement的所有属性，对以':'和'@'开头的属性进行特殊处理。
+   * 3. 遍历当前Element的所有属性，对以':'和'@'开头的属性进行特殊处理。
+   */
+  created() {/**/}
+
+  /**
+   * 渲染前拦截，预处理
    */
   preRender() {
-    // console.log('preRender . ');
     // todo nodejs下没有document，Parser可能会用到
     if (!this.dom) {
       this.dom = document.createElement(this.nodeName);
+    }
+    // console.log('preRender . ');
+    if (this.className === 'TdInput') {
+      console.log('this node is TdInput . ');
     }
     for (const [key, value] of Object.entries(this)) {
       // console.log(`${key}: ${value}`);
       if (value instanceof Observer) {
         //   绑定值
-        console.log('key is ', key);
-
+        console.log('Observer key is ', key);
+      }
+      if (value instanceof XProxy) {
+        console.log('XProxy key is ', key);
+        console.log('node is ', this);
+        //   todo 挂载监听
+        this.defineNodeProperty(this, key as keyof TypeNode, value);
       }
     }
   }
@@ -893,9 +911,9 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * WebPage要另外处理
    */
   render(): void {
-    this.preRender();
-    this.beforeRender && this.beforeRender(); // 渲染前处理；
+    this.created && this.created();
     // console.log('this.styleObj is ', this.styleObj);
+    this.preRender();
     this.setStyleObj(this.styleObj);
     this.setAttrObj(this.attrObj);
     this.clearChildrenDom(); // 清理子节点的DOM
@@ -905,7 +923,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       this.renderChild(child);
     }
     // console.log('this.dom is ', this.dom);
-    this.afterRender && this.afterRender(); // 渲染后处理
+    this.mounted && this.mounted(); // 渲染后处理
     this.clearEvents();
     this.initEvents && this.initEvents();
   }
@@ -916,8 +934,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * 如果需要在特定条件下执行渲染完成后的操作，可以实现此函数。
    * 在子类中覆写
    */
-
-  afterRender?(): void;
+  mounted?(): void;
 
   //   todo update 组件更新
 }
