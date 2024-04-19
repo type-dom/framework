@@ -1,4 +1,4 @@
-import { map } from 'rxjs';
+import { map, debounceTime } from 'rxjs';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { currentRoute$, handleRouteChange, RouterView } from './index';
 import type { IRoute } from './route.interface';
@@ -25,12 +25,11 @@ export class Router implements IRouter {
     // console.log('this.routes is ', this.routes);
     // console.log('currentRoute$ is ', currentRoute$);
     currentRoute$
-      .pipe(
+      .pipe(debounceTime(100)) // 防抖处理
+      .subscribe((path) => {
+        console.log('init component path is ', path);
         // 根据路由定位到对应的component（组件）
-        map((path) => this.findMatchingRoute(path))
-      )
-      .subscribe((route) => {
-        // console.log('component is ', route?.component);
+        const route = this.findMatchingRoute(path);
         if (route) {
           if (route.hidden) {
             return;
@@ -40,8 +39,10 @@ export class Router implements IRouter {
             this.navigateTo(route.redirect);
             return;
           }
-          this.loadRoute(route); // 递归渲染父级
+          this.loadRoute(route);
+          // route.component.parent?.render(); // 递归渲染父级
         } else {
+          console.warn('No matching route found for', path);
           throw Error('route is undefined . ');
         }
       });
@@ -50,24 +51,37 @@ export class Router implements IRouter {
   /**
    * 处理嵌套子路由刷新问题
    * 否则，嵌套子路由刷新，页面会为空。因为父级的routerView没有渲染。
-   * @param route
+   * 加载指定的路由。
+   * @param route 路由信息对象，包含路由的组件和父路由信息。
    */
   loadRoute(route: IRoute) {
-    // console.error('renderRoute . ');
-    // console.log('route is ', route);
+    console.error('loadRoute . ');
+    console.log('route is ', route);
+    if (!route || !route.component || !route.component.parent) {
+      // 如果route或其component或component's parent不存在，直接返回
+      return;
+    }
+    // 判断路由组件的父实例是否为RouterView
     const component = route.component;
+    console.log('component is ', component);
     if (component.parent instanceof RouterView) {
       // 经过 mountRouterView后，component.parent对应到具体的RouterView对象。
+      // 如果是RouterView，确保当前路由组件是其唯一子节点
       if (component.parent.firstChild !== component) {
         component.parent.childNodes = [component]; // 切换路由，routerView挂载组件
       }
       if (route.parent) {
-        // console.log('route.parent is ', route.parent);
+        console.log('route.parent is ', route.parent);
         // 直接刷新嵌套路由时需要先渲染上层路由
+        // 如果存在父路由，则先渲染父路由
+        // 递归渲染父路由
         this.loadRoute(route.parent);
       } else {
+        // 当路由为最外层时，触发RouterView的渲染
         // 只在最外层routerView渲染
-        component.parent.render(); // todo 重写 RouterView的render方法 ？？
+        component.parent.render(); // 为什么要parent。
+        // component.render(); // todo 重写 RouterView的render方法 ？？
+        // 注意：这里考虑是否需要重写RouterView的render方法
       }
     }
   }
@@ -77,10 +91,7 @@ export class Router implements IRouter {
    * @param path 路由字符串
    * @param routes
    */
-  findMatchingRoute(
-    path: string,
-    routes: IRoute[] = this.routes
-  ): IRoute | undefined {
+  findMatchingRoute(path: string, routes: IRoute[] = this.routes): IRoute | undefined {
     for (const route of routes) {
       if (route.path === path) {
         return route;
@@ -88,10 +99,7 @@ export class Router implements IRouter {
       if (route.children) {
         // todo 子路由的path是不是应该与父路由组合
         //    完整路径匹配   ---> 相当路径匹配
-        const matchedRoute: IRoute | undefined = this.findMatchingRoute(
-          path,
-          route.children
-        );
+        const matchedRoute: IRoute | undefined = this.findMatchingRoute(path, route.children);
         if (matchedRoute) {
           return matchedRoute;
         }
@@ -110,7 +118,7 @@ export class Router implements IRouter {
       if (component.routerView) {
         route.component.parent = component.routerView;
       } else {
-        console.log('parent.routerView is undefined . ');
+        console.warn('parent.routerView is undefined . ');
       }
       if (route.children) {
         route.children.forEach((child) => {
@@ -123,6 +131,10 @@ export class Router implements IRouter {
 
   navigateTo(path: string) {
     console.log('navigateTo path is ', path);
+    if (typeof path !== 'string' || path.trim() === '') {
+      console.error('Invalid path provided for navigation.');
+      return;
+    }
     window.history.pushState(null, '', path);
     handleRouteChange();
   }
