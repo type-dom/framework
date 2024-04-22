@@ -4,6 +4,8 @@ import { TypeElement } from '../../type-element/type-element.abstract';
 import type { IAttr } from '../../type-node/type-node.interface';
 import { TextNode } from '../../text-node/text-node.class';
 import { IXElement } from './x-element.interface';
+import { createProxy } from '../../observer';
+import { reactive } from '../../reactivity';
 // import { ITypeConfig } from '../../config.interface';
 
 /**
@@ -46,7 +48,7 @@ export class XElement extends TypeElement implements IXElement {
       //   todo 绑定和指令等
       if (config.data) {
         console.log('config.data is ', config.data);
-        item.data = config.data;
+        item.data = reactive(config.data);
       }
       if (config.methods) {
         console.log('config.methods is ', config.methods);
@@ -72,8 +74,8 @@ export class XElement extends TypeElement implements IXElement {
       }) || [];
   }
 
-  override beforeRender(): void {
-    console.log('XElement beforeRender . ');
+  override created(): void {
+    console.log('XElement beforeCreate . ');
     // todo nodejs下没有document，Parser可能会用到
     if (!this.dom) {
       this.dom = document.createElement(this.nodeName);
