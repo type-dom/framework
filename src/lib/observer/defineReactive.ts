@@ -4,7 +4,7 @@ import { isArray, isObject } from '@type-dom/utils';
 
 import { isRef, NO_INITIAL_VALUE } from './util';
 import { dependArray } from './dependArray';
-import { hasChanged } from '../shared/util';
+import { hasChanged } from '../../shared/util';
 
 /**
  * Define a reactive property on an Object.
@@ -19,62 +19,68 @@ export function defineReactive(
   mock?: boolean,
   observeEvenIfShallow = false
 ) {
-  const dep = new Dep()
+  const dep = new Dep();
 
-  const property = Object.getOwnPropertyDescriptor(obj, key)
+  const property = Object.getOwnPropertyDescriptor(obj, key);
   if (property && property.configurable === false) {
-    return
+    return;
   }
 
   // cater for pre-defined getter/setters
-  const getter = property && property.get
-  const setter = property && property.set
+  const getter = property && property.get;
+  const setter = property && property.set;
   if (
     (!getter || setter) &&
     (val === NO_INITIAL_VALUE || arguments.length === 2)
   ) {
     // @ts-ignore
-    val = obj[key]
+    val = obj[key];
   }
 
-  let childOb = shallow ? val && val.__ob__ : (isObject(val) ? observe(val, /*false, mock*/) : val);
+  let childOb = shallow
+    ? val && val.__ob__
+    : isObject(val)
+    ? observe(val, false, mock)
+    : val;
 
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
     get: function reactiveGetter() {
-      const value = getter ? getter.call(obj) : val
+      const value = getter ? getter.call(obj) : val;
+      console.log('reactiveGetter value is ', value);
       if (Dep.target) {
-        dep.depend()
+        dep.depend();
         if (childOb) {
-          childOb.dep.depend()
+          childOb.dep.depend();
           if (isArray(value)) {
-            dependArray(value)
+            dependArray(value);
           }
         }
       }
-      return /*isRef(value) && */ !shallow ? value.value : value
+      return isRef(value) && !shallow ? value.value : value;
     },
     set: function reactiveSetter(newVal) {
-      const value = getter ? getter.call(obj) : val
+      const value = getter ? getter.call(obj) : val;
       if (!hasChanged(value, newVal)) {
-        return
+        return;
       }
       if (setter) {
-        setter.call(obj, newVal)
+        setter.call(obj, newVal);
       } else if (getter) {
         // #7981: for accessor properties without setter
-        return
+        return;
       } else if (!shallow && isRef(value) && !isRef(newVal)) {
-        value.value = newVal
-        return
+        value.value = newVal;
+        return;
       } else {
-        val = newVal
+        val = newVal;
       }
-      childOb = shallow ? newVal && newVal.__ob__ : (isObject(newVal) ? observe(newVal) : newVal) //, false, mock)
-      dep.notify()
-    }
-  })
-
-  return dep
+      childOb = shallow
+        ? newVal && newVal.__ob__
+        : observe(newVal, false, mock);
+      dep.notify();
+    },
+  });
+  return dep;
 }
