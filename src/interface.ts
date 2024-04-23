@@ -19,7 +19,7 @@ export interface IJsonData {
  * - undefined
  * 这个类型用于表示 JSON 对象中的属性值，可以是简单的数据类型，也可以是嵌套的 JSON 对象或数组。
  */
-export type IJsonDataProp = string | number | boolean | undefined | XProxy<IJsonData> | IJsonData | IJsonData[];
+export type IJsonDataProp = string | number | boolean | undefined | XProxy<IJsonData> | IJsonData | IJsonDataProp[];
 
 export interface IObData {
   '__ob__'?: Observer;
@@ -27,3 +27,7 @@ export interface IObData {
 }
 
 export type IObDataProp = string | number | boolean | Observer | IObData | IObData[] | undefined;
+
+// If the type T accepts type "any", output type Y, otherwise output type N.
+// https://stackoverflow.com/questions/49927523/disallow-call-with-any/49928360#49928360
+export type IfAny<T, Y, N> = 0 extends 1 & T ? Y : N
