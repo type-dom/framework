@@ -1,6 +1,15 @@
+import { TypeNode } from '@type-dom/framework';
 import { IObData } from '../../interface';
 import { Observer } from './observer';
-import { isObject } from '@type-dom/utils';
+import { isArray, isObject, isPlainObject } from '@type-dom/utils';
+import { isServerRendering } from '../util';
+import { isRef } from './util';
+
+/**
+ * In some cases we may want to disable observation inside a component's
+ * update computation.
+ */
+export let shouldObserve: boolean = true;
 
 /**
  * Attempt to create an observer instance for a value,
@@ -9,23 +18,24 @@ import { isObject } from '@type-dom/utils';
  */
 export function observe(
   value: IObData,
-  // shallow?: boolean,
-  // ssrMockReactivity?: boolean
+  shallow?: boolean,
+  ssrMockReactivity?: boolean
 ): Observer | undefined {
-  console.log('observe . ');
+  console.log('observe function begins . ');
   if (value && value.__ob__ instanceof Observer) {
-    return value.__ob__
+    return value.__ob__;
   }
-  // if (
-  //   shouldObserve &&
-  //   (
-  //     // ssrMockReactivity ||
-  //     !isServerRendering()) &&
-  //   (isArray(value) || isPlainObject(value)) &&
-  //   Object.isExtensible(value) &&
-  //   !value.__v_skip /* ReactiveFlags.SKIP */// &&
-  //   // !isRef(value) &&
-  //   // !(value instanceof VNode)
-  // ) {
-  return new Observer(value, /*shallow, ssrMockReactivity*/)
+  if (
+    shouldObserve &&
+    (ssrMockReactivity || !isServerRendering()) &&
+    (isArray(value) || isPlainObject(value)) &&
+    Object.isExtensible(value) &&
+    !value.__v_skip /* ReactiveFlags.SKIP */ &&
+    !isRef(value) &&
+    !(value instanceof TypeNode)
+  ) {
+    return new Observer(value, shallow, ssrMockReactivity);
+  } else {
+    return undefined;
+  }
 }

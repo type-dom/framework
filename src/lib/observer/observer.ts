@@ -6,6 +6,7 @@ import { arrayMethods } from './array';
 import { observe } from './observe';
 import { Dep } from './dep';
 import { defineReactive } from './defineReactive';
+import { NO_INITIAL_VALUE } from './util';
 
 
 const arrayKeys = Object.getOwnPropertyNames(arrayMethods);
@@ -59,7 +60,7 @@ export class Observer {
       const keys = Object.keys(target)
       for (let i = 0; i < keys.length; i++) {
         const key = keys[i]
-        // defineReactive(target, key, NO_INITIAL_VALUE, undefined, shallow, mock)
+        defineReactive(target, key, NO_INITIAL_VALUE, undefined, shallow, mock)
       }
     }
   }
@@ -67,7 +68,7 @@ export class Observer {
   /**
    * Observe a list of Array items.
    */
-  observeArray(value: IJsonData[]) {
+  observeArray(value: IObData[]) {
     for (let i = 0, l = value.length; i < l; i++) {
       if (isObject(value[i])) {
         observe(value[i],/* false, this.mock*/)

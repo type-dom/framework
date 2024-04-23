@@ -1,6 +1,6 @@
 // Vue 3 中的简略实现思路
 import { IJsonData, IJsonDataProp } from '../../../interface';
-import { hasChanged, hasOwn } from '../../shared/util';
+import { hasChanged, hasOwn } from '../../../shared/util';
 import { IXProxyHandler } from '../x-proxy/x-proxy.interface';
 import { XProxy } from '../x-proxy/x-proxy.class';
 
