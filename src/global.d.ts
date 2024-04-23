@@ -1,4 +1,4 @@
-// declare const __DEV__: boolean
+// declare const __DEV__ = true;
 // declare const __TEST__: boolean
 // declare const __GLOBAL__: boolean
 //
