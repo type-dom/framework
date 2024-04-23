@@ -1,3 +1,6 @@
+export * from './shared/util';
+export * from './interface';
+export * from './lib/hooks/index';
 export { TypeNode } from './lib/type-node/type-node.abstract';
 export type {
   ITypeNode,
@@ -21,7 +24,8 @@ export * from './lib/type-element';
 export * from './lib/element';
 export * from './lib/parser';
 export * from './lib/router';
-export * from './lib/shared/util';
-export * from './lib/hooks/index';
-export * from './interface';
 export * from './lib/observer/index';
+export * from './lib/reactivity/index';
+export * from './lib/util/index';
+
+
