@@ -122,18 +122,16 @@ export class XElement extends TypeElement implements IXElement {
         if (this.itemMethods !== undefined && attr.value !== undefined) {
           if (this.itemMethods[attr.value]) {
             if (this.dom !== undefined) {
-              this.events.push(
-                // events数组方式方便卸载
-                fromEvent(this.dom, attrName).subscribe((evt) => {
-                  // todo 没有下面的if，则报错 TS2532: Object is possibly undefined
+              this.addEvents({
+                [attrName]: (evt: Event) => {
                   if (
                     this.itemMethods !== undefined &&
                     this.itemMethods[attr.value] !== undefined
                   ) {
                     this.itemMethods[attr.value](evt, this);
                   }
-                })
-              );
+                },
+              });
             } else {
               throw Error('this.dom is undefined . ');
             }
