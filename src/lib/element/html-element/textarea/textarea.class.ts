@@ -4,7 +4,7 @@ import type { ITextarea } from './textarea.interface';
 
 export class Textarea extends TypeTextarea implements ITextarea {
   className: 'TextArea';
-  value: string | number | boolean | undefined;
+  // value: string | number | boolean | undefined;
 
   constructor(config?: Partial<ITypeConfig>) {
     super();
@@ -12,12 +12,15 @@ export class Textarea extends TypeTextarea implements ITextarea {
     this.setConfig(config);
   }
 
-  getValue(): string {
+  get value(): string { // 和 input保持一致
     return this.dom.value; // this.value
   }
 
+  set value(value) {
+    this.dom.value = value;
+  }
   setValue(value: string | number | boolean): void {
-    this.value = value;
+    // this.value = value;
     this.dom.value = String(value);
   }
 }

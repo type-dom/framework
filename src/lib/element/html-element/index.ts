@@ -26,6 +26,8 @@ export { Form } from './form/form.class';
 export type { IForm } from './form/form.interface';
 export { Div } from './div/div.class';
 export type { IDiv } from './div/div.interface';
+export { Head } from './head/head.class';
+export type { IHead } from './head/head.interface';
 export { Header } from './header/header.class';
 export type { IHeader } from './header/header.interface';
 export { Hr } from './hr/hr.class';
