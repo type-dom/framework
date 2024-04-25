@@ -140,6 +140,7 @@ export enum StylePosition {
   relative = 'relative',
   static = 'static',
   inherit = 'inherit',
+  sticky = 'sticky'
 }
 
 /**

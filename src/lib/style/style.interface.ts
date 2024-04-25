@@ -29,6 +29,8 @@ export interface IStyle {
   borderBottomColor: string;
   borderLeftColor: string; // transparent 透明
   borderRadius: string;
+  borderBottomLeftRadius: string;
+  borderBottomRightRadius: string;
   borderTop: string;
   borderRight: string;
   borderBottom: string;
@@ -75,7 +77,7 @@ export interface IStyle {
   // 尺寸 (Dimension)
   width: string | number;
   height: string | number;
-  lineHeight: string; // 设置行高。
+  lineHeight: string | number; // 设置行高。
   maxHeight: string;
   maxWidth: string;
   minHeight: string;
@@ -128,6 +130,8 @@ export interface IStyle {
   right: string;
   bottom: string;
   overflow: string;
+  overflowX: string;
+  overflowY: string;
   clip: string;
   verticalAlign: string; // 上下标  super; sub；
   zIndex: number;
@@ -168,7 +172,6 @@ export interface IStyle {
   alignItems: string;
   transition: string;
   flex: string | number;
-  overflowY: string;
   listStyle: string;
   scrollBehavior: string;
   userSelect: string;
