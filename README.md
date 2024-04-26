@@ -252,7 +252,7 @@ export class AppRoot extends TypeRoot {
       // padding: '10px',
       // border: '10px solid #dddddd',
     });
-    this.events = [];
+    this.subscriptions = [];
     const layout = new Layout();
     this.routerView = layout.routerView;
     this.addChild(layout);
