@@ -34,17 +34,17 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   abstract override dom?: HTMLElement | SVGElement; // 不会是Text；
   abstract override nodeName: string; // 必然有；
   parent?: TypeElement;
-  nodeValue?: undefined;
+  override nodeValue?: undefined;
   // attributes: INodeAttr[];
   childNodes: TypeNode[];
   routerView?: RouterView;
   textNode?: TextNode;
+  config?: Partial<ITypeConfig>;
+  data?: UnwrapNestedRefs<IObData>; // ITypeNode 中设置了
+  // data$?: XObservable<IJsonData>;
   override attrObj: Partial<ITypeAttribute>;
   override styleObj: Partial<IStyle>;
-  override events: Subscription[];
-  config?: Partial<ITypeConfig>;
-  data?: UnwrapNestedRefs<IJsonData>;
-  // data$?: XObservable<IJsonData>;
+  override subscriptions: Subscription[];
   // override data$?: Observer;
 
   protected constructor() {
@@ -58,7 +58,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     // this.nodeName = nodeName;
     this.attributes = [];
     this.childNodes = [];
-    this.events = [];
+    this.subscriptions = [];
   }
 
   // get data(): IJsonData | undefined {
@@ -192,19 +192,19 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     if (config?.styleObj) {
       this.addStyleObj(config.styleObj);
     }
-    if (config?.childNodes) {
-      // 父元素为当前元素，子元素为config.childNodes
-      // config.childNodes.forEach((item) => {
-      //   item.parent = this;
-      //   this.addChild(item);
-      // });
-      // this.childNodes = config.childNodes;
-      this.addChildren(...config.childNodes);
-    }
     if (config?.data) {
       // this.setDataObservable(config.data);
       this.data = reactive(config.data);
       // console.log('this.data$ is ', this.data$);
+    }
+    if (config?.childNodes) {
+      // 父元素为当前元素，子元素为config.childNodes
+      config.childNodes.forEach((item) => {
+        item.parent = this;
+        this.addChild(item);
+      });
+      // this.childNodes = config.childNodes;
+      // this.addChildren(...config.childNodes);
     }
   }
 
@@ -258,12 +258,6 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
 
   setBackgroundColor(backgroundColor: string): void {
     this.setStyleObj({ backgroundColor });
-  }
-
-  initEvents() {
-    if (this.config?.events) {
-      this.addEvents(this.config.events);
-    }
   }
 
   setCursor(cursor: StyleCursor) {
@@ -399,7 +393,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.setStyle('display', 'none');
   }
 
-  // 不影响已有的，但是没有传的属性
+  // 不影响已有的属性，但是没有传的属性
   setAttrObj(attrObj: Partial<ITypeAttribute>): void {
     for (const key in attrObj) {
       if (Object.hasOwnProperty.call(attrObj, key)) {
@@ -551,14 +545,14 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   }
 
   /**
-   *
+   * 添加事件
    */
   addEvents(events: Partial<IEvents>) {
     for (const key in events) {
       const eventFun = events[key as keyof IEvents];
       // if (Object.hasOwnProperty.call(this.config?.events, key)) {
       if (this.dom) {
-        this.events.push(fromEvent(this.dom, key).subscribe((evt) => {
+        this.subscriptions.push(fromEvent(this.dom, key).subscribe((evt) => {
           if (eventFun) {
             eventFun(evt, this);
           }
@@ -566,6 +560,12 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       }
       // }
     }
+  }
+
+  // 移除监听事件
+  clearEvents(): void {
+    this.subscriptions.map((item) => item.unsubscribe());
+    this.subscriptions = [];
   }
 
   /**
@@ -808,12 +808,6 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     return this.childNodes.findIndex((item) => item === child);
   }
 
-  // 移除监听
-  clearEvents(): void {
-    this.events.map((item) => item.unsubscribe());
-    this.events = [];
-  }
-
   /**
    * 默认初始化方法
    * 清理多余的对象。
@@ -906,6 +900,19 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   }
 
   /**
+   * 初始化事件钩子
+   * setConfig 时，dom可能还没有创建；
+   */
+  preEvents() {
+    this.clearEvents();
+    if (this.config?.events) {
+      this.addEvents(this.config.events);
+    }
+  }
+
+  initEvents?(): void;
+
+  /**
    * 渲染方法
    * 要调用 this.clearChildDom
    * WebPage要另外处理
@@ -924,7 +931,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
     // console.log('this.dom is ', this.dom);
     this.mounted && this.mounted(); // 渲染后处理
-    this.clearEvents();
+    this.preEvents();
     this.initEvents && this.initEvents();
   }
 

@@ -1,8 +1,9 @@
 /**
  * 虚拟dom的数据结构字面量接口。
  */
-import type { IAttr, ITypeNode } from '../type-node/type-node.interface';
+import type { IAttr, IEvents, ITypeNode } from '../type-node/type-node.interface';
 import type { IStyle } from '../style/style.interface';
+import { Subscription } from 'rxjs';
 // import {
 //   A,
 //   Area,
@@ -75,6 +76,9 @@ export interface ITypeElement extends ITypeNode {
   nodeValue?: undefined;
   attrObj: Partial<ITypeAttribute>;
   styleObj: Partial<IStyle>;
+  // 绑定的事件集合, TypeElement 才有
+  // events?: Partial<IEvents>;
+  subscriptions?: Subscription[];
   childNodes: Array<ITypeNode>; // contents
 }
 
