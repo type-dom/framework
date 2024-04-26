@@ -5,6 +5,7 @@ import { TextNode } from '../text-node/text-node.class';
 import { TypeNode } from './type-node.abstract';
 import { IJsonData, type IJsonDataProp, IObData } from '../../interface';
 import { UnwrapNestedRefs } from '../reactivity/reactive';
+import { Subscription } from 'rxjs';
 
 export interface IAttr {
   name: string;
@@ -95,6 +96,14 @@ export interface ITypeNode {
    * 样式对象。
    */
   styleObj?: Partial<IStyle>;
+  /**
+   * 绑定的事件集合,转化为 subscriptions;
+   * 在构造函数中设置；
+   * 与 addEvents方法配合；
+   * initEvents 钩子 调用
+   */
+  events?: Partial<IEvents>;
+  subscriptions?: Subscription[];
   // TextNode 没有 childNodes
   childNodes?: ITypeNode[];
   /**
@@ -102,10 +111,10 @@ export interface ITypeNode {
    * 标签必须闭合， 如 <input /> 这样才能闭合。
    */
   template?: string; // 模板 默认TypeClass为XElement
-  data?: UnwrapNestedRefs<IJsonData>; // 数据
+  data?: UnwrapNestedRefs<IObData>; // 数据  ITypeConfig 需要继承
   // 绑定的事件集合, TypeElement 才有
-  // 生成json时，基于events生成；
-  // 反向转为类时，要转为events的值
+  // 生成json时，subscriptions；
+  // 反向转为类时，要转为subscriptions的值
   methods?: IMethods;
   settings?: ISettings; // config不会转为json
   // type?: string;
@@ -145,7 +154,7 @@ export interface IOptionSetting extends ISettings {
 export interface IEvents {
   abort: (evt?: Event, element?: TypeElement) => void;
   blur: (evt?: Event, element?: TypeElement) => void;
-  change: (evt?: Event, element?: TypeElement) => void;
+  change: (evt?: Event, element?: TypeElement) => void; // newValue = evt.target.value
   click: (evt?: Event, element?: TypeElement) => void;
   // canplay: (evt?: Event, element?: TypeElement) => void;
   // canplaythrough: (evt?: Event, element?: TypeElement) => void;

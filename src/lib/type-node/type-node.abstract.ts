@@ -47,7 +47,7 @@ export abstract class TypeNode implements ITypeNode {
   _data?: IJsonData; // IObData;
   methods?: IMethods;
   template?: string;
-  events?: Subscription[];
+  subscriptions?: Subscription[];
   // data$?: XObservable<IXProxyConfig>
   // data$?: Observer;
   /**
