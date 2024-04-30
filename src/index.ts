@@ -1,7 +1,7 @@
 export * from './shared/util';
 export * from './interface';
-export * from './lib/hooks/index';
-export { TypeNode } from './lib/type-node/type-node.abstract';
+export * from './hooks/index';
+export { TypeNode } from './core/type-node/type-node.abstract';
 export type {
   ITypeNode,
   IAttr,
@@ -11,21 +11,21 @@ export type {
   ISettings,
   IOptionSetting,
   IOptionConfig,
-} from './lib/type-node/type-node.interface';
-export type { IStyle } from './lib/style/style.interface';
-export * from './lib/style/style.enum';
-export { XNode } from './lib/x-node/x-node.class';
-export type { IXNode } from './lib/x-node/x-node.interface';
-export { TextNode } from './lib/text-node/text-node.class';
-export type { ITextNode } from './lib/text-node/text-node.interface';
-export { TypeRoot } from './lib/type-root/type-root.abstract';
-export type * from './lib/type-root/type-root.interface';
-export * from './lib/type-element';
-export * from './lib/element';
-export * from './lib/parser';
-export * from './lib/router';
-export * from './lib/observer/index';
-export * from './lib/reactivity/index';
-export * from './lib/util/index';
+} from './core/type-node/type-node.interface';
+export type { IStyle } from './core/style/style.interface';
+export * from './core/style/style.enum';
+export { XNode } from './core/x-node/x-node.class';
+export type { IXNode } from './core/x-node/x-node.interface';
+export { TextNode } from './core/text-node/text-node.class';
+export type { ITextNode } from './core/text-node/text-node.interface';
+export { TypeRoot } from './core/type-root/type-root.abstract';
+export type * from './core/type-root/type-root.interface';
+export * from './core/type-element';
+export * from './core/element';
+export * from './parser';
+export * from './router';
+export * from './observer/index';
+export * from './reactivity/index';
+export * from './util/index';
 
 
