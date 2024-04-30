@@ -1,5 +1,5 @@
-import { Observer } from './lib/observer/observer';
-import { XProxy } from './lib/observer/x-proxy/x-proxy.class';
+import { Observer } from './observer/observer';
+import { XProxy } from './observer/x-proxy/x-proxy.class';
 
 export type IPrimitive = null | undefined | string | number | boolean | symbol | bigint;
 type IBrowserNativeObject = Date | FileList | File | Blob | RegExp;
