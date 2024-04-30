@@ -1,8 +1,8 @@
 import { deepClone } from '@type-dom/utils';
-import { TypeElement } from '../lib/type-element/type-element.abstract';
-import type { ITypeElement } from '../lib/type-element/type-element.interface';
-import type { ITextNode } from '../lib/text-node/text-node.interface';
-import { ITypeNode } from '../lib/type-node/type-node.interface';
+import { TypeElement } from '../core/type-element/type-element.abstract';
+import type { ITypeElement } from '../core/type-element/type-element.interface';
+import type { ITextNode } from '../core/text-node/text-node.interface';
+import { ITypeNode } from '../core/type-node/type-node.interface';
 import { IJsonData, IJsonDataProp } from '../interface';
 
 /**
