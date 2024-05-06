@@ -2,12 +2,13 @@ import { BehaviorSubject } from 'rxjs';
 import { IJsonData } from '../interface';
 import { XProxy } from './x-proxy/x-proxy.class';
 
-
 export class XObservable<T extends IJsonData> {
+  originalData: T;
   _subject: BehaviorSubject<T>;
   _data: XProxy<T>;
 
   constructor(data: T) {
+    this.originalData = data;
     this._subject = new BehaviorSubject<T>(data);
     this._data = new XProxy<T>(data, {
       set: (target, key, value) => {
