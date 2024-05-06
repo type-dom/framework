@@ -218,6 +218,8 @@ export interface IEvents {
 // 参数为 ITypeConfig
 export interface ITypeConfig extends ITypeNode {
   name?: string;
+  // 当前对象引用
+  ref?: any;
   text?: string; // 只是简单的添加一个文本节点时用，
   // todo 可能是类实例对象；也可能是json对象；
   childNodes?: (TypeElement | TextNode)[];
