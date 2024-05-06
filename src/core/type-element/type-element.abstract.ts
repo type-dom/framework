@@ -1,6 +1,6 @@
 import { fromEvent, Subscription } from 'rxjs';
-import { humpToMiddleLine, isNumber } from '@type-dom/utils';
-import { IJsonData, IObData } from '../../interface';
+import { humpToMiddleLine, isNumber, isStringNumber } from '@type-dom/utils';
+import { IJsonData, IJsonDataProp, IObData, IPrimitive } from '../../interface';
 import { RouterView } from '../../router/router-view/router-view.class';
 import { createProxy, XProxy } from '../../observer/x-proxy/x-proxy.class';
 import { Observer } from '../../observer/observer';
@@ -43,6 +43,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   override styleObj: Partial<IStyle>;
   override subscriptions: Subscription[];
   // override data$?: Observer;
+  modelValue?: IJsonDataProp;
 
   protected constructor() {
     super();
@@ -169,6 +170,9 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     if (config?.parent) {
       this.parent = config.parent;
     }
+    if (config?.ref !== undefined) {
+      config.ref.value = this;
+    }
     if (config?.name) {
       this.addAttrName(config.name);
     }
@@ -229,14 +233,14 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   }
 
   setWidth(width: string | number): void {
-    if (isNumber(width)) {
+    if (isNumber(width) || isStringNumber(width)) {
       width = width + 'px';
     }
     this.setStyleObj({ width });
   }
 
   addHeight(height: string | number): void {
-    if (isNumber(height)) {
+    if (isNumber(height) || isStringNumber(height)) {
       height = height + 'px';
     }
     this.addStyleObj({ height });
@@ -365,6 +369,13 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   }
 
   renderStyle(key: keyof IStyle, value: string | number | boolean): void {
+    // todo width height 等属性是数字时的处理
+    //    padding margin 等类似的数字值的处理
+    if (key === 'width' || key === 'height') {
+      if (isNumber(value) || isStringNumber(value)) {
+        value = value + 'px';
+      }
+    }
     this.dom?.style.setProperty(humpToMiddleLine(key), String(value)); // 要转中划线
   }
 
@@ -827,6 +838,12 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
   }
 
+  setPropValue(key: keyof this, value: IJsonDataProp) {
+    const propValue = this[key];
+    if (propValue instanceof XProxy) {
+      propValue.setValue(value);
+    }
+  }
   /**
    * 挂载到真实DOM；
    * 需要手动挂载组件时使用，一般是挂载到框架外的DOM元素时。
@@ -890,8 +907,9 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       if (value instanceof XProxy) {
         console.log('XProxy key is ', key);
         console.log('node is ', this);
+        value.addDep(this, (key, value) => this?.setPropValue(key, value));
         //   todo 挂载监听
-        this.defineNodeProperty(this, key as keyof TypeNode, value);
+        // this.defineNodeProperty(this, key as keyof TypeNode, value);
       }
     }
   }
