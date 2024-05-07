@@ -28,9 +28,11 @@ export interface IStyle {
   borderRightColor: string;
   borderBottomColor: string;
   borderLeftColor: string; // transparent 透明
-  borderRadius: string;
-  borderBottomLeftRadius: string;
-  borderBottomRightRadius: string;
+  borderRadius: string | number;
+  borderTopLeftRadius: string | number;
+  borderTopRightRadius: string | number;
+  borderBottomLeftRadius: string | number;
+  borderBottomRightRadius: string | number;
   borderTop: string;
   borderRight: string;
   borderBottom: string;
@@ -78,9 +80,9 @@ export interface IStyle {
   width: string | number;
   height: string | number;
   lineHeight: string | number; // 设置行高。
-  maxHeight: string;
-  maxWidth: string;
-  minHeight: string;
+  maxHeight: string | number;
+  maxWidth: string | number;
+  minHeight: string | number;
   minWidth: string | number;
 
   // 文本 text
