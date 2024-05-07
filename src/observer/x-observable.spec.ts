@@ -1,4 +1,3 @@
-import { IJsonData } from '../../interface';
 // import { observe } from './index';
 import { Watcher } from './watcher';
 import { XObservable } from './x-observable.class';
