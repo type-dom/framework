@@ -39,6 +39,9 @@ export function defineProxyProperty(proxy: XProxy<IJsonData>, key: string, value
     },
     set(newValue) {
       console.log(`拦截到了对属性 "${key}" 的赋值操作，新值为：`, newValue);
+      if (key === 'dom') {
+        return; // dom 对象要排除
+      }
       // 自定义逻辑...
       const obj = source;
       // 调用 handler 的 set 方法（如果已实现）

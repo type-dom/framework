@@ -3,7 +3,7 @@ import { IJsonData, IJsonDataProp } from '../../interface';
 import { Observer } from '../observer';
 
 export interface IXProxy<T extends IJsonData> extends IJsonData {
-  _target: T;
+  // _target: T;
   __ob__?: Observer;
   // [propName: string]: string | number | boolean | IXProxy | IJsonData | undefined;
   [propName: string]:  T | Observer | IJsonDataProp | IXProxyHandler<T> | any;
