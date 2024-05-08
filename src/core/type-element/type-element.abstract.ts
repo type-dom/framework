@@ -1,8 +1,8 @@
 import { fromEvent, Subscription } from 'rxjs';
 import { humpToMiddleLine, isNumber, isStringNumber } from '@type-dom/utils';
-import { IJsonData, IJsonDataProp, IObData, IPrimitive } from '../../interface';
+import { IJsonDataProp, IObData } from '../../interface';
 import { RouterView } from '../../router/router-view/router-view.class';
-import { createProxy, XProxy } from '../../observer/x-proxy/x-proxy.class';
+import { XProxy } from '../../observer/x-proxy/x-proxy.class';
 import { Observer } from '../../observer/observer';
 import { reactive } from '../../reactivity';
 import { UnwrapNestedRefs } from '../../reactivity/reactive';
@@ -47,7 +47,6 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
 
   protected constructor() {
     super();
-    this.beforeCreate();
     this.attrObj = {};
     this.styleObj = {};
     this.addAttrObj({
@@ -589,6 +588,11 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     // this.dom.appendChild(newChild.render().dom);
   }
 
+  appendChildren(...newChildren: Array<TypeNode>) {
+    for(const child of newChildren) {
+      this.appendChild(child);
+    }
+  }
   /**
    * 从前面添加子元素
    * @param newChild
@@ -842,6 +846,11 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     const propValue = this[key];
     if (propValue instanceof XProxy) {
       propValue.setValue(value);
+      if (key === 'modelValue') {
+        // debugger;
+        console.log('propValue is ', propValue);
+        (this as any)?.setModelValue(value);
+      }
     }
   }
   /**
@@ -907,7 +916,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       if (value instanceof XProxy) {
         console.log('XProxy key is ', key);
         console.log('node is ', this);
-        value.addDep(this, (key, value) => this?.setPropValue(key, value));
+        value.addDep(this, () => this.setPropValue(key as keyof this, value.value));
         //   todo 挂载监听
         // this.defineNodeProperty(this, key as keyof TypeNode, value);
       }
