@@ -3,6 +3,7 @@ import { IJsonData, IJsonDataProp } from '../../interface';
 import { IXProxy, IXProxyHandler } from './x-proxy.interface';
 import { TypeElement } from '../../core/type-element';
 import { BehaviorSubject, debounceTime, Subscription } from 'rxjs';
+import { TextNode } from '../../core/text-node/text-node.class';
 
 export class XProxy<T extends IJsonData> implements IXProxy<T> {
   _target: T;
@@ -114,7 +115,7 @@ export class XProxy<T extends IJsonData> implements IXProxy<T> {
   setValue(value: IJsonDataProp) {
     this.value = value;
   }
-  addDep(element: TypeElement, callback: (...rest: any[]) => void) {
+  addDep(element: TypeElement | TextNode, callback: (...rest: any[]) => void) {
     console.log('x-proxy addDep . ');
     this._subs.push(this._subject.subscribe(callback));
   }
