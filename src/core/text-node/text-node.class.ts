@@ -4,6 +4,8 @@ import { IXData } from '../type-node/type-node.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { mustacheNode } from '../../shared/util';
 import type { ITextNode } from './text-node.interface';
+import { XProxy } from '../../observer';
+import { IJsonData } from '../../interface';
 
 /**
  * 文本节点类
@@ -46,22 +48,31 @@ export class TextNode extends TypeNode implements ITextNode {
    * @param text 文本内容，默认为 '\u200c'
    * @param parent 父级节点
    */
-  constructor(text = '\u200c', parent?: TypeElement) {
+  constructor(text: string | XProxy<IJsonData> = '\u200c', parent?: TypeElement) {
     // \u200c
     super();
+    this.beforeCreate();
     this.className = 'TextNode';
     this.nodeName = '#text';
-    this.nodeValue = text;
+    if (text instanceof XProxy) {
+      this.nodeValue = text.value;
+      text.addDep(this, (newValue: string) => {
+        console.error('TextNode addDep newValue is ', newValue);
+        this.setText(newValue);
+      })
+    } else {
+      this.nodeValue = text;
+      if (isMustache(text)) {
+        //   todo 订阅 dataItem 变化
+        if (this.itemData) {
+          this.itemData.data$.subscribe((data: IXData) => {
+            this.render();
+          })
+        }
+      }
+    }
     if (parent) {
       this.parent = parent;
-    }
-    if (isMustache(text)) {
-    //   todo 订阅 dataItem 变化
-      if (this.itemData) {
-        this.itemData.data$.subscribe((data: IXData) => {
-          this.render();
-        })
-      }
     }
   }
 
@@ -101,8 +112,12 @@ export class TextNode extends TypeNode implements ITextNode {
    *
    * @param text 文本内容
    */
-  setText(text: string): void {
-    this.nodeValue = text;
+  setText(text: string | XProxy<IJsonData>): void {
+    if (text instanceof XProxy) {
+      this.nodeValue = text.value;
+    } else {
+      this.nodeValue = text;
+    }
     this.render();
   }
 
