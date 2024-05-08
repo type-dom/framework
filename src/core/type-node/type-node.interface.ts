@@ -3,9 +3,10 @@ import { TypeElement } from '../type-element/type-element.abstract';
 import { IStyle } from '../style/style.interface';
 import { TextNode } from '../text-node/text-node.class';
 import { TypeNode } from './type-node.abstract';
-import { IJsonData, type IJsonDataProp, IObData } from '../../interface';
+import { IJsonData, type IJsonDataProp, IObData, IPrimitive } from '../../interface';
 import { UnwrapNestedRefs } from '../../reactivity/reactive';
 import { Subscription } from 'rxjs';
+import { XProxy } from '../../observer';
 
 export interface IAttr {
   name: string;
@@ -219,8 +220,8 @@ export interface IEvents {
 export interface ITypeConfig extends ITypeNode {
   name?: string;
   // 当前对象引用
-  ref?: any;
-  text?: string; // 只是简单的添加一个文本节点时用，
+  ref?: XProxy<IJsonData>;
+  text?: string | XProxy<IJsonData>; // 只是简单的添加一个文本节点时用，
   // todo 可能是类实例对象；也可能是json对象；
   childNodes?: (TypeElement | TextNode)[];
   // 设置子元素的属性，并根据属性创建子元素；
