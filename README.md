@@ -228,8 +228,7 @@ npm install @type-dom/framework
 Create a hello world page to app:
 
 ```app-root.ts
-import { TypeRoot } from '@type-dom/framework';
-import type { ITypeNode } from '@type-dom/framework';
+import { TypeRoot, type ITypeNode } from '@type-dom/framework';
 import { router } from '../router';
 import { Layout } from '../layout/layout.class';
 
