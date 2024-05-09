@@ -1,4 +1,3 @@
-import { fromEvent } from 'rxjs';
 import { Parser } from '../../../parser/parser.class';
 import { TypeElement } from '../../type-element/type-element.abstract';
 import type { IAttr } from '../../type-node/type-node.interface';
