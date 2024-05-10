@@ -16,7 +16,6 @@ import type {
   IBoundBox,
   ITypeElement
 } from './type-element.interface';
-// import { Observer } from '../observer/observer';
 
 const vHash = Math.round(Math.random() * 1000000);
 
