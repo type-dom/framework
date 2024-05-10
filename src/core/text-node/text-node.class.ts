@@ -1,11 +1,11 @@
 import { isMustache, mustache } from '@type-dom/utils';
+import { XProxy } from '../../observer';
+import { IJsonData } from '../../interface';
+import { mustacheNode } from '../../shared/util';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { IXData } from '../type-node/type-node.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
-import { mustacheNode } from '../../shared/util';
 import type { ITextNode } from './text-node.interface';
-import { XProxy } from '../../observer';
-import { IJsonData } from '../../interface';
 
 /**
  * 文本节点类
