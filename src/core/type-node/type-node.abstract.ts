@@ -1,12 +1,12 @@
 import { Subscription } from 'rxjs';
 import { encodeToXmlString, humpToMiddleLine } from '@type-dom/utils';
-import { IJsonData, type IJsonDataProp, IObData } from '../../interface';
+import { IJsonData, type IJsonDataProp } from '../../interface';
 import { XProxy } from '../../observer';
 import type { ITypeAttribute } from '../type-element/type-element.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { IStyle } from '../style/style.interface';
 
-import type { IAttr, IMethods, INodeHandler, ISetting, ISettings, ITypeNode } from './type-node.interface';
+import type { IAttr, IMethods, ISetting, ISettings, ITypeNode } from './type-node.interface';
 
 /**
  * 虚拟DOM，TypeNode 抽象节点类, 所有节点类的抽象类；
@@ -22,7 +22,7 @@ export abstract class TypeNode implements ITypeNode {
    * 在定义ClassName时，要把当前类写入到TypeMap中；
    */
   abstract className?: string; // 最终实体类的名称，解析转换时需要创建对应的类；
-  abstract nodeName?: string;
+  abstract nodeName?: '#text' | string;
   abstract nodeValue?: string | undefined;
   abstract childNodes?: TypeNode[];
   abstract dom?: HTMLElement | SVGElement | Text;
