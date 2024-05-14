@@ -15,7 +15,7 @@ import { Dep } from '../observer/dep';
 import { def, isServerRendering, warn } from '../util';
 import { defineReactive } from '../observer/defineReactive';
 import { TrackOpTypes, TriggerOpTypes } from '../operations';
-import { __DEV__ } from '../core/config';
+import { __DEV__ } from '../config';
 
 declare const RefSymbol: unique symbol
 export declare const RawSymbol: unique symbol

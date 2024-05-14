@@ -12,7 +12,7 @@ import { Observer } from '../observer/observer';
 import { def, isServerRendering, warn } from '../util';
 import { isArray, isPrimitive, toRawType } from '@type-dom/utils';
 import { observe } from '../observer/observe';
-import { __DEV__ } from '../core/config';
+import { __DEV__ } from '../config';
 
 export const enum ReactiveFlags {
   SKIP = '__v_skip',
