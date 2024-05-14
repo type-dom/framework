@@ -4,7 +4,7 @@ import { IJsonData, type IJsonDataProp } from '../../interface';
 import { XProxy } from '../../observer';
 import type { ITypeAttribute } from '../type-element/type-element.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
-import { IStyle } from '../style/style.interface';
+import { IStyle } from '../../style/style.interface';
 
 import type { IAttr, IMethods, ISetting, ISettings, ITypeNode } from './type-node.interface';
 
@@ -24,9 +24,9 @@ export abstract class TypeNode implements ITypeNode {
   abstract className?: string; // 最终实体类的名称，解析转换时需要创建对应的类；
   abstract nodeName?: '#text' | string;
   abstract nodeValue?: string | undefined;
-  abstract childNodes?: TypeNode[];
+  abstract childNodes?: TypeNode[] | undefined;
   abstract dom?: HTMLElement | SVGElement | Text;
-  abstract parent?: TypeElement;
+  abstract parent?: TypeElement | undefined;
   isContext?: boolean;
 
   /**
@@ -43,7 +43,7 @@ export abstract class TypeNode implements ITypeNode {
   settings?: ISettings;
   _data?: IJsonData; // IObData;
   methods?: IMethods;
-  template?: string;
+  template?: string | undefined;
   subscriptions?: Subscription[];
   // data$?: XObservable<IXProxyConfig>
   // data$?: Observer;

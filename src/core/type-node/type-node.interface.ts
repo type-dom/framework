@@ -1,6 +1,6 @@
 import type { ITypeAttribute } from '../type-element/type-element.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
-import { IStyle } from '../style/style.interface';
+import { IStyle } from '../../style/style.interface';
 import { TextNode } from '../text-node/text-node.class';
 import { TypeNode } from './type-node.abstract';
 import { IJsonData, type IJsonDataProp, IObData, IPrimitive } from '../../interface';
