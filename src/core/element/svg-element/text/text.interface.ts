@@ -14,7 +14,7 @@ import type {
   ITypeElement
 } from '../../../type-element/type-element.interface';
 import { ITypeConfig } from '../../../type-node/type-node.interface';
-import { IStyle } from '../../../style/style.interface';
+import { IStyle } from '../../../../style/style.interface';
 
 export interface ISvgTextStyle extends Partial<IStyle> {
   fontFamily?: string; // rgb(0,0,255) blue

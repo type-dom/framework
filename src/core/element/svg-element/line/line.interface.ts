@@ -2,7 +2,7 @@ import type {
   ITypeAttribute
 } from '../../../type-element/type-element.interface';
 import type { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
-import type { IStyle } from '../../../style/style.interface';
+import type { IStyle } from '../../../../style/style.interface';
 
 /**
  * x1 属性在 x 轴定义线条的开始
