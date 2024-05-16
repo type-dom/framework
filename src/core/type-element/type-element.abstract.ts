@@ -9,8 +9,8 @@ import { UnwrapNestedRefs } from '../../reactivity/reactive';
 import type { IEvents, ITypeConfig } from '../type-node/type-node.interface';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TextNode } from '../text-node/text-node.class';
-import { StyleCursor, StyleDisplay } from '../style/style.enum';
-import type { IStyle } from '../style/style.interface';
+import { StyleCursor, StyleDisplay } from '../../style/style.enum';
+import type { IStyle } from '../../style/style.interface';
 import type {
   ITypeAttribute,
   IBoundBox,

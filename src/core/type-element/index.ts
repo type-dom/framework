@@ -7,6 +7,6 @@ export type { ITypeSvg } from './type-svg/type-svg.interface';
 export { TypeSvgSvg } from './type-svg/svg/svg.abstract';
 export type { ITypeSvgSvg } from './type-svg/svg/svg.interface';
 export * from './type-html';
-export type { HtmlTypes } from './HtmlTypes';
+// export type { HtmlTypes } from './HtmlTypes';
 export { TypeElement } from './type-element.abstract';
 export type * from './type-element.interface';
