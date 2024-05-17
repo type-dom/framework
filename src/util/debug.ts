@@ -5,7 +5,7 @@
 // import { getComponentName } from '../vdom/create-component'
 
 
-import { __DEV__, config } from '../core/config';
+import { __DEV__, config } from '../config';
 import type { TypeNode as Component } from '../core/type-node/type-node.abstract';
 export let warn: (msg: string, vm?: Component | null) => void = noop
 export let tip = noop
