@@ -1,5 +1,5 @@
 // 下面是Vue3的源码
-import { config } from '../core/config';
+import { config } from '../config';
 import { DebuggerOptions, DebuggerEventExtraInfo } from '../debug';
 import { Watcher } from './watcher';
 //
