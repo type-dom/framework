@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import type { ITypeAttribute } from '../type-element/type-element.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { IStyle } from '../../style/style.interface';
@@ -5,8 +6,8 @@ import { TextNode } from '../text-node/text-node.class';
 import { TypeNode } from './type-node.abstract';
 import { IJsonData, type IJsonDataProp, IObData, IPrimitive } from '../../interface';
 import { UnwrapNestedRefs } from '../../reactivity/reactive';
-import { Subscription } from 'rxjs';
 import { XProxy } from '../../observer';
+import { IEvents } from '../../events/events.interface';
 
 export interface IAttr {
   name: string;
@@ -152,70 +153,6 @@ export interface IOptionSetting extends ISettings {
   options: IOptionSet[];
 }
 
-export interface IEvents {
-  abort: (evt?: Event, element?: TypeElement) => void;
-  blur: (evt?: Event, element?: TypeElement) => void;
-  change: (evt?: Event, element?: TypeElement) => void; // newValue = evt.target.value
-  click: (evt?: Event, element?: TypeElement) => void;
-  // canplay: (evt?: Event, element?: TypeElement) => void;
-  // canplaythrough: (evt?: Event, element?: TypeElement) => void;
-  compositionstart: (evt?: Event, element?: TypeElement) => void;
-  compositionupdate: (evt?: Event, element?: TypeElement) => void;
-  compositionend: (evt?: Event, element?: TypeElement) => void;
-  // durationchange: (evt?: Event, element?: TypeElement) => void;
-  // emptied: (evt?: Event, element?: TypeElement) => void;
-  // ended: (evt?: Event, element?: TypeElement) => void;
-  focus: (evt?: Event, element?: TypeElement) => void;
-  dblclick: (evt?: Event, element?: TypeElement) => void;
-  // contextmenu: (evt?: Event, element?: TypeElement) => void;
-  drag: (evt?: Event, element?: TypeElement) => void;
-  dragend: (evt?: Event, element?: TypeElement) => void;
-  dragenter: (evt?: Event, element?: TypeElement) => void;
-  // dragexit: (evt?: Event, element?: TypeElement) => void;
-  dragleave: (evt?: Event, element?: TypeElement) => void;
-  dragover: (evt?: Event, element?: TypeElement) => void;
-  dragstart: (evt?: Event, element?: TypeElement) => void;
-  drop: (evt?: Event, element?: TypeElement) => void;
-  input: (evt?: Event, element?: TypeElement) => void;
-  // inputenter: (evt?: InputEvent, element?: TypeElement) => void;
-  // invalid: (evt?: Event, element?: TypeElement) => void;
-  keydown: (evt?: Event, element?: TypeElement) => void;
-  keyup: (evt?: Event, element?: TypeElement) => void;
-  keypress: (evt?: Event, element?: TypeElement) => void;
-  // keypressenter: (evt?: Event, element?: TypeElement) => void;
-  load: (evt?: Event, element?: TypeElement) => void;
-  // loadeddata: (evt?: Event, element?: TypeElement) => void;
-  // loadedmetadata: (evt?: Event, element?: TypeElement) => void;
-  // loadstart: (evt?: Event, element?: TypeElement) => void;
-  mousedown: (evt?: Event, element?: TypeElement) => void;
-  mouseenter: (evt?: Event, element?: TypeElement) => void;
-  mouseleave: (evt?: Event, element?: TypeElement) => void;
-  mousemove: (evt?: Event, element?: TypeElement) => void;
-  mouseout: (evt?: Event, element?: TypeElement) => void;
-  mouseover: (evt?: Event, element?: TypeElement) => void;
-  mouseup: (evt?: Event, element?: TypeElement) => void;
-  mousewheel: (evt?: Event, element?: TypeElement) => void;
-  // mspointerdown: (evt?: Event, element?: TypeElement) => void;
-  // mspointermove: (evt?: Event, element?: TypeElement) => void;
-  // mspointerup: (evt?: Event, element?: TypeElement) => void;
-  // pointerdown: (evt?: Event, element?: TypeElement) => void;
-  // pointermove: (evt?: Event, element?: TypeElement) => void;
-  // pointerup: (evt?: Event, element?: TypeElement) => void;
-  // pointercancel: (evt?: Event, element?: TypeElement) => void;
-  // pointerover: (evt?: Event, element?: TypeElement) => void;
-  // pointerout: (evt?: Event, element?: TypeElement) => void;
-  // pointerenter: (evt?: Event, element?: TypeElement) => void;
-  // pointerleave: (evt?: Event, element?: TypeElement) => void;
-  select: (evt?: Event, element?: TypeElement) => void;
-  touchcancel: (evt?: Event, element?: TypeElement) => void;
-  touchend: (evt?: Event, element?: TypeElement) => void;
-  touchmove: (evt?: Event, element?: TypeElement) => void;
-  touchstart: (evt?: Event, element?: TypeElement) => void;
-  // touchevent: (evt?: Event, element?: TypeElement) => void;
-  // wheel: (evt?: Event, element?: TypeElement) => void;
-  scroll: (evt?: Event, element?: TypeElement) => void;
-}
-
 // 参数为 ITypeConfig
 export interface ITypeConfig extends ITypeNode {
   name?: string;
@@ -226,8 +163,6 @@ export interface ITypeConfig extends ITypeNode {
   childNodes?: (TypeElement | TextNode)[];
   // 设置子元素的属性，并根据属性创建子元素；
   items?: ITypeConfig[];
-  // 事件集合，key为事件名，value为回调函数
-  events?: Partial<IEvents>
 }
 
 export interface IOptionConfig extends ITypeConfig {
