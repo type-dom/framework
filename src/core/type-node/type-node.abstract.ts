@@ -2,10 +2,9 @@ import { Subscription } from 'rxjs';
 import { encodeToXmlString, humpToMiddleLine } from '@type-dom/utils';
 import { IJsonData, type IJsonDataProp } from '../../interface';
 import { XProxy } from '../../observer';
+import { IStyle } from '../../style/style.interface';
 import type { ITypeAttribute } from '../type-element/type-element.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
-import { IStyle } from '../../style/style.interface';
-
 import type { IAttr, IMethods, ISetting, ISettings, ITypeNode } from './type-node.interface';
 
 /**
