@@ -1,4 +1,4 @@
-import { ITypeConfig } from '../../../type-node/type-node.interface';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TypeSummary } from '../../../type-element/type-html/summary/summary.abstract';
 import type { ISummary } from './summary.interface';
 
