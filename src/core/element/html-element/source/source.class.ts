@@ -1,4 +1,4 @@
-import { ITypeConfig } from '../../../type-node/type-node.interface';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TypeSource } from '../../../type-element/type-html/source/source.abstract';
 import type { ISource } from './source.interface';
 
