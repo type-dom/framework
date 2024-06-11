@@ -1,4 +1,4 @@
-import { ITypeConfig } from '../../../type-node/type-node.interface';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TypeRuby } from '../../../type-element/type-html/ruby/ruby.abstract';
 import type { IRuby } from './ruby.interface';
 
