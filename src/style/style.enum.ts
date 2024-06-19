@@ -78,6 +78,7 @@ export enum StyleAlignItems {
   revertLayer = 'revert-layer',
   unset = 'unset',
 }
+
 /**
  * Valid    value  Description
  * auto      Automatically Determined Line Height
@@ -140,7 +141,7 @@ export enum StylePosition {
   relative = 'relative',
   static = 'static',
   inherit = 'inherit',
-  sticky = 'sticky'
+  sticky = 'sticky',
 }
 
 /**
