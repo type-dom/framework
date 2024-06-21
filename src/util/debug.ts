@@ -4,38 +4,40 @@
 // import { currentInstance } from 'v3/currentInstance'
 // import { getComponentName } from '../vdom/create-component'
 
-
 import { __DEV__, config } from '../config';
 import type { TypeNode as Component } from '../core/type-node/type-node.abstract';
-export let warn: (msg: string, vm?: Component | null) => void = noop
-export let tip = noop
-export let generateComponentTrace: (vm: Component) => string // work around flow check
-export let formatComponentName: (vm: Component, includeFile?: false) => string
-import { noop } from '../shared/util'
+import { noop } from '@type-dom/utils';
 
-export let currentInstance: Component | null = null
+export let warn: (msg: string, vm?: Component | null) => void = noop;
+export let tip = noop;
+export let generateComponentTrace: (vm: Component) => string; // work around flow check
+export let formatComponentName: (vm: Component, includeFile?: false) => string;
+
+export const currentInstance: Component | null = null;
 
 if (__DEV__) {
-  const hasConsole = typeof console !== 'undefined'
-  const classifyRE = /(?:^|[-_])(\w)/g
+  const hasConsole = typeof console !== 'undefined';
+  const classifyRE = /(?:^|[-_])(\w)/g;
   const classify = (str: string) =>
     str.replace(classifyRE, (c) => c.toUpperCase()).replace(/[-_]/g, '');
 
   warn = (msg, vm = currentInstance) => {
-    const trace = vm ? generateComponentTrace(vm) : ''
+    const trace = vm ? generateComponentTrace(vm) : '';
 
     if (config.warnHandler) {
-      config.warnHandler.call(null, msg, vm, trace)
+      config.warnHandler.call(null, msg, vm, trace);
     } else if (hasConsole && !config.silent) {
-      console.error(`[Vue warn]: ${msg}${trace}`)
+      console.error(`[TypeDom warn]: ${msg}${trace}`);
     }
-  }
+  };
 
   tip = (msg, vm) => {
     if (hasConsole && !config.silent) {
-      console.warn(`[Vue tip]: ${msg}` + (vm ? generateComponentTrace(vm) : ''))
+      console.warn(
+        `[TypeDom tip]: ${msg}` + (vm ? generateComponentTrace(vm) : '')
+      );
     }
-  }
+  };
 
   // formatComponentName = (vm, includeFile) => {
   //   if (vm.$root === vm) {
