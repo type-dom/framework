@@ -6,9 +6,11 @@ export interface IRouter {
   root?: TypeElement;
   // 路由列表
   routes: IRoute[];
+
   init(root: TypeElement): void;
 }
+
 export interface IRouterOption {
   routes: IRoute[];
-  history?: string; // todo
+  history?: boolean; // 是否history模式；hash模式
 }
