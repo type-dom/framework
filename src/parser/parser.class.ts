@@ -20,15 +20,15 @@ export class Parser {
   private currentFragment: (XElement | TextNode)[];
   private stack: (XElement | TextNode)[][];
   private errorCode: number;
-  private readonly hasAttributes: boolean | undefined;
-  private readonly lowerCaseName: boolean | undefined;
+  private readonly hasAttributes: boolean;
+  private readonly lowerCaseName: boolean;
 
   constructor(param?: IParserParam) {
     this.currentFragment = [];
     this.stack = [];
     this.errorCode = XMLParserErrorCode.NoError;
-    this.hasAttributes = param?.hasAttributes || true;
-    this.lowerCaseName = param?.lowerCaseName || false;
+    this.hasAttributes = param?.hasAttributes ?? true;
+    this.lowerCaseName = param?.lowerCaseName ?? false;
   }
 
   resolveEntities(s: string): string {
@@ -345,11 +345,7 @@ export class Parser {
    * @param attributes
    * @param isEmpty
    */
-  onBeginElement(
-    name: string,
-    attributes: IAttr[],
-    isEmpty?: boolean
-  ): void {
+  onBeginElement(name: string, attributes: IAttr[], isEmpty?: boolean): void {
     if (this.lowerCaseName) {
       name = name.toLowerCase();
     }
