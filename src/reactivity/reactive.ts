@@ -7,7 +7,7 @@
 //   toRawType,
 //   isServerRendering
 // } from 'core/util'
-import type { Ref, UnwrapRefSimple, RawSymbol } from './ref'
+import type { Ref, UnwrapRefSimple, RawSymbol } from './ref';
 import { Observer } from '../observer/observer';
 import { def, isServerRendering, warn } from '../util';
 import { isArray, isPrimitive, toRawType } from '@type-dom/utils';
@@ -18,29 +18,29 @@ export const enum ReactiveFlags {
   SKIP = '__v_skip',
   IS_READONLY = '__v_isReadonly',
   IS_SHALLOW = '__v_isShallow',
-  RAW = '__v_raw'
+  RAW = '__v_raw',
 }
 
 export interface Target {
-  __ob__?: Observer
-  [ReactiveFlags.SKIP]?: boolean
-  [ReactiveFlags.IS_READONLY]?: boolean
-  [ReactiveFlags.IS_SHALLOW]?: boolean
-  [ReactiveFlags.RAW]?: any
+  __ob__?: Observer;
+  [ReactiveFlags.SKIP]?: boolean;
+  [ReactiveFlags.IS_READONLY]?: boolean;
+  [ReactiveFlags.IS_SHALLOW]?: boolean;
+  [ReactiveFlags.RAW]?: any;
 }
 
 // only unwrap nested ref
-export type UnwrapNestedRefs<T> = T extends Ref ? T : UnwrapRefSimple<T>
+export type UnwrapNestedRefs<T> = T extends Ref ? T : UnwrapRefSimple<T>;
 
-export function reactive<T extends object>(target: T): UnwrapNestedRefs<T>
+export function reactive<T extends object>(target: T): UnwrapNestedRefs<T>;
 export function reactive(target: object) {
-  makeReactive(target, false)
-  return target
+  makeReactive(target, false);
+  return target;
 }
 
-export declare const ShallowReactiveMarker: unique symbol
+export declare const ShallowReactiveMarker: unique symbol;
 
-export type ShallowReactive<T> = T & { [ShallowReactiveMarker]?: true }
+export type ShallowReactive<T> = T & { [ShallowReactiveMarker]?: true };
 
 /**
  * Return a shallowly-reactive copy of the original object, where only the root
@@ -50,9 +50,9 @@ export type ShallowReactive<T> = T & { [ShallowReactiveMarker]?: true }
 export function shallowReactive<T extends object>(
   target: T
 ): ShallowReactive<T> {
-  makeReactive(target, true)
-  def(target, ReactiveFlags.IS_SHALLOW, true)
-  return target
+  makeReactive(target, true);
+  def(target, ReactiveFlags.IS_SHALLOW, true);
+  return target;
 }
 
 function makeReactive(target: any, shallow: boolean) {
@@ -66,9 +66,9 @@ function makeReactive(target: any, shallow: boolean) {
           } as it cannot be tracked in watch() or watchEffect(). Use ${
             shallow ? `shallowRef()` : `ref()`
           } instead. This is a Vue-2-only limitation.`
-        )
+        );
       }
-      const existingOb = target && target.__ob__
+      const existingOb = target && target.__ob__;
       if (existingOb && existingOb.shallow !== shallow) {
         warn(
           `Target is already a ${
@@ -76,22 +76,22 @@ function makeReactive(target: any, shallow: boolean) {
           }shallow reactive object, and cannot be converted to ${
             shallow ? `` : `non-`
           }shallow.`
-        )
+        );
       }
     }
     const ob = observe(
       target,
       shallow,
       isServerRendering() /* ssr mock reactivity */
-    )
+    );
     if (__DEV__ && !ob) {
       if (target == null || isPrimitive(target)) {
-        warn(`value cannot be made reactive: ${String(target)}`)
+        warn(`value cannot be made reactive: ${String(target)}`);
       }
       if (isCollectionType(target)) {
         warn(
           `Vue 2 does not support reactive collection types such as Map or Set.`
-        )
+        );
       }
     }
   }
@@ -99,26 +99,26 @@ function makeReactive(target: any, shallow: boolean) {
 
 export function isReactive(value: unknown): boolean {
   if (isReadonly(value)) {
-    return isReactive((value as Target)[ReactiveFlags.RAW])
+    return isReactive((value as Target)[ReactiveFlags.RAW]);
   }
-  return !!(value && (value as Target).__ob__)
+  return !!(value && (value as Target).__ob__);
 }
 
 export function isShallow(value: unknown): boolean {
-  return !!(value && (value as Target).__v_isShallow)
+  return !!(value && (value as Target).__v_isShallow);
 }
 
 export function isReadonly(value: unknown): boolean {
-  return !!(value && (value as Target).__v_isReadonly)
+  return !!(value && (value as Target).__v_isReadonly);
 }
 
 export function isProxy(value: unknown): boolean {
-  return isReactive(value) || isReadonly(value)
+  return isReactive(value) || isReadonly(value);
 }
 
 export function toRaw<T>(observed: T): T {
-  const raw = observed && (observed as Target)[ReactiveFlags.RAW]
-  return raw ? toRaw(raw) : observed
+  const raw = observed && (observed as Target)[ReactiveFlags.RAW];
+  return raw ? toRaw(raw) : observed;
 }
 
 export function markRaw<T extends object>(
@@ -126,17 +126,17 @@ export function markRaw<T extends object>(
 ): T & { [RawSymbol]?: true } {
   // non-extensible objects won't be observed anyway
   if (Object.isExtensible(value)) {
-    def(value, ReactiveFlags.SKIP, true)
+    def(value, ReactiveFlags.SKIP, true);
   }
-  return value
+  return value;
 }
 
 /**
  * @internal
  */
 export function isCollectionType(value: unknown): boolean {
-  const type = toRawType(value)
+  const type = toRawType(value);
   return (
     type === 'Map' || type === 'WeakMap' || type === 'Set' || type === 'WeakSet'
-  )
+  );
 }
