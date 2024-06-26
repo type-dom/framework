@@ -3,12 +3,12 @@
 
 export const enum TrackOpTypes {
   GET = 'get',
-  TOUCH = 'touch'
+  TOUCH = 'touch',
 }
 
 export const enum TriggerOpTypes {
   SET = 'set',
   ADD = 'add',
   DELETE = 'delete',
-  ARRAY_MUTATION = 'array mutation'
+  ARRAY_MUTATION = 'array mutation',
 }
