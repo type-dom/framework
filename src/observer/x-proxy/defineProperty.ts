@@ -3,7 +3,12 @@ import type { IJsonData, IJsonDataProp } from '../../interface';
 import { createProxy, XProxy } from './x-proxy.class';
 import { IXProxyHandler } from './x-proxy.interface';
 
-export function defineProxyProperty(proxy: XProxy<IJsonData>, key: string, value: IJsonDataProp, handler?: IXProxyHandler<IJsonData>) {
+export function defineProxyProperty(
+  proxy: XProxy<IJsonData>,
+  key: string,
+  value: IJsonDataProp,
+  handler?: IXProxyHandler<IJsonData>
+) {
   const source = proxy._target;
   const property = Object.getOwnPropertyDescriptor(source, key);
   if (property && property.configurable === false) {

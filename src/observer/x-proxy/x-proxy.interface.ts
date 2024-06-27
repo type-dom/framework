@@ -5,8 +5,9 @@ import { Observer } from '../observer';
 export interface IXProxy<T extends IJsonData> extends IJsonData {
   // _target: T;
   __ob__?: Observer;
+
   // [propName: string]: string | number | boolean | IXProxy | IJsonData | undefined;
-  [propName: string]:  T | Observer | IJsonDataProp | IXProxyHandler<T> | any;
+  [propName: string]: T | Observer | IJsonDataProp | IXProxyHandler<T> | any;
 }
 
 export interface IXProxyHandler<T extends IJsonData> {
@@ -17,7 +18,11 @@ export interface IXProxyHandler<T extends IJsonData> {
    * @param receiver
    * @returns The returned value after applying custom logic.
    */
-  get?(target: T, prop: string, receiver?: (...rest: string[]) => void): IJsonDataProp;
+  get?(
+    target: T,
+    prop: string,
+    receiver?: (...rest: string[]) => void
+  ): IJsonDataProp;
 
   /**
    * Handle the 'set' operation on the target object.
@@ -27,7 +32,12 @@ export interface IXProxyHandler<T extends IJsonData> {
    * @param receiver
    * @returns A Boolean indicating whether the set operation was successful.
    */
-  set?(target: T, prop: string, value: IJsonDataProp, receiver?: (...rest: string[])=> void): boolean;
+  set?(
+    target: T,
+    prop: string,
+    value: IJsonDataProp,
+    receiver?: (...rest: string[]) => void
+  ): boolean;
 
   /**
    * Handle the 'has' operation on the target object.
