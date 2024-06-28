@@ -18,15 +18,18 @@ export class XObservable<T extends IJsonData> {
         // this._subject.next(data);
         this.next(data);
         return true;
-      },
+      }
     });
   }
+
   get data(): T {
     return this._data._target;
   }
+
   set data(data: T) {
     this._data._target = data;
   }
+
   get subject() {
     return this._subject.asObservable();
   }
@@ -34,6 +37,7 @@ export class XObservable<T extends IJsonData> {
   setDataItem(key: string, value: T[string]) {
     this._data.set(key, value);
   }
+
   next(data: T) {
     this._subject.next(data);
   }

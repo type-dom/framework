@@ -1,7 +1,6 @@
+import { hasChanged, isArray, isObject } from '@type-dom/utils';
 import { Dep } from './dep';
 import { observe } from './observe';
-import { isArray, isObject } from '@type-dom/utils';
-import { hasChanged } from '../shared/util';
 import { isRef, NO_INITIAL_VALUE } from './util';
 import { dependArray } from './dependArray';
 
@@ -39,8 +38,8 @@ export function defineReactive(
   let childOb = shallow
     ? val && val.__ob__
     : isObject(val)
-    ? observe(val, false, mock)
-    : val;
+      ? observe(val, false, mock)
+      : val;
 
   Object.defineProperty(obj, key, {
     enumerable: true,
@@ -79,7 +78,7 @@ export function defineReactive(
         ? newVal && newVal.__ob__
         : observe(newVal, false, mock);
       dep.notify();
-    },
+    }
   });
   return dep;
 }

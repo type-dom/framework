@@ -3,6 +3,7 @@ class Scheduler {
   private preFlushQueue: Array<() => void>;
   private postFlushQueue: any[];
   private pendingPreFlushCbs: any[];
+
   constructor() {
     this.preFlushQueue = [];
     this.postFlushQueue = [];

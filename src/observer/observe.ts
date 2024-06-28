@@ -1,4 +1,4 @@
-import { TypeNode } from '@type-dom/framework';
+import { TypeNode } from '../core/type-node/type-node.abstract';
 import { IObData } from '../interface';
 import { Observer } from './observer';
 import { isArray, isObject, isPlainObject } from '@type-dom/utils';
@@ -9,7 +9,7 @@ import { isRef } from './util';
  * In some cases we may want to disable observation inside a component's
  * update computation.
  */
-export let shouldObserve: boolean = true;
+export const shouldObserve: boolean = true;
 
 /**
  * Attempt to create an observer instance for a value,

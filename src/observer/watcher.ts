@@ -1,8 +1,14 @@
-import { isFunction, SimpleSet as Set } from '@type-dom/utils';
+import { isFunction, noop, SimpleSet as Set } from '@type-dom/utils';
 import { IJsonData, IJsonDataProp } from '../interface';
-import { isBoolean, isNumber, isObject, isString, isArray } from '@type-dom/utils';
+import {
+  isBoolean,
+  isNumber,
+  isObject,
+  isString,
+  isArray
+} from '@type-dom/utils';
 import { Dep, DepTarget, popTarget, pushTarget } from './dep';
-import { noop, parsePath } from '../util';
+import { parsePath } from '../util';
 import { DebuggerOptions } from '../debug';
 // import Dep from './dep';
 let uid = 0;
@@ -11,10 +17,10 @@ let uid = 0;
  * @internal
  */
 export interface WatcherOptions extends DebuggerOptions {
-  deep?: boolean
-  user?: boolean
-  lazy?: boolean
-  sync?: boolean
+  deep?: boolean;
+  user?: boolean;
+  lazy?: boolean;
+  sync?: boolean;
   // before?: Function
 }
 
@@ -35,7 +41,7 @@ export class Watcher implements DepTarget {
   private newDeps: Array<Dep>;
   private depIds: Set;
   post: boolean;
-  noRecurse?: boolean
+  noRecurse?: boolean;
 
   constructor(
     target: IJsonData,
@@ -44,8 +50,8 @@ export class Watcher implements DepTarget {
     options?: WatcherOptions
   ) {
     this.id = ++uid; // uid for batching
-    this.active = true
-    this.post = false
+    this.active = true;
+    this.post = false;
     this.deps = [];
     this.newDeps = [];
     this.depIds = new Set();
@@ -53,7 +59,7 @@ export class Watcher implements DepTarget {
     this.target = target;
     // options
     if (options) {
-      this.deep = !!options.deep
+      this.deep = !!options.deep;
       // this.user = !!options.user
       // this.lazy = !!options.lazy
       // this.sync = !!options.sync
@@ -63,7 +69,7 @@ export class Watcher implements DepTarget {
       //   this.onTrigger = options.onTrigger
       // }
     } else {
-      this.deep = /*this.user = this.lazy = this.sync =*/ false
+      this.deep = /*this.user = this.lazy = this.sync =*/ false;
     }
     // parsePath 为一个高阶函数
     if (isFunction(expression)) {
@@ -100,12 +106,12 @@ export class Watcher implements DepTarget {
     try {
       value = this.getter(obj);
     } catch (e: any) {
-      console.log('catch e is ', e)
+      console.log('catch e is ', e);
       throw e;
     } finally {
       Dep.target = undefined;
-      popTarget()
-      this.cleanupDeps()
+      popTarget();
+      this.cleanupDeps();
     }
     // this.value = value;
     return value;
@@ -162,5 +168,4 @@ export class Watcher implements DepTarget {
       this.deps[i].depend();
     }
   }
-
 }

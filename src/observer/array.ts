@@ -6,7 +6,6 @@
 // import { TriggerOpTypes } from '../../v3'
 // import { def } from '../util/index'
 
-
 const arrayProto: any = Array.prototype;
 export const arrayMethods = Object.create(arrayProto);
 

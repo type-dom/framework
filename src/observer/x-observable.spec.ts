@@ -28,11 +28,11 @@ import { observe } from './observe';
 
 describe('createObserver', () => {
   it('should work', () => {
-    const a = { b: { c: { d: 10 }}};
+    const a = { b: { c: { d: 10 } } };
     const ob$ = observe(a);
     console.log('ob$ is ', ob$);
     new Watcher(a, 'b.c.d', (val, oldValue) => {
-      console.log('ok', val, oldValue);  // ok 10 5
+      console.log('ok', val, oldValue); // ok 10 5
     });
     a.b.c.d = 55;
     expect(a.b.c.d).toBe(55);

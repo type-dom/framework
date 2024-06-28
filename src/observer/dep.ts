@@ -83,7 +83,7 @@ export class Dep {
         sub.onTrigger({
           effect: subs[i],
           ...info
-        })
+        });
       }
       sub.update();
     }

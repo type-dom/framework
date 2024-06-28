@@ -1,12 +1,13 @@
-// Vue 3 中的简略实现思路
+import { hasChanged, hasOwn } from '@type-dom/utils';
 import { IJsonData, IJsonDataProp } from '../../interface';
-import { hasChanged, hasOwn } from '../../shared/util';
+
 import { IXProxyHandler } from '../x-proxy/x-proxy.interface';
 import { XProxy } from '../x-proxy/x-proxy.class';
 
 function reactive(target: IJsonData) {
   return createReactiveObject(target);
 }
+
 function createReactiveObject(target: IJsonData) {
   const observed = new XProxy(target, reactiveHandler);
 }
@@ -37,16 +38,17 @@ const reactiveHandler: IXProxyHandler<IJsonData> = {
       trigger(target, 'delete', key);
     }
     return result;
-  },
+  }
   // ...其他代理陷阱
 };
+
 interface IDep {
-  scheduler: (...rest: string[]) => void,
-  run: (...rest: string[]) => void
+  scheduler: (...rest: string[]) => void;
+  run: (...rest: string[]) => void;
 }
 
 // 简化的依赖收集和触发更新
-const targetMap: WeakMap<IJsonData, Map<string, Set<IDep>>>  = new WeakMap();
+const targetMap: WeakMap<IJsonData, Map<string, Set<IDep>>> = new WeakMap();
 // let isTracking: boolean = false;
 // const trackingStack = [];
 function track(target: IJsonData, key: string) {
@@ -69,8 +71,15 @@ function track(target: IJsonData, key: string) {
 function scheduleEffect(dep: Set<IDep>) {
   // 将effect加入调度队列等待执行
 }
+
 // 简化版响应式数据变化触发
-function trigger(target: IJsonData, type: string, key?: string, newValue?: IJsonDataProp, oldValue?: IJsonDataProp) {
+function trigger(
+  target: IJsonData,
+  type: string,
+  key?: string,
+  newValue?: IJsonDataProp,
+  oldValue?: IJsonDataProp
+) {
   // 收集在此属性上注册的所有effects（副作用函数）
   const depsMap = targetMap.get(target);
   if (!depsMap) return;
@@ -83,7 +92,7 @@ function trigger(target: IJsonData, type: string, key?: string, newValue?: IJson
   } else if (type === 'delete') {
     // ...处理删除的情况
   }
-  effects.forEach(effect => {
+  effects.forEach((effect) => {
     // if (effect.scheduler) {
     //   effect.scheduler();
     // } else {
@@ -102,9 +111,10 @@ function hasChangedDeep(value: IJsonDataProp, oldValue: IJsonDataProp) {
       return true;
     }
     for (const key in value) {
-
-      if (!hasOwn(value as IJsonData, key) ||
-        !hasChangedDeep((value as IJsonData)[key], (oldValue as IJsonData)[key])) {
+      if (
+        !hasOwn(value as IJsonData, key) ||
+        !hasChangedDeep((value as IJsonData)[key], (oldValue as IJsonData)[key])
+      ) {
         return false;
       }
     }
