@@ -10,11 +10,12 @@ export class XNode extends TypeNode implements IXNode {
   className: 'XNode';
   parent: undefined;
   nodeName?: string;
-  nodeValue?: string;
+  nodeValue?: string | number;
   override attributes: IAttr[] = [];
   childNodes?: XNode[];
   // 只有渲染后才会生成真实dom
   dom?: HTMLElement | SVGElement | Text;
+
   // parentNode?: XNode | null;
 
   constructor(option: IXNode) {
@@ -35,11 +36,12 @@ export class XNode extends TypeNode implements IXNode {
     });
   }
 
+  // todo 和 TypeElement 中的 render 方法有啥区别？？？
   render(): void {
     // const dom = document.createElement(this.nodeName);
     // const textNode = document.createTextNode(this.nodeValue);
     if (this.nodeValue !== undefined) {
-      this.dom = document.createTextNode(this.nodeValue);
+      this.dom = document.createTextNode(String(this.nodeValue));
     } else if (this.nodeName !== undefined) {
       this.dom = document.createElement(this.nodeName);
       if (this.childNodes !== undefined) {
