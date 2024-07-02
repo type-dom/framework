@@ -1,6 +1,9 @@
 import { TypeElement } from '../core/type-element/type-element.abstract';
 
-type IEvent<K extends Event = Event, T extends TypeElement = TypeElement> = (evt?: K, element?: T) => void;
+type IEvent<K extends Event = Event, T extends TypeElement = TypeElement> = (
+  evt?: K,
+  element?: T
+) => void;
 
 /**
  * IEvents 接口定义了事件处理的行为。
