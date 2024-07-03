@@ -14,6 +14,7 @@ export abstract class TypeRoot extends TypeHtml implements ITypeRoot {
   nodeName: string;
   dom: HTMLElement;
   override isRoot: true;
+
   // el?: HTMLElement;
   protected constructor(config?: Partial<ITypeRootConfig>) {
     super();
