@@ -1,11 +1,17 @@
 import { Subscription } from 'rxjs';
-import { encodeToXmlString, humpToMiddleLine } from '@type-dom/utils';
+import { IStyle } from '@type-dom/css-type';
+import { encodeToXmlString, camelToDash } from '@type-dom/utils';
 import { IJsonData, type IJsonDataProp } from '../../interface';
 import { XProxy } from '../../observer';
-import { IStyle } from '../../style/style.interface';
 import type { ITypeAttribute } from '../type-element/type-element.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
-import type { IAttr, IMethods, ISetting, ISettings, ITypeNode } from './type-node.interface';
+import type {
+  IAttr,
+  IMethods,
+  ISetting,
+  ISettings,
+  ITypeNode
+} from './type-node.interface';
 
 /**
  * 虚拟DOM，TypeNode 抽象节点类, 所有节点类的抽象类；
@@ -13,7 +19,7 @@ import type { IAttr, IMethods, ISetting, ISettings, ITypeNode } from './type-nod
  * 子类有:
  *    TypeElement
  *    TextNode
- *    XElement
+ *    XNode
  */
 export abstract class TypeNode implements ITypeNode {
   /**
@@ -22,10 +28,12 @@ export abstract class TypeNode implements ITypeNode {
    */
   abstract className?: string; // 最终实体类的名称，解析转换时需要创建对应的类；
   abstract nodeName?: '#text' | string;
-  abstract nodeValue?: string | undefined;
+  abstract nodeValue?: string | number | undefined;
   abstract childNodes?: TypeNode[] | undefined;
   abstract dom?: HTMLElement | SVGElement | Text;
   abstract parent?: TypeElement | undefined;
+  // 该节点不是当前位置的组件的子节点；要避免加入到组件的子节点中；要挂载到指定的组件的DOM,甚至直接指向 body；
+  to?: HTMLElement;
   isContext?: boolean;
 
   /**
@@ -36,8 +44,8 @@ export abstract class TypeNode implements ITypeNode {
   // abstract setConfig?(config: any): void
 
   isRoot?: boolean; // 是否是根节点 只有TypeRoot才为true
-  attrObj?: Partial<ITypeAttribute>;
-  styleObj?: Partial<IStyle>;
+  attrObj?: ITypeAttribute;
+  styleObj?: IStyle;
   attributes?: IAttr[];
   settings?: ISettings;
   _data?: IJsonData; // IObData;
@@ -60,6 +68,7 @@ export abstract class TypeNode implements ITypeNode {
       return this.parent?.root;
     }
   }
+
   get firstChild(): TypeNode | undefined {
     return this.childNodes && this.childNodes[0];
   }
@@ -82,7 +91,7 @@ export abstract class TypeNode implements ITypeNode {
 
   get textContent(): string | number | boolean {
     if (!this.childNodes) {
-      return this.nodeValue || '';
+      return this.nodeValue ?? '';
     }
     // 使用一个字符串变量迭代添加,而非递归来累积文本内容。
     let content = '';
@@ -105,7 +114,7 @@ export abstract class TypeNode implements ITypeNode {
     this.isRoot = isRoot;
   }
 
-  getRootElement<T extends TypeNode>() : T | undefined {
+  getRootElement<T extends TypeNode>(): T | undefined {
     if (this.isRoot) {
       return this as unknown as T;
     } else {
@@ -178,7 +187,7 @@ export abstract class TypeNode implements ITypeNode {
    * 会递归遍历子节点
    * @param className
    */
-  findNode(className: string): TypeNode | undefined  {
+  findNode(className: string): TypeNode | undefined {
     // console.log('findNode className is ', className);
     for (const child of this.children) {
       if (child?.className === className) {
@@ -210,7 +219,7 @@ export abstract class TypeNode implements ITypeNode {
    * 查找指定类名的第一个子节点
    * @param className
    */
-  findChild(className: string): TypeNode | undefined {
+  findChildNode(className: string): TypeNode | undefined {
     for (const child of this.children) {
       if (child?.className === className) {
         return child;
@@ -227,8 +236,6 @@ export abstract class TypeNode implements ITypeNode {
     for (const child of this.children) {
       if (child?.className === className) {
         nodes.push(child);
-      } else if (child.children.length > 0) {
-        nodes.push(...child.findAllNodes(className));
       }
     }
     return nodes;
@@ -242,19 +249,20 @@ export abstract class TypeNode implements ITypeNode {
   dump(buffer: string[]): void {
     // console.log('type-node dump . ');
     if (this.nodeName === '#text') {
-      buffer.push(encodeToXmlString(this.nodeValue?.toString() || ''));
+      buffer.push(encodeToXmlString(this.nodeValue?.toString() ?? ''));
       return;
     }
     buffer.push(`<${this.nodeName}`);
     // 下面组装 属性 和 样式
     if (this?.attrObj) {
       for (let key in this.attrObj) {
+        // 下面几个属性不需要转
         if (
           key !== 'viewBox' &&
           key !== 'spreadMethod' &&
           key !== 'gradientUnits'
         ) {
-          key = humpToMiddleLine(key);
+          key = camelToDash(key);
         }
         // todo
         buffer.push(
@@ -265,7 +273,7 @@ export abstract class TypeNode implements ITypeNode {
     if (this?.styleObj) {
       let style = '';
       for (const key in this.styleObj) {
-        style += `${humpToMiddleLine(key)}: ${encodeToXmlString(
+        style += `${camelToDash(key)}: ${encodeToXmlString(
           String((this.styleObj as any)[key])
         )};`;
       }
@@ -351,7 +359,10 @@ export abstract class TypeNode implements ITypeNode {
       get() {
         // 调用 handler 的 get 方法（如果已实现）
         if (value instanceof XProxy) {
-          console.log(`defineNodeProperty 获取属性 "${key}" 的值，值为XProxy类型，值为：`, value);
+          console.log(
+            `defineNodeProperty 获取属性 "${key}" 的值，值为XProxy类型，值为：`,
+            value
+          );
         }
         return value;
       },
@@ -365,9 +376,13 @@ export abstract class TypeNode implements ITypeNode {
       set(newValue) {
         // console.log(`defineNodeProperty 拦截到了对属性 "${key}" 的赋值操作，新值为：`, newValue);
         // 自定义逻辑...
-        if (newValue instanceof XProxy) { // modelValue
-          console.error(`defineNodeProperty 拦截到了对属性 "${key}" 的赋值操作，newValue为XProxy类型，且值为：`, newValue);
-        //   todo 将当前对象加载到 XProxy 中。
+        if (newValue instanceof XProxy) {
+          // modelValue
+          console.error(
+            `defineNodeProperty 拦截到了对属性 "${key}" 的赋值操作，newValue为XProxy类型，且值为：`,
+            newValue
+          );
+          //   todo 将当前对象加载到 XProxy 中。
         }
         if (node[key] instanceof XProxy) {
           console.error('节点属性的值是XProxy类型。');

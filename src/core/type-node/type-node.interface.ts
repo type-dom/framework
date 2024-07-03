@@ -1,13 +1,13 @@
 import { Subscription } from 'rxjs';
-import type { ITypeAttribute } from '../type-element/type-element.interface';
-import { TypeElement } from '../type-element/type-element.abstract';
-import { IStyle } from '../../style/style.interface';
-import { TextNode } from '../text-node/text-node.class';
-import { TypeNode } from './type-node.abstract';
-import { IJsonData, type IJsonDataProp, IObData, IPrimitive } from '../../interface';
+import { IStyle } from '@type-dom/css-type';
+import { type IJsonDataProp, IJsonData, IObData } from '../../interface';
 import { UnwrapNestedRefs } from '../../reactivity/reactive';
 import { XProxy } from '../../observer';
 import { IEvents } from '../../events/events.interface';
+import type { ITypeAttribute } from '../type-element/type-element.interface';
+import { TypeElement } from '../type-element/type-element.abstract';
+import { TextNode } from '../text-node/text-node.class';
+import { TypeNode } from './type-node.abstract';
 
 export interface IAttr {
   name: string;
@@ -18,22 +18,27 @@ export interface IAttrID extends IAttr {
   name: 'id';
   // value: string | number;
 }
+
 export interface IAttrClass extends IAttr {
   name: 'class';
   // value: string | number;
 }
+
 export interface IAttrStyle extends IAttr {
   name: 'style';
   // value: Partial<IStyle>;
 }
+
 export interface IAttrName extends IAttr {
   name: 'name';
   // value: string | number;
 }
+
 export interface IAttrType extends IAttr {
   name: 'type';
   // value: string | number;
 }
+
 export interface IAttrValue extends IAttr {
   name: 'value';
   // value: string | number;
@@ -70,7 +75,13 @@ export interface ITypeNode {
    * nodeValue只在 TextNode中才有。
    * nodeValue存在时，就应该是 TextNode类
    */
-  nodeValue?: string | undefined;
+  nodeValue?: string | number | undefined;
+
+  /**
+   * 移动到 DOM 中 app 之外的其他位置的方式。
+   * 该节点不是当前位置的组件的子节点；要避免加入到组件的子节点中；要挂载到指定的组件的DOM,甚至直接指向 body；
+   */
+  to?: HTMLElement;
 
   /**
    * parent 可选
@@ -93,11 +104,11 @@ export interface ITypeNode {
   /**
    * 属性对象，除了style对应的属性之外的其他属性。
    */
-  attrObj?: Partial<ITypeAttribute>;
+  attrObj?: ITypeAttribute;
   /**
    * 样式对象。
    */
-  styleObj?: Partial<IStyle>;
+  styleObj?: IStyle;
   /**
    * 绑定的事件集合,转化为 subscriptions;
    * 一般在构造函数的参数（config）中传入；
@@ -106,7 +117,7 @@ export interface ITypeNode {
    */
   events?: Partial<IEvents>;
   subscriptions?: Subscription[];
-  // TextNode 没有 childNodes
+  // TextNode 肯定没有 childNodes， Element 可以没有 childNodes;
   childNodes?: ITypeNode[];
   /**
    * 属性值必须用 ' 或 " 包起来
@@ -130,17 +141,23 @@ export interface IXData {
   [propName: string]: string | number | boolean | undefined | IXData | IXData[];
 }
 
-export interface IOptionSet extends IXData{
-  label: string,
-  value: string | number | boolean,
-  checked?: boolean, // radio checkbox
-  selected?: boolean, // select
-  options?: IOptionSet[]
+export interface IOptionSet extends IXData {
+  label: string;
+  value: string | number | boolean;
+  checked?: boolean; // radio checkbox
+  selected?: boolean; // select
+  options?: IOptionSet[];
 }
 
-export type ISetting = string | number | boolean | ISettings | IOptionSet[] | undefined;
+export type ISetting =
+  | string
+  | number
+  | boolean
+  | ISettings
+  | IOptionSet[]
+  | undefined;
 
-export interface ISettings extends IXData{
+export interface ISettings extends IXData {
   // fieldSetting?: IOptionSetting;
   [key: string]: ISetting;
 }
@@ -153,22 +170,26 @@ export interface IOptionSetting extends ISettings {
   options: IOptionSet[];
 }
 
-// 参数为 ITypeConfig
+// 参数接口
 export interface ITypeConfig extends ITypeNode {
-  name?: string;
+  name?: string; // 节点名称, 转化为 attrObj.name;
   // 当前对象引用
   ref?: XProxy<IJsonData>;
-  text?: string | XProxy<IJsonData>; // 只是简单的添加一个文本节点时用，
-  // todo 可能是类实例对象；也可能是json对象；
+  text?: string | number | XProxy<IJsonData>; // 只是简单的添加一个文本节点时用，
+  // 类实例对象；  与 ITypeNode 中的 childNodes: ITypeNode[]
   childNodes?: (TypeElement | TextNode)[];
-  // 设置子元素的属性，并根据属性创建子元素；
+  // 设置子元素的属性，并根据属性创建子元素；是json对象；指定的元素类型；
   items?: ITypeConfig[];
+  // 多个插槽 ———— 对应的 是 TypeNode | TypeNode[], 不同于一般的属性；需要组件本身单独处理的。setConfig方法中没有默认处理方法；
+  slots?: Record<string, TypeNode | TypeNode[]>; // 指定多个不同位置的插槽，需要有插槽名称的；需要在类中添加插槽的位置；
+  // 单个插槽
+  slot?: TypeNode | TypeNode[]; // OnlyChild 指定位置的插槽, 可以是单个元素，也可以是多个元素，即数组；如何直接插入当前元素，则相当与 childNodes属性；
 }
 
 export interface IOptionConfig extends ITypeConfig {
-  label: string,
-  value: string,
-  checked?: boolean,
+  label: string;
+  value: string;
+  checked?: boolean;
 }
 
 export interface INodeHandler<T extends ITypeNode> {
@@ -179,7 +200,11 @@ export interface INodeHandler<T extends ITypeNode> {
    * @param receiver
    * @returns The returned value after applying custom logic.
    */
-  get?(target: T, prop: string, receiver?: (...rest: string[]) => void): IJsonDataProp;
+  get?(
+    target: T,
+    prop: string,
+    receiver?: (...rest: string[]) => void
+  ): IJsonDataProp;
 
   /**
    * Handle the 'set' operation on the target object.
@@ -189,7 +214,12 @@ export interface INodeHandler<T extends ITypeNode> {
    * @param receiver
    * @returns A Boolean indicating whether the set operation was successful.
    */
-  set?(target: T, prop: string, value: IJsonDataProp, receiver?: (...rest: string[])=> void): boolean;
+  set?(
+    target: T,
+    prop: string,
+    value: IJsonDataProp,
+    receiver?: (...rest: string[]) => void
+  ): boolean;
 
   /**
    * Handle the 'has' operation on the target object.
