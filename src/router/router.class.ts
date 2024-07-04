@@ -87,10 +87,14 @@ export class Router implements IRouter {
    * 当路由改变时，此函数负责根据新的路由路径找到对应的路由配置，并执行相应的加载操作。
    * @param to 新的路由路径，以字符串形式传递。
    * @param from 上一个路由路径，以字符串形式传递。
+   * @param type
    */
-  handleRouteChange(to: string, from?: string) {
+  handleRouteChange(to: string, from?: string, type: 'push' | 'replace' = 'push') {
     // 移除路径中的#符号，这通常是URL中的锚点符号，不参与路由匹配。
     console.log('handleRouteChange . to is ', to);
+    if (to === from) {
+      return;
+    }
     // 根据路由定位到对应的component（组件）
     const toRoute = findMatchingRoute(to.replace(/^#/, ''), this.routes);
     if (toRoute) {
@@ -98,7 +102,11 @@ export class Router implements IRouter {
       if (toRoute?.redirect) {
         // console.log('route.redirect is ', route.redirect);
         toRoute?.routerView?.loadRoute(toRoute).then(() => {
-          toRoute.redirect && this.navigateTo(toRoute.redirect);
+          if (type === 'push') {
+            toRoute.redirect && this.push(toRoute.redirect);
+          } else {
+            toRoute.redirect && this.replace(toRoute.redirect);
+          }
         });
         return;
       }
@@ -139,7 +147,7 @@ export class Router implements IRouter {
    *
    * @param {string} to - 需要导航到的路径。路径必须是字符串且非空。
    */
-  navigateTo(to: string) {
+  push(to: string) {
     // 输出导航路径供调试使用
     console.log('navigateTo path is ', to);
 
@@ -160,6 +168,31 @@ export class Router implements IRouter {
       window.history.pushState(this.lastPath, '', to);
       // 调用处理路由变化的函数，以便根据新的路径执行相应的逻辑
       this.handleRouteChange(to, from);
+    }
+  }
+
+  replace(to: string) {
+    // 输出导航路径供调试使用
+    console.log('navigateTo path is ', to);
+
+    // 检查路径是否为字符串类型且非空，若不满足条件，则打印错误信息并返回
+    if (typeof to !== 'string' || to.trim() === '') {
+      console.error('Invalid path provided for navigation.');
+      return;
+    }
+    // 根据当前的导航模式，选择相应的导航方法
+    if (this.mode === 'hash') {
+      // 在 'hash' 模式下，通过修改 URL 的 hash 属性进行导航
+      // todo 实现replace功能
+      window.location.hash = '#' + to;
+    } else {
+      const from = window.location.pathname;
+      // 更新lastPath以跟踪最新的导航状态
+      this.lastPath = { from, to };
+      // 在非 'hash' 模式下，使用 history API 的 pushState 方法进行导航
+      window.history.replaceState(this.lastPath, '', to);
+      // 调用处理路由变化的函数，以便根据新的路径执行相应的逻辑
+      this.handleRouteChange(to, from, 'replace');
     }
   }
 }
