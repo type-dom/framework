@@ -22,6 +22,7 @@
  */
 import { IStyle } from '@type-dom/css-type';
 import { vHash } from '../core/type-element';
+import { camelToDash } from '@type-dom/utils';
 
 const styleElement = createStyleElement();
 
@@ -59,7 +60,14 @@ export function createStyle(cssStyles: string) {
 
 export function createClass(className: string, styleObj: IStyle) {
   console.log('createClass . className: ', className, ' styleObj: ', styleObj);
-  const selector = `.${className}-${vHash}`;
+  let selector = '';
+  if (className.includes(':')) { // 有伪类时
+    const [name, pseudoClass] = className.split(':');
+    console.log('pseudoClass is ', pseudoClass);
+    selector = `.${name}-${vHash}:${pseudoClass}`;
+  } else {
+    selector = `.${className}-${vHash}`;
+  }
   const cssText = buildCssRule(selector, styleObj);
   createStyle(cssText);
 }
@@ -69,7 +77,7 @@ function buildCssRule(selector: string, style: IStyle) {
   const styleParts = [];
   for (const prop in style) {
     if (Object.prototype.hasOwnProperty.call(style, prop)) {
-      styleParts.push(`${prop}: ${style[prop as keyof IStyle]};`);
+      styleParts.push(`${camelToDash(prop)}: ${style[prop as keyof IStyle]};`);
     }
   }
   return `${selector} { ${styleParts.join(' ')} }`;
