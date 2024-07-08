@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 import { IStyle } from '@type-dom/css-type';
-import { encodeToXmlString, camelToDash } from '@type-dom/utils';
+import { encodeToXmlString, camelToDash, deepClone } from '@type-dom/utils';
 import { IJsonData, type IJsonDataProp } from '../../interface';
 import { XProxy } from '../../observer';
 import type { ITypeAttribute } from '../type-element/type-element.interface';
@@ -336,6 +336,37 @@ export abstract class TypeNode implements ITypeNode {
     } as ITypeNode;
   }
 
+  // todo 子类中实现 ？？？？
+  // abstract clone<T>(): T; // 复制
+  // 会循环调用
+  clone<T>(): T {
+    const attrObj = deepClone(this.attrObj);
+    const styleObj = deepClone(this.styleObj);
+    // this.attrObj?.forEach(((value, key) => {
+    // for ()
+    //   attrs[key] = value
+    // }));
+    //   for (const styleName in this.styleObj) {
+    //     styleObj[styleName] = this.styleObj[styleName];
+    //   }
+    //   // this.styleObj.forEach((value, key) => {
+    //   //   styleObj[key] = value;
+    //   // })
+    //   return new VElement(this.nodeName, {
+    //     classes: [...this.classes],
+    //     attrs,
+    //     styleObj,
+    //     childNodes: this.childNodes.map(i => i.clone())
+    //   });
+    //   const literalJson = toJSON(this);
+    //   console.log('literalJson is ', literalJson);
+    // if (this.parent instanceof WebPage) {
+    //   const obj = new ControlClassMap[this.className](this.parent);
+    //   console.log('obj is ', obj);
+    // }
+    // 创建基类的新实例
+    return new (this.constructor as any)({ attrObj, styleObj, childNodes: this.childNodes?.map(i => i.clone()) }) as T;
+  }
   /**
    * 定义属性
    * todo 好像没有用上

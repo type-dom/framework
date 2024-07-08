@@ -3,7 +3,7 @@ import { IStyle } from '@type-dom/css-type';
 import { type IJsonDataProp, IJsonData, IObData } from '../../interface';
 import { UnwrapNestedRefs } from '../../reactivity/reactive';
 import { XProxy } from '../../observer';
-import { IEvents } from '../../events/events.interface';
+import { IEvents, ITransitionConfig } from '../../events/events.interface';
 import type { ITypeAttribute } from '../type-element/type-element.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { TextNode } from '../text-node/text-node.class';
@@ -182,8 +182,10 @@ export interface ITypeConfig extends ITypeNode {
   items?: ITypeConfig[];
   // 多个插槽 ———— 对应的 是 TypeNode | TypeNode[], 不同于一般的属性；需要组件本身单独处理的。setConfig方法中没有默认处理方法；
   slots?: Record<string, TypeNode | TypeNode[]>; // 指定多个不同位置的插槽，需要有插槽名称的；需要在类中添加插槽的位置；
-  // 单个插槽
-  slot?: TypeNode | TypeNode[]; // OnlyChild 指定位置的插槽, 可以是单个元素，也可以是多个元素，即数组；如何直接插入当前元素，则相当与 childNodes属性；
+  // 默认插槽
+  slot?: TypeNode | TypeNode[]; // OnlyChild 默认位置的插槽, 可以是单个元素，也可以是多个元素，即数组；如何直接插入当前元素，则相当与 childNodes属性；
+
+  transitionConfig?: ITransitionConfig,
 }
 
 export interface IOptionConfig extends ITypeConfig {
