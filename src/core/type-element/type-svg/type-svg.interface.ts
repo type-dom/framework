@@ -1,11 +1,8 @@
 import type { ITextNode } from '../../text-node/text-node.interface';
-import type {
-  ITypeAttribute,
-  ITypeElement
-} from '../type-element.interface';
+import type { ITypeAttribute, ITypeElement } from '../type-element.interface';
 
 export interface ITypeSvg extends ITypeElement {
-  attrObj: Partial<ITypeSvgAttribute>;
+  attrObj: ITypeSvgAttribute;
   childNodes: (ITypeSvg | ITextNode)[];
 }
 
@@ -63,5 +60,5 @@ export interface ITypeSvgAttribute extends ITypeAttribute {
    * 如：stroke-dasharray=”12 12”，由此可见网状格子的虚线，长为12，虚线间空缺为12。
    * stroke-dasharray=”12 2”，由此可见网状格子的虚线，长为12，虚线间空缺为2。
    */
-  strokeDasharray: string;
+  strokeDasharray?: string;
 }
