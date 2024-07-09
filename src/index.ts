@@ -1,4 +1,5 @@
-export * from './interface';
+export type * from './interface';
+export type * from './events/events.interface';
 export * from './hooks/index';
 export * from './style/index';
 export * from './parser';
