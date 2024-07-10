@@ -4,6 +4,7 @@ import type { IAttr } from '../../type-node/type-node.interface';
 import { TextNode } from '../../text-node/text-node.class';
 import { IXElement } from './x-element.interface';
 import { reactive } from '../../../reactivity';
+
 // import { ITypeConfig } from '../../config.interface';
 
 /**
@@ -58,9 +59,7 @@ export class XElement extends TypeElement implements IXElement {
     this.childNodes =
       config?.childNodes?.map((child) => {
         console.log('x-element child is ', child);
-        if (child.nodeValue !== undefined) {
-          return new TextNode(child.nodeValue, this);
-        } else {
+        if (child.nodeValue === undefined) {
           // if (child.TypeClass) {
           //   // todo 其它的类还要加载进来吗？
           //   return new child.TypeClass(child);
@@ -68,6 +67,8 @@ export class XElement extends TypeElement implements IXElement {
           // 解析json结构的子元素。
           return new XElement(child as IXElement);
           // }
+        } else {
+          return new TextNode(child.nodeValue, this);
         }
       }) || [];
   }
@@ -81,7 +82,7 @@ export class XElement extends TypeElement implements IXElement {
     // 加载自定义属性
     for (const attr of this.attributes) {
       if (attr.name.startsWith(':')) {
-        //   绑定值
+        // 绑定值
         console.log('attr.name is ', attr.name);
         const attrName = attr.name.substring(1);
         console.log('this.itemData is ', this.itemData);
@@ -94,7 +95,7 @@ export class XElement extends TypeElement implements IXElement {
             }
             if (value !== undefined) {
               this.addAttrObj({
-                [attrName]: value,
+                [attrName]: value
               });
             }
           }
@@ -103,7 +104,7 @@ export class XElement extends TypeElement implements IXElement {
         // 过滤掉，不加入属性中。专门绑定事件时处理。
       } else {
         this.addAttrObj({
-          [attr.name]: attr.value,
+          [attr.name]: attr.value
         });
       }
     }
@@ -119,7 +120,9 @@ export class XElement extends TypeElement implements IXElement {
         console.log('this.itemMethods is ', this.itemMethods);
         if (this.itemMethods !== undefined && attr.value !== undefined) {
           if (this.itemMethods[attr.value]) {
-            if (this.dom !== undefined) {
+            if (this.dom === undefined) {
+              throw Error('this.dom is undefined . ');
+            } else {
               this.addEvents({
                 [attrName]: (evt: Event) => {
                   if (
@@ -128,10 +131,8 @@ export class XElement extends TypeElement implements IXElement {
                   ) {
                     this.itemMethods[attr.value](evt, this);
                   }
-                },
+                }
               });
-            } else {
-              throw Error('this.dom is undefined . ');
             }
           }
         }
