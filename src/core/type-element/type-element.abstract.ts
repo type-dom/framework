@@ -1,13 +1,12 @@
 import { fromEvent, Subscription } from 'rxjs';
-import { humpToMiddleLine, isNumber, isStringNumber } from '@type-dom/utils';
+import { IStyle, Property } from '@type-dom/css-type';
+import { addUnit, camelToDash, deepClone } from '@type-dom/utils';
 import { IJsonDataProp, IObData } from '../../interface';
 import { RouterView } from '../../router/router-view/router-view.class';
 import { XProxy } from '../../observer/x-proxy/x-proxy.class';
 import { Observer } from '../../observer/observer';
 import { reactive } from '../../reactivity';
 import { UnwrapNestedRefs } from '../../reactivity/reactive';
-import { StyleCursor, StyleDisplay } from '../../style/style.enum';
-import type { IStyle } from '../../style/style.interface';
 import { IEvents } from '../../events/events.interface';
 import type { ITypeConfig } from '../type-node/type-node.interface';
 import { TypeNode } from '../type-node/type-node.abstract';
@@ -18,7 +17,7 @@ import type {
   ITypeElement
 } from './type-element.interface';
 
-const vHash = Math.round(Math.random() * 1000000);
+export const vHash = Math.round(Math.random() * 1000000);
 
 /**
  * 虚拟元素Element的数据结构
@@ -39,23 +38,23 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   config?: Partial<ITypeConfig>;
   data?: UnwrapNestedRefs<IObData>; // ITypeNode 中设置了
   // data$?: XObservable<IJsonData>;
-  override attrObj: Partial<ITypeAttribute>;
-  override styleObj: Partial<IStyle>;
+  override attrObj: ITypeAttribute;
+  override styleObj: IStyle;
   override subscriptions: Subscription[];
   // override data$?: Observer;
   modelValue?: IJsonDataProp;
 
   protected constructor() {
     super();
-    this.attrObj = {};
-    this.styleObj = {};
-    this.addAttrObj({
+    // 免得做非空判断
+    this.attrObj = {
       ['data-v-' + vHash]: true
-    });
-    // this.nodeName = nodeName;
+    };
+    this.styleObj = {};
     this.attributes = [];
     this.childNodes = [];
     this.subscriptions = [];
+    this.beforeCreate();
   }
 
   // get data(): IJsonData | undefined {
@@ -148,10 +147,10 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   get boundBox(): IBoundBox {
     if (this.dom === undefined) {
       return {
-        left: '0',
-        top: '0',
-        width: '0',
-        height: '0'
+        left: 0,
+        top: 0,
+        width: 0,
+        height: 0
       };
     }
     const { left, top, width, height } = this.dom.getBoundingClientRect();
@@ -164,10 +163,43 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     };
   }
 
-  setConfig(config?: Partial<ITypeConfig>) {
+  /**
+   * 设置元素的插槽。
+   *
+   * 此函数用于向指定的元素添加或前置插入子元素。通过参数`type`来决定是添加（默认）还是前置插入子元素。
+   * `slot`参数可以是一个或多个子元素，根据`type`的不同，这些子元素会被添加到元素的末尾或前置到元素的开头。
+   *
+   * @param element 要添加或插入子元素的目标元素。
+   * @param slot 要添加或插入的子元素或子元素数组。
+   * @param type 操作类型，可选值为`add`（默认）或`unshift`，分别代表添加和前置插入子元素。
+   */
+  setSlot(
+    element: TypeElement,
+    slot: TypeNode | TypeNode[],
+    type: 'add' | 'unshift' = 'add'
+  ) {
+    if (type === 'unshift') {
+      if (slot instanceof TypeNode) {
+        element.unshiftChild(slot);
+      } else {
+        element.unshiftChildren(...slot);
+      }
+    } else {
+      if (slot instanceof TypeNode) {
+        element.addChild(slot);
+      } else {
+        element.addChildren(...slot);
+      }
+    }
+  }
+
+  setConfig(config?: ITypeConfig) {
     this.config = config;
     if (config?.parent) {
       this.parent = config.parent;
+    }
+    if (config?.to) {
+      this.to = config.to;
     }
     if (config?.ref !== undefined) {
       config.ref.value = this;
@@ -175,23 +207,22 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     if (config?.name) {
       this.addAttrName(config.name);
     }
-    if (config?.text) {
+    if (config?.text) { // 添加文本
       // 先判断子元素是否有TextNode，有的话就不再添加
-      this.textNode = this.findNode('TextNode') as TextNode;
+      // 要this.textNode 而不是其它的 TextNode;
       if (this.textNode) {
         this.textNode.setText(config.text);
+        if (this.findChildIndex(this.textNode) === -1) {
+          this.addChild(this.textNode);
+        }
       } else {
         this.textNode = new TextNode(config.text);
         this.addChild(this.textNode);
       }
       this.textNode.setParent(this);
     }
-    if (config?.attrObj) {
-      this.addAttrObj(config.attrObj);
-    }
-    if (config?.styleObj) {
-      this.addStyleObj(config.styleObj);
-    }
+    this.addPropObj(config);
+
     if (config?.data) {
       // this.setDataObservable(config.data);
       this.data = reactive(config.data);
@@ -224,32 +255,21 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   // setDataItem(key: string, value: IJsonDataProp) {
   //   this.data$?.setDataItem(key, value);
   // }
+
   addWidth(width: string | number): void {
-    if (isNumber(width)) {
-      width = width + 'px';
-    }
-    this.addStyleObj({ width });
+    this.addStyleObj({ width: addUnit(width) });
   }
 
   setWidth(width: string | number): void {
-    if (isNumber(width) || isStringNumber(width)) {
-      width = width + 'px';
-    }
-    this.setStyleObj({ width });
+    this.setStyleObj({ width: addUnit(width) });
   }
 
   addHeight(height: string | number): void {
-    if (isNumber(height) || isStringNumber(height)) {
-      height = height + 'px';
-    }
-    this.addStyleObj({ height });
+    this.addStyleObj({ height: addUnit(height) });
   }
 
   setHeight(height: string | number): void {
-    if (isNumber(height)) {
-      height = height + 'px';
-    }
-    this.setStyleObj({ height });
+    this.setStyleObj({ height: addUnit(height) });
   }
 
   addBackgroundColor(backgroundColor: string): void {
@@ -260,17 +280,26 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.setStyleObj({ backgroundColor });
   }
 
-  setCursor(cursor: StyleCursor) {
+  setCursor(cursor: Property.Cursor) {
     this.setStyleObj({
       cursor
     });
+  }
+
+  addPropObj(config?: ITypeConfig) {
+    if (config?.attrObj) {
+      this.addAttrObj(config.attrObj);
+    }
+    if (config?.styleObj) {
+      this.addStyleObj(config.styleObj);
+    }
   }
 
   /**
    * 重新设置属性 会清理原有属性
    * @param propObj
    */
-  resetPropObj(propObj: { attrObj: Partial<ITypeAttribute>; styleObj: Partial<IStyle> }): void {
+  resetPropObj(propObj: { attrObj: ITypeAttribute; styleObj: IStyle }): void {
     this.resetAttrObj(propObj.attrObj);
     this.resetStyleObj(propObj.styleObj);
   }
@@ -281,14 +310,11 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * 没有传的样式，不变；
    * @param styleObj
    */
-  setStyleObj(styleObj: Partial<IStyle>): void {
+  setStyleObj(styleObj: IStyle): void {
     for (const key in styleObj) {
       if (Object.hasOwnProperty.call(styleObj, key)) {
         // todo 如何优化
-        const value = styleObj[key as keyof IStyle] as
-          | string
-          | number
-          | boolean;
+        const value = styleObj[key as keyof IStyle] as string | number;
         this.setStyle(key as keyof IStyle, value);
       }
     }
@@ -296,9 +322,11 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
 
   /**
    * 添加样式对象；
+   * todo mergeStyleObj,现在的方法更接近与mergeStyleObj；
+   *    fluentUI中使用了 mergeStyles 方法；
    * @param styleObj
    */
-  addStyleObj(styleObj: Partial<IStyle>): void {
+  addStyleObj(styleObj: IStyle): void {
     for (const key in styleObj) {
       if (Object.hasOwnProperty.call(styleObj, key)) {
         // todo 如何优化
@@ -316,13 +344,13 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * 清除原有样式，全部替换为新的样式
    * @param styleObj
    */
-  resetStyleObj(styleObj: Partial<IStyle>): void {
+  resetStyleObj(styleObj: IStyle): void {
     this.styleObj = styleObj;
     this.dom?.removeAttribute('style'); // 需要单独清理一下DOM的style
     this.setStyleObj(styleObj);
   }
 
-  removeStyleObj(styleObj: Partial<IStyle>): void {
+  removeStyleObj(styleObj: IStyle): void {
     for (const key in styleObj) {
       if (Object.hasOwnProperty.call(styleObj, key)) {
         this.removeStyle(key as keyof IStyle);
@@ -330,34 +358,46 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
   }
 
-  renderStyleObj(styleObj: Partial<IStyle>): void {
+  renderStyleObj(styleObj: IStyle): void {
     for (const key in styleObj) {
       if (Object.hasOwnProperty.call(styleObj, key)) {
         // todo 如何优化
-        const value = styleObj[key as keyof IStyle] as
-          | string
-          | number
-          | boolean;
+        const value = styleObj[key as keyof IStyle] as string | number;
         this.renderStyle(key as keyof IStyle, value);
       }
     }
   }
 
-  setStyle(key: keyof IStyle, value: string | number | boolean): void {
+  /**
+   * 设置元素的样式。
+   *
+   * 此方法用于根据给定的键和值来更新元素的样式。如果值为`undefined`，则此方法将删除该样式的属性；
+   * 否则，它将添加新的样式属性并立即渲染更新。
+   * 此方法会渲染到dom上
+   * @param key 样式属性的键，对应于`IStyle`接口中的属性名。
+   * @param value 样式属性的值，可以是字符串、数字或布尔值。
+   */
+  setStyle(key: keyof IStyle, value: string | number): void {
+    // 当值为undefined时，调用removeStyle方法来删除这个样式属性
     // todo type ???
-    if (value !== undefined) {
-      this.addStyle(key, value);
-      // 直接dom操作
-      this.renderStyle(key, value);
-    } else {
+    if (value === undefined) {
       // todo 空字符怎么处理？
       this.removeStyle(key);
+    } else {
+      // 当值不为undefined时，先调用addStyle方法来添加或更新这个样式属性
+      this.addStyle(key, value);
+      // 然后调用renderStyle方法来立即渲染这个样式的更新
+      // 直接dom操作
+      this.renderStyle(key, value);
     }
   }
 
   addStyle(key: keyof IStyle, value: string | number | boolean): void {
-    // (this.styleObj as Record<string, string | number | boolean>)[key] =
-    //   value;
+    // 检查styleObj是否已初始化，避免调用方法时由于this.styleObj为null或undefined导致的异常
+    if (!this.styleObj) {
+      throw new Error('styleObj is not initialized.');
+    }
+
     Object.assign(this.styleObj, { [key]: value });
     // Object.defineProperty(this.styleObj, key, {
     //   value: value,
@@ -367,15 +407,27 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     // });
   }
 
-  renderStyle(key: keyof IStyle, value: string | number | boolean): void {
+  /**
+   * 根据给定的样式键和值，渲染元素的样式。
+   * @param key 样式属性的名称，必须是IStyle接口中定义的属性名。
+   * @param value 样式属性的值，可以是字符串、数字或布尔值。
+   * @throws 如果this.dom为null，则抛出错误，指示元素不存在。
+   */
+  renderStyle(key: keyof IStyle, value: string | number): void {
+    // 当样式属性为width或height时，确保值以px为单位
     // todo width height 等属性是数字时的处理
     //    padding margin 等类似的数字值的处理
     if (key === 'width' || key === 'height') {
-      if (isNumber(value) || isStringNumber(value)) {
-        value = value + 'px';
-      }
+      value = addUnit(value);
     }
-    this.dom?.style.setProperty(humpToMiddleLine(key), String(value)); // 要转中划线
+    // 检查dom元素是否存在，如果不存在则抛出错误
+    if (!this.dom) {
+      throw Error(
+        'this.dom is null . this element className is ' + this.className
+      );
+    }
+    // 使用CSS属性名，并将值转换为字符串，然后设置到元素的样式中
+    this.dom.style.setProperty(camelToDash(key), String(value)); // 要转中划线
   }
 
   // 删除样式
@@ -383,7 +435,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     if (this?.styleObj[key]) {
       delete this.styleObj[key];
     }
-    this.dom?.style.removeProperty(humpToMiddleLine(key));
+    this.dom?.style.removeProperty(camelToDash(key));
     // delete this.dom.style[key as keyof CSSStyleDeclaration];
   }
 
@@ -392,8 +444,8 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * 可指定具体显示模式
    * @param mode
    */
-  show(mode?: StyleDisplay): void {
-    this.setStyle('display', mode || 'block'); // flex block inline-block
+  show(mode?: Property.Display): void {
+    this.setStyle('display', mode ?? 'block'); // flex block inline-block
   }
 
   hide(): void {
@@ -401,7 +453,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   }
 
   // 不影响已有的属性，但是没有传的属性
-  setAttrObj(attrObj: Partial<ITypeAttribute>): void {
+  setAttrObj(attrObj: ITypeAttribute): void {
     for (const key in attrObj) {
       if (Object.hasOwnProperty.call(attrObj, key)) {
         // todo 如何优化
@@ -411,7 +463,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
   }
 
-  addAttrObj(attrObj: Partial<ITypeAttribute>): void {
+  addAttrObj(attrObj: ITypeAttribute): void {
     for (const key in attrObj) {
       if (Object.hasOwnProperty.call(attrObj, key)) {
         const value = attrObj[key] as string | number;
@@ -425,13 +477,13 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * 清理原有属性，
    * @param attrObj
    */
-  resetAttrObj(attrObj: Partial<ITypeAttribute>): void {
+  resetAttrObj(attrObj: ITypeAttribute): void {
     this.attrObj = attrObj;
     this.cleanAttrObj();
     this.setAttrObj(attrObj);
   }
 
-  renderAttrObj(attrObj: Partial<ITypeAttribute>): void {
+  renderAttrObj(attrObj: ITypeAttribute): void {
     for (const key in attrObj) {
       if (Object.hasOwnProperty.call(attrObj, key)) {
         const value = attrObj[key] as string | number;
@@ -440,7 +492,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
   }
 
-  removeAttrObj(attrObj: Partial<ITypeAttribute>): void {
+  removeAttrObj(attrObj: ITypeAttribute): void {
     for (const key in attrObj) {
       if (Object.hasOwnProperty.call(attrObj, key)) {
         if (this.attrObj[key]) {
@@ -480,7 +532,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       key !== 'spreadMethod' &&
       key !== 'gradientUnits'
     ) {
-      key = humpToMiddleLine(key);
+      key = camelToDash(key);
     }
     if (value === true) {
       this.dom?.setAttribute(key, '');
@@ -535,10 +587,10 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
 
   addAttrClass(className: string): void {
     // 要先判断className是否已经存在
-    if (this.attrObj?.class?.indexOf(className) === -1) {
-      this.attrObj.class += ' ' + className;
+    if (this.attrObj?.class && this.attrObj.class.indexOf(className) === -1) {
+      this.attrObj.class += ' ' + className + '-' + vHash;
     } else {
-      this.addAttribute('class', className);
+      this.addAttribute('class', className + '-' + vHash);
     }
   }
 
@@ -557,15 +609,15 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   addEvents(events: Partial<IEvents>) {
     for (const key in events) {
       const eventFun = events[key as keyof IEvents];
-      // if (Object.hasOwnProperty.call(this.config?.events, key)) {
       if (this.dom) {
-        this.subscriptions.push(fromEvent(this.dom, key).subscribe((evt) => {
-          if (eventFun) {
-            eventFun(evt, this);
-          }
-        }));
+        this.subscriptions.push(
+          fromEvent(this.dom, key).subscribe((evt) => {
+            if (eventFun) {
+              eventFun(evt, this);
+            }
+          })
+        );
       }
-      // }
     }
   }
 
@@ -589,16 +641,21 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   }
 
   appendChildren(...newChildren: Array<TypeNode>) {
-    for(const child of newChildren) {
+    for (const child of newChildren) {
       this.appendChild(child);
     }
   }
+
   /**
    * 从前面添加子元素
    * @param newChild
    */
   unshiftChild(newChild: TypeNode): void {
     this.childNodes.unshift(newChild);
+  }
+
+  unshiftChildren(...newChildren: TypeNode[]) {
+    this.childNodes.unshift(...newChildren);
   }
 
   /**
@@ -614,7 +671,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * @param newChildren
    */
   addChildren(...newChildren: TypeNode[]): void {
-    newChildren.forEach(child => child.appendParent(this));
+    newChildren.forEach((child) => child.appendParent(this));
   }
 
   /**
@@ -777,38 +834,8 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
   }
 
-  // todo 子类中实现 ？？？？
-  // abstract clone<T>(): T; // 复制
-  // 会循环调用
-  // clone(): TypeElement {
-  // //   const attrObj: { [key: string]: boolean | string | number } = {};
-  // //   const styleObj: Partial<IStyle> = {};
-  // //   this.attrObj.forEach(((value, key) => {
-  // //     attrs[key] = value
-  // //   }));
-  // //   for (const styleName in this.styleObj) {
-  // //     styleObj[styleName] = this.styleObj[styleName];
-  // //   }
-  // //   // this.styleObj.forEach((value, key) => {
-  // //   //   styleObj[key] = value;
-  // //   // })
-  // //   return new VElement(this.nodeName, {
-  // //     classes: [...this.classes],
-  // //     attrs,
-  // //     styleObj,
-  // //     childNodes: this.childNodes.map(i => i.clone())
-  // //   });
-  //   const literalJson = toJSON(this);
-  //   console.log('literalJson is ', literalJson);
-  //   // if (this.parent instanceof WebPage) {
-  //   //   const obj = new ControlClassMap[this.className](this.parent);
-  //   //   console.log('obj is ', obj);
-  //   // }
-  //   return this;
-  // }
-
   findChildAtIndex(index: number): TypeNode | null {
-    return this.childNodes[index] || null;
+    return this.childNodes[index] ?? null;
   }
 
   /**
@@ -853,6 +880,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       }
     }
   }
+
   /**
    * 挂载到真实DOM；
    * 需要手动挂载组件时使用，一般是挂载到框架外的DOM元素时。
@@ -884,7 +912,10 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * afterRender 渲染后
    * mounted 挂载后
    */
-  beforeCreate() {/**/}
+  beforeCreate() {
+    /**/
+  }
+
   /**
    * created函数用于在渲染TypeElement之前进行准备工作。
    * 该函数不接受参数，也不返回任何值。
@@ -893,7 +924,9 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * 2. 检查dom属性是否已存在，若不存在，则创建一个新的DOM元素。
    * 3. 遍历当前Element的所有属性，对以':'和'@'开头的属性进行特殊处理。
    */
-  created() {/**/}
+  created() {
+    /**/
+  }
 
   /**
    * 渲染前拦截，预处理
@@ -907,6 +940,9 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     if (this.className === 'TdInput') {
       console.log('this node is TdInput . ');
     }
+    if (this.className) {
+      this.addAttrClass(camelToDash(this.className));
+    }
     for (const [key, value] of Object.entries(this)) {
       // console.log(`${key}: ${value}`);
       if (value instanceof Observer) {
@@ -916,7 +952,9 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       if (value instanceof XProxy) {
         console.log('XProxy key is ', key);
         console.log('node is ', this);
-        value.addDep(this, () => this.setPropValue(key as keyof this, value.value));
+        value.addDep(this, () =>
+          this.setPropValue(key as keyof this, value.value)
+        );
         //   todo 挂载监听
         // this.defineNodeProperty(this, key as keyof TypeNode, value);
       }
@@ -955,6 +993,9 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
     // console.log('this.dom is ', this.dom);
     this.mounted && this.mounted(); // 渲染后处理
+    if (this?.to) {
+      this.mount(this.to);
+    }
     this.preEvents();
     this.initEvents && this.initEvents();
   }

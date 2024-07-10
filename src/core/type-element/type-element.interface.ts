@@ -1,62 +1,9 @@
 /**
  * 虚拟dom的数据结构字面量接口。
  */
-import type { ITypeNode } from '../type-node/type-node.interface';
-import type { IStyle } from '../../style/style.interface';
 import { Subscription } from 'rxjs';
-// import {
-//   A,
-//   Area,
-//   Article,
-//   Aside,
-//   Audio,
-//   B,
-//   Br,
-//   Button,
-//   Canvas,
-//   Code,
-//   Div,
-//   Form,
-//   Header,
-//   Hr,
-//   I,
-//   Img,
-//   Input,
-//   Label,
-//   Main,
-//   Map,
-//   Menu,
-//   Option,
-//   P,
-//   Picture,
-//   Pre,
-//   Progress,
-//   Section,
-//   Select,
-//   Slot,
-//   Span,
-//   SvgCircle,
-//   SvgEllipse,
-//   SvgImage,
-//   SvgLine,
-//   SvgPath,
-//   SvgRect,
-//   SvgSvg,
-//   SvgText,
-//   Table,
-//   TableBody,
-//   TableDataCell,
-//   TableFoot,
-//   TableHead,
-//   TableHeaderCell,
-//   TableRow,
-//   Template,
-//   Textarea,
-//   Title,
-//   Track,
-//   UnorderedList,
-//   Video,
-// } from '../element';
+import { IStyle } from '@type-dom/css-type';
+import type { ITypeNode } from '../type-node/type-node.interface';
 
 export interface ITypeAttribute {
   id?: string;
@@ -64,7 +11,7 @@ export interface ITypeAttribute {
   name?: string;
   type?: string;
 
-  [key: string]: string | number | boolean  | undefined | ITypeAttribute;
+  [key: string]: string | number | boolean | undefined | ITypeAttribute;
 }
 
 /**
@@ -74,17 +21,17 @@ export interface ITypeElement extends ITypeNode {
   className: string; // todo enum ??
   nodeName: string;
   nodeValue?: undefined;
-  attrObj: Partial<ITypeAttribute>;
-  styleObj: Partial<IStyle>;
+  attrObj: ITypeAttribute;
+  styleObj: IStyle;
   // 绑定的事件集合, TypeElement 才有
   // events?: Partial<IEvents>;
   subscriptions?: Subscription[];
-  childNodes: Array<ITypeNode>; // contents
+  childNodes: Array<ITypeNode>; // contents todo 也是可以为空的啊 ？？？
 }
 
 export interface IBoundBox {
-  top: string;
-  left: string;
+  top: string | number;
+  left: string | number;
   width: string | number;
   height: string | number;
 }
