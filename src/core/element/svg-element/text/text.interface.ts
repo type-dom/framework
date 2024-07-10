@@ -8,27 +8,29 @@
  * </text>
  * transform="rotate(30 20,40)"
  */
+import { IStyle, Property } from '@type-dom/css-type';
 import type { ITextNode } from '../../../text-node/text-node.interface';
 import type {
   ITypeAttribute,
   ITypeElement
 } from '../../../type-element/type-element.interface';
 import { ITypeConfig } from '../../../type-node/type-node.interface';
-import { IStyle } from '../../../../style/style.interface';
 
-export interface ISvgTextStyle extends Partial<IStyle> {
-  fontFamily?: string; // rgb(0,0,255) blue
-  fontSize?: string;
-  stroke?: string; // rgb(0,0,0) pink
-  fill?: string; // #0000ff;"
+export interface ISvgTextStyle extends IStyle {
+  fontFamily?: Property.FontFamily; // rgb(0,0,255) blue
+  // fontSize?: string;
+  stroke?: Property.Stroke; // rgb(0,0,0) pink
+  fill?: Property.Fill; // #0000ff;"
 }
-export interface ISvgTextAttribute extends Partial<ITypeAttribute> {
+
+export interface ISvgTextAttribute extends ITypeAttribute {
   x: number;
   y: number;
   dx?: number;
   dy?: number;
   transform?: string;
 }
+
 export interface ISvgText extends ITypeElement {
   nodeName: 'text';
   styleObj: ISvgTextStyle;
@@ -38,5 +40,5 @@ export interface ISvgText extends ITypeElement {
 }
 
 export interface ISvgTextConfig extends ITypeConfig {
-  text: string,
+  text: string;
 }
