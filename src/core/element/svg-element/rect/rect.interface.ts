@@ -1,8 +1,6 @@
-import type {
-  ITypeAttribute,
-} from '../../../type-element/type-element.interface';
+import { IStyle, Property } from '@type-dom/css-type';
+import type { ITypeAttribute } from '../../../type-element/type-element.interface';
 import type { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
-import type { IStyle } from '../../../../style/style.interface';
 
 /**
  * width 和 height 属性可定义矩形的高度和宽度
@@ -17,10 +15,10 @@ import type { IStyle } from '../../../../style/style.interface';
  * CSS 的 stroke-opacity 属性定义笔触颜色的透明度（合法的范围是：0 - 1）
  * CSS 的 opacity 属性定义整个元素的透明值（合法的范围是：0 - 1）
  */
-export interface ISvgRectStyle extends Partial<IStyle> {
-  fillOpacity?: number; // 0.1
-  strokeOpacity?: number; // 0.9
-  opacity?: number; // 0.9
+export interface ISvgRectStyle extends IStyle {
+  fillOpacity?: Property.FillOpacity; // 0.1
+  strokeOpacity?: Property.StopOpacity; // 0.9
+  opacity?: Property.Opacity; // 0.9
 }
 
 export interface ISvgRectAttribute extends ITypeAttribute {
@@ -38,7 +36,7 @@ export interface ISvgRectAttribute extends ITypeAttribute {
 export interface ISvgRect extends ITypeSvg {
   nodeName: 'rect';
   className: 'SvgRect';
-  styleObj: Partial<ISvgRectStyle>;
-  attrObj: Partial<ISvgRectAttribute>;
+  styleObj: ISvgRectStyle;
+  attrObj: ISvgRectAttribute;
   childNodes: [];
 }

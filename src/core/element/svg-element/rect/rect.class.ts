@@ -29,7 +29,7 @@ export class SvgRect extends TypeSvg implements ISvgRect {
       x: this.x,
       y: this.y,
       width: this.width,
-      height: this.height,
+      height: this.height
     };
     this.setConfig(config);
   }
@@ -44,7 +44,7 @@ export class SvgRect extends TypeSvg implements ISvgRect {
       x,
       y,
       width,
-      height,
+      height
     });
   }
 }
