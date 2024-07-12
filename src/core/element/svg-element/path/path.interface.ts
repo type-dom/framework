@@ -1,19 +1,17 @@
-import type {
-  ITypeAttribute
-} from '../../../type-element/type-element.interface';
+import { IStyle, Property } from '@type-dom/css-type';
+import type { ITypeAttribute } from '../../../type-element/type-element.interface';
 import type { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
-import type { IStyle } from '../../../../style/style.interface';
 
 export interface ISvgPathStyle extends IStyle {
-  fill: string; // white;
-  stroke: string; // red;
-  strokeWidth: number; // 2
+  fill?: Property.Fill; // white;
+  stroke?: Property.Stroke; // red;
+  strokeWidth?: Property.StrokeWidth; // 2
 }
 
 export interface ISvgPathAttribute extends ITypeAttribute {
-  d: string; // M250 150 L150 350 L350 350 Z
-  fill: string;
-  strokeWidth: number;
+  d?: string; // M250 150 L150 350 L350 350 Z
+  fill?: string;
+  strokeWidth?: number;
   fillRule?: 'nonzero' | 'evenodd' | 'inherit'; // Default value	nonzero
 }
 
@@ -35,8 +33,8 @@ export interface ISvgPathAttribute extends ITypeAttribute {
  */
 export interface ISvgPath extends ITypeSvg {
   nodeName: 'path';
-  styleObj: Partial<ISvgPathStyle>;
-  attrObj: Partial<ISvgPathAttribute>;
+  styleObj: ISvgPathStyle;
+  attrObj: ISvgPathAttribute;
   className: 'SvgPath';
   childNodes: [];
 }

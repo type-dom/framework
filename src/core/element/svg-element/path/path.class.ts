@@ -8,7 +8,7 @@ export class SvgPath extends TypeSvg implements ISvgPath {
   dom: SVGPathElement;
   className: 'SvgPath';
   override parent?: TypeSvgSvg;
-  override attrObj: Partial<ISvgPathAttribute>;
+  override attrObj: ISvgPathAttribute;
   override childNodes: [];
 
   constructor(config?: Partial<ITypeConfig>) {
@@ -20,14 +20,14 @@ export class SvgPath extends TypeSvg implements ISvgPath {
     );
     this.className = 'SvgPath';
     this.attrObj = {
-      d: '',
+      d: ''
     };
     this.childNodes = [];
     this.setConfig(config);
   }
 
   get pathData(): string {
-    return (this.attrObj.d as string) || '';
+    return this.attrObj.d ?? '';
   }
 
   /**
@@ -54,7 +54,7 @@ export class SvgPath extends TypeSvg implements ISvgPath {
    */
   setFill(color: string) {
     this.addAttrObj({
-      fill: color,
+      fill: color
     });
   }
 }
