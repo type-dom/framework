@@ -2,7 +2,7 @@ import type { ITypeNode } from '../type-node/type-node.interface';
 
 /**
  * @author xjf
- * @date 2023/6/18 18:06
+ * @create 2023/6/18 18:06
  * @description 文本节点字面量
  * @see https://developer.mozilla.org/zh-CN/docs/Web/API/Text
  * @see https://developer.mozilla.org/zh-CN/docs/Web/API/Node
@@ -16,5 +16,6 @@ import type { ITypeNode } from '../type-node/type-node.interface';
  */
 export interface ITextNode extends ITypeNode {
   className?: 'TextNode';
-  nodeValue: string;
+  nodeName: '#text';
+  nodeValue: string | number;
 }

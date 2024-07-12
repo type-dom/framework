@@ -1,11 +1,11 @@
 import { isMustache, mustache } from '@type-dom/utils';
 import { XProxy } from '../../observer';
 import { IJsonData } from '../../interface';
-import { mustacheNode } from '../../shared/util';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { IXData } from '../type-node/type-node.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
 import type { ITextNode } from './text-node.interface';
+import { mustacheNode } from '../util';
 
 /**
  * 文本节点类
@@ -48,7 +48,10 @@ export class TextNode extends TypeNode implements ITextNode {
    * @param text 文本内容，默认为 '\u200c'
    * @param parent 父级节点
    */
-  constructor(text: string | XProxy<IJsonData> = '\u200c', parent?: TypeElement) {
+  constructor(
+    text: string | number | XProxy<IJsonData> = '\u200c',
+    parent?: TypeElement
+  ) {
     // \u200c
     super();
     this.beforeCreate();
@@ -57,17 +60,17 @@ export class TextNode extends TypeNode implements ITextNode {
     if (text instanceof XProxy) {
       this.nodeValue = text.value;
       text.addDep(this, (newValue: string) => {
-        console.error('TextNode addDep newValue is ', newValue);
+        // console.error('TextNode addDep newValue is ', newValue);
         this.setText(newValue);
-      })
+      });
     } else {
-      this.nodeValue = text;
-      if (isMustache(text)) {
+      this.nodeValue = String(text);
+      if (isMustache(String(text))) {
         //   todo 订阅 dataItem 变化
         if (this.itemData) {
           this.itemData.data$.subscribe((data: IXData) => {
             this.render();
-          })
+          });
         }
       }
     }
@@ -112,11 +115,11 @@ export class TextNode extends TypeNode implements ITextNode {
    *
    * @param text 文本内容
    */
-  setText(text: string | XProxy<IJsonData>): void {
+  setText(text: string | number | XProxy<IJsonData>): void {
     if (text instanceof XProxy) {
       this.nodeValue = text.value;
     } else {
-      this.nodeValue = text;
+      this.nodeValue = String(text);
     }
     this.render();
   }
@@ -217,6 +220,7 @@ export class TextNode extends TypeNode implements ITextNode {
   beforeCreate(): void {
     // todo 渲染前处理
   }
+
   render(): void {
     // 渲染出来的值，在 模板语法中需要转换的。
     let text = this.nodeValue;
@@ -236,7 +240,7 @@ export class TextNode extends TypeNode implements ITextNode {
     if (this.dom === undefined) {
       this.dom = document.createTextNode(text.toString());
     } else {
-      this.dom.textContent = text || ''; // '\u200b'; // &zwnj; \u200c &zwsp;
+      this.dom.textContent = text ?? ''; // '\u200b'; // &zwnj; \u200c &zwsp;
     }
   }
 }
