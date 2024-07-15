@@ -1,8 +1,6 @@
-import type {
-  ITypeAttribute
-} from '../../../type-element/type-element.interface';
+import { IStyle, Property } from '@type-dom/css-type';
+import type { ITypeAttribute } from '../../../type-element/type-element.interface';
 import type { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
-import type { IStyle } from '../../../../style/style.interface';
 
 /**
  * x1 属性在 x 轴定义线条的开始
@@ -11,11 +9,11 @@ import type { IStyle } from '../../../../style/style.interface';
  * y2 属性在 y 轴定义线条的结束
  */
 export interface ISvgLineStyle extends IStyle {
-  stroke: string; // rgb(0,0,0) pink
-  strokeWidth: number;
-  fillOpacity: number; // 0.1
-  strokeOpacity: number; // 0.9
-  opacity: number; // 0.9
+  stroke?: string; // rgb(0,0,0) pink
+  strokeWidth?: Property.StrokeWidth; // ICSSRule | ICSSPixelUnitRule;
+  fillOpacity?: Property.FillOpacity; // 0.1
+  strokeOpacity?: Property.StrokeOpacity; // 0.9
+  opacity?: Property.Opacity; // 0.9
 }
 
 export interface ISvgLineAttribute extends ITypeAttribute {
@@ -30,7 +28,7 @@ export interface ISvgLineAttribute extends ITypeAttribute {
 export interface ISvgLine extends ITypeSvg {
   nodeName: 'line';
   className: 'SvgLine';
-  styleObj: Partial<ISvgLineStyle>;
-  attrObj: Partial<ISvgLineAttribute>;
+  styleObj: ISvgLineStyle;
+  attrObj: ISvgLineAttribute;
   childNodes: [];
 }
