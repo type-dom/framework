@@ -10,7 +10,7 @@ import type { IRootNode, IRootNodeConfig } from './root-node.interface';
 export class RootNode extends TypeRoot implements IRootNode {
   className: 'RootNode';
 
-  protected constructor(config?: Partial<IRootNodeConfig>) {
+  protected constructor(config?: IRootNodeConfig) {
     super(config);
     this.className = 'RootNode';
   }
