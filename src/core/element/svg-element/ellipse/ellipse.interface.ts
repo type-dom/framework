@@ -1,9 +1,7 @@
-import type {
-  ITypeAttribute
-} from '../../../type-element/type-element.interface';
+import { IStyle, Property } from '@type-dom/css-type';
+import type { ITypeAttribute } from '../../../type-element/type-element.interface';
 import type { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
-import type { IStyle } from '../../../../style/style.interface';
-import { ITypeConfig } from '../../../type-node/type-node.interface';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TypeSvg } from '../../../type-element';
 
 /**
@@ -13,11 +11,11 @@ import { TypeSvg } from '../../../type-element';
  * ry 属性定义垂直半径
  */
 export interface ISvgEllipseStyle extends IStyle {
-  fill: string; // rgb(200,100,50)
-  stroke: string; // rgb(0,0,0) pink
-  strokeWidth: number;
-  strokeOpacity: number; // 0.9
-  opacity: number; // 0.9
+  fill?: string; // rgb(200,100,50)
+  stroke?: string; // rgb(0,0,0) pink
+  strokeWidth?: Property.StrokeWidth;
+  strokeOpacity?: Property.StrokeOpacity; // 0.9
+  opacity?: Property.Opacity; // 0.9
 }
 
 export interface ISvgEllipseAttribute extends ITypeAttribute {
@@ -33,8 +31,8 @@ export interface ISvgEllipseAttribute extends ITypeAttribute {
 export interface ISvgEllipse extends ITypeSvg {
   nodeName: 'ellipse';
   className: 'SvgEllipse';
-  styleObj: Partial<ISvgEllipseStyle>;
-  attrObj: Partial<ISvgEllipseAttribute>;
+  styleObj: ISvgEllipseStyle;
+  attrObj: ISvgEllipseAttribute;
   childNodes: [];
 }
 
