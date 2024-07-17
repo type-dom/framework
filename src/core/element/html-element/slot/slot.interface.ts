@@ -6,5 +6,5 @@ export interface ISlot extends ITypeSlot {
 }
 
 export interface ISlotConfig extends ITypeConfig {
-  slotName: string,
+  slotName: string;
 }
