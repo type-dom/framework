@@ -1,0 +1,52 @@
+import type { ITypeNode } from '../../core/type-node/type-node.interface';
+import type { TypeElement } from '../../core/type-element/type-element.abstract';
+import { ITypeTransitionConfig } from '../../core/type-transition/type-transition.interface';
+import { TypeNode } from '../../core/type-node/type-node.abstract';
+import { DummyElement } from '../../core/dummy-element/dummy-element.abstract';
+
+export interface ITransition extends ITypeNode {
+  className: 'Transition' | string;
+}
+
+export interface ITransitionOptions {
+  duration?: number;
+  easing?: string;
+  delay?: number;
+}
+
+export const TransitionUtil = 'transition';
+export const ANIMATION = 'animation';
+
+export type AnimationTypes = typeof TransitionUtil | typeof ANIMATION;
+
+export interface ITransitionConfig extends ITypeTransitionConfig<TypeElement> {
+  name?: string;
+  type?: AnimationTypes;
+  css?: boolean;
+  duration?: number | { enter: number; leave: number };
+  // custom transition classes
+  enterFromClass?: string;
+  enterActiveClass?: string;
+  enterToClass?: string;
+  appearFromClass?: string;
+  appearActiveClass?: string;
+  appearToClass?: string;
+  leaveFromClass?: string;
+  leaveActiveClass?: string;
+  leaveToClass?: string;
+
+  parent?: TypeElement | DummyElement;
+  slot?: TypeElement;
+}
+
+export interface CSSTransitionInfo {
+  type: AnimationTypes | null;
+  propCount: number;
+  timeout: number;
+  hasTransform: boolean;
+}
+
+export type AnimationProperties = 'Delay' | 'Duration';
+export type StylePropertiesKey =
+  | `${AnimationTypes}${AnimationProperties}`
+  | `${typeof TransitionUtil}Property`;
