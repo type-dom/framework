@@ -12,7 +12,7 @@ import { IStyle, Property } from '@type-dom/css-type';
 import type { ITextNode } from '../../../text-node/text-node.interface';
 import type {
   ITypeAttribute,
-  ITypeElement
+  ITypeElement,
 } from '../../../type-element/type-element.interface';
 import { ITypeConfig } from '../../../type-node/type-node.interface';
 
