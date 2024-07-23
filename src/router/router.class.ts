@@ -28,7 +28,7 @@ export class Router implements IRouter {
     }
     this.lastPath = {
       from: '/',
-      to: window.location.pathname
+      to: window.location.pathname,
     };
   }
 
@@ -66,9 +66,11 @@ export class Router implements IRouter {
         console.log('popstate, evt is ', evt);
         path = window.location.pathname;
         const { from, to } = this.lastPath;
-        if (path === to) { // 前进
+        if (path === to) {
+          // 前进
           this.handleRouteChange(to, from);
-        } else if (path === from) { // 后退
+        } else if (path === from) {
+          // 后退
           this.handleRouteChange(path, to);
         } else {
           this.handleRouteChange(path, to);
@@ -89,7 +91,11 @@ export class Router implements IRouter {
    * @param from 上一个路由路径，以字符串形式传递。
    * @param type
    */
-  handleRouteChange(to: string, from?: string, type: 'push' | 'replace' = 'push') {
+  handleRouteChange(
+    to: string,
+    from?: string,
+    type: 'push' | 'replace' = 'push'
+  ) {
     // 移除路径中的#符号，这通常是URL中的锚点符号，不参与路由匹配。
     console.log('handleRouteChange . to is ', to);
     if (to === from) {
@@ -122,7 +128,7 @@ export class Router implements IRouter {
         } else if (
           fromRoute?.parent?.routerView?.component &&
           fromRoute?.parent?.routerView?.component?.className ===
-          toRoute?.parent?.routerView?.component?.className
+            toRoute?.parent?.routerView?.component?.className
         ) {
           fromRoute?.routerView?.loadRoute(toRoute);
         } else {

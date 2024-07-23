@@ -146,9 +146,7 @@ export async function loadRoute(route: IRoute) {
  * @returns 返回一个Promise，表示组件加载和渲染的过程。
  * @throws 如果上层路由的组件未定义，则抛出错误。
  */
-export async function loadUpRoute(
-  upRoute: IRoute
-): Promise<void> {
+export async function loadUpRoute(upRoute: IRoute): Promise<void> {
   // 输出上层路由信息用于调试
   console.log('loadUpRoute upRoute is ', upRoute);
 
