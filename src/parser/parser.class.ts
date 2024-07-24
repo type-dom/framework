@@ -1,7 +1,7 @@
 import {
   XMLParserErrorCode,
   isWhitespace,
-  isWhitespaceString
+  isWhitespaceString,
 } from '@type-dom/utils';
 import { TextNode, XElement } from '../index';
 // import { XElement } from "../element/x-element/x-element.class"; // todo 这样会报错。上面引入没问题；
@@ -48,7 +48,7 @@ export class Parser {
         case 'quot':
           return '"';
         case 'apos':
-          return '\'';
+          return "'";
       }
       return this.onResolveEntity(entity);
     });
@@ -75,7 +75,7 @@ export class Parser {
       !isWhitespace(s, pos) &&
       s[pos] !== '>' &&
       s[pos] !== '/'
-      ) {
+    ) {
       ++pos;
     }
     const name = s.substring(start, pos);
@@ -85,7 +85,7 @@ export class Parser {
       s[pos] !== '>' &&
       s[pos] !== '/' &&
       s[pos] !== '?'
-      ) {
+    ) {
       skipWs();
       let attrName = '';
       let attrValue = '';
@@ -101,7 +101,7 @@ export class Parser {
       skipWs();
       const attrEndChar = s[pos];
       // 限定了属性值必须以 ' or " 结尾 ， 不能注掉，会解析出错
-      if (attrEndChar !== '"' && attrEndChar !== '\'') {
+      if (attrEndChar !== '"' && attrEndChar !== "'") {
         // console.log(`attrEndChar !== '"' && attrEndChar !== "'"`);
         return null;
       }
@@ -120,7 +120,7 @@ export class Parser {
       // } else {
       attributes.push({
         name: attrName,
-        value: value
+        value: value,
       });
       // }
       pos = attrEndIndex + 1;
@@ -129,7 +129,7 @@ export class Parser {
     return {
       name,
       attributes,
-      parsed: pos - start
+      parsed: pos - start,
     };
   }
 
@@ -148,7 +148,7 @@ export class Parser {
       s[pos] !== '>' &&
       s[pos] !== '?' &&
       s[pos] !== '/'
-      ) {
+    ) {
       ++pos;
     }
     const name = s.substring(start, pos);
@@ -161,7 +161,7 @@ export class Parser {
     return {
       name,
       value,
-      parsed: pos - start
+      parsed: pos - start,
     };
   }
 
