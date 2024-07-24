@@ -16,7 +16,7 @@ const mockDep = {
   notify: noop,
   depend: noop,
   addSub: noop,
-  removeSub: noop
+  removeSub: noop,
 } as unknown as Dep;
 
 /**

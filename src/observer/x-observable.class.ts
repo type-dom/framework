@@ -18,7 +18,7 @@ export class XObservable<T extends IJsonData> {
         // this._subject.next(data);
         this.next(data);
         return true;
-      }
+      },
     });
   }
 

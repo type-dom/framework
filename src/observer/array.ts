@@ -16,13 +16,13 @@ const methodsToPatch = [
   'unshift',
   'splice',
   'sort',
-  'reverse'
+  'reverse',
 ];
 
 /**
  * Intercept mutating methods and emit events
  */
-methodsToPatch.forEach(function(method) {
+methodsToPatch.forEach(function (method) {
   // cache original method
   const original = arrayProto[method];
   // def(arrayMethods, method, function mutator(...args: any[]) {

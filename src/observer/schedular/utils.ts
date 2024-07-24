@@ -38,7 +38,7 @@ const reactiveHandler: IXProxyHandler<IJsonData> = {
       trigger(target, 'delete', key);
     }
     return result;
-  }
+  },
   // ...其他代理陷阱
 };
 

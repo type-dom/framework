@@ -5,7 +5,7 @@ import {
   isNumber,
   isObject,
   isString,
-  isArray
+  isArray,
 } from '@type-dom/utils';
 import { Dep, DepTarget, popTarget, pushTarget } from './dep';
 import { parsePath } from '../util';

@@ -20,7 +20,7 @@ describe('c', () => {
     // 使用示例
     const originalObj: Record<string, string | number> = {
       name: 'John Doe',
-      age: 30
+      age: 30,
     } as const;
 
     const interceptedObj = new XProxy<typeof originalObj>(originalObj);
@@ -47,7 +47,7 @@ describe('test3', () => {
   it('should work . ', () => {
     const person = {
       name: 'Alice',
-      age: 30
+      age: 30,
     };
     const proxy = new XProxy(person);
     proxy.name = 'Jane';
