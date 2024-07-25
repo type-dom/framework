@@ -43,7 +43,7 @@ export function useElementBounding(
     reset = true,
     windowResize = true,
     windowScroll = true,
-    immediate = true
+    immediate = true,
   } = options;
 
   let height = 0;
@@ -113,7 +113,7 @@ export function useElementBounding(
     width,
     x,
     y,
-    update
+    update,
   };
 }
 

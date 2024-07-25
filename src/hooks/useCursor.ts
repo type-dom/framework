@@ -34,7 +34,7 @@ export function useCursor(
       selectionEnd,
       value,
       beforeTxt,
-      afterTxt
+      afterTxt,
     };
   }
 

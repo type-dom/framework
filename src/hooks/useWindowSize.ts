@@ -13,7 +13,7 @@ export function useWindowSize(options: UseWindowSizeOptions = {}): {
     initialWidth = Infinity,
     initialHeight = Infinity,
     listenOrientation = true,
-    includeScrollbar = true
+    includeScrollbar = true,
   } = options;
 
   let width = initialWidth;
