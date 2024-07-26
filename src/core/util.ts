@@ -1,9 +1,12 @@
 import { deepClone } from '@type-dom/utils';
+import { TypeNode } from '../core/type-node/type-node.abstract';
+import { XProxy } from '../observer/x-proxy/x-proxy.class';
 import { IJsonData, IJsonDataProp } from '../interface';
 import { TypeElement } from './type-element/type-element.abstract';
 import { ITypeElement } from './type-element/type-element.interface';
 import { ITextNode } from './text-node/text-node.interface';
 import { ITypeNode } from './type-node/type-node.interface';
+
 
 /**
  * 保存数据时使用。
@@ -26,10 +29,10 @@ export function toJSON(element: TypeElement): ITypeElement {
         return {
           // className: 'TextNode',
           // nodeName: '#text',
-          nodeValue: child.nodeValue // textContent
+          nodeValue: child.nodeValue, // textContent
         } as ITextNode;
       }
-    })
+    }),
   } as ITypeElement;
 }
 
@@ -47,9 +50,7 @@ export function mustacheNode(template: string, node: ITypeNode) {
   let match;
   while ((match = pattern.exec(template))) {
     const keys = match[1].trim().split('.');
-
-    // @ts-ignore
-    let value: any = node[keys[0]];
+    let value: any = node[keys[0] as keyof ITypeNode];
     for (let i = 1; i < keys.length; i++) {
       value = value[keys[i]];
     }
@@ -92,4 +93,61 @@ export function setProperty(
   } catch (error) {
     return false;
   }
+}
+
+/**
+ * 定义节点属性
+ * @param node
+ * @param key
+ * @param value
+ * @param handler
+ */
+export function defineNodeProperty(
+  node: TypeNode, // this
+  key: keyof TypeNode,
+  value: IJsonDataProp
+) {
+  const property = Object.getOwnPropertyDescriptor(node, key);
+  if (property && property.configurable === false) {
+    return;
+  }
+  Object.defineProperty(node, key, {
+    configurable: true,
+    enumerable: true,
+    get() {
+      // 调用 handler 的 get 方法（如果已实现）
+      if (value instanceof XProxy) {
+        console.log(
+          `defineNodeProperty 获取属性 "${key}" 的值，值为XProxy类型，值为：`,
+          value
+        );
+      }
+      return value;
+    },
+    /**
+     * todo 节点的属性赋值还要完善。
+     * 属性本身的值的类型有可能是：
+     * 1. 普通数据类型： 基础数据类型和引用类型，包括数组和对象。
+     * 2. XProxy类型
+     * @param newValue
+     */
+    set(newValue) {
+      // console.log(`defineNodeProperty 拦截到了对属性 "${key}" 的赋值操作，新值为：`, newValue);
+      // 自定义逻辑...
+      if (newValue instanceof XProxy) {
+        // modelValue
+        console.error(
+          `defineNodeProperty 拦截到了对属性 "${key}" 的赋值操作，newValue为XProxy类型，且值为：`,
+          newValue
+        );
+        //   todo 将当前对象加载到 XProxy 中。
+      }
+      if (node[key] instanceof XProxy) {
+        console.error('节点属性的值是XProxy类型。');
+        (node as any)[key] = newValue;
+      } else {
+        (node as any)[key] = newValue;
+      }
+    },
+  });
 }
