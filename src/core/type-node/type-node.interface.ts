@@ -3,11 +3,13 @@ import { IStyle } from '@type-dom/css-type';
 import { type IJsonDataProp, IJsonData, IObData } from '../../interface';
 import { UnwrapNestedRefs } from '../../reactivity/reactive';
 import { XProxy } from '../../observer';
-import { IEvents, ITransitionConfig } from '../../events/events.interface';
+import { IEvents } from '../../events/events.interface';
+import { ITransitionConfig } from '../../components/transition/transition.interface';
 import type { ITypeAttribute } from '../type-element/type-element.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { TextNode } from '../text-node/text-node.class';
 import { TypeNode } from './type-node.abstract';
+import { DummyElement } from '../dummy-element/dummy-element.abstract';
 
 export interface IAttr {
   name: string;
@@ -70,7 +72,7 @@ export interface IPath {
 export interface ITypeNode {
   className?: string;
   attributes?: IAttr[];
-  nodeName?: string;
+  nodeName?: string | undefined;
   /**
    * nodeValue只在 TextNode中才有。
    * nodeValue存在时，就应该是 TextNode类
@@ -88,7 +90,7 @@ export interface ITypeNode {
    * 且为 TypeElement
    * XNode 如何处理 ———————— 不设 parent， === undefined
    */
-  parent?: TypeElement;
+  parent?: TypeElement | DummyElement;
   /**
    * 上下文，用于查找上下文。
    * 对应于创建该对象的类对象。
@@ -117,6 +119,8 @@ export interface ITypeNode {
    */
   events?: Partial<IEvents>;
   subscriptions?: Subscription[];
+
+  emits?: Partial<IEmits>; //
   // TextNode 肯定没有 childNodes， Element 可以没有 childNodes;
   childNodes?: ITypeNode[];
   /**
@@ -185,7 +189,7 @@ export interface ITypeConfig extends ITypeNode {
   // 默认插槽
   slot?: TypeNode | TypeNode[]; // OnlyChild 默认位置的插槽, 可以是单个元素，也可以是多个元素，即数组；如何直接插入当前元素，则相当与 childNodes属性；
 
-  transitionConfig?: ITransitionConfig,
+  transitionConfig?: ITransitionConfig;
 }
 
 export interface IOptionConfig extends ITypeConfig {
@@ -229,4 +233,8 @@ export interface INodeHandler<T extends ITypeNode> {
    * @param prop
    */
   deleteProperty?(target: T, prop: string): void;
+}
+
+export interface IEmits {
+  [key: string]: (...rest: any[]) => void;
 }

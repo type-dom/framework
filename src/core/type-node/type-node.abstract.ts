@@ -9,9 +9,11 @@ import type {
   IAttr,
   IMethods,
   ISetting,
-  ISettings,
+  ISettings, ITypeConfig,
   ITypeNode
 } from './type-node.interface';
+import { DummyElement } from '../dummy-element/dummy-element.abstract';
+import { ITransitionConfig } from '../../components/transition/transition.interface';
 
 /**
  * 虚拟DOM，TypeNode 抽象节点类, 所有节点类的抽象类；
@@ -27,14 +29,16 @@ export abstract class TypeNode implements ITypeNode {
    * 在定义ClassName时，要把当前类写入到TypeMap中；
    */
   abstract className?: string; // 最终实体类的名称，解析转换时需要创建对应的类；
-  abstract nodeName?: '#text' | string;
+  abstract nodeName?: '#text' | string | undefined;
   abstract nodeValue?: string | number | undefined;
   abstract childNodes?: TypeNode[] | undefined;
-  abstract dom?: HTMLElement | SVGElement | Text;
-  abstract parent?: TypeElement | undefined;
+  abstract dom?: HTMLElement | SVGElement | Text | undefined;
+  abstract parent?: TypeElement | DummyElement | undefined;
   // 该节点不是当前位置的组件的子节点；要避免加入到组件的子节点中；要挂载到指定的组件的DOM,甚至直接指向 body；
   to?: HTMLElement;
   isContext?: boolean;
+  items?: ITypeConfig[];
+  // transitionConfig?: ITransitionConfig;
 
   /**
    * 渲染出真实DOM
@@ -66,6 +70,17 @@ export abstract class TypeNode implements ITypeNode {
     } else {
       // 要保证parent不为null，否则会报错。要保证应用项目中的parent都设置过了。
       return this.parent?.root;
+    }
+  }
+
+  /**
+   * transition/teleport 等伪类渲染时需要调用
+   */
+  get elementParent(): TypeElement | undefined {
+    if (this.parent instanceof TypeElement) {
+      return this.parent;
+    } else {
+      return this.parent?.elementParent;
     }
   }
 
@@ -168,12 +183,12 @@ export abstract class TypeNode implements ITypeNode {
   //   console.log('TypeNode.typeMap is ', TypeNode.typeMap);
   // }
 
-  setParent(parent: TypeElement): void {
+  setParent(parent: TypeElement | DummyElement): void {
     this.parent = parent;
     // parent.addChild(this); // 单一原则
   }
 
-  appendParent(parent: TypeElement): void {
+  appendParent(parent: TypeElement | DummyElement): void {
     this.parent = parent;
     parent.addChild(this);
   }
@@ -197,6 +212,15 @@ export abstract class TypeNode implements ITypeNode {
       }
     }
     return undefined;
+  }
+
+  /**
+   * 查找子节点的index
+   * 注：子节点有index属性，直接child.index。 可能子节点没有设置parent。
+   * @param child
+   */
+  findChildIndex(child: TypeNode): number {
+    return this.childNodes?.findIndex((item) => item === child) || -1;
   }
 
   /**
@@ -322,106 +346,31 @@ export abstract class TypeNode implements ITypeNode {
       nodeName: this.nodeName,
       nodeValue: this.nodeValue,
       attributes: this.attributes,
+      items: this.items,
+      // transitionConfig: this.transitionConfig,
       childNodes: this.children.map((child) => {
         if (child.nodeName === '#text') {
           return {
             // className: 'TextNode',
             // nodeName: '#text',
-            nodeValue: child.nodeValue // textContent
+            nodeValue: child.nodeValue, // textContent
           };
         } else {
           return child.toJSON();
         }
-      })
+      }),
     } as ITypeNode;
   }
 
-  // todo 子类中实现 ？？？？
-  // abstract clone<T>(): T; // 复制
   // 会循环调用
   clone<T>(): T {
     const attrObj = deepClone(this.attrObj);
     const styleObj = deepClone(this.styleObj);
-    // this.attrObj?.forEach(((value, key) => {
-    // for ()
-    //   attrs[key] = value
-    // }));
-    //   for (const styleName in this.styleObj) {
-    //     styleObj[styleName] = this.styleObj[styleName];
-    //   }
-    //   // this.styleObj.forEach((value, key) => {
-    //   //   styleObj[key] = value;
-    //   // })
-    //   return new VElement(this.nodeName, {
-    //     classes: [...this.classes],
-    //     attrs,
-    //     styleObj,
-    //     childNodes: this.childNodes.map(i => i.clone())
-    //   });
-    //   const literalJson = toJSON(this);
-    //   console.log('literalJson is ', literalJson);
-    // if (this.parent instanceof WebPage) {
-    //   const obj = new ControlClassMap[this.className](this.parent);
-    //   console.log('obj is ', obj);
-    // }
-    // 创建基类的新实例
-    return new (this.constructor as any)({ attrObj, styleObj, childNodes: this.childNodes?.map(i => i.clone()) }) as T;
-  }
-  /**
-   * 定义属性
-   * todo 好像没有用上
-   * @param node
-   * @param key
-   * @param value
-   * @param handler
-   */
-  defineNodeProperty(
-    node: TypeNode, // this
-    key: keyof TypeNode,
-    value: IJsonDataProp
-  ) {
-    const property = Object.getOwnPropertyDescriptor(node, key);
-    if (property && property.configurable === false) {
-      return;
-    }
-    Object.defineProperty(node, key, {
-      configurable: true,
-      enumerable: true,
-      get() {
-        // 调用 handler 的 get 方法（如果已实现）
-        if (value instanceof XProxy) {
-          console.log(
-            `defineNodeProperty 获取属性 "${key}" 的值，值为XProxy类型，值为：`,
-            value
-          );
-        }
-        return value;
-      },
-      /**
-       * todo 节点的属性赋值还要完善。
-       * 属性本身的值的类型有可能是：
-       * 1. 普通数据类型： 基础数据类型和引用类型，包括数组和对象。
-       * 2. XProxy类型
-       * @param newValue
-       */
-      set(newValue) {
-        // console.log(`defineNodeProperty 拦截到了对属性 "${key}" 的赋值操作，新值为：`, newValue);
-        // 自定义逻辑...
-        if (newValue instanceof XProxy) {
-          // modelValue
-          console.error(
-            `defineNodeProperty 拦截到了对属性 "${key}" 的赋值操作，newValue为XProxy类型，且值为：`,
-            newValue
-          );
-          //   todo 将当前对象加载到 XProxy 中。
-        }
-        if (node[key] instanceof XProxy) {
-          console.error('节点属性的值是XProxy类型。');
-          (node as any)[key] = newValue;
-        } else {
-          (node as any)[key] = newValue;
-        }
-      }
-    });
+    // 创建类的新实例
+    return new (this.constructor as any)({
+      attrObj,
+      styleObj,
+      childNodes: this.childNodes?.map((i) => i.clone()),
+    }) as T;
   }
 }
