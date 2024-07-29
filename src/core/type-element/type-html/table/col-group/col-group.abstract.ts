@@ -3,7 +3,8 @@ import type { ITypeTableColGroup } from './col-group.interface';
 
 export abstract class TypeTableColGroup
   extends TypeHtml
-  implements ITypeTableColGroup {
+  implements ITypeTableColGroup
+{
   nodeName: 'colgroup';
   dom: HTMLTableColElement;
 
