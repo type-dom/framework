@@ -3,7 +3,8 @@ import type { ITypeTableCaption } from './caption.interface';
 
 export abstract class TypeTableCaption
   extends TypeHtml
-  implements ITypeTableCaption {
+  implements ITypeTableCaption
+{
   nodeName: 'caption';
   dom: HTMLTableCaptionElement;
 
