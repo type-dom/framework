@@ -3,7 +3,8 @@ import type { ITypeFigCaption } from './fig-caption.interface';
 
 export abstract class TypeFigCaption
   extends TypeHtml
-  implements ITypeFigCaption {
+  implements ITypeFigCaption
+{
   nodeName: 'figcaption';
   dom: HTMLElement;
 
