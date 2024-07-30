@@ -1,6 +1,6 @@
 import { fromEvent, Subscription } from 'rxjs';
 import { IStyle, Property } from '@type-dom/css-type';
-import { addUnit, camelToDash, deepClone } from '@type-dom/utils';
+import { addUnit, camelToDash } from '@type-dom/utils';
 import { IJsonDataProp, IObData } from '../../interface';
 import { RouterView } from '../../router/router-view/router-view.class';
 import { XProxy } from '../../observer/x-proxy/x-proxy.class';
@@ -14,8 +14,10 @@ import { TextNode } from '../text-node/text-node.class';
 import type {
   ITypeAttribute,
   IBoundBox,
-  ITypeElement
+  ITypeElement,
 } from './type-element.interface';
+import { ITransitionConfig } from '../../components/transition/transition.interface';
+import { DummyElement } from '../dummy-element/dummy-element.abstract';
 
 export const vHash = Math.round(Math.random() * 1000000);
 
@@ -29,7 +31,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   abstract override className: string; // 必然有；
   abstract override dom?: HTMLElement | SVGElement; // 不会是Text；
   abstract override nodeName: string; // 必然有；
-  parent?: TypeElement;
+  parent?: TypeElement | DummyElement;
   nodeValue?: undefined;
   // attributes: INodeAttr[];
   childNodes: TypeNode[];
@@ -43,18 +45,24 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   override subscriptions: Subscription[];
   // override data$?: Observer;
   modelValue?: IJsonDataProp;
+  rendered: boolean;
 
   protected constructor() {
     super();
     // 免得做非空判断
     this.attrObj = {
-      ['data-v-' + vHash]: true
+      ['data-v-' + vHash]: true,
     };
     this.styleObj = {};
     this.attributes = [];
     this.childNodes = [];
     this.subscriptions = [];
+    this.rendered = false;
     this.beforeCreate();
+  }
+
+  get isShow() {
+    return 'none' !== this.dom?.style.display;
   }
 
   // get data(): IJsonData | undefined {
@@ -78,29 +86,29 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
 
   // 获取包含methods属性的组件
   // 对应到包含template的组件
-  get itemMethods(): Record<string, any> | undefined {
-    if (this.methods) {
-      return this.methods;
-    } else if (this.parent === this) {
-      // todo 这是？？？
-      // parent === this 有几种情况 ？？？
-      return this.methods;
-    } else {
-      return this.parent?.itemMethods;
-    }
-  }
+  // get itemMethods(): Record<string, any> | undefined {
+  //   if (this.methods) {
+  //     return this.methods;
+  //   } else if (this.parent === this) {
+  //     // todo 这是？？？
+  //     // parent === this 有几种情况 ？？？
+  //     return this.methods;
+  //   } else {
+  //     return this.parent?.itemMethods;
+  //   }
+  // }
 
-  get itemData(): Record<string, any> | undefined {
-    if (this.data) {
-      return this.data;
-    } else if (this.parent === this) {
-      return this.data;
-    } else if (this.parent) {
-      return this.parent.itemData;
-    } else {
-      return undefined;
-    }
-  }
+  // get itemData(): Record<string, any> | undefined {
+  //   if (this.data) {
+  //     return this.data;
+  //   } else if (this.parent === this) {
+  //     return this.data;
+  //   } else if (this.parent) {
+  //     return this.parent.itemData;
+  //   } else {
+  //     return undefined;
+  //   }
+  // }
 
   get length(): number {
     return this.children.length;
@@ -150,7 +158,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
         left: 0,
         top: 0,
         width: 0,
-        height: 0
+        height: 0,
       };
     }
     const { left, top, width, height } = this.dom.getBoundingClientRect();
@@ -159,7 +167,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       left: left + 'px',
       top: top + 'px',
       width: width + 'px',
-      height: height + 'px'
+      height: height + 'px',
     };
   }
 
@@ -173,8 +181,8 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * @param slot 要添加或插入的子元素或子元素数组。
    * @param type 操作类型，可选值为`add`（默认）或`unshift`，分别代表添加和前置插入子元素。
    */
-  setSlot(
-    element: TypeElement,
+  transSlot(
+    element: TypeElement | DummyElement,
     slot: TypeNode | TypeNode[],
     type: 'add' | 'unshift' = 'add'
   ) {
@@ -207,7 +215,8 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     if (config?.name) {
       this.addAttrName(config.name);
     }
-    if (config?.text) { // 添加文本
+    if (config?.text) {
+      // 添加文本
       // 先判断子元素是否有TextNode，有的话就不再添加
       // 要this.textNode 而不是其它的 TextNode;
       if (this.textNode) {
@@ -282,7 +291,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
 
   setCursor(cursor: Property.Cursor) {
     this.setStyleObj({
-      cursor
+      cursor,
     });
   }
 
@@ -437,6 +446,10 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
     this.dom?.style.removeProperty(camelToDash(key));
     // delete this.dom.style[key as keyof CSSStyleDeclaration];
+  }
+
+  setTransition(config: ITransitionConfig): void {
+    // this.setStyle('transition', transition);
   }
 
   /**
@@ -660,9 +673,11 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
 
   /**
    * 后面添加子元素
+   * new 时，也就是创建时，可以不设置parent；但是addChild时，需要设置parent。
    * @param newChild
    */
   addChild(newChild: TypeNode): void {
+    newChild.setParent(this); // 如果不是子类，是其它地方的对象加过来，要重设其父类。 一个对象挂载到不同的父类中，可能会造成混乱。
     this.childNodes.push(newChild);
   }
 
@@ -698,8 +713,9 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * @param index 要插入的目标位置
    */
   insertChild(child: TypeElement | TextNode, index: number): void {
+    console.log('insertChild . ');
     this.childNodes.splice(index, 0, child);
-    child.appendParent(this);
+    child.setParent(this);
   }
 
   /**
@@ -839,15 +855,6 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   }
 
   /**
-   * 查找子节点的index
-   * 注：子节点有index属性，直接child.index。 可能子节点没有设置parent。
-   * @param child
-   */
-  findChildIndex(child: TypeElement | TextNode): number {
-    return this.childNodes.findIndex((item) => item === child);
-  }
-
-  /**
    * 默认初始化方法
    * 清理多余的对象。
    * TODO 应该叫 preCreateInstance
@@ -912,7 +919,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * afterRender 渲染后
    * mounted 挂载后
    */
-  beforeCreate() {
+  beforeCreate(): void {
     /**/
   }
 
@@ -924,14 +931,14 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * 2. 检查dom属性是否已存在，若不存在，则创建一个新的DOM元素。
    * 3. 遍历当前Element的所有属性，对以':'和'@'开头的属性进行特殊处理。
    */
-  created() {
+  created(): void {
     /**/
   }
 
   /**
    * 渲染前拦截，预处理
    */
-  preRender() {
+  preRender(): void {
     // todo nodejs下没有document，Parser可能会用到
     if (!this.dom) {
       this.dom = document.createElement(this.nodeName);
@@ -965,7 +972,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * 初始化事件钩子
    * setConfig 时，dom可能还没有创建；
    */
-  preEvents() {
+  preEvents(): void {
     this.clearEvents();
     if (this.config?.events) {
       this.addEvents(this.config.events);
@@ -993,11 +1000,13 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
     // console.log('this.dom is ', this.dom);
     this.mounted && this.mounted(); // 渲染后处理
+    // 指定挂载位置的
     if (this?.to) {
       this.mount(this.to);
     }
     this.preEvents();
     this.initEvents && this.initEvents();
+    this.rendered = true;
   }
 
   /**
