@@ -1,9 +1,9 @@
 import { Parser } from '../../../parser/parser.class';
+import { reactive } from '../../../reactivity';
 import { TypeElement } from '../../type-element/type-element.abstract';
 import type { IAttr } from '../../type-node/type-node.interface';
 import { TextNode } from '../../text-node/text-node.class';
 import { IXElement } from './x-element.interface';
-import { reactive } from '../../../reactivity';
 
 // import { ITypeConfig } from '../../config.interface';
 
@@ -85,26 +85,26 @@ export class XElement extends TypeElement implements IXElement {
         // 绑定值
         console.log('attr.name is ', attr.name);
         const attrName = attr.name.substring(1);
-        console.log('this.itemData is ', this.itemData);
-        if (this.itemData && attr.value !== undefined) {
-          const keys = attr.value?.split('.');
-          let value = this.itemData[keys[0]];
-          if (value !== undefined) {
-            for (let i = 1; i < keys.length; i++) {
-              value = value[keys[i]];
-            }
-            if (value !== undefined) {
-              this.addAttrObj({
-                [attrName]: value
-              });
-            }
-          }
-        }
+        // console.log('this.itemData is ', this.itemData);
+        // if (this.itemData && attr.value !== undefined) {
+        //   const keys = attr.value?.split('.');
+        //   let value = this.itemData[keys[0]];
+        //   if (value !== undefined) {
+        //     for (let i = 1; i < keys.length; i++) {
+        //       value = value[keys[i]];
+        //     }
+        //     if (value !== undefined) {
+        //       this.addAttrObj({
+        //         [attrName]: value
+        //       });
+        //     }
+        //   }
+        // }
       } else if (attr.name.startsWith('@')) {
         // 过滤掉，不加入属性中。专门绑定事件时处理。
       } else {
         this.addAttrObj({
-          [attr.name]: attr.value
+          [attr.name]: attr.value,
         });
       }
     }
@@ -116,26 +116,26 @@ export class XElement extends TypeElement implements IXElement {
       if (attr.name.startsWith('@')) {
         console.log('attr.name is ', attr.name);
         console.log('attr.value is ', attr.value);
-        const attrName = attr.name.substring(1);
-        console.log('this.itemMethods is ', this.itemMethods);
-        if (this.itemMethods !== undefined && attr.value !== undefined) {
-          if (this.itemMethods[attr.value]) {
-            if (this.dom === undefined) {
-              throw Error('this.dom is undefined . ');
-            } else {
-              this.addEvents({
-                [attrName]: (evt: Event) => {
-                  if (
-                    this.itemMethods !== undefined &&
-                    this.itemMethods[attr.value] !== undefined
-                  ) {
-                    this.itemMethods[attr.value](evt, this);
-                  }
-                }
-              });
-            }
-          }
-        }
+        // const attrName = attr.name.substring(1);
+        // console.log('this.itemMethods is ', this.itemMethods);
+        // if (this.itemMethods !== undefined && attr.value !== undefined) {
+        //   if (this.itemMethods[attr.value]) {
+        //     if (this.dom === undefined) {
+        //       throw Error('this.dom is undefined . ');
+        //     } else {
+        //       this.addEvents({
+        //         [attrName]: (evt: Event) => {
+        //           if (
+        //             this.itemMethods !== undefined &&
+        //             this.itemMethods[attr.value] !== undefined
+        //           ) {
+        //             this.itemMethods[attr.value](evt, this);
+        //           }
+        //         }
+        //       });
+        //     }
+        //   }
+        // }
       }
     }
   }
