@@ -3,9 +3,9 @@ import { XProxy } from '../../observer';
 import { IJsonData } from '../../interface';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { IXData } from '../type-node/type-node.interface';
+import { mustacheNode } from '../util';
 import { TypeElement } from '../type-element/type-element.abstract';
 import type { ITextNode } from './text-node.interface';
-import { mustacheNode } from '../util';
 
 /**
  * 文本节点类
@@ -67,11 +67,11 @@ export class TextNode extends TypeNode implements ITextNode {
       this.nodeValue = String(text);
       if (isMustache(String(text))) {
         //   todo 订阅 dataItem 变化
-        if (this.itemData) {
-          this.itemData.data$.subscribe((data: IXData) => {
-            this.render();
-          });
-        }
+        // if (this.itemData) {
+        //   this.itemData.data$.subscribe((data: IXData) => {
+        //     this.render();
+        //   });
+        // }
       }
     }
     if (parent) {
@@ -79,9 +79,9 @@ export class TextNode extends TypeNode implements ITextNode {
     }
   }
 
-  get itemData() {
-    return this._data || this.parent?.itemData;
-  }
+  // get itemData() {
+  //   return this._data || this.parent?.itemData;
+  // }
 
   // get textContentLength(): number {
   //   return this.textContent.length;
@@ -220,8 +220,9 @@ export class TextNode extends TypeNode implements ITextNode {
   beforeCreate(): void {
     // todo 渲染前处理
   }
-
+  // todo 钩子函数
   render(): void {
+    this.beforeCreate();
     // 渲染出来的值，在 模板语法中需要转换的。
     let text = this.nodeValue;
     if (isMustache(this.nodeValue)) {
@@ -229,9 +230,9 @@ export class TextNode extends TypeNode implements ITextNode {
         console.log('this is ', this);
       }
       // todo 监听 itemData change
-      if (this.itemData) {
-        text = mustache(this.nodeValue, this.itemData);
-      }
+      // if (this.itemData) {
+      //   text = mustache(this.nodeValue, this.itemData);
+      // }
       const context = this.getContext();
       if (context) {
         text = mustacheNode(this.nodeValue, context);
