@@ -20,7 +20,7 @@ export class SvgPath extends TypeSvg implements ISvgPath {
     );
     this.className = 'SvgPath';
     this.attrObj = {
-      d: ''
+      d: '',
     };
     this.childNodes = [];
     this.setConfig(config);
@@ -54,7 +54,7 @@ export class SvgPath extends TypeSvg implements ISvgPath {
    */
   setFill(color: string) {
     this.addAttrObj({
-      fill: color
+      fill: color,
     });
   }
 }
