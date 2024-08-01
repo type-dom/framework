@@ -21,7 +21,7 @@
  * @param cssStyles
  */
 import { IStyle } from '@type-dom/css-type';
-import { vHash } from '../core/type-element';
+import { vHash } from '../core';
 import { camelToDash } from '@type-dom/utils';
 
 const styleElement = createStyleElement();
