@@ -1,4 +1,4 @@
-import { TypeSvgSvg } from '../core/type-element/type-svg/svg/svg.abstract';
+import { TypeSvgSvg } from '../core/type-svg/svg/svg.abstract';
 import { RouterView } from './router-view/router-view.class';
 
 export interface IRoute {

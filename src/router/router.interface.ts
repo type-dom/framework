@@ -1,5 +1,5 @@
 import { IRoute } from './route.interface';
-import { TypeElement } from '../core/type-element';
+import { TypeElement } from '../core';
 
 export interface IRouter {
   // 路由根节点

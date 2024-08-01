@@ -106,7 +106,7 @@ export class Router implements IRouter {
     if (toRoute) {
       // 如果路由配置中存在重定向，则直接进行重定向操作，不再加载当前路由的组件。
       if (toRoute?.redirect) {
-        // console.log('route.redirect is ', route.redirect);
+        console.log('toRoute.redirect is ', toRoute.redirect);
         toRoute?.routerView?.loadRoute(toRoute).then(() => {
           if (type === 'push') {
             toRoute.redirect && this.push(toRoute.redirect);
@@ -124,12 +124,16 @@ export class Router implements IRouter {
         console.error('from is ', from, ' , fromRoute is ', fromRoute);
         // todo
         if (fromRoute === toRoute.parent) {
-          fromRoute?.routerView?.component?.routerView?.loadRoute(toRoute);
+          fromRoute?.routerView?.slot?.routerView?.loadRoute(toRoute);
         } else if (
-          fromRoute?.parent?.routerView?.component &&
-          fromRoute?.parent?.routerView?.component?.className ===
-            toRoute?.parent?.routerView?.component?.className
+          fromRoute?.parent?.routerView?.slot &&
+          fromRoute?.parent?.routerView?.slot?.className ===
+            toRoute?.parent?.routerView?.slot?.className
         ) {
+          console.log(
+            'fromRoute?.parent?.routerView?.slot is ',
+            fromRoute?.parent?.routerView?.slot
+          );
           fromRoute?.routerView?.loadRoute(toRoute);
         } else {
           loadRoute(toRoute);

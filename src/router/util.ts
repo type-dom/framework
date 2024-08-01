@@ -128,9 +128,9 @@ export async function loadRoute(route: IRoute) {
     }
     await loadUpRoute(route);
     if (route.upRoutes.length > 0) {
-      route.upRoutes?.[0]?.routerView?.render();
+      route.upRoutes?.[0]?.routerView?.elementParent?.render();
     } else {
-      route.routerView?.render();
+      route.routerView?.elementParent?.render();
     }
   }
 }
@@ -178,5 +178,6 @@ export async function loadUpRoute(upRoute: IRoute): Promise<void> {
     // 如果上层路由有父路由，则将组件添加到父路由的视图中，并清除父路由视图的子节点
     upRoute.routerView?.clearChildNodes();
     upRoute.routerView?.addChild(component);
+    // upRoute.routerView?.setSlot(component);
   });
 }
