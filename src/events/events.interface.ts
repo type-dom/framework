@@ -7,7 +7,7 @@ import { TypeElement } from '../core/type-element/type-element.abstract';
  * @param {T} T - 继承自TypeElement的元素类型。默认为TypeElement。
  * @returns {void} - 该函数没有返回值。
  */
-type IEvent<K extends Event = Event, T extends TypeElement = TypeElement> = (
+export type IEvent<K extends Event = Event, T extends TypeElement = TypeElement> = (
   evt?: K,
   element?: T
 ) => void;
