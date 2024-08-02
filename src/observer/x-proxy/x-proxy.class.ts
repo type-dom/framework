@@ -10,7 +10,7 @@ import {
 } from '@type-dom/utils';
 import { IJsonData, IJsonDataProp } from '../../interface';
 import { IXProxy, IXProxyHandler } from './x-proxy.interface';
-import { TypeElement } from '../../core/type-element';
+import { TypeElement } from '../../core';
 import { BehaviorSubject, debounceTime, Subscription } from 'rxjs';
 import { TextNode } from '../../core/text-node/text-node.class';
 
