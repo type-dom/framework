@@ -8,7 +8,7 @@ import type { IXNode } from './x-node.interface';
  */
 export class XNode extends TypeNode implements IXNode {
   className: 'XNode';
-  parent: undefined;
+  override parent: undefined;
   nodeName?: string;
   nodeValue?: string | number;
   override attributes: IAttr[] = [];
@@ -34,6 +34,13 @@ export class XNode extends TypeNode implements IXNode {
       // child.parent = this as XNode;
       return new XNode(child);
     });
+  }
+
+  override mount(el: HTMLElement | ShadowRoot) {
+    // this.render();
+    if (this.dom) {
+      el.appendChild(this.dom);
+    }
   }
 
   // todo 和 TypeElement 中的 render 方法有啥区别？？？
