@@ -7,7 +7,6 @@ import { ITypeElement } from './type-element/type-element.interface';
 import { ITextNode } from './text-node/text-node.interface';
 import { ITypeNode } from './type-node/type-node.interface';
 
-
 /**
  * 保存数据时使用。
  * 把当前数据层对象转换为 JSON 字面量。
