@@ -1,4 +1,4 @@
-import { TypeHtml } from '../type-element/type-html/type-html.abstract';
+import { TypeHtml } from '../type-html/type-html.abstract';
 import type { ITypeRoot, ITypeRootConfig } from './type-root.interface';
 
 /**
