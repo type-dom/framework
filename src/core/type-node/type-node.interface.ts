@@ -7,9 +7,7 @@ import { IEvents } from '../../events/events.interface';
 import { ITransitionConfig } from '../../components/transition/transition.interface';
 import type { ITypeAttribute } from '../type-element/type-element.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
-import { TextNode } from '../text-node/text-node.class';
 import { TypeNode } from './type-node.abstract';
-import { DummyElement } from '../dummy-element/dummy-element.abstract';
 
 export interface IAttr {
   name: string;
@@ -90,7 +88,7 @@ export interface ITypeNode {
    * 且为 TypeElement
    * XNode 如何处理 ———————— 不设 parent， === undefined
    */
-  parent?: TypeElement | DummyElement;
+  parent?: TypeElement;
   /**
    * 上下文，用于查找上下文。
    * 对应于创建该对象的类对象。
@@ -120,9 +118,9 @@ export interface ITypeNode {
   events?: Partial<IEvents>;
   subscriptions?: Subscription[];
 
-  emits?: Partial<IEmits>; //
+  emits?: IEmits; //
   // TextNode 肯定没有 childNodes， Element 可以没有 childNodes;
-  childNodes?: ITypeNode[];
+  childNodes?: ITypeNode[] | undefined;
   /**
    * 属性值必须用 ' 或 " 包起来
    * 标签必须闭合， 如 <input /> 这样才能闭合。
@@ -176,20 +174,18 @@ export interface IOptionSetting extends ISettings {
 
 // 参数接口
 export interface ITypeConfig extends ITypeNode {
-  name?: string; // 节点名称, 转化为 attrObj.name;
+  name?: string | number; // 节点名称, 转化为 attrObj.name;
   // 当前对象引用
   ref?: XProxy<IJsonData>;
   text?: string | number | XProxy<IJsonData>; // 只是简单的添加一个文本节点时用，
   // 类实例对象；  与 ITypeNode 中的 childNodes: ITypeNode[]
-  childNodes?: (TypeElement | TextNode)[];
+  childNodes?: TypeNode[];
   // 设置子元素的属性，并根据属性创建子元素；是json对象；指定的元素类型；
   items?: ITypeConfig[];
   // 多个插槽 ———— 对应的 是 TypeNode | TypeNode[], 不同于一般的属性；需要组件本身单独处理的。setConfig方法中没有默认处理方法；
   slots?: Record<string, TypeNode | TypeNode[]>; // 指定多个不同位置的插槽，需要有插槽名称的；需要在类中添加插槽的位置；
   // 默认插槽
   slot?: TypeNode | TypeNode[]; // OnlyChild 默认位置的插槽, 可以是单个元素，也可以是多个元素，即数组；如何直接插入当前元素，则相当与 childNodes属性；
-
-  transitionConfig?: ITransitionConfig;
 }
 
 export interface IOptionConfig extends ITypeConfig {

@@ -2,18 +2,17 @@ import { Subscription } from 'rxjs';
 import { IStyle } from '@type-dom/css-type';
 import { encodeToXmlString, camelToDash, deepClone } from '@type-dom/utils';
 import { IJsonData, type IJsonDataProp } from '../../interface';
-import { XProxy } from '../../observer';
+// import { XProxy } from '../../observer';
 import type { ITypeAttribute } from '../type-element/type-element.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
 import type {
   IAttr,
   IMethods,
   ISetting,
-  ISettings, ITypeConfig,
-  ITypeNode
+  ISettings,
+  ITypeConfig,
+  ITypeNode,
 } from './type-node.interface';
-import { DummyElement } from '../dummy-element/dummy-element.abstract';
-import { ITransitionConfig } from '../../components/transition/transition.interface';
 
 /**
  * 虚拟DOM，TypeNode 抽象节点类, 所有节点类的抽象类；
@@ -28,17 +27,18 @@ export abstract class TypeNode implements ITypeNode {
    * 在生成dom字符串时，可以转为 attributes 的一个元素 { name: 'className', value: string }
    * 在定义ClassName时，要把当前类写入到TypeMap中；
    */
-  abstract className?: string; // 最终实体类的名称，解析转换时需要创建对应的类；
-  abstract nodeName?: '#text' | string | undefined;
+  abstract className: string; // 最终实体类的名称，解析转换时需要创建对应的类； 必然有；
+  abstract nodeName?: '#text' | 'fragment' | string | undefined;
   abstract nodeValue?: string | number | undefined;
   abstract childNodes?: TypeNode[] | undefined;
   abstract dom?: HTMLElement | SVGElement | Text | undefined;
-  abstract parent?: TypeElement | DummyElement | undefined;
-  // 该节点不是当前位置的组件的子节点；要避免加入到组件的子节点中；要挂载到指定的组件的DOM,甚至直接指向 body；
-  to?: HTMLElement;
+  parent?: TypeElement | undefined;
+  // 该节点不是当前位置的组件的子节点；要避免加入到组件的子节点中；
+  to?: HTMLElement; // 挂载到指定的组件的DOM,甚至直接指向 body；Teleport 中才需要。
   isContext?: boolean;
   items?: ITypeConfig[];
-  // transitionConfig?: ITransitionConfig;
+
+  abstract mount(el: HTMLElement | ShadowRoot): void;
 
   /**
    * 渲染出真实DOM
@@ -48,8 +48,8 @@ export abstract class TypeNode implements ITypeNode {
   // abstract setConfig?(config: any): void
 
   isRoot?: boolean; // 是否是根节点 只有TypeRoot才为true
-  attrObj?: ITypeAttribute;
-  styleObj?: IStyle;
+  attrObj?: ITypeAttribute | undefined;
+  styleObj?: IStyle | undefined;
   attributes?: IAttr[];
   settings?: ISettings;
   _data?: IJsonData; // IObData;
@@ -70,17 +70,6 @@ export abstract class TypeNode implements ITypeNode {
     } else {
       // 要保证parent不为null，否则会报错。要保证应用项目中的parent都设置过了。
       return this.parent?.root;
-    }
-  }
-
-  /**
-   * transition/teleport 等伪类渲染时需要调用
-   */
-  get elementParent(): TypeElement | undefined {
-    if (this.parent instanceof TypeElement) {
-      return this.parent;
-    } else {
-      return this.parent?.elementParent;
     }
   }
 
@@ -183,12 +172,12 @@ export abstract class TypeNode implements ITypeNode {
   //   console.log('TypeNode.typeMap is ', TypeNode.typeMap);
   // }
 
-  setParent(parent: TypeElement | DummyElement): void {
+  setParent(parent: TypeElement): void {
     this.parent = parent;
     // parent.addChild(this); // 单一原则
   }
 
-  appendParent(parent: TypeElement | DummyElement): void {
+  appendParent(parent: TypeElement): void {
     this.parent = parent;
     parent.addChild(this);
   }
@@ -198,20 +187,28 @@ export abstract class TypeNode implements ITypeNode {
   }
 
   /**
-   * 找到指定类名的第一个节点
+   * 找到下级指定类名的第一个节点
    * 会递归遍历子节点
    * @param className
    */
-  findNode(className: string): TypeNode | undefined {
+  findDownNode(className: string): TypeNode | undefined {
     // console.log('findNode className is ', className);
     for (const child of this.children) {
       if (child?.className === className) {
         return child;
       } else if (child.children.length > 0) {
-        return child.findNode(className);
+        return child.findChildNode(className);
       }
     }
     return undefined;
+  }
+
+  findUpNode<T>(className: string): T | undefined {
+    if (this.parent?.className === className) {
+      return this.parent as T;
+    } else {
+      return this.parent?.findUpNode(className);
+    }
   }
 
   /**
@@ -224,16 +221,16 @@ export abstract class TypeNode implements ITypeNode {
   }
 
   /**
-   * 找到指定类名的全部节点
+   * 找到指定类名的全部后代节点
    * 会递归遍历子节点
    */
-  findAllNodes(className: string): TypeNode[] {
+  findDownNodes(className: string): TypeNode[] {
     const nodes: TypeNode[] = [];
     for (const child of this.children) {
       if (child?.className === className) {
         nodes.push(child);
       } else if (child.children.length > 0) {
-        nodes.push(...child.findAllNodes(className));
+        nodes.push(...child.findDownNodes(className));
       }
     }
     return nodes;
@@ -243,23 +240,23 @@ export abstract class TypeNode implements ITypeNode {
    * 查找指定类名的第一个子节点
    * @param className
    */
-  findChildNode(className: string): TypeNode | undefined {
+  findChildNode<T extends TypeNode>(className: string): T | undefined {
     for (const child of this.children) {
       if (child?.className === className) {
-        return child;
+        return child as T;
       }
     }
     return undefined;
   }
 
   /**
-   * 找到指定类名的所有节点
+   * 找到指定类名的所有子节点
    */
-  findAllChildren(className: string): TypeNode[] {
-    const nodes: TypeNode[] = [];
+  findChildNodes<T extends TypeNode>(className: string): T[] {
+    const nodes: T[] = [];
     for (const child of this.children) {
       if (child?.className === className) {
-        nodes.push(child);
+        nodes.push(child as T);
       }
     }
     return nodes;
