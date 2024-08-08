@@ -1,13 +1,16 @@
 // 对应 BaseTransition
 import { TypeElement } from '../type-element/type-element.abstract';
 import { TypeNode } from '../type-node/type-node.abstract';
-import type { ITypeNode, ITypeConfig } from '../type-node/type-node.interface';
+import type { ITypeConfig } from '../type-node/type-node.interface';
+import { TypeHtml } from '../type-html/type-html.abstract';
+import { TypeSvg } from '../type-svg/type-svg.abstract';
+import { ITypeFragment } from '../type-fragment/type-fragment.interface';
 
-export interface ITypeTransition extends ITypeNode {
+export interface ITypeTransition extends ITypeFragment {
   className: string;
 }
 
-export type Hook<T = () => void> = T | T[]
+export type Hook<T = () => void> = T | T[];
 
 /**
  * 定义了过渡阶段的事件接口。
@@ -15,7 +18,9 @@ export type Hook<T = () => void> = T | T[]
  * 这个接口包括了进入（enter）、离开（leave）和出现（appear）三个阶段的各个时刻的事件。
  * 每个阶段都有before、after和cancelled（取消）四个时刻，供用户在不同的时刻插入自定义逻辑。
  */
-export interface ITypeTransitionConfig<HostElement extends TypeElement = TypeElement> extends ITypeConfig  {
+export interface ITypeTransitionConfig<
+  HostElement extends TypeHtml | TypeSvg = TypeHtml | TypeSvg
+> extends ITypeConfig {
   mode?: 'in-out' | 'out-in' | 'default';
   appear?: boolean;
 
@@ -56,50 +61,57 @@ export interface ITypeTransitionConfig<HostElement extends TypeElement = TypeEle
   // 在出现阶段被取消时触发的事件
   onAppearCancelled?: (el: HostElement) => void;
 
-//   todo
+  //   todo
   slot?: TypeElement;
 }
 
 export interface TransitionHooks<HostElement = TypeElement> {
-  mode: ITypeTransitionConfig['mode']
-  persisted: boolean
-  beforeEnter(el: HostElement): void
-  enter(el: HostElement): void
-  leave(el: HostElement, remove: () => void): void
-  clone(vnode: TypeNode): TransitionHooks<HostElement>
+  mode: ITypeTransitionConfig['mode'];
+  persisted: boolean;
+
+  beforeEnter(el: HostElement): void;
+
+  enter(el: HostElement): void;
+
+  leave(el: HostElement, remove: () => void): void;
+
+  clone(vnode: TypeNode): TransitionHooks<HostElement>;
+
   // optional
-  afterLeave?(): void
+  afterLeave?(): void;
+
   delayLeave?(
     el: HostElement,
     earlyRemove: () => void,
-    delayedLeave: () => void,
-  ): void
-  delayedLeave?(): void
+    delayedLeave: () => void
+  ): void;
+
+  delayedLeave?(): void;
 }
 
 export type TransitionHookCaller = <T extends any[] = [el: any]>(
   hook: Hook<(...args: T) => void> | undefined,
-  args?: T,
-) => void
+  args?: T
+) => void;
 
-export type PendingCallback = (cancelled?: boolean) => void
+export type PendingCallback = (cancelled?: boolean) => void;
 
 export interface ITransitionState {
-  isMounted: boolean
-  isLeaving: boolean
-  isUnmounting: boolean
+  isMounted: boolean;
+  isLeaving: boolean;
+  isUnmounting: boolean;
   // Track pending leave callbacks for children of the same key.
   // This is used to force remove leaving a child when a new copy is entering.
-  leavingVNodes: Map<any, Record<string, TypeNode>>
+  // leavingVNodes: Map<any, Record<string, TypeNode>>;
 }
 
-const leaveCbKey = Symbol('_leaveCb')
-const enterCbKey = Symbol('_enterCb')
+const leaveCbKey = Symbol('_leaveCb');
+const enterCbKey = Symbol('_enterCb');
 
 export interface ITransitionElement {
   // in persisted mode (e.g. v-show), the same element is toggled, so the
   // pending enter/leave callbacks may need to be cancelled if the state is toggled
   // before it finishes.
-  [enterCbKey]?: PendingCallback
-  [leaveCbKey]?: PendingCallback
+  [enterCbKey]?: PendingCallback;
+  [leaveCbKey]?: PendingCallback;
 }

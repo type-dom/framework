@@ -1,28 +1,33 @@
 import type { ITransitionConfig } from '../../components/transition/transition.interface';
 import { getTransitionInfo, nextFrame } from '../../components/transition/transition.util';
-import { DummyElement } from '../dummy-element/dummy-element.abstract';
-import { TypeElement } from '../type-element/type-element.abstract';
+import { TypeHtml } from '../type-html/type-html.abstract';
+import { TypeSvg } from '../type-svg/type-svg.abstract';
+import { TypeFragment } from '../type-fragment/type-fragment.abstract';
 import { ITypeTransition } from './type-transition.interface';
 
-export abstract class TypeTransition extends DummyElement implements ITypeTransition {
-  abstract override className: string;
-  slot?: TypeElement;
-  mode?: 'in-out' | 'out-in' | 'default';
-  display?: string;
+export abstract class TypeTransition extends TypeFragment implements ITypeTransition {
+  override slot?: TypeHtml | TypeSvg; // todo 考虑slot是数组的情况
+  mode: 'in-out' | 'out-in' | 'default';
+  display?: string; // 显示/隐藏 切换时控制显示的display的值
   timer?: NodeJS.Timeout;
 
-  constructor(public config: ITransitionConfig) {
+  constructor(public override config?: ITransitionConfig) {
     super();
-    this.slot = config.slot;
-    this.mode = config.mode;
-    this.parent = config.parent;
+    this.nodeName = 'fragment';
+    this.dom = undefined;
+    this.slot = config?.slot;
+    this.mode = config?.mode || 'in-out';
+    this.parent = config?.parent;
+    if (config?.slot) {
+      this.slotChild(config.slot);
+    }
     //   todo 处理 config
     this.setConfig();
   }
 
-  setConfig() {
-    console.log('Transition setConfig');
-  }
+  // override setConfig() {
+  //   console.log('Transition setConfig');
+  // }
   // 显示、隐藏 slot
   showSlot(show: boolean) {
     console.log('Transition showSlot, show is ', show);
@@ -45,16 +50,18 @@ export abstract class TypeTransition extends DummyElement implements ITypeTransi
       this.afterLeave(this.slot);
 
       nextFrame(() => {
-        const { timeout } = getTransitionInfo(this.slot!.dom!);
-        console.log('timeout is ', timeout);
-        if (this.timer) {
-          clearTimeout(this.timer);
+        if (this.slot?.dom) {
+          const { timeout } = getTransitionInfo(this.slot.dom);
+          console.log('timeout is ', timeout);
+          if (this.timer) {
+            clearTimeout(this.timer);
+          }
+          this.timer = setTimeout(() => {
+            this.slot?.setStyleObj({
+              display: 'none',
+            });
+          }, timeout);
         }
-        this.timer = setTimeout(() => {
-          this.slot?.setStyleObj({
-            display: 'none',
-          });
-        }, timeout);
       });
     }
   }
@@ -68,6 +75,7 @@ export abstract class TypeTransition extends DummyElement implements ITypeTransi
     this.enter(this.slot);
     this.afterEnter(this.slot);
   }
+
   // 删除 slot
   deleteSlot() {
     if (!this.slot) {
@@ -77,17 +85,19 @@ export abstract class TypeTransition extends DummyElement implements ITypeTransi
     this.leave(this.slot);
     this.afterLeave(this.slot);
   }
-  beforeEnter(el: TypeElement) {
+
+  beforeEnter(el: TypeHtml | TypeSvg) {
     if (this.config?.onBeforeEnter) {
       this.config.onBeforeEnter(el);
     } else {
       el.setStyleObj({
         opacity: 0,
-        transition: 'opacity 0.3s ease-in-out',
+        transition: 'opacity 0.3s ease-' + this.mode,
       });
     }
   }
-  enter(el: TypeElement) {
+
+  enter(el: TypeHtml | TypeSvg) {
     if (this.config?.onEnter) {
       this.config.onEnter(el, () => {
         console.log('enter , done . ');
@@ -98,7 +108,8 @@ export abstract class TypeTransition extends DummyElement implements ITypeTransi
       });
     }
   }
-  afterEnter(el: TypeElement) {
+
+  afterEnter(el: TypeHtml | TypeSvg) {
     if (this.config?.onAfterEnter) {
       this.config.onAfterEnter(el);
     } else {
@@ -107,17 +118,19 @@ export abstract class TypeTransition extends DummyElement implements ITypeTransi
       });
     }
   }
-  beforeLeave(el: TypeElement) {
+
+  beforeLeave(el: TypeHtml | TypeSvg) {
     if (this.config?.onBeforeLeave) {
       this.config.onBeforeLeave(el);
     } else {
       el?.setStyleObj({
         opacity: 1,
-        transition: 'opacity 0.3s ease-in-out',
+        transition: 'opacity 0.3s ease-' + this.mode,
       });
     }
   }
-  leave(el: TypeElement) {
+
+  leave(el: TypeHtml | TypeSvg) {
     if (this.config?.onLeave) {
       this.config.onLeave(el, () => {
         console.log('leave , done . ');
@@ -128,33 +141,25 @@ export abstract class TypeTransition extends DummyElement implements ITypeTransi
       });
     }
   }
-  afterLeave(el: TypeElement) {
+
+  afterLeave(el: TypeHtml | TypeSvg) {
     // 要有定时器
     if (this.config?.onAfterLeave) {
       this.config.onAfterLeave(el);
     } else {
       el.setStyleObj({
         opacity: el.styleObj.opacity,
-      })
+      });
     }
   }
+
+  // 不能注释掉。this.slot没有加载到childNodes中。
   override render() {
-    if (!this.slot) {
-      throw Error('slot is not exist . ');
-    }
-    // todo 是否需要清理 parent 的dom子元素？？？
-    if (this.slot instanceof TypeElement) {
-      // this.slot.dom && this.beforeRender(this.slot);
-      this.slot.render();
-      if (!this.slot.dom) {
-        throw Error('this.slot.dom is not exist . ');
-      }
-      const { display } = window.getComputedStyle(this.slot.dom);
-      console.log(' display is ', display);
-      this.display = display;
-      this.elementParent?.dom?.appendChild(this.slot.dom);
-    } else {
-      throw Error('this.slot is not exist . ');
-    }
+    super.render();
+    // 要渲染后再获取，否则会是空的。
+    // ToDo 要考虑渲染后display是空的情况。
+    const display = this.slot?.dom.style.display;
+    console.log(' display is ', display);
+    this.display = display;
   }
 }
