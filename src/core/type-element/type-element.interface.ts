@@ -1,7 +1,6 @@
 /**
  * 虚拟dom的数据结构字面量接口。
  */
-import { Subscription } from 'rxjs';
 import { IStyle } from '@type-dom/css-type';
 import type { ITypeNode } from '../type-node/type-node.interface';
 
@@ -25,7 +24,7 @@ export interface ITypeElement extends ITypeNode {
   styleObj: IStyle;
   // 绑定的事件集合, TypeElement 才有
   // events?: Partial<IEvents>;
-  subscriptions?: Subscription[];
+  // subscriptions?: Subscription[];
   childNodes: Array<ITypeNode>; // contents todo 也是可以为空的啊 ？？？
 }
 
