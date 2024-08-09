@@ -1,8 +1,7 @@
-import { isMustache, mustache } from '@type-dom/utils';
+import { isMustache } from '@type-dom/utils';
 import { XProxy } from '../../observer';
 import { IJsonData } from '../../interface';
 import { TypeNode } from '../type-node/type-node.abstract';
-import { IXData } from '../type-node/type-node.interface';
 import { mustacheNode } from '../util';
 import { TypeElement } from '../type-element/type-element.abstract';
 import type { ITextNode } from './text-node.interface';
@@ -17,14 +16,6 @@ export class TextNode extends TypeNode implements ITextNode {
    */
   className: 'TextNode';
   /**
-   * 父级节点，类型为 TypeElement
-   */
-  parent?: TypeElement;
-  /**
-   * 子节点，此处未定义
-   */
-  childNodes: undefined;
-  /**
    * 节点名称，值为 '#text'
    */
   nodeName: '#text';
@@ -37,6 +28,12 @@ export class TextNode extends TypeNode implements ITextNode {
    * DOM 文本节点对象
    */
   dom?: Text;
+  override attrObj: undefined;
+  override styleObj: undefined;
+  /**
+   * 子节点，此处未定义
+   */
+  childNodes: undefined;
   /**
    * 模板对象，此处未定义
    */
@@ -56,6 +53,8 @@ export class TextNode extends TypeNode implements ITextNode {
     super();
     this.beforeCreate();
     this.className = 'TextNode';
+    this.attrObj = undefined;
+    this.styleObj = undefined;
     this.nodeName = '#text';
     if (text instanceof XProxy) {
       this.nodeValue = text.value;
@@ -93,7 +92,7 @@ export class TextNode extends TypeNode implements ITextNode {
    * @returns 节点索引
    */
   get index(): number {
-    return this.parent ? this.parent?.findChildIndex(this) : -1;
+    return this.parent ? this.parent.findChildIndex(this) : -1;
   }
 
   // todo delete
@@ -217,9 +216,17 @@ export class TextNode extends TypeNode implements ITextNode {
     this.parent?.render();
   }
 
+  mount(el: HTMLElement) {
+    this.render();
+    if (this.dom) {
+      el.appendChild(this.dom);
+    }
+  }
+
   beforeCreate(): void {
     // todo 渲染前处理
   }
+
   // todo 钩子函数
   render(): void {
     this.beforeCreate();
