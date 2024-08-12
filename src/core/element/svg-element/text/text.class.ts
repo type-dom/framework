@@ -1,6 +1,6 @@
 import { TextNode } from '../../../text-node/text-node.class';
-import { TypeSvgSvg } from '../../../type-element/type-svg/svg/svg.abstract';
-import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
+import { TypeSvgSvg } from '../../../type-svg/svg/svg.abstract';
+import { TypeSvg } from '../../../type-svg/type-svg.abstract';
 import type {
   ISvgText,
   ISvgTextAttribute,
