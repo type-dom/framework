@@ -3,9 +3,8 @@ import { reactive } from '../../../reactivity';
 import { TypeElement } from '../../type-element/type-element.abstract';
 import type { IAttr } from '../../type-node/type-node.interface';
 import { TextNode } from '../../text-node/text-node.class';
-import { IXElement } from './x-element.interface';
 
-// import { ITypeConfig } from '../../config.interface';
+import { IXElement } from './x-element.interface';
 
 /**
  * XElement是一个通用元素基础组件，是其它类组件的子节点
@@ -25,7 +24,7 @@ export class XElement extends TypeElement implements IXElement {
   // override methods?: Record<string, any>;
   // config?: Record<string, any>; // config不会转为json
   override attributes: IAttr[]; // 去掉了?号；
-  dom?: HTMLElement | SVGElement;
+  override dom?: HTMLElement | SVGElement;
 
   /**
    * 在 Parser 中使用 XElement 时， 限制了不能直接使用 parent 参数。
