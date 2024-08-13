@@ -1,4 +1,4 @@
-import { TypeSvgSvg } from '../../../type-element/type-svg/svg/svg.abstract';
+import { TypeSvgSvg } from '../../../type-svg/svg/svg.abstract';
 import { ITypeConfig } from '../../../type-node/type-node.interface';
 import type { ISvgSvg } from './svg.interface';
 
