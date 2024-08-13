@@ -1,6 +1,6 @@
 import { IStyle, Property } from '@type-dom/css-type';
 import type { ITypeAttribute } from '../../../type-element/type-element.interface';
-import type { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
+import type { ITypeSvg } from '../../../type-svg/type-svg.interface';
 
 /**
  * width 和 height 属性可定义矩形的高度和宽度
