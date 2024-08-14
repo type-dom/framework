@@ -1,6 +1,6 @@
 import { IStyle } from '@type-dom/css-type';
-import type { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
-import { ITypeAttribute } from '../../../type-element';
+import type { ITypeSvg } from '../../../type-svg/type-svg.interface';
+import { ITypeAttribute } from '../../../index';
 
 /**
  * width
