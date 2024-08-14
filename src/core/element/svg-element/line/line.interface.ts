@@ -1,6 +1,6 @@
 import { IStyle, Property } from '@type-dom/css-type';
 import type { ITypeAttribute } from '../../../type-element/type-element.interface';
-import type { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
+import type { ITypeSvg } from '../../../type-svg/type-svg.interface';
 
 /**
  * x1 属性在 x 轴定义线条的开始

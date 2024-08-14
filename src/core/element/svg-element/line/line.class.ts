@@ -1,4 +1,4 @@
-import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
+import { TypeSvg } from '../../../type-svg/type-svg.abstract';
 import { ITypeConfig } from '../../../type-node/type-node.interface';
 import type { ISvgLine, ISvgLineAttribute } from './line.interface';
 
@@ -28,7 +28,7 @@ export class SvgLine extends TypeSvg implements ISvgLine {
       x1: this.x1,
       y1: this.y1,
       x2: this.x2,
-      y2: this.y2
+      y2: this.y2,
     };
     this.setConfig(config);
   }
@@ -42,7 +42,7 @@ export class SvgLine extends TypeSvg implements ISvgLine {
       x1,
       y1,
       x2,
-      y2
+      y2,
     });
     return this;
   }
