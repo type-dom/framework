@@ -1,4 +1,4 @@
-import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
+import { TypeSvg } from '../../../type-svg/type-svg.abstract';
 import { SvgStop } from '../stop/stop.class';
 import type {
   ISvgLinearGradient,
