@@ -4,7 +4,7 @@
  *
  * @extends ITypeSvg 继承自 `ITypeSvg` 接口，引入了 SVG 元素的基本属性和方法。
  */
-import type { ITypeSvg } from '../../../type-element/type-svg/type-svg.interface';
+import type { ITypeSvg } from '../../../type-svg/type-svg.interface';
 
 export interface ISvgDefs extends ITypeSvg {
   nodeName: 'defs'; // 指定节点名称为 'defs'，对应 SVG 中的 <defs> 元素。
