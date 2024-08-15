@@ -1,8 +1,8 @@
-import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
+import { TypeSvg } from '../../../type-svg/type-svg.abstract';
 import type {
   ISvgEllipse,
   ISvgEllipseAttribute,
-  ISvgEllipseConfig
+  ISvgEllipseConfig,
 } from './ellipse.interface';
 
 export class SvgEllipse extends TypeSvg implements ISvgEllipse {
@@ -32,7 +32,7 @@ export class SvgEllipse extends TypeSvg implements ISvgEllipse {
       cx: this.cx,
       cy: this.cy,
       rx: this.rx,
-      ry: this.ry
+      ry: this.ry,
     };
     this.setConfig(config);
   }
@@ -46,7 +46,7 @@ export class SvgEllipse extends TypeSvg implements ISvgEllipse {
       cx,
       cy,
       rx,
-      ry
+      ry,
     });
     return this;
   }
