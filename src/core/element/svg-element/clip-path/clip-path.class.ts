@@ -1,4 +1,4 @@
-import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
+import { TypeSvg } from '../../../type-svg/type-svg.abstract';
 import { ISvgClipPath } from './clip-path.interface';
 import { ITypeConfig } from '../../../type-node/type-node.interface';
 
