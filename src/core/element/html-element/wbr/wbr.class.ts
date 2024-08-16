@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeWbr } from '../../../type-element/type-html/wbr/wbr.abstract';
+import { TypeWbr } from '../../../type-html/wbr/wbr.abstract';
 import type { IWbr } from './wbr.interface';
 
 export class Wbr extends TypeWbr implements IWbr {
