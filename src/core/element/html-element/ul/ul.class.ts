@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeUL } from '../../../type-element/type-html/ul/ul.abstract';
+import { TypeUL } from '../../../type-html/ul/ul.abstract';
 import type { IUL } from './ul.interface';
 
 export class UL extends TypeUL implements IUL {
