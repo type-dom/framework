@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeVideo } from '../../../type-element/type-html/video/video.abstract';
+import { TypeVideo } from '../../../type-html/video/video.abstract';
 import type { IVideo } from './video.interface';
 
 export class Video extends TypeVideo implements IVideo {
