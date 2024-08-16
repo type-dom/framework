@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeVar } from '../../../type-element/type-html/var/var.abstract';
+import { TypeVar } from '../../../type-html/var/var.abstract';
 import type { IVar } from './var.interface';
 
 export class Var extends TypeVar implements IVar {
