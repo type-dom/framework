@@ -1,5 +1,5 @@
-import { TypeSvg } from '../../../type-element/type-svg/type-svg.abstract';
-import { TypeSvgSvg } from '../../../type-element/type-svg/svg/svg.abstract';
+import { TypeSvg } from '../../../type-svg/type-svg.abstract';
+import { TypeSvgSvg } from '../../../type-svg/svg/svg.abstract';
 import { ITypeConfig } from '../../../type-node/type-node.interface';
 import type { ISvgCircle } from './circle.interface';
 
