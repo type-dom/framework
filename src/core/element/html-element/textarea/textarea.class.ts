@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeTextarea } from '../../../type-element/type-html/textarea/textarea.abstract';
+import { TypeTextarea } from '../../../type-html/textarea/textarea.abstract';
 import type { ITextarea } from './textarea.interface';
 
 export class Textarea extends TypeTextarea implements ITextarea {
