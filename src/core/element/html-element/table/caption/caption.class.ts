@@ -1,4 +1,4 @@
-import { TypeTableCaption } from '../../../../type-element/type-html/table/caption/caption.abstract';
+import { TypeTableCaption } from '../../../../type-html/table/caption/caption.abstract';
 import { Table } from '../table.class';
 import type { ITableCaption } from './caption.interface';
 

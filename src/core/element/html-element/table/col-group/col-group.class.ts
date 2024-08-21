@@ -1,4 +1,4 @@
-import { TypeTableColGroup } from '../../../../type-element/type-html/table/col-group/col-group.abstract';
+import { TypeTableColGroup } from '../../../../type-html/table/col-group/col-group.abstract';
 import { Table } from '../table.class';
 import type { ITableColGroup } from './col-group.interface';
 

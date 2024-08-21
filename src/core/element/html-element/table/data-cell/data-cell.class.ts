@@ -1,13 +1,14 @@
-import { TypeTableDataCell } from '../../../../type-element/type-html/table/data-cell/data-cell.abstract';
-import { TableRow } from '../row/row.class';
+import { TypeTableDataCell } from '../../../../type-html/table/data-cell/data-cell.abstract';
+import { ITypeConfig } from '../../../../type-node/type-node.interface';
 import type { ITableDataCell } from './data-cell.interface';
 
 export class TableDataCell extends TypeTableDataCell implements ITableDataCell {
   className: 'TableDataCell';
 
-  constructor(public override parent: TableRow) {
+  constructor(public override config: ITypeConfig) {
     super();
     this.className = 'TableDataCell';
-    this.childNodes = [];
+    // this.childNodes = [];
+    this.setConfig(config);
   }
 }

@@ -1,4 +1,4 @@
-import { TypeTable } from '../../../type-element/type-html/table/table.abstract';
+import { TypeTable } from '../../../type-html/table/table.abstract';
 import type { ITypeConfig } from '../../../type-node/type-node.interface';
 import { TableRow } from './row/row.class';
 import { TableHead } from './head/head.class';
