@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeSup } from '../../../type-element/type-html/sup/sup.abstract';
+import { TypeSup } from '../../../type-html/sup/sup.abstract';
 import type { ISup } from './sup.interface';
 
 export class Sup extends TypeSup implements ISup {
