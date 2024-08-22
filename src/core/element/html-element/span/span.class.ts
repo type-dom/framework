@@ -1,4 +1,4 @@
-import { TypeSpan } from '../../../type-element/type-html/span/span.abstract';
+import { TypeSpan } from '../../../type-html/span/span.abstract';
 import type { ITypeConfig } from '../../../type-node/type-node.interface';
 import type { ISpan } from './span.interface';
 
