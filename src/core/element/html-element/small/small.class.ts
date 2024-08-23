@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeSmall } from '../../../type-element/type-html/small/small.abstract';
+import { TypeSmall } from '../../../type-html/small/small.abstract';
 import type { ISmall } from './small.interface';
 
 export class Small extends TypeSmall implements ISmall {
