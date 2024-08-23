@@ -1,6 +1,5 @@
 import type { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeSection } from '../../../type-element/type-html/section/section.abstract';
-import { StyleDisplay } from '../../../../style/style.enum';
+import { TypeSection } from '../../../type-html/section/section.abstract';
 import type { ISection } from './section.interface';
 
 export class Section extends TypeSection implements ISection {
@@ -10,11 +9,11 @@ export class Section extends TypeSection implements ISection {
     super();
     this.className = 'Section';
     this.styleObj = {
-      display: StyleDisplay.flex,
-      justifyContent: 'space-between'
+      display: 'flex',
+      justifyContent: 'space-between',
     };
     this.attrObj = {
-      name: 'section'
+      name: 'section',
     };
     this.setConfig(config);
   }
