@@ -1,4 +1,4 @@
-import type { ITypeSlot } from '../../../type-element/type-html/slot/slot.interface';
+import type { ITypeSlot } from '../../../type-html/slot/slot.interface';
 import type { ITypeConfig } from '../../../type-node/type-node.interface';
 
 export interface ISlot extends ITypeSlot {
