@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeSelect } from '../../../type-element/type-html/select/select.abstract';
+import { TypeSelect } from '../../../type-html/select/select.abstract';
 import { Option } from '../option/option.class';
 import type { ISelect } from './select.interface';
 
