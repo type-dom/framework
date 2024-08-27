@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeQ } from '../../../type-element/type-html/q/q.abstract';
+import { TypeQ } from '../../../type-html/q/q.abstract';
 import type { IQ } from './q.interface';
 
 export class Q extends TypeQ implements IQ {
