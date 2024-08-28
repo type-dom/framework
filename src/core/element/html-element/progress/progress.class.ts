@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeProgress } from '../../../type-element/type-html/progress/progress.abstract';
+import { TypeProgress } from '../../../type-html/progress/progress.abstract';
 import type { IProgress } from './progress.interface';
 
 export class Progress extends TypeProgress implements IProgress {
