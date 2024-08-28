@@ -1,5 +1,5 @@
-import { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypePicture } from '../../../type-element/type-html/picture/picture.abstract';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
+import { TypePicture } from '../../../type-html/picture/picture.abstract';
 import type { IPicture } from './picture.interface';
 
 export class Picture extends TypePicture implements IPicture {
