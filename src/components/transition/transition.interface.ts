@@ -1,10 +1,7 @@
-import type { ITypeNode } from '../../core/type-node/type-node.interface';
-import type { TypeElement } from '../../core/type-element/type-element.abstract';
-import { ITypeTransitionConfig } from '../../core/type-transition/type-transition.interface';
-import { TypeNode } from '../../core/type-node/type-node.abstract';
-import { DummyElement } from '../../core/dummy-element/dummy-element.abstract';
+import { ITypeTransition, ITypeTransitionConfig } from '../../core/type-transition/type-transition.interface';
+import { TypeElement, TypeHtml, TypeSvg } from '../../core';
 
-export interface ITransition extends ITypeNode {
+export interface ITransition extends ITypeTransition {
   className: 'Transition' | string;
 }
 
@@ -19,7 +16,7 @@ export const ANIMATION = 'animation';
 
 export type AnimationTypes = typeof TransitionUtil | typeof ANIMATION;
 
-export interface ITransitionConfig extends ITypeTransitionConfig<TypeElement> {
+export interface ITransitionConfig extends ITypeTransitionConfig<TypeHtml | TypeSvg> {
   name?: string;
   type?: AnimationTypes;
   css?: boolean;
@@ -35,8 +32,8 @@ export interface ITransitionConfig extends ITypeTransitionConfig<TypeElement> {
   leaveActiveClass?: string;
   leaveToClass?: string;
 
-  parent?: TypeElement | DummyElement;
-  slot?: TypeElement;
+  parent?: TypeElement;
+  slot?: TypeHtml | TypeSvg;
 }
 
 export interface CSSTransitionInfo {

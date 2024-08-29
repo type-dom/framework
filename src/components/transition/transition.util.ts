@@ -7,7 +7,11 @@ import {
   StylePropertiesKey,
   TransitionUtil,
 } from './transition.interface';
-import { Hook, ITypeTransitionConfig } from '../../core/type-transition/type-transition.interface';
+import {
+  Hook,
+  ITypeTransitionConfig,
+} from '../../core/type-transition/type-transition.interface';
+import { TypeHtml } from '../../core';
 
 const DOMTransitionPropsValidators = {
   name: String,
@@ -30,8 +34,8 @@ const DOMTransitionPropsValidators = {
 
 export function resolveTransitionProps(
   rawProps: ITransitionConfig
-): ITypeTransitionConfig<TypeElement> {
-  const baseProps = {} as ITypeTransitionConfig<TypeElement>;
+): ITypeTransitionConfig<TypeHtml> {
+  const baseProps = {} as ITypeTransitionConfig<TypeHtml>;
   for (const key in rawProps) {
     if (!(key in DOMTransitionPropsValidators)) {
       (baseProps as any)[key] = (rawProps as any)[key];
@@ -185,7 +189,7 @@ export function resolveTransitionProps(
         // }
         addTransitionClass(el, leaveToClass);
         if (!hasExplicitCallback(onLeave)) {
-          whenTransitionEnds(el, type, leaveDuration, resolve);
+          whenTransitionEnds(el as Element, type, leaveDuration, resolve);
         }
       });
       callHook(onLeave, [el, resolve]);
@@ -213,8 +217,8 @@ export function resolveTransitionProps(
       }
       finishLeave(el);
       callHook(onLeaveCancelled, [el]);
-    }
-  }) as ITypeTransitionConfig<TypeElement>
+    },
+  }) as ITypeTransitionConfig<TypeHtml>;
 }
 
 /**
