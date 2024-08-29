@@ -1,5 +1,5 @@
-import { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeBdi } from '../../../type-element/type-html/bdi/bdi.abstract';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
+import { TypeBdi } from '../../../type-html/bdi/bdi.abstract';
 import type { IBdi } from './bdi.interface';
 
 export class Bdi extends TypeBdi implements IBdi {

@@ -1,5 +1,5 @@
-import { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeEmbed } from '../../../type-element/type-html/embed/embed.abstract';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
+import { TypeEmbed } from '../../../type-html/embed/embed.abstract';
 import type { IEmbed } from './embed.interface';
 
 export class Embed extends TypeEmbed implements IEmbed {

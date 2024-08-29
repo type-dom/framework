@@ -1,5 +1,5 @@
-import { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeLegend } from '../../../type-element/type-html/legend/legend.abstract';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
+import { TypeLegend } from '../../../type-html/legend/legend.abstract';
 import type { ILegend } from './legend.interface';
 
 export class Legend extends TypeLegend implements ILegend {

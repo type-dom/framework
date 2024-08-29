@@ -1,5 +1,5 @@
-import { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeMenu } from '../../../type-element/type-html/menu/menu.abstract';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
+import { TypeMenu } from '../../../type-html/menu/menu.abstract';
 import type { IMenu } from './menu.interface';
 
 export class Menu extends TypeMenu implements IMenu {

@@ -1,7 +1,7 @@
 import { TypeElement } from '../../../type-element/type-element.abstract';
-import { TypeLI } from '../../../type-element/type-html/li/li.abstract';
+import { TypeLI } from '../../../type-html/li/li.abstract';
 import { TextNode } from '../../../text-node/text-node.class';
-import { ITypeConfig } from '../../../type-node/type-node.interface';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
 import type { ILI } from './li.interface';
 
 export class LI extends TypeLI implements ILI {

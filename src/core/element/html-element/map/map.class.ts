@@ -1,5 +1,5 @@
-import { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeMap } from '../../../type-element/type-html/map/map.abstract';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
+import { TypeMap } from '../../../type-html/map/map.abstract';
 import type { IMap } from './map.interface';
 
 export class Map extends TypeMap implements IMap {

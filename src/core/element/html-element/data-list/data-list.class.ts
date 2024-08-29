@@ -1,5 +1,5 @@
-import { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeDataList } from '../../../type-element/type-html/data-list/data-list.abstract';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
+import { TypeDataList } from '../../../type-html/data-list/data-list.abstract';
 import type { IDataList } from './data-list.interface';
 
 export class DataList extends TypeDataList implements IDataList {

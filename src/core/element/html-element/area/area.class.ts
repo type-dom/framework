@@ -1,5 +1,5 @@
-import { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeArea } from '../../../type-element/type-html/area/area.abstract';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
+import { TypeArea } from '../../../type-html/area/area.abstract';
 import type { IArea } from './area.interface';
 
 export class Area extends TypeArea implements IArea {

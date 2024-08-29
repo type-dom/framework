@@ -1,10 +1,10 @@
-import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
-import { ITypeConfig } from '../../../type-node/type-node.interface';
+import { TypeHtml } from '../../../type-html/type-html.abstract';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
 import type { IInput } from './input.interface';
 
 export class Input extends TypeHtml implements IInput {
-  nodeName: 'input';
-  dom: HTMLInputElement;
+  override nodeName: 'input';
+  override dom: HTMLInputElement;
   className: 'Input';
   override childNodes: [];
 
@@ -15,6 +15,7 @@ export class Input extends TypeHtml implements IInput {
     this.dom = document.createElement(this.nodeName);
     this.className = 'Input';
     this.childNodes = [];
+
     this.setConfig(config);
   }
 

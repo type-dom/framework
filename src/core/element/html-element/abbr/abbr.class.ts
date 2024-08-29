@@ -1,5 +1,5 @@
-import { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeAbbr } from '../../../type-element/type-html/abbr/abbr.abstract';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
+import { TypeAbbr } from '../../../type-html/abbr/abbr.abstract';
 import type { IAbbr } from './abbr.interface';
 
 export class Abbr extends TypeAbbr implements IAbbr {

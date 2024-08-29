@@ -1,5 +1,5 @@
-import { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeOutput } from '../../../type-element/type-html/output/output.abstract';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
+import { TypeOutput } from '../../../type-html/output/output.abstract';
 import type { IOutput } from './output.interface';
 
 export class Output extends TypeOutput implements IOutput {

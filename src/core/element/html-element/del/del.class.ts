@@ -1,5 +1,5 @@
-import { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeDel } from '../../../type-element/type-html/del/del.abstract';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
+import { TypeDel } from '../../../type-html/del/del.abstract';
 import type { IDel } from './del.interface';
 
 export class Del extends TypeDel implements IDel {

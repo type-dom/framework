@@ -1,5 +1,5 @@
-import { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeDialog } from '../../../type-element/type-html/dialog/dialog.abstract';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
+import { TypeDialog } from '../../../type-html/dialog/dialog.abstract';
 import type { IDialog } from './dialog.interface';
 
 export class Dialog extends TypeDialog implements IDialog {

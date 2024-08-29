@@ -1,5 +1,5 @@
-import { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeHr } from '../../../type-element/type-html/hr/hr.abstract';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
+import { TypeHr } from '../../../type-html/hr/hr.abstract';
 import type { IHr } from './hr.interface';
 
 export class Hr extends TypeHr implements IHr {

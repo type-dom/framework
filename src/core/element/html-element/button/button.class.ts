@@ -1,5 +1,5 @@
-import { TypeButton } from '../../../type-element/type-html/button/button.abstract';
-import { ITypeConfig } from '../../../type-node/type-node.interface';
+import { TypeButton } from '../../../type-html/button/button.abstract';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
 import type { IButton } from './button.interface';
 
 export class Button extends TypeButton implements IButton {

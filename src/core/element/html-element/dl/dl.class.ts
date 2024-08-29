@@ -1,5 +1,5 @@
-import { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeDL } from '../../../type-element/type-html/dl/dl.abstract';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
+import { TypeDL } from '../../../type-html/dl/dl.abstract';
 import type { IDL } from './dl.interface';
 
 export class DL extends TypeDL implements IDL {

@@ -1,21 +1,19 @@
 import { TextNode } from '../../../text-node/text-node.class';
-import { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeLabel } from '../../../type-element/type-html/label/label.abstract';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
+import { TypeLabel } from '../../../type-html/label/label.abstract';
 import type { Input } from '../input/input.class';
 import type { ILabel } from './label.interface';
 
 export class Label extends TypeLabel implements ILabel {
   className: 'Label';
   override childNodes: (Input | TextNode)[];
-  override textNode: TextNode;
+  override textNode?: TextNode;
 
   constructor(config?: Partial<ITypeConfig>) {
     super();
     this.className = 'Label';
-    this.attrObj = {
-      name: 'label',
-    };
-    this.textNode = new TextNode();
+    this.addAttrName('label');
+    // this.textNode = new TextNode();
     this.childNodes = [];
     this.setConfig(config);
   }

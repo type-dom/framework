@@ -1,5 +1,5 @@
-import { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeMain } from '../../../type-element/type-html/main/main.abstract';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
+import { TypeMain } from '../../../type-html/main/main.abstract';
 import type { IMain } from './main.interface';
 
 export class Main extends TypeMain implements IMain {

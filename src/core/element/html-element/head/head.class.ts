@@ -1,4 +1,4 @@
-import { TypeHead } from '../../../type-element/type-html/head/head.abstract';
+import { TypeHead } from '../../../type-html/head/head.abstract';
 import type { IHead, IHeadConfig } from './head.interface';
 
 export class Head extends TypeHead implements IHead {

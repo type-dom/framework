@@ -1,5 +1,5 @@
-import { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeBdo } from '../../../type-element/type-html/bdo/bdo.abstract';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
+import { TypeBdo } from '../../../type-html/bdo/bdo.abstract';
 import type { IBdo } from './bdo.interface';
 
 export class Bdo extends TypeBdo implements IBdo {

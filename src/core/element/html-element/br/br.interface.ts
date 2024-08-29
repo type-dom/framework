@@ -1,6 +1,6 @@
-import type { ITypeBr } from '../../../type-element/type-html/br/br.interface';
-import { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeHtml } from '../../../type-element';
+import type { ITypeBr } from '../../../type-html/br/br.interface';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
+import { TypeHtml } from '../../../index';
 
 export interface IBr extends ITypeBr {
   className: 'Br';

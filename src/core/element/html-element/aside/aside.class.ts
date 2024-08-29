@@ -1,5 +1,5 @@
-import { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeAside } from '../../../type-element/type-html/aside/aside.abstract';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
+import { TypeAside } from '../../../type-html/aside/aside.abstract';
 import type { IAside } from './aside.interface';
 
 export class Aside extends TypeAside implements IAside {

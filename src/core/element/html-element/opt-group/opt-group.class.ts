@@ -1,12 +1,12 @@
 import { TypeNode } from '../../../type-node/type-node.abstract';
 import { TextNode } from '../../../text-node/text-node.class';
-import { TypeHtml } from '../../../type-element/type-html/type-html.abstract';
+import { TypeHtml } from '../../../type-html/type-html.abstract';
 import type { IOptGroup, IOptGroupConfig } from './opt-group.interface';
 
 export class OptGroup extends TypeHtml implements IOptGroup {
-  nodeName: 'optgroup';
   className: 'OptGroup';
-  dom: HTMLOptGroupElement;
+  override nodeName: 'optgroup';
+  override dom: HTMLOptGroupElement;
   override childNodes: TypeNode[];
   override textNode: TextNode;
 

@@ -176,7 +176,7 @@ import {
   TableFoot,
   TableHead,
   TableHeaderCell,
-  TableRow
+  TableRow,
 } from './table';
 import { Summary } from './summary/summary.class';
 import { Sup } from './sup/sup.class';
@@ -238,7 +238,7 @@ export interface HtmlTypes {
   header: Header;
   hgroup: HGroup;
   hr: Hr;
-  // html:TypeHtml,
+  // html: Html,
   i: I;
   iframe: IFrame;
   img: Img;

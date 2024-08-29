@@ -1,6 +1,6 @@
-import type { ITypeHtml } from '../../../type-element/type-html/type-html.interface';
-import { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeSelect } from '../../../type-element';
+import type { ITypeHtml } from '../../../type-html/type-html.interface';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
+import { TypeSelect } from '../../../index';
 
 export interface IOption extends ITypeHtml {
   nodeName: 'option';

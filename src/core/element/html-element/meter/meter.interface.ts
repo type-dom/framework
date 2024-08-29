@@ -1,4 +1,4 @@
-import type { ITypeMeter } from '../../../type-element/type-html/meter/meter.interface';
+import type { ITypeMeter } from '../../../type-html/meter/meter.interface';
 
 export interface IMeter extends ITypeMeter {
   className: 'Meter';

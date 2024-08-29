@@ -1,5 +1,5 @@
-import { ITypeConfig } from '../../../type-node/type-node.interface';
-import { TypeFieldset } from '../../../type-element/type-html/fieldset/fieldset.abstract';
+import type { ITypeConfig } from '../../../type-node/type-node.interface';
+import { TypeFieldset } from '../../../type-html/fieldset/fieldset.abstract';
 import type { IFieldset } from './fieldset.interface';
 
 export class Fieldset extends TypeFieldset implements IFieldset {
