@@ -17,8 +17,10 @@ export function toJSON(element: TypeElement): ITypeElement {
     // nodeName: element.nodeName,
     nodeName: element.nodeName,
     className: element.className,
-    styleObj: deepClone(element.styleObj), // 深拷贝
-    attrObj: deepClone(element.attrObj), // 深拷贝
+    params: {
+      styleObj: deepClone(element.props.styleObj), // 深拷贝
+      attrObj: deepClone(element.props.attrObj), // 深拷贝
+    },
     settings: element?.settings,
     // items, page ----> 不起作用
     childNodes: element.childNodes.map((child) => {

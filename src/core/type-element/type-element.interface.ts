@@ -1,8 +1,7 @@
 /**
  * 虚拟dom的数据结构字面量接口。
  */
-import { IStyle } from '@type-dom/css-type';
-import type { ITypeNode } from '../type-node/type-node.interface';
+import type { ITypeConfig, ITypeNode } from '../type-node/type-node.interface';
 
 export interface ITypeAttribute {
   id?: string;
@@ -20,8 +19,8 @@ export interface ITypeElement extends ITypeNode {
   className: string; // todo enum ??
   nodeName: string;
   nodeValue?: undefined;
-  attrObj: ITypeAttribute;
-  styleObj: IStyle;
+  params: ITypeConfig;
+  // props: ITypeConfig; // 不会在json中出现
   // 绑定的事件集合, TypeElement 才有
   // events?: Partial<IEvents>;
   // subscriptions?: Subscription[];

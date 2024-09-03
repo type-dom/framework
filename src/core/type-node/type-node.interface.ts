@@ -1,13 +1,13 @@
 import { Subscription } from 'rxjs';
 import { IStyle } from '@type-dom/css-type';
-import { type IJsonDataProp, IJsonData, IObData } from '../../interface';
+import { type IJsonDataProp, IJsonData, IObData, AnyFn } from '../../interface';
 import { UnwrapNestedRefs } from '../../reactivity/reactive';
 import { XProxy } from '../../observer';
-import { IEvents } from '../../events/events.interface';
-import { ITransitionConfig } from '../../components/transition/transition.interface';
+import { IEmits, IEvents } from '../../events/events.interface';
 import type { ITypeAttribute } from '../type-element/type-element.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { TypeNode } from './type-node.abstract';
+import { SlotNode } from '../../components/slot-node/slot-node.class';
 
 export interface IAttr {
   name: string;
@@ -69,8 +69,9 @@ export interface IPath {
  */
 export interface ITypeNode {
   className?: string;
+  params?: ITypeConfig | undefined; // 传入参数, ITypeConfig 中是undefined
   attributes?: IAttr[];
-  nodeName?: string | undefined;
+  nodeName?: 'fragment' | string | undefined;
   /**
    * nodeValue只在 TextNode中才有。
    * nodeValue存在时，就应该是 TextNode类
@@ -86,7 +87,6 @@ export interface ITypeNode {
   /**
    * parent 可选
    * 且为 TypeElement
-   * XNode 如何处理 ———————— 不设 parent， === undefined
    */
   parent?: TypeElement;
   /**
@@ -101,31 +101,12 @@ export interface ITypeNode {
    * root()方法返回的节点，就是根节点。
    */
   isRoot?: boolean; // 是否是根节点 一般TypeRoot才为true，其他为false。也可以自定义。
-  /**
-   * 属性对象，除了style对应的属性之外的其他属性。
-   */
-  attrObj?: ITypeAttribute;
-  /**
-   * 样式对象。
-   */
-  styleObj?: IStyle;
-  /**
-   * 绑定的事件集合,转化为 subscriptions;
-   * 一般在构造函数的参数（config）中传入；
-   * 与 addEvents方法配合；
-   * initEvents 钩子 调用
-   */
-  events?: Partial<IEvents>;
+
   subscriptions?: Subscription[];
 
   emits?: IEmits; //
   // TextNode 肯定没有 childNodes， Element 可以没有 childNodes;
   childNodes?: ITypeNode[] | undefined;
-  /**
-   * 属性值必须用 ' 或 " 包起来
-   * 标签必须闭合， 如 <input /> 这样才能闭合。
-   */
-  template?: string; // 模板 默认TypeClass为XElement
   data?: UnwrapNestedRefs<IObData>; // 数据  ITypeConfig 需要继承
   // 绑定的事件集合, TypeElement 才有
   // 生成json时，subscriptions；
@@ -175,17 +156,51 @@ export interface IOptionSetting extends ISettings {
 // 参数接口
 export interface ITypeConfig extends ITypeNode {
   name?: string | number; // 节点名称, 转化为 attrObj.name;
+  // props?: undefined; // 参数中没有
+  config?: undefined; // 参数中没有
   // 当前对象引用
   ref?: XProxy<IJsonData>;
-  text?: string | number | XProxy<IJsonData>; // 只是简单的添加一个文本节点时用，
-  // 类实例对象；  与 ITypeNode 中的 childNodes: ITypeNode[]
-  childNodes?: TypeNode[];
+  text?: boolean | string | number | XProxy<IJsonData>; // 只是简单的添加一个文本节点时用，
+  /**
+   * 属性对象，除了style对应的属性之外的其他属性。
+   */
+  attrObj?: ITypeAttribute | undefined;
+  /**
+   * 样式对象。
+   */
+  styleObj?: IStyle | undefined;
+  // 类实例对象；  与 ITypeNode 中的 childNodes: ITypeNode[] 与ITypeNode 中的 childNodes: ITypeNode[] 不同；
+  childNodes?: TypeNode[] | undefined;
+
   // 设置子元素的属性，并根据属性创建子元素；是json对象；指定的元素类型；
   items?: ITypeConfig[];
   // 多个插槽 ———— 对应的 是 TypeNode | TypeNode[], 不同于一般的属性；需要组件本身单独处理的。setConfig方法中没有默认处理方法；
-  slots?: Record<string, TypeNode | TypeNode[]>; // 指定多个不同位置的插槽，需要有插槽名称的；需要在类中添加插槽的位置；
-  // 默认插槽
-  slot?: TypeNode | TypeNode[]; // OnlyChild 默认位置的插槽, 可以是单个元素，也可以是多个元素，即数组；如何直接插入当前元素，则相当与 childNodes属性；
+  slots?: IConfigSlots; // 指定多个不同位置的插槽，需要有插槽名称的；需要在类中添加插槽的位置；
+  // 默认插槽  同 slots.default
+  slot?: IConfigSlot; // OnlyChild 默认位置的插槽, 可以是单个元素，也可以是多个元素，即数组；如何直接插入当前元素，则相当与 childNodes属性；
+  html?: string;
+  /**
+   * 绑定的事件集合,转化为 subscriptions;
+   * 一般在构造函数的参数（config）中传入；
+   * 与 addEvents方法配合；
+   * initEvents 钩子 调用
+   */
+  events?: Partial<IEvents>;
+  /**
+   * 属性值必须用 ' 或 " 包起来
+   * 标签必须闭合， 如 <input /> 这样才能闭合。
+   */
+  template?: string; // 模板 默认TypeClass为XElement
+}
+
+export interface ISlotNodes {
+  [propName: string]: SlotNode | undefined;
+}
+
+export type IConfigSlot = string | TypeNode | (string | TypeNode)[] | undefined;
+
+export interface IConfigSlots {
+  [propName: 'default' | string]: IConfigSlot;
 }
 
 export interface IOptionConfig extends ITypeConfig {
@@ -231,6 +246,3 @@ export interface INodeHandler<T extends ITypeNode> {
   deleteProperty?(target: T, prop: string): void;
 }
 
-export interface IEmits {
-  [key: string]: (...rest: any[]) => void;
-}

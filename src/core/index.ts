@@ -1,13 +1,6 @@
-export { TypeHtml } from './type-html/type-html.abstract';
-export type { ITypeHtml } from './type-html/type-html.interface';
-export * from './type-html';
+
 export { TypeFragment } from './type-fragment/type-fragment.abstract';
 export type { ITypeFragment } from './type-fragment/type-fragment.interface';
-export { TypeSvg } from './type-svg/type-svg.abstract';
-export type { ITypeSvg } from './type-svg/type-svg.interface';
-export { TypeSvgSvg } from './type-svg/svg/svg.abstract';
-export type { ITypeSvgSvg } from './type-svg/svg/svg.interface';
-// export type { HtmlTypes } from './HtmlTypes';
 export { vHash, TypeElement } from './type-element/type-element.abstract';
 export type * from './type-element/type-element.interface';
-export * from './element';
+export { create } from './create';

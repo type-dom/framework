@@ -2,8 +2,8 @@ import { isMustache } from '@type-dom/utils';
 import { XProxy } from '../../observer';
 import { IJsonData } from '../../interface';
 import { TypeNode } from '../type-node/type-node.abstract';
-import { mustacheNode } from '../util';
 import { TypeElement } from '../type-element/type-element.abstract';
+import { mustacheNode } from '../util';
 import type { ITextNode } from './text-node.interface';
 
 /**
@@ -28,8 +28,7 @@ export class TextNode extends TypeNode implements ITextNode {
    * DOM 文本节点对象
    */
   dom?: Text;
-  override attrObj: undefined;
-  override styleObj: undefined;
+  ctrl: undefined;
   /**
    * 子节点，此处未定义
    */
@@ -38,6 +37,8 @@ export class TextNode extends TypeNode implements ITextNode {
    * 模板对象，此处未定义
    */
   override template?: undefined;
+
+  rendered: boolean;
 
   /**
    * 构造函数，创建文本节点
@@ -49,12 +50,11 @@ export class TextNode extends TypeNode implements ITextNode {
     text: string | number | XProxy<IJsonData> = '\u200c',
     parent?: TypeElement
   ) {
-    // \u200c
     super();
-    this.beforeCreate();
+    this.rendered = false;
     this.className = 'TextNode';
-    this.attrObj = undefined;
-    this.styleObj = undefined;
+    this.params = { text };
+    this.props.text = text;
     this.nodeName = '#text';
     if (text instanceof XProxy) {
       this.nodeValue = text.value;
@@ -68,7 +68,7 @@ export class TextNode extends TypeNode implements ITextNode {
         //   todo 订阅 dataItem 变化
         // if (this.itemData) {
         //   this.itemData.data$.subscribe((data: IXData) => {
-        //     this.render();
+        //     this.mount();
         //   });
         // }
       }
@@ -86,15 +86,6 @@ export class TextNode extends TypeNode implements ITextNode {
   //   return this.textContent.length;
   // }
 
-  /**
-   * 获取节点在父节点中的索引
-   * 注： run中可能会有多个TextNode 了。
-   * @returns 节点索引
-   */
-  get index(): number {
-    return this.parent ? this.parent.findChildIndex(this) : -1;
-  }
-
   // todo delete
   // get textContent(): string {
   //   return this.nodeValue;
@@ -105,7 +96,7 @@ export class TextNode extends TypeNode implements ITextNode {
    *
    * @returns 节点长度
    */
-  get length(): number {
+  override get length(): number {
     return this.nodeValue.length;
   }
 
@@ -120,12 +111,12 @@ export class TextNode extends TypeNode implements ITextNode {
     } else {
       this.nodeValue = String(text);
     }
-    this.render();
+    this.mount();
   }
 
   /**
    * 把新内容添加到 this.textContent 末尾。
-   * 注： this.render()有问题
+   * 注： this.mount()有问题
    * 同时父级对象重新渲染。
    * 在节点文本末尾添加新内容
    * @param content 新内容
@@ -135,8 +126,8 @@ export class TextNode extends TypeNode implements ITextNode {
       return;
     }
     this.nodeValue = this.nodeValue.concat(content);
-    // this.render();
-    this.parent?.render();
+    this.mount();
+    // this.parent?.mount();
   }
 
   /**
@@ -171,8 +162,8 @@ export class TextNode extends TypeNode implements ITextNode {
     // this.childNodes = [newContent];
     this.setText(newContent);
     // todo error 光标移到头部。 ??触发selectionchange??
-    // this.render(); //
-    this.parent?.render();
+    this.mount(); //
+    // this.parent?.mount();
   }
 
   /**
@@ -211,25 +202,35 @@ export class TextNode extends TypeNode implements ITextNode {
     const newContent = preContent.concat(endContent);
     // console.log('newContent is ', newContent);
     this.setText(newContent);
-    // TODO 不能直接用 this.render(); 光标调到行程头部。
-    // this.render();
-    this.parent?.render();
+    // TODO 不能直接用 this.mount(); 光标调到行程头部。
+    this.mount();
+    // this.parent?.mount();
   }
 
-  mount(el: HTMLElement) {
+  mount(el?: HTMLElement | SVGElement | ShadowRoot | string) {
+    this.created && this.created();
     this.render();
+    this.beforeMount && this.beforeMount();
     if (this.dom) {
-      el.appendChild(this.dom);
+      let appEl: HTMLElement | SVGElement | ShadowRoot | null | undefined;
+      if (
+        el instanceof HTMLElement ||
+        el instanceof SVGElement ||
+        el instanceof ShadowRoot) {
+        appEl = el;
+      } else if (typeof el === 'string') {
+        appEl = document.querySelector<HTMLElement>(el);
+      } else {
+        appEl = this.parent?.elementParent?.dom;
+      }
+      appEl?.appendChild(this.dom);
     }
-  }
-
-  beforeCreate(): void {
-    // todo 渲染前处理
+    // console.log('this.dom is ', this.dom);
+    this.mounted && this.mounted(); // 渲染后处理
   }
 
   // todo 钩子函数
   render(): void {
-    this.beforeCreate();
     // 渲染出来的值，在 模板语法中需要转换的。
     let text = this.nodeValue;
     if (isMustache(this.nodeValue)) {
@@ -250,5 +251,10 @@ export class TextNode extends TypeNode implements ITextNode {
     } else {
       this.dom.textContent = text ?? ''; // '\u200b'; // &zwnj; \u200c &zwsp;
     }
+    this.rendered = true;
+  }
+
+  update() {
+    this.render();
   }
 }

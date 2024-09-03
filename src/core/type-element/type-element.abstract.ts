@@ -1,23 +1,23 @@
 import { fromEvent, Subscription } from 'rxjs';
-import { IStyle, Property } from '@type-dom/css-type';
-import { addUnit, camelToDash, Ratio } from '@type-dom/utils';
+import { camelToDash } from '@type-dom/utils';
+import { IStyle } from '@type-dom/css-type';
+
 import { IJsonDataProp, IObData } from '../../interface';
 import { RouterView } from '../../router/router-view/router-view.class';
 import { XProxy } from '../../observer/x-proxy/x-proxy.class';
 import { Observer } from '../../observer/observer';
 import { reactive } from '../../reactivity';
 import { UnwrapNestedRefs } from '../../reactivity/reactive';
-import { IEvents } from '../../events/events.interface';
-import { ITransitionConfig } from '../../components/transition/transition.interface';
+import { IEvent, IEvents } from '../../events/events.interface';
+import { Parser } from '../../parser';
 import type { ITypeConfig } from '../type-node/type-node.interface';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TextNode } from '../text-node/text-node.class';
 import type {
-  ITypeAttribute,
   IBoundBox,
   ITypeElement,
 } from './type-element.interface';
-
+import { TypeElementController } from './type-element.controller';
 export const vHash = Math.round(Math.random() * 1000000);
 
 /**
@@ -32,35 +32,25 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   // 包括 fragment
   abstract override nodeName: 'fragment' | string; // 必然有；
   nodeValue?: undefined;
-  // attributes: INodeAttr[];
   childNodes: TypeNode[];
   routerView?: RouterView;
   textNode?: TextNode;
-  config?: ITypeConfig;
   data?: UnwrapNestedRefs<IObData>; // ITypeNode 中设置了
-  // data$?: XObservable<IJsonData>;
-  override attrObj: ITypeAttribute;
-  override styleObj: IStyle;
   override subscriptions: Subscription[];
-  // override data$?: Observer;
   modelValue?: IJsonDataProp;
   rendered: boolean;
-  slot?: TypeNode | TypeNode[] | undefined;
-  slots?: Record<string, TypeNode>;
-
+  // private slotNodes?: ISlotNodes;
+  ctrl: TypeElementController;
   protected constructor() {
     super();
-    // 免得做非空判断
-    this.attrObj = {
-      ['data-v-' + vHash]: true,
-    };
-    this.styleObj = {};
+    this.ctrl = new TypeElementController(this);
+    // this.props.attrObj = {
+    //   ['data-v-' + vHash]: true,
+    // };
     this.attributes = [];
     this.childNodes = [];
     this.subscriptions = [];
     this.rendered = false;
-    // todo 好像没有什么用啊？
-    this.beforeCreate && this.beforeCreate();
   }
 
   get elementParent(): TypeElement | undefined {
@@ -71,16 +61,8 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
   }
 
-  get length(): number {
-    return this.children.length;
-  }
-
-  get index(): number {
-    return this.parent ? this.parent.findChildIndex(this) : -1;
-  }
-
   get id(): string {
-    return this.attrObj?.id as string;
+    return this.getProps().attrObj?.id as string;
   }
 
   // get clientHeight(): string {
@@ -105,15 +87,15 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   // }
 
   // get value(): string | undefined {
-  //   return this.attrObj.value ? this.attrObj.value as string : undefined;
+  //   return this.props.attrObj.value ? this.props.attrObj.value as string : undefined;
   // }
   // set value(str: string | undefined) {
   //   if (str !== undefined) {
-  //     this.setAttrObj({
+  //     this.ctrl.setAttrObj({
   //       value: str,
   //     });
   //   } else {
-  //     this.removeAttribute('value');
+  //     this.ctrl.removeAttribute('value');
   //   }
   // }
 
@@ -140,433 +122,64 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     };
   }
 
-  setConfig(config?: ITypeConfig) {
-    this.config = config;
-    if (config?.parent) {
-      this.parent = config.parent;
+  /**
+   * 配置设置项
+   * @param params
+   */
+  setParams<T extends ITypeConfig>(params = {} as T): T {
+    this.params = params;
+    if (params?.emits) {
+      this.addEmits(params.emits);
     }
-    // if (config?.to) {
-    //   this.to = config.to;
-    // }
-    if (config?.ref !== undefined) {
-      config.ref.value = this;
+    if (params?.ref !== undefined) {
+      params.ref.value = this;
     }
-    if (config?.name) {
-      this.addAttrName(config.name);
+    if (params?.name) {
+      this.ctrl.addAttrName(params.name);
     }
-    if (config?.text) {
+    // text: boolean 是td-button组件是否是text类型的属性
+    if (params?.text !== undefined && typeof params.text !== 'boolean') {
       // 添加文本
       // 先判断子元素是否有TextNode，有的话就不再添加
       // 要this.textNode 而不是其它的 TextNode;
       if (this.textNode) {
-        this.textNode.setText(config.text);
+        this.textNode.setText(params.text);
         if (this.findChildIndex(this.textNode) === -1) {
           this.addChild(this.textNode);
         }
       } else {
-        this.textNode = new TextNode(config.text);
+        this.textNode = new TextNode(params.text);
         this.addChild(this.textNode);
       }
       this.textNode.setParent(this);
     }
-    this.addPropObj(config);
-
-    if (config?.data) {
-      // this.setDataObservable(config.data);
-      this.data = reactive(config.data);
+    if (params?.html) {
+      const parser = new Parser();
+      const xElement = parser.parseFromString(params.html);
+      this.addChild(xElement);
+    }
+    if (params?.data) {
+      // this.setDataObservable(params.data);
+      this.data = reactive(params.data);
       // console.log('this.data$ is ', this.data$);
     }
-    if (config?.childNodes) {
-      // 父元素为当前元素，子元素为config.childNodes
-      config.childNodes.forEach((item) => {
-        item.parent = this;
+    // todo 是否要单独处理。因为 parent 链是依赖addChild的。
+    // 组件库中的组件 是没有 params.childNodes 的；
+    if (params?.childNodes) {
+      // 父元素为当前元素，子元素为params.childNodes
+      params.childNodes.forEach((item) => {
+        // item.parent = this; // addChild 会设置parent。
         this.addChild(item);
       });
-      // this.childNodes = config.childNodes;
-      // this.addChildren(...config.childNodes);
+      // this.childNodes = params.childNodes;
+      // this.addChildren(...props.childNodes);
     }
-  }
-
-  setSlot(slot: TypeElement | TypeElement[]) {
-    this.slot = slot;
+    this.mergeConfig(params);
+    return this.props as T;
   }
 
   isFragment() {
     return this.nodeName === 'fragment' && this.dom === undefined;
-  }
-
-  addWidth(width: string | number): void {
-    this.addStyleObj({ width: addUnit(width) });
-  }
-
-  setWidth(width: string | number): void {
-    this.setStyleObj({ width: addUnit(width) });
-  }
-
-  addHeight(height: string | number): void {
-    this.addStyleObj({ height: addUnit(height) });
-  }
-
-  setHeight(height: string | number): void {
-    this.setStyleObj({ height: addUnit(height) });
-  }
-
-  addBackgroundColor(backgroundColor: string): void {
-    this.addStyleObj({ backgroundColor });
-  }
-
-  setBackgroundColor(backgroundColor: string): void {
-    this.setStyleObj({ backgroundColor });
-  }
-
-  setCursor(cursor: Property.Cursor) {
-    this.setStyleObj({
-      cursor,
-    });
-  }
-
-  addPropObj(config?: ITypeConfig) {
-    if (config?.attrObj) {
-      this.addAttrObj(config.attrObj);
-    }
-    if (config?.styleObj) {
-      this.addStyleObj(config.styleObj);
-    }
-  }
-
-  /**
-   * 重新设置属性 会清理原有属性
-   * @param propObj
-   */
-  resetPropObj(propObj: {
-    attrObj: ITypeAttribute | undefined;
-    styleObj: IStyle | undefined;
-  }): void {
-    this.resetAttrObj(propObj.attrObj);
-    this.resetStyleObj(propObj.styleObj);
-  }
-
-  /**
-   * 设置样式对象
-   * 替换已有的样式；
-   * 没有传的样式，不变；
-   * @param styleObj
-   */
-  setStyleObj(styleObj: IStyle): void {
-    for (const key in styleObj) {
-      if (Object.hasOwnProperty.call(styleObj, key)) {
-        // todo 如何优化
-        const value = styleObj[key as keyof IStyle] as string | number;
-        this.setStyle(key as keyof IStyle, value);
-      }
-    }
-  }
-
-  /**
-   * 添加样式对象；
-   * todo mergeStyleObj,现在的方法更接近与mergeStyleObj；
-   *    fluentUI中使用了 mergeStyles 方法；
-   * @param styleObj
-   */
-  addStyleObj(styleObj: IStyle): void {
-    for (const key in styleObj) {
-      if (Object.hasOwnProperty.call(styleObj, key)) {
-        // todo 如何优化
-        const value = styleObj[key as keyof IStyle] as
-          | string
-          | number
-          | boolean;
-        this.addStyle(key as keyof IStyle, value);
-      }
-    }
-  }
-
-  /**
-   * 重置样式
-   * 清除原有样式，全部替换为新的样式
-   * @param styleObj
-   */
-  resetStyleObj(styleObj?: IStyle): void {
-    if (styleObj === undefined) {
-      return;
-    }
-    if (this?.dom) {
-      this.styleObj = styleObj;
-      this.dom.removeAttribute('style'); // 需要单独清理一下DOM的style
-      this.setStyleObj(styleObj);
-    }
-  }
-
-  removeStyleObj(styleObj: IStyle): void {
-    for (const key in styleObj) {
-      if (Object.hasOwnProperty.call(styleObj, key)) {
-        this.removeStyle(key as keyof IStyle);
-      }
-    }
-  }
-
-  renderStyleObj(styleObj: IStyle): void {
-    for (const key in styleObj) {
-      if (Object.hasOwnProperty.call(styleObj, key)) {
-        // todo 如何优化
-        const value = styleObj[key as keyof IStyle] as string | number;
-        this.renderStyle(key as keyof IStyle, value);
-      }
-    }
-  }
-
-  /**
-   * 设置元素的样式。
-   *
-   * 此方法用于根据给定的键和值来更新元素的样式。如果值为`undefined`，则此方法将删除该样式的属性；
-   * 否则，它将添加新的样式属性并立即渲染更新。
-   * 此方法会渲染到dom上
-   * @param key 样式属性的键，对应于`IStyle`接口中的属性名。
-   * @param value 样式属性的值，可以是字符串、数字或布尔值。
-   */
-  setStyle(key: keyof IStyle, value: string | number): void {
-    // 当值为undefined时，调用removeStyle方法来删除这个样式属性
-    // todo type ???
-    if (value === undefined) {
-      // todo 空字符怎么处理？
-      this.removeStyle(key);
-    } else {
-      // 当值不为undefined时，先调用addStyle方法来添加或更新这个样式属性
-      this.addStyle(key, value);
-      // 然后调用renderStyle方法来立即渲染这个样式的更新
-      // 直接dom操作
-      this.renderStyle(key, value);
-    }
-  }
-
-  addStyle(key: keyof IStyle, value: string | number | boolean): void {
-    // 检查styleObj是否已初始化，避免调用方法时由于this.styleObj为null或undefined导致的异常
-    if (!this.styleObj) {
-      // console.error('styleObj is not initialized.');
-      this.styleObj = {};
-    }
-    Object.assign(this.styleObj, { [key]: value });
-    // Object.defineProperty(this.styleObj, key, {
-    //   value: value,
-    //   writable: true,
-    //   enumerable: true,
-    //   configurable: true
-    // });
-  }
-
-  /**
-   * 根据给定的样式键和值，渲染元素的样式。
-   * @param key 样式属性的名称，必须是IStyle接口中定义的属性名。
-   * @param value 样式属性的值，可以是字符串、数字或布尔值。
-   * @throws 如果this.dom为null，则抛出错误，指示元素不存在。
-   */
-  renderStyle(key: keyof IStyle, value: string | number): void {
-    // 当样式属性为width或height时，确保值以px为单位
-    // todo width height 等属性是数字时的处理
-    //    padding margin 等类似的数字值的处理
-    if (key === 'width' || key === 'height') {
-      value = addUnit(value);
-    }
-    // 检查dom元素是否存在，如果不存在则抛出错误
-    if (!this.dom) {
-      throw Error(
-        'this.dom is null . this element className is ' + this.className
-      );
-    }
-    if (this.dom) {
-      // 使用CSS属性名，并将值转换为字符串，然后设置到元素的样式中
-      this.dom.style.setProperty(camelToDash(key), String(value)); // 要转中划线
-    }
-  }
-
-  // 删除样式
-  removeStyle(key: keyof IStyle): void {
-    if (this.styleObj && this.styleObj[key]) {
-      delete this.styleObj[key];
-    }
-    if (this.dom) {
-      this.dom?.style.removeProperty(camelToDash(key));
-      // delete this.dom.style[key as keyof CSSStyleDeclaration];
-    }
-  }
-
-  setTransition(config: ITransitionConfig): void {
-    // this.setStyle('transition', transition);
-  }
-
-  /**
-   * 默认显示是  block
-   * 可指定具体显示模式
-   * @param mode
-   */
-  show(mode?: Property.Display): void {
-    this.setStyle('display', mode ?? 'block'); // flex block inline-block
-  }
-
-  hide(): void {
-    this.setStyle('display', 'none');
-  }
-
-  // 不影响已有的属性，但是没有传的属性
-  setAttrObj(attrObj: ITypeAttribute): void {
-    for (const key in attrObj) {
-      if (Object.hasOwnProperty.call(attrObj, key)) {
-        // todo 如何优化
-        const value = attrObj[key] as string | number;
-        this.setAttribute(key, value);
-      }
-    }
-  }
-
-  addAttrObj(attrObj: ITypeAttribute): void {
-    for (const key in attrObj) {
-      if (Object.hasOwnProperty.call(attrObj, key)) {
-        const value = attrObj[key] as string | number;
-        this.addAttribute(key, value);
-      }
-    }
-  }
-
-  /**
-   * 重置属性
-   * 清理原有属性，
-   * @param attrObj
-   */
-  resetAttrObj(attrObj?: ITypeAttribute): void {
-    if (attrObj === undefined) {
-      return;
-    }
-    this.attrObj = attrObj;
-    this.cleanAttrObj();
-    this.setAttrObj(attrObj);
-  }
-
-  renderAttrObj(attrObj: ITypeAttribute): void {
-    for (const key in attrObj) {
-      if (Object.hasOwnProperty.call(attrObj, key)) {
-        const value = attrObj[key] as string | number;
-        this.renderAttribute(key, value);
-      }
-    }
-  }
-
-  removeAttrObj(attrObj: ITypeAttribute): void {
-    for (const key in attrObj) {
-      if (Object.hasOwnProperty.call(attrObj, key)) {
-        if (this.attrObj[key]) {
-          delete this.attrObj[key];
-        }
-        if (this.dom) {
-          this.dom?.removeAttribute(key);
-        }
-      }
-    }
-  }
-
-  cleanAttrObj(): void {
-    this.attrObj = {};
-    // 需要专门清理一下DOM上的属性
-    for (const attr in this.attrObj) {
-      // if (Object.hasOwnProperty.call(this.attrObj, attr)) {
-      if (this.dom) {
-        this.dom.removeAttribute(attr);
-      }
-      // }
-    }
-  }
-
-  // 设置属性 dom 属性同步变化
-  setAttribute(key: string, value: string | number | boolean): void {
-    this.addAttribute(key, value);
-    this.renderAttribute(key, value);
-  }
-
-  // 添加属性
-  addAttribute(key: string, value: string | number | boolean): void {
-    this.attrObj[key] = value;
-  }
-
-  // 渲染属性
-  renderAttribute(key: string, value: string | number | boolean): void {
-    // dom渲染时， 驼峰转中划线连接
-    if (
-      key !== 'viewBox' &&
-      key !== 'spreadMethod' &&
-      key !== 'gradientUnits'
-    ) {
-      key = camelToDash(key);
-    }
-    if (this.dom) {
-      if (value === true) {
-        this.dom?.setAttribute(key, '');
-      } else if (value === false) {
-        this.dom?.removeAttribute(key);
-      } else if (value === undefined) {
-        // console.log('value is ', value);
-        this.dom?.removeAttribute(key);
-      } else {
-        const val = value.toString();
-        this.dom?.setAttribute(key, val);
-      }
-    }
-  }
-
-  removeAttribute(key: string): void {
-    if (this.attrObj[key]) {
-      delete this.attrObj[key];
-    }
-    if (this.dom) {
-      this.dom.removeAttribute(key);
-    }
-  }
-
-  setAttrName(value: string): void {
-    this.addAttrName(value);
-    this.renderAttrName(value);
-  }
-
-  addAttrName(value: string | number): void {
-    this.addAttribute('name', value);
-  }
-
-  renderAttrName(value: string): void {
-    this.renderAttribute('name', value);
-  }
-
-  setAttrId(id: string): void {
-    this.addAttrId(id);
-    this.renderAttrId(id);
-  }
-
-  addAttrId(id: string | number): void {
-    this.addAttribute('id', id);
-  }
-
-  renderAttrId(id: string): void {
-    this.renderAttribute('id', id);
-  }
-
-  setAttrClass(className: string): void {
-    this.addAttrClass(className);
-    this.renderAttrClass(className);
-  }
-
-  addAttrClass(className: string): void {
-    // 要先判断className是否已经存在
-    if (this.attrObj?.class && this.attrObj.class.indexOf(className) === -1) {
-      this.attrObj.class += ' ' + className + '-' + vHash;
-    } else {
-      this.addAttribute('class', className + '-' + vHash);
-    }
-  }
-
-  renderAttrClass(className: string) {
-    this.renderAttribute('class', className);
-  }
-
-  removeAttrClass(className: string): void {
-    this.attrObj.class && this.attrObj.class.replace(className, '');
-    this.dom?.classList.remove(className);
   }
 
   /**
@@ -575,18 +188,37 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * @param slot 要添加或插入的子元素或子元素数组。
    * @param type 操作类型，可选值为`add`（默认）或`unshift`，分别代表添加和前置插入子元素。
    */
-  slotChild(slot: TypeNode | TypeNode[], type: 'add' | 'unshift' = 'add') {
+  slotChild(
+    slot: string | TypeNode | (string | TypeNode)[],
+    type: 'add' | 'unshift' = 'add'
+  ) {
     if (type === 'unshift') {
       if (slot instanceof TypeNode) {
         this.unshiftChild(slot);
+      } else if (typeof slot === 'string') {
+        this.unshiftChild(new TextNode(slot));
       } else {
-        this.unshiftChildren(...slot);
+        slot.forEach((item) => {
+          if (item instanceof TypeNode) {
+            this.unshiftChild(item);
+          } else if (typeof item === 'string') {
+            this.unshiftChild(new TextNode(item));
+          }
+        });
       }
     } else {
       if (slot instanceof TypeNode) {
         this.addChild(slot);
+      } else if (typeof slot === 'string') {
+        this.addChild(new TextNode(slot));
       } else {
-        this.addChildren(...slot);
+        slot.forEach((item) => {
+          if (item instanceof TypeNode) {
+            this.addChild(item);
+          } else if (typeof item === 'string') {
+            this.addChild(new TextNode(item));
+          }
+        });
       }
     }
   }
@@ -615,6 +247,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * @param newChild
    */
   unshiftChild(newChild: TypeNode): void {
+    newChild.setParent(this); // 如果不是子类，是其它地方的对象加过来，要重设其父类。 一个对象挂载到不同的父类中，可能会造成混乱。
     this.childNodes.unshift(newChild);
   }
 
@@ -637,7 +270,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * @param newChildren
    */
   addChildren(...newChildren: TypeNode[]): void {
-    newChildren.forEach((child) => child.appendParent(this));
+    newChildren.forEach((child) => this.addChild(child));
   }
 
   /**
@@ -740,23 +373,17 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
   }
 
-  /**
-   * 从父级中删除
-   */
-  removeFromParent(): void {
-    if (this.parent) {
-      this.dom?.remove(); // DOM删除
-      this.parent.childNodes.splice(this.index, 1);
-    } else {
-      console.error('this.parent is null . ');
-    }
-  }
-
   // 清理子节点
   clearChildNodes(): void {
     this.childNodes = [];
   }
 
+  resetChildren(slot: string | TypeNode | (string | TextNode)[] | undefined) {
+    this.clearChildren();
+    if (slot) {
+      this.slotChild(slot);
+    }
+  }
   /**
    *  替换指定的子元素
    */
@@ -765,6 +392,9 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     if (index > -1) {
       // 替换操作
       this.childNodes.splice(index, 1, newNode);
+      newNode.dom &&
+        oldNode.dom &&
+        this.dom?.replaceChild(newNode.dom, oldNode.dom);
       oldNode.parent = undefined;
       newNode.parent = this;
       return;
@@ -790,8 +420,8 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    */
   removeDom(): void {
     if (this.dom) {
-      this.parent?.dom?.removeChild(this.dom);
-      // this.dom.remove();
+      // this.parent?.dom?.removeChild(this.dom);
+      this.dom.remove();
     } else {
       console.error('this.dom has been removed . ');
     }
@@ -813,14 +443,32 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
   }
 
+  setup?(params?: ITypeConfig): void;
+
+  recurseSetup() {
+    console.log('traverse . ');
+    this.setup?.(this.params);
+    this.childNodes.forEach((child) => {
+      if (child instanceof TypeElement) {
+        child.recurseSetup();
+      }
+    });
+  }
+
   /**
    * 挂载到真实DOM；
    * 需要手动挂载组件时使用，一般是挂载到框架外的DOM元素时。
    * 框架内的对象直接addChild就可以了。
    * 子元素是伪元素时，dom是undefined，要递归向下挂载。
+   * mount(el) 类似与 main() 是框架的入口。
    * @param el
    */
-  mount(el: string | HTMLElement | ShadowRoot): TypeElement {
+  mount<T extends TypeElement>(el?: string | HTMLElement | SVGElement | ShadowRoot): T {
+    // console.warn('mount .');
+    // this.clearChildren(); // 清理子节点，包括DOM  todo ??? 不能加。
+    this.setup?.();
+    this.created && this.created();
+    // this.recurseSetup(); // 挂载时，递归执行setup
     if (!this.dom && this.nodeName) {
       if (this.nodeName === 'fragment') {
         this.dom = undefined;
@@ -828,32 +476,84 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
         this.dom = document.createElement(this.nodeName);
       }
     }
-    let appEl: HTMLElement | ShadowRoot | null;
-    if (el instanceof HTMLElement || el instanceof ShadowRoot) {
+    let appEl: HTMLElement | SVGElement | ShadowRoot | null | undefined;
+    if (
+      el instanceof HTMLElement ||
+      el instanceof SVGElement ||
+      el instanceof ShadowRoot
+    ) {
       appEl = el;
-    } else {
+    } else if (typeof el === 'string') {
       appEl = document.querySelector<HTMLElement>(el);
     }
-    if (appEl) {
-      if (this.dom) {
-        appEl.appendChild(this.dom);
-      } else {
-        if (this.nodeName === 'fragment') {
-          // Fragment
-          for (const child of this.childNodes) {
-            child.mount(appEl);
-          }
+    // else {
+    //   if (this.nodeName === 'fragment') {
+    //     appEl = this.parent?.elementParent?.dom;
+    //   } else {
+    //     appEl = this.dom;
+    //   }
+    // }
+    this.beforeMount && this.beforeMount();
+    if (this.nodeName === 'fragment') {
+      for (const child of this.children) {
+        // todo child 是 Transition时，这里的逻辑有问题
+        appEl = appEl || this.parent?.elementParent?.dom;
+        if (this.to) {
+          child.mount(this.to);
+          console.log('this.to is ', this.to);
+        } else if (appEl) {
+          child.mount(appEl);
         } else {
-          console.warn(
-            'this.dom is undefined , but nodeName is not fragment . '
-          );
+          throw Error('Can not find el . ');
         }
-        // appEl.appendChild(fragment);
       }
     } else {
-      throw Error('Can not find id . ');
+      this.render(); // setStyleObj, setAttrObj
+      if (appEl && this.dom) {
+         appEl.appendChild(this.dom);
+      }
+      // 如CollapsibleBox中，contents重新赋值后，children会变，而childNodes是不变的。
+      for (const child of this.children) {
+        // this.renderChild(child);
+        child.mount(this.dom);
+      }
     }
-    return this;
+    this.mounted && this.mounted();
+    this.preEvents();
+    // fragment 可以设置监听事件。但监听的dom对象不是fragment的dom。
+    this.initEvents && this.initEvents();
+    return this as unknown as T;
+  }
+
+  // todo
+  update() {
+    // console.warn('mount .');
+    // this.clearChildren(); // 清理子节点，包括DOM  todo ??? 不能加。
+    // this.recurseSetup(); // 挂载时，递归执行setup
+    if (!this.dom && this.nodeName) {
+      if (this.nodeName === 'fragment') {
+        this.dom = undefined;
+      } else {
+        this.dom = document.createElement(this.nodeName);
+      }
+    }
+    this.beforeUpdate && this.beforeUpdate();
+    if (this.nodeName === 'fragment') {
+      for (const child of this.children) {
+          child.update();
+      }
+    } else {
+      this.render(); // setStyleObj, setAttrObj
+      // 如CollapsibleBox中，contents重新赋值后，children会变，而childNodes是不变的。
+      for (const child of this.children) {
+        // this.renderChild(child);
+        child.update();
+      }
+    }
+    this.updated && this.updated();
+    this.preEvents();
+    // fragment 可以设置监听事件。但监听的dom对象不是fragment的dom。
+    // this.initEvents && this.initEvents();
   }
 
   /**
@@ -863,8 +563,8 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * @param literal
    */
   createInstance(literal: ITypeElement): void {
-    this.resetAttrObj(literal.attrObj);
-    this.resetStyleObj(literal.styleObj);
+    this.ctrl.resetAttrObj(literal.params?.attrObj);
+    this.ctrl.resetStyleObj(literal.params?.styleObj);
     const length = literal.childNodes.length;
     if (length < this.length) {
       for (let i = 0; i < this.length; i++) {
@@ -884,22 +584,36 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   /**
    * 添加事件
    */
-  addEvents(events: Partial<IEvents>) {
+  addEvents(events: Partial<IEvents>, target?: Node) {
     if (this.nodeName === 'fragment') {
+      console.log('fragment cannot add events . ');
       return;
     }
     for (const key in events) {
       const eventFun = events[key as keyof IEvents];
-      if (this.dom) {
-        this.subscriptions.push(
-          fromEvent(this.dom, key).subscribe((evt) => {
-            if (eventFun) {
-              eventFun(evt, this);
-            }
-          })
-        );
+      if (eventFun) {
+        this.addEvent(key, target, eventFun);
       }
     }
+  }
+
+  addEvent(key: string, target: Node | undefined, event: IEvent) {
+    const dom = target || this.dom;
+    if (dom) {
+      this.subscriptions.push(
+        fromEvent(dom, key).subscribe((evt) => {
+          event(evt, this, target);
+        })
+      );
+    }
+  }
+
+  removeEvent(key: string, target?: Node) {
+    this.subscriptions.map((item) => {
+      // if (item.key === key && item.source === target) {
+      // todo remove
+      // }
+    });
   }
 
   // 移除监听事件
@@ -907,26 +621,6 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.subscriptions.map((item) => item.unsubscribe());
     this.subscriptions = [];
   }
-
-  /**
-   * 生命周期
-   * beforeCreate 渲染前
-   * created 渲染前
-   * render 渲染
-   * afterRender 渲染后
-   * mounted 挂载后
-   */
-  beforeCreate?(): void;
-
-  /**
-   * created函数用于在渲染TypeElement之前进行准备工作。
-   * 该函数不接受参数，也不返回任何值。
-   * 主要完成以下工作：
-   * 1. 打印日志说明当前处于created阶段。
-   * 2. 检查dom属性是否已存在，若不存在，则创建一个新的DOM元素。
-   * 3. 遍历当前Element的所有属性，对以':'和'@'开头的属性进行特殊处理。
-   */
-  created?(): void;
 
   /**
    * 渲染前拦截，预处理
@@ -942,7 +636,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
     if (this.nodeName !== 'fragment') {
       if (this.className) {
-        this.addAttrClass(camelToDash(this.className));
+        this.ctrl.addAttrClass(camelToDash(this.className));
       }
     }
     // console.log('preRender . ');
@@ -973,8 +667,9 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    */
   preEvents(): void {
     this.clearEvents();
-    if (this.config?.events) {
-      this.addEvents(this.config.events);
+    if (this.props?.events) {
+      // dom 监听事件要挂载到真实dom上。
+      this.addEvents(this.props.events);
     }
   }
 
@@ -985,56 +680,18 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * 要调用 this.clearChildDom
    * WebPage要另外处理
    */
-  override render(): void {
-    this.created && this.created();
-    // console.log('this.styleObj is ', this.styleObj);
+  render(): void {
+    // console.log('this.props.styleObj is ', this.props.styleObj);
     this.preRender();
     this.clearChildrenDom(); // 清理子节点的DOM
     if (this.nodeName !== 'fragment') {
-      this.elementRender();
+      this.ctrl.setStyleObj(this.props.styleObj);
+      this.ctrl.setAttrObj(this.props.attrObj);
     } else {
-      this.fragmentRender();
+      console.error('fragment should not render .');
     }
     // console.log('this.dom is ', this.dom);
-    this.mounted && this.mounted(); // 渲染后处理
-    this.preEvents();
-    // fragment 可以设置监听事件。但监听的dom对象不是fragment的dom。
-    this.initEvents && this.initEvents();
     this.rendered = true;
   }
 
-  elementRender() {
-    this.styleObj && this.setStyleObj(this.styleObj);
-    this.setAttrObj(this.attrObj);
-    // children/childNodes可能是不一样的。
-    // 如CollapsibleBox中，contents重新赋值后，children会变，而childNodes是不变的。
-    for (const child of this.children) {
-      this.renderChild(child);
-    }
-  }
-
-  fragmentRender() {
-    // this.elementParent?.clearChildNodes();
-    // this.elementParent?.clearChildrenDom(); // 清理子节点的DOM 不需要
-    if (this.to) { // Teleport
-      for (const child of this.children) {
-        child.render();
-        child.mount(this.to);
-      }
-    } else { // Transition
-      for (const child of this.children) {
-        this.elementParent?.renderChild(child);
-      }
-    }
-  }
-
-  /**
-   * 可选的函数，无参数，无返回值。
-   * 该函数用于在渲染完成后执行一些额外的操作。
-   * 如果需要在特定条件下执行渲染完成后的操作，可以实现此函数。
-   * 在子类中覆写
-   */
-  mounted?(): void;
-
-  //   todo update 组件更新
 }
