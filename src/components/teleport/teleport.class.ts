@@ -1,23 +1,22 @@
-import { TypeElement } from '../../core/type-element/type-element.abstract';
 import { TypeFragment } from '../../core/type-fragment/type-fragment.abstract';
 import { ITeleport, ITeleportConfig } from './teleport.interface';
 
 export class Teleport extends TypeFragment implements ITeleport {
   className: 'Teleport';
   __isTeleport = true;
-  override slot?: TypeElement | TypeElement[];
+  // override slot?: TypeElement | TypeElement[];
   override to?: HTMLElement;
   disabled?: boolean;
 
-  constructor(public override config?: ITeleportConfig) {
+  constructor(params?: ITeleportConfig) {
     super();
     this.className = 'Teleport';
     this.nodeName = 'fragment';
     this.dom = undefined;
-    this.to = config?.to;
-    this.disabled = config?.disabled;
+    this.to = params?.to;
+    this.disabled = params?.disabled;
 
-    this.setConfig(config);
+    this.setParams(params);
   }
 
   // process(

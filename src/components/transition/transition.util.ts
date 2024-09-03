@@ -10,8 +10,9 @@ import {
 import {
   Hook,
   ITypeTransitionConfig,
-} from '../../core/type-transition/type-transition.interface';
-import { TypeHtml } from '../../core';
+} from '../type-transition/type-transition.interface';
+import { TypeHtml } from '../type-html/type-html.abstract';
+
 
 const DOMTransitionPropsValidators = {
   name: String,
