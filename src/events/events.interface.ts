@@ -1,4 +1,5 @@
 import { TypeElement } from '../core/type-element/type-element.abstract';
+import { AnyFn } from '../interface';
 
 /**
  * 定义了一个泛型接口IEvent，用于表示事件处理函数。
@@ -9,11 +10,12 @@ import { TypeElement } from '../core/type-element/type-element.abstract';
  */
 export type IEvent<K extends Event = Event, T extends TypeElement = TypeElement> = (
   evt?: K,
-  element?: T
+  element?: T,
+  target?: Node
 ) => void;
 
 /**
- * IEvents 接口定义了事件处理的行为。
+ * IEvents 接口定义了事件处理的行为。这里定义的时dom元素的事件处理函数。
  */
 export interface IEvents {
   abort: IEvent;
@@ -77,4 +79,8 @@ export interface IEvents {
   // touchevent: IEvent;
   // wheel: IEvent;
   scroll: IEvent;
+}
+
+export interface IEmits {
+  [key: string]: AnyFn;
 }
