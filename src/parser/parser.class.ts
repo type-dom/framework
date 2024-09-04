@@ -3,7 +3,7 @@ import {
   isWhitespace,
   isWhitespaceString,
 } from '@type-dom/utils';
-import { XElement } from '../core/element/x-element/x-element.class';
+import { XElement } from '../index'; // todo type-element.abstract 中有引用。
 // import { XElement } from "../element/x-element/x-element.class"; // todo 这样会报错。上面引入没问题；
 import { TextNode } from '../core/text-node/text-node.class';
 import type { IAttr } from '../core/type-node/type-node.interface';
