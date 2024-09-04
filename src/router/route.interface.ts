@@ -1,4 +1,4 @@
-import { TypeSvgSvg } from '../core/type-svg/svg/svg.abstract';
+import { TypeSvgSvg } from '../components/type-svg/svg/svg.abstract';
 import { RouterView } from './router-view/router-view.class';
 
 export interface IRoute {
@@ -10,6 +10,6 @@ export interface IRoute {
   children?: IRoute[];
   parent?: IRoute;
   svgObj?: TypeSvgSvg;
-  upRoutes?: IRoute[];
+  upRoutes?: IRoute[]; // 上级路由 路径数组
   routerView?: RouterView; // 对应上一级的Component的routerView属性；
 }

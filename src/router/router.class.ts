@@ -122,17 +122,17 @@ export class Router implements IRouter {
           this.routes
         );
         console.error('from is ', from, ' , fromRoute is ', fromRoute);
-        // todo
-        if (fromRoute === toRoute.parent) {
-          fromRoute?.routerView?.slot?.routerView?.loadRoute(toRoute);
+        // todo 父路由的子路由，直接加载子路由的组件
+        if (fromRoute === toRoute.parent) { // 如果是父路由转子路由
+          fromRoute?.routerView?.component?.routerView?.loadRoute(toRoute);
         } else if (
-          fromRoute?.parent?.routerView?.slot &&
-          fromRoute?.parent?.routerView?.slot?.className ===
-            toRoute?.parent?.routerView?.slot?.className
+          fromRoute?.parent?.routerView?.component &&
+          fromRoute?.parent?.routerView?.component?.className ===
+            toRoute?.parent?.routerView?.component?.className
         ) {
           console.log(
-            'fromRoute?.parent?.routerView?.slot is ',
-            fromRoute?.parent?.routerView?.slot
+            'fromRoute?.parent?.routerView?.component is ',
+            fromRoute?.parent?.routerView?.component
           );
           fromRoute?.routerView?.loadRoute(toRoute);
         } else {
