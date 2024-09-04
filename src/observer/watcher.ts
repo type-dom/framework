@@ -1,15 +1,8 @@
 import { isFunction, noop, SimpleSet as Set } from '@type-dom/utils';
 import { IJsonData, IJsonDataProp } from '../interface';
-import {
-  isBoolean,
-  isNumber,
-  isObject,
-  isString,
-  isArray,
-} from '@type-dom/utils';
-import { Dep, DepTarget, popTarget, pushTarget } from './dep';
 import { parsePath } from '../util';
 import { DebuggerOptions } from '../debug';
+import { Dep, DepTarget, popTarget, pushTarget } from './dep';
 // import Dep from './dep';
 let uid = 0;
 
@@ -46,7 +39,7 @@ export class Watcher implements DepTarget {
   constructor(
     target: IJsonData,
     expression: string | (() => any),
-    callback: (val: IJsonDataProp, oldValue: IJsonDataProp) => void,
+    callback: (newVal: IJsonDataProp, oldValue: IJsonDataProp) => void,
     options?: WatcherOptions
   ) {
     this.id = ++uid; // uid for batching

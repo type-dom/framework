@@ -9,7 +9,7 @@ import { isRef } from './util';
  * In some cases we may want to disable observation inside a component's
  * update computation.
  */
-export const shouldObserve: boolean = true;
+export const shouldObserve = true;
 
 /**
  * Attempt to create an observer instance for a value,

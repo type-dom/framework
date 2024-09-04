@@ -1,6 +1,5 @@
 // import { observe } from './index';
 import { Watcher } from './watcher';
-import { XObservable } from './x-observable.class';
 import { observe } from './observe';
 
 // interface IData extends IJsonData {
