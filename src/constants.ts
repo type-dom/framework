@@ -18,3 +18,5 @@ export const LIFECYCLE_HOOKS = [
   'renderTracked', // 数据响应式追踪开始时触发，用于调试TypeDom的响应式系统。
   'renderTriggered', // 数据响应式追踪结束时触发，同样用于调试响应式系统。
 ] as const;
+
+export const NOOP = () => {/* 空函数 */};

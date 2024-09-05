@@ -20,7 +20,7 @@ export interface IJsonData {
 }
 
 /**
- * 定义一个联合类型 IJsonProp，它可以是以下任意类型：
+ * 定义一个联合类型 IJsonDataProp，它可以是以下任意类型：
  * - 字符串
  * - 数字
  * - 布尔值
@@ -46,3 +46,37 @@ export type IObDataProp = IPrimitive | Observer | IObData | IObData[];
 // If the type T accepts type "any", output type Y, otherwise output type N.
 // https://stackoverflow.com/questions/49927523/disallow-call-with-any/49928360#49928360
 export type IfAny<T, Y, N> = 0 extends 1 & T ? Y : N;
+
+/**
+ * Void function
+ */
+export type Fn = () => void
+
+/**
+ * Any function
+ */
+export type AnyFn = (...args: any[]) => any
+
+export interface Stoppable<StartFnArgs extends any[] = any[]> {
+  /**
+   * A ref indicate whether a stoppable instance is executing
+   */
+  isPending: Readonly<boolean>
+
+  /**
+   * Stop the effect from executing
+   */
+  stop: Fn
+
+  /**
+   * Start the effects
+   */
+  start: (...args: StartFnArgs) => void
+}
+
+/**
+ * 定义依赖注入的键类型，用于标识特定的服务或依赖项。
+ * @typeparam T - 与该键关联的具体类型。
+ */
+export type InjectionKey<T> = symbol;
+
