@@ -242,8 +242,8 @@ export class AppRoot extends TypeRoot {
   constructor(option?: ITypeNode) {
     super(option);
     this.className = 'AppRoot';
-    this.addAttrName('app-root');
-    this.addStyleObj({
+    this.ctrl.addAttrName('app-root');
+    this.ctrl.addStyleObj({
       display: 'flex',
       flexDirection: 'column',
       // padding: '10px',
@@ -278,14 +278,12 @@ export class AppElement extends HTMLElement {
   connectedCallback() { // 省去了监听document加载完毕
     const title = 'type-app';
     const appRoot = new AppRoot();
-    appRoot.setAttrName(title);
+    appRoot.ctrl.setAttrName(title);
     // 使用路由
     appRoot.useRouter();
     const shadowRoot = this.attachShadow({ mode: 'open' }); // mode "closed" | "open"
     // 挂载
     appRoot.mount(shadowRoot);
-    // 渲染
-    appRoot.render();
   }
 }
 customElements.define('app-root', AppElement);
