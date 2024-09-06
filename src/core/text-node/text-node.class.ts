@@ -5,6 +5,7 @@ import { TypeNode } from '../type-node/type-node.abstract';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { mustacheNode } from '../util';
 import type { ITextNode } from './text-node.interface';
+import type { ITypeConfig } from '../type-node/type-node.interface';
 
 /**
  * 文本节点类
@@ -98,6 +99,12 @@ export class TextNode extends TypeNode implements ITextNode {
    */
   override get length(): number {
     return this.nodeValue.length;
+  }
+
+  setProps<T extends ITypeConfig>(params = {} as T): T {
+    this.params = params;
+    this.mergeConfig(params);
+    return this.props as T;
   }
 
   /**
@@ -208,9 +215,9 @@ export class TextNode extends TypeNode implements ITextNode {
   }
 
   mount(el?: HTMLElement | SVGElement | ShadowRoot | string) {
-    this.created && this.created();
+    this.created?.();
     this.render();
-    this.beforeMount && this.beforeMount();
+    this.beforeMount?.();
     if (this.dom) {
       let appEl: HTMLElement | SVGElement | ShadowRoot | null | undefined;
       if (
@@ -226,7 +233,7 @@ export class TextNode extends TypeNode implements ITextNode {
       appEl?.appendChild(this.dom);
     }
     // console.log('this.dom is ', this.dom);
-    this.mounted && this.mounted(); // 渲染后处理
+    this.mounted?.(); // 渲染后处理
   }
 
   // todo 钩子函数
