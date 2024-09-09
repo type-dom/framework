@@ -11,7 +11,7 @@ import { AnyFn } from '../interface';
 export type IEvent<K extends Event = Event, T extends TypeElement = TypeElement> = (
   evt?: K,
   element?: T,
-  target?: Node
+  target?: Node | Window
 ) => void;
 
 /**
@@ -41,7 +41,7 @@ export interface IEvents {
   dragover: IEvent;
   dragstart: IEvent;
   drop: IEvent;
-  input: IEvent;
+  input: IEvent<InputEvent>;
   // inputenter: (evt?: InputEvent, element?: TypeElement) => void;
   // invalid: IEvent;
   keydown: IEvent;
@@ -52,14 +52,14 @@ export interface IEvents {
   // loadeddata: IEvent;
   // loadedmetadata: IEvent;
   // loadstart: IEvent;
-  mousedown: IEvent;
-  mouseenter: IEvent;
-  mouseleave: IEvent;
-  mousemove: IEvent;
+  mousedown: IEvent<MouseEvent>;
+  mouseenter: IEvent<MouseEvent>;
+  mouseleave: IEvent<MouseEvent>;
+  mousemove: IEvent<MouseEvent>;
   mouseout: IEvent;
-  mouseover: IEvent;
-  mouseup: IEvent;
-  mousewheel: IEvent;
+  mouseover: IEvent<MouseEvent>;
+  mouseup: IEvent<MouseEvent>;
+  mousewheel: IEvent<MouseEvent>;
   // mspointerdown: IEvent;
   // mspointermove: IEvent;
   // mspointerup: IEvent;
@@ -72,13 +72,13 @@ export interface IEvents {
   // pointerenter: IEvent;
   // pointerleave: IEvent;
   select: IEvent;
-  touchcancel: IEvent;
-  touchend: IEvent;
-  touchmove: IEvent;
-  touchstart: IEvent;
+  touchcancel: IEvent<TouchEvent>;
+  touchend: IEvent<TouchEvent>;
+  touchmove: IEvent<TouchEvent>;
+  touchstart: IEvent<TouchEvent>;
   // touchevent: IEvent;
   // wheel: IEvent;
-  scroll: IEvent;
+  scroll: IEvent<MouseEvent>;
 }
 
 export interface IEmits {

@@ -1,14 +1,19 @@
 import { AnyFn } from '../interface';
 import { Watcher } from './watcher.abstract';
+// import { IEvent, IEvents } from '@type-dom/framework';
+import { Subscription } from 'rxjs';
 
 /**
  * 发布订阅者模式
  * 抽象类EventEmitter定义了事件触发器的基本行为，允许注册、触发和移除事件监听器
  */
 export abstract class EventEmitter extends Watcher {
-  // 存储事件名称与事件监听器数组的映射
-  // key 事件名 value: callback[]  回调数组
-  private events: Record<string, AnyFn[]>;
+  /**
+   * 存储事件名称与事件监听器数组的映射
+   * key 事件名 value: callback[]  回调数组
+   * @private
+   */
+  protected events: Record<string, (AnyFn | Subscription)[]>;
 
   constructor() {
     super();
@@ -19,11 +24,12 @@ export abstract class EventEmitter extends Watcher {
   /**
    * 批量添加事件监听器
    * @param emits 包含事件名称与监听器的映射对象
+   * todo 与 events 合并；
    */
   addEmits(emits: Record<string, AnyFn>) {
     // 遍历事件映射，为每个事件名称添加监听器
     Object.entries(emits).forEach(([eventName, listener]) => {
-      this.on(eventName, listener);
+      this.addEmit(eventName, listener);
     });
   }
 
@@ -34,7 +40,7 @@ export abstract class EventEmitter extends Watcher {
    * @throws 如果监听器不是函数，抛出错误
    * @returns 返回this，允许链式调用
    */
-  on(eventName: string, listener: AnyFn) {
+  addEmit(eventName: string, listener: AnyFn) {
     // 确保监听器是一个函数
     if (typeof listener !== 'function') {
       throw new Error('Listener must be a function');
@@ -57,11 +63,11 @@ export abstract class EventEmitter extends Watcher {
   once(eventName: string, listener: AnyFn) {
     // 创建一个包装后的监听器，触发后会自动移除自身
     const wrappedListener = (...args: any[]) => {
-      this.off(eventName, wrappedListener);
+      this.offEmit(eventName, wrappedListener);
       listener(...args);
     };
     // 将包装后的监听器添加到事件中
-    this.on(eventName, wrappedListener);
+    this.addEmit(eventName, wrappedListener);
     return this;
   }
 
@@ -71,17 +77,25 @@ export abstract class EventEmitter extends Watcher {
    * @param listener 要移除的事件监听器
    * @returns 返回this，允许链式调用
    */
-  off(eventName: string, listener: AnyFn) {
+  offEmit(eventName: string, listener: AnyFn | Subscription) {
     // 如果事件名称不存在，直接返回
     if (!this.events[eventName]) return this;
     if (!listener) {
       // 如果没有指定监听器，则移除该事件的所有监听器
       delete this.events[eventName];
-      return this;
     }
     // 过滤掉指定的监听器，更新事件监听器数组
     this.events[eventName] = this.events[eventName].filter(
-      existingListener => existingListener !== listener
+      existingListener => {
+        if (existingListener !== listener) {
+          return true
+        } else {
+          if (listener instanceof Subscription) {
+            listener.unsubscribe();
+          }
+          return false;
+        }
+      }
     );
     return this;
   }
@@ -97,7 +111,11 @@ export abstract class EventEmitter extends Watcher {
     const listeners = this.events[eventName];
     if (listeners) {
       listeners.forEach((listener) => {
-        listener(...args);
+        if (listener instanceof Subscription) {
+          // listener.unsubscribe();
+        } else {
+          listener(...args);
+        }
       });
     }
     return this;
@@ -112,6 +130,51 @@ export abstract class EventEmitter extends Watcher {
     // 检查事件名称是否存在监听器数组，并且数组长度大于0
     return Boolean(this.events[eventName] && this.events[eventName].length > 0);
   }
+
+//
+//   /**
+//    * 添加事件
+//    */
+//   addEvents(events: Partial<IEvents>, target?: Node) {
+//     for (const key in events) {
+//       const eventFun = events[key as keyof IEvents];
+//       if (eventFun) {
+//         this.addEvent(key, target, eventFun);
+//       }
+//     }
+//   }
+//
+//   addEvent(key: string, target: Node | undefined, event: IEvent) {
+//     const dom = target;
+//     if (dom) {
+//       this.events[key].push(
+//         fromEvent(dom, key).subscribe((evt) => {
+//           event(evt);
+//         })
+//       );
+//     }
+//   }
+//
+//   offEvent(key: string, target?: Node) {
+//     this.events[key].map((item) => {
+//       // if (item.key === key && item.source === target) {
+//       // // todo remove
+//       // }
+//     });
+//   }
+//
+//   // 移除监听事件
+//   clearEvents(): void {
+//     for (const key in this.events) {
+//       this.events[key].map((item) => {
+//         if (item instanceof Subscription) {
+//           item.unsubscribe();
+//         }
+//       });
+//     }
+//     this.events = {};
+//   }
+//
 }
 
 //
