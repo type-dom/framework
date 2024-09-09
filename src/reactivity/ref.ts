@@ -202,7 +202,7 @@ export function toRefs<T extends object>(object: T): ToRefs<T> {
   }
   const ret: any = isArray(object) ? new Array(object.length) : {};
   for (const key in object) {
-    ret[key] = toRef(object, key);
+    ret[key] = toRef(object, key as keyof T);
   }
   return ret;
 }

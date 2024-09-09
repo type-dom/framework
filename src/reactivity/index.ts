@@ -1,4 +1,4 @@
-export { ref } from './ref';
+export { ref, type Ref } from './ref';
 export { reactive } from './reactive';
 
 export { Watcher } from './watcher/watcher.class';
