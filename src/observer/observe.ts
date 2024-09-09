@@ -17,7 +17,7 @@ export const shouldObserve = true;
  * or the existing observer if the value already has one.
  */
 export function observe(
-  value: IObData,
+  value: any,
   shallow?: boolean,
   ssrMockReactivity?: boolean
 ): Observer | undefined {

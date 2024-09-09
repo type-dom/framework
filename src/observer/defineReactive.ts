@@ -8,7 +8,7 @@ import { dependArray } from './dependArray';
  * Define a reactive property on an Object.
  */
 export function defineReactive(
-  obj: object,
+  obj: any,
   key: string,
   val?: any,
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -31,7 +31,6 @@ export function defineReactive(
     (!getter || setter) &&
     (val === NO_INITIAL_VALUE || arguments.length === 2)
   ) {
-    // @ts-ignore
     val = obj[key];
   }
 
