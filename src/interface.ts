@@ -38,7 +38,7 @@ export type IJsonDataProp =
 export interface IObData {
   __ob__?: Observer;
 
-  [propName: string]: IObDataProp;
+  [propName: string | number | symbol]: IObDataProp;
 }
 
 export type IObDataProp = IPrimitive | Observer | IObData | IObData[];
