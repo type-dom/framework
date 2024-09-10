@@ -1,10 +1,9 @@
 import { Parser } from '../../parser/parser.class';
 import { reactive } from '../../reactivity';
 import { TypeElement } from '../../core/type-element/type-element.abstract';
-import type { IAttr, ITypeConfig } from '../../core/type-node/type-node.interface';
+import type { IAttr } from '../../core/type-node/type-node.interface';
 import { TextNode } from '../../core/text-node/text-node.class';
-
-import { IXElement } from './x-element.interface';
+import { IXElement, IXElementConfig } from './x-element.interface';
 
 /**
  * XElement是一个通用元素基础组件，是其它类组件的子节点
@@ -29,15 +28,12 @@ export class XElement extends TypeElement implements IXElement {
   /**
    * 在 Parser 中使用 XElement 时， 限制了不能直接使用 parent 参数。
    * 加载自定义标签时也会用到；
-   * @param config
+   * @param params
    */
-  constructor(params?: ITypeConfig) {
+  constructor(params: IXElementConfig = {}) {
     super();
     this.className = 'XElement';
     this.nodeName = params?.nodeName || 'div';
-    this.parent = params?.parent || undefined;
-    this.props.attrObj = params?.attrObj || {};
-    this.props.styleObj = params?.styleObj || {};
     this.attributes = params?.attributes || [];
     console.log('x-element . ');
     if (params?.template !== undefined) {
@@ -70,10 +66,11 @@ export class XElement extends TypeElement implements IXElement {
           return new TextNode(child.nodeValue, this);
         }
       }) || [];
+    this.props = this.setProps(params);
   }
 
-  override created(): void {
-    console.log('XElement beforeCreate . ');
+  override setup(): void {
+    console.log('XElement setup . ');
     // todo nodejs下没有document，Parser可能会用到
     if (!this.dom) {
       this.dom = document.createElement(this.nodeName);

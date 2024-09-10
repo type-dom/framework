@@ -6,9 +6,13 @@
  */
 import type { ITypeElement } from '../../core/type-element/type-element.interface';
 import type { ITextNode } from '../../core/text-node/text-node.interface';
-import { ITypeConfig } from '../../core/type-node/type-node.interface';
+import { IAttr, ITypeConfig } from '../../core/type-node/type-node.interface';
 
 export interface IXElement extends ITypeElement {
   className: 'XElement'; // 定义元素的类名为 'XElement'。
   childNodes: (IXElement | ITextNode)[]; // childNodes 属性是一个由 IXElement 或 ITextNode 组成的数组，表示元素的子节点集合。
+}
+
+export interface IXElementConfig extends ITypeConfig {
+  attributes?: IAttr[]
 }
