@@ -20,10 +20,6 @@ export interface ITypeElement extends ITypeNode {
   nodeName: string;
   nodeValue?: undefined;
   params: ITypeConfig;
-  // props: ITypeConfig; // 不会在json中出现
-  // 绑定的事件集合, TypeElement 才有
-  // events?: Partial<IEvents>;
-  // subscriptions?: Subscription[];
   childNodes: Array<ITypeNode>; // contents todo 也是可以为空的啊 ？？？
 }
 

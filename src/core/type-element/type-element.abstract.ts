@@ -1,8 +1,7 @@
 import { fromEvent, Subscription } from 'rxjs';
 import { camelToDash } from '@type-dom/utils';
-import { IStyle } from '@type-dom/css-type';
 
-import { IJsonDataProp, IObData } from '../../interface';
+import { AnyFn, IJsonDataProp, IObData } from '../../interface';
 import { RouterView } from '../../router/router-view/router-view.class';
 import { XProxy } from '../../observer/x-proxy/x-proxy.class';
 import { Observer } from '../../observer/observer';
@@ -18,6 +17,7 @@ import type {
   ITypeElement,
 } from './type-element.interface';
 import { TypeElementController } from './type-element.controller';
+
 export const vHash = Math.round(Math.random() * 1000000);
 
 /**
@@ -33,14 +33,22 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   abstract override nodeName: 'fragment' | string; // 必然有；
   nodeValue?: undefined;
   childNodes: TypeNode[];
-  routerView?: RouterView;
+  routerView?: RouterView; // 其实就是一个特殊的 SlotNode ;
   textNode?: TextNode;
   data?: UnwrapNestedRefs<IObData>; // ITypeNode 中设置了
-  override subscriptions: Subscription[];
   modelValue?: IJsonDataProp;
   rendered: boolean;
   // private slotNodes?: ISlotNodes;
   ctrl: TypeElementController;
+  /**
+   * 存储事件名称与事件监听器数组的映射
+   * key 事件名 value: callback[]  回调数组
+   * @private
+   */
+  events: {
+    [propName: string]: (AnyFn | Subscription)[] | undefined;
+  };
+
   protected constructor() {
     super();
     this.ctrl = new TypeElementController(this);
@@ -49,7 +57,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     // };
     this.attributes = [];
     this.childNodes = [];
-    this.subscriptions = [];
+    this.events = {};
     this.rendered = false;
   }
 
@@ -126,8 +134,11 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * 配置设置项
    * @param params
    */
-  setParams<T extends ITypeConfig>(params = {} as T): T {
+  setProps<T extends ITypeConfig>(params = {} as T): T {
     this.params = params;
+    if (params.parent) {
+      this.parent = params.parent;
+    }
     if (params?.emits) {
       this.addEmits(params.emits);
     }
@@ -172,11 +183,22 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
         this.addChild(item);
       });
       // this.childNodes = params.childNodes;
-      // this.addChildren(...props.childNodes);
+      // this.addChildren(...params.childNodes);
     }
     this.mergeConfig(params);
     return this.props as T;
   }
+
+  getTextNode() {
+    // 如果 textNode 已经存在，直接返回
+    // 否则创建一个新的 TextNode 并返回
+    if (this.textNode === undefined) {
+      this.textNode = new TextNode();
+      this.addChild(this.textNode);
+    }
+    return this.textNode;
+  }
+
 
   isFragment() {
     return this.nodeName === 'fragment' && this.dom === undefined;
@@ -313,7 +335,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     // 如果下标位置已有dom节点。
     if (this.childNodes.length > index + 1) {
       if (newChild.dom !== undefined) {
-        this.dom?.insertBefore(newChild.dom, this.dom.childNodes[index]);
+        this.dom?.insertBefore(newChild.dom, this.dom!.childNodes![index]);
       }
     } else {
       this.renderChild(newChild);
@@ -467,7 +489,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     // console.warn('mount .');
     // this.clearChildren(); // 清理子节点，包括DOM  todo ??? 不能加。
     this.setup?.();
-    this.created && this.created();
+    this.created?.();
     // this.recurseSetup(); // 挂载时，递归执行setup
     if (!this.dom && this.nodeName) {
       if (this.nodeName === 'fragment') {
@@ -493,7 +515,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     //     appEl = this.dom;
     //   }
     // }
-    this.beforeMount && this.beforeMount();
+    this.beforeMount?.();
     if (this.nodeName === 'fragment') {
       for (const child of this.children) {
         // todo child 是 Transition时，这里的逻辑有问题
@@ -518,10 +540,10 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
         child.mount(this.dom);
       }
     }
-    this.mounted && this.mounted();
+    this.mounted?.();
     this.preEvents();
     // fragment 可以设置监听事件。但监听的dom对象不是fragment的dom。
-    this.initEvents && this.initEvents();
+    this.initEvents?.();
     return this as unknown as T;
   }
 
@@ -537,7 +559,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
         this.dom = document.createElement(this.nodeName);
       }
     }
-    this.beforeUpdate && this.beforeUpdate();
+    this.beforeUpdate?.();
     if (this.nodeName === 'fragment') {
       for (const child of this.children) {
           child.update();
@@ -550,7 +572,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
         child.update();
       }
     }
-    this.updated && this.updated();
+    this.updated?.();
     this.preEvents();
     // fragment 可以设置监听事件。但监听的dom对象不是fragment的dom。
     // this.initEvents && this.initEvents();
@@ -582,9 +604,121 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   }
 
   /**
+   * 批量添加事件监听器
+   * @param emits 包含事件名称与监听器的映射对象
+   * todo 与 events 合并；
+   */
+  addEmits(emits: Record<string, AnyFn>) {
+    // 遍历事件映射，为每个事件名称添加监听器
+    Object.entries(emits).forEach(([eventName, listener]) => {
+      this.addEmit(eventName, listener);
+    });
+  }
+
+  /**
+   * 添加事件监听器
+   * @param eventName 自定义事件名称
+   * @param listener 事件监听器，一个函数
+   * @throws 如果监听器不是函数，抛出错误
+   * @returns 返回this，允许链式调用
+   */
+  addEmit(eventName: string, listener: AnyFn) {
+    // 确保监听器是一个函数
+    if (typeof listener !== 'function') {
+      throw new Error('Listener must be a function');
+    }
+    // 如果事件名称不存在于映射中，则初始化为空数组
+    if (!this.events[eventName]) {
+      this.events[eventName] = [];
+    }
+    // 将监听器添加到对应事件的数组中
+    this.events[eventName]?.push(listener);
+    return this;
+  }
+
+  /**
+   * 添加一次性事件监听器，事件触发后自动移除监听器
+   * @param eventName 事件名称
+   * @param listener 事件监听器，一个函数
+   * @returns 返回this，允许链式调用
+   */
+  once(eventName: string, listener: AnyFn) {
+    // 创建一个包装后的监听器，触发后会自动移除自身
+    const wrappedListener = (...args: any[]) => {
+      this.offEmit(eventName, wrappedListener);
+      listener(...args);
+    };
+    // 将包装后的监听器添加到事件中
+    this.addEmit(eventName, wrappedListener);
+    return this;
+  }
+
+  /**
+   * 移除事件监听器
+   * @param eventName 事件名称
+   * @param listener 要移除的事件监听器
+   * @returns 返回this，允许链式调用
+   */
+  offEmit(eventName: string, listener: AnyFn | Subscription) {
+    // 如果事件名称不存在，直接返回
+    if (!this.events[eventName]) {
+      return this;
+    }
+    if (!listener) {
+      // 如果没有指定监听器，则移除该事件的所有监听器
+      delete this.events[eventName];
+    }
+    // 过滤掉指定的监听器，更新事件监听器数组
+    this.events[eventName] = this.events[eventName]!.filter(
+      existingListener => {
+        if (existingListener !== listener) {
+          return true
+        } else {
+          if (listener instanceof Subscription) {
+            listener.unsubscribe();
+          }
+          return false;
+        }
+      }
+    );
+    return this;
+  }
+
+  /**
+   * 触发指定事件，执行所有对应监听器
+   * @param eventName 事件名称
+   * @param args 传递给监听器的参数
+   * @returns 返回this，允许链式调用
+   */
+  emit(eventName: string, ...args: any[]) {
+    // 获取事件的监听器数组，如果存在则遍历执行每个监听器
+    const listeners = this.events[eventName];
+    if (listeners) {
+      listeners.forEach((listener) => {
+        if (listener instanceof Subscription) {
+          // dom 事件触发不需要 emit 方法。
+        } else {
+          listener(...args);
+        }
+      });
+    }
+    return this;
+  }
+
+  /**
+   * 检查是否存在指定事件的监听器
+   * @param eventName 事件名称
+   * @returns 如果存在监听器，返回true；否则返回false
+   */
+  hasListeners(eventName: string) {
+    // 检查事件名称是否存在监听器数组，并且数组长度大于0
+    return Boolean(this.events?.[eventName] && this.events[eventName]?.length > 0);
+  }
+
+  /**
    * 添加事件
    */
-  addEvents(events: Partial<IEvents>, target?: Node) {
+  override addEvents(events: Partial<IEvents>, target?: Node) {
     if (this.nodeName === 'fragment') {
       console.log('fragment cannot add events . ');
       return;
@@ -592,34 +726,44 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     for (const key in events) {
       const eventFun = events[key as keyof IEvents];
       if (eventFun) {
-        this.addEvent(key, target, eventFun);
+        this.addEvent(key, target, eventFun as AnyFn);
       }
     }
   }
 
-  addEvent(key: string, target: Node | undefined, event: IEvent) {
+  addEvent<T extends Event>(key: string, target: Window | Node | undefined, event: IEvent<T>) {
+    if (this.events[key] === undefined) {
+      this.events[key] = [];
+    }
     const dom = target || this.dom;
     if (dom) {
-      this.subscriptions.push(
+      this.events[key]?.push(
         fromEvent(dom, key).subscribe((evt) => {
-          event(evt, this, target);
+          event(evt as T, this, target);
         })
       );
     }
   }
 
-  removeEvent(key: string, target?: Node) {
-    this.subscriptions.map((item) => {
-      // if (item.key === key && item.source === target) {
-      // todo remove
-      // }
+  offEvent(key: string, target?: Node) {
+    this.events[key]?.map((item) => {
+      if (item instanceof Subscription) {
+        item.unsubscribe();
+      }
     });
   }
 
   // 移除监听事件
   clearEvents(): void {
-    this.subscriptions.map((item) => item.unsubscribe());
-    this.subscriptions = [];
+    for (const key in this.events) {
+      this.events[key]?.map((item) => {
+        if (item instanceof Subscription) {
+          item.unsubscribe();
+        }
+      });
+      delete this.events[key]; // 移除该事件的所有监听器； 移除了 emit方法就没有触发的回调了。
+    }
+    // this.events = {}; // 上面都循环了，为什么还要重新赋值。
   }
 
   /**
@@ -694,4 +838,9 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.rendered = true;
   }
 
+  override destroy(root?: TypeNode) {
+    // TypeElement 需要单独清理事件
+    this.clearEvents();
+    super.destroy(root);
+  }
 }

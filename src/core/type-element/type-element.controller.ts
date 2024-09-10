@@ -43,7 +43,7 @@ export class TypeElementController {
     for (const key in attrObj) {
       if (Object.hasOwnProperty.call(attrObj, key)) {
         // todo 如何优化
-        const value = attrObj[key] as string | number;
+        const value = attrObj?.[key] as string | number;
         this.setAttribute(key, value);
       }
     }
@@ -238,8 +238,11 @@ export class TypeElementController {
     value: string | number | boolean | undefined
   ): void {
     // 检查styleObj是否已初始化，避免调用方法时由于this.props.styleObj为null或undefined导致的异常
-    if (!this.element.props.styleObj) {
-      // console.error('styleObj is not initialized.');
+    if (!this.element.props?.styleObj) {
+      if (!this.element.props) {
+        console.error('this.element.props is undefined . ');
+        this.element.props = {};
+      }
       this.element.props.styleObj = {};
     }
     // this.element.props.styleObj[key] = value;
@@ -333,7 +336,7 @@ export class TypeElementController {
     for (const key in styleObj) {
       if (Object.hasOwnProperty.call(styleObj, key)) {
         // todo 如何优化
-        const value = styleObj[key as keyof IStyle];
+        const value = styleObj?.[key as keyof IStyle];
         this.setStyle(key as keyof IStyle, value);
       }
     }
