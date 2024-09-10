@@ -1,9 +1,12 @@
 import { Subscription } from 'rxjs';
-import { encodeToXmlString, camelToDash, deepClone } from '@type-dom/utils';
+import { IStyle } from '@type-dom/css-type';
+import { encodeToXmlString, camelToDash } from '@type-dom/utils';
 import type { IJsonData, IJsonDataProp } from '../../interface';
-import { EventEmitter } from '../../events/event-emitter.abstract';
+import { Watcher } from '../../events/watcher.abstract';
 // import { XProxy } from '../../observer';
 import { TypeElement } from '../type-element/type-element.abstract';
+import { TypeElementController } from '../type-element/type-element.controller';
+import { TextNode } from '../text-node/text-node.class';
 import type {
   IAttr,
   IMethods,
@@ -12,8 +15,6 @@ import type {
   ITypeConfig,
   ITypeNode
 } from './type-node.interface';
-import { TypeElementController } from '../type-element/type-element.controller';
-import { IStyle } from '@type-dom/css-type';
 
 /**
  * 虚拟DOM，TypeNode 抽象节点类, 所有节点类的抽象类；
@@ -22,7 +23,7 @@ import { IStyle } from '@type-dom/css-type';
  *    TypeElement
  *    TextNode
  */
-export abstract class TypeNode extends EventEmitter implements ITypeNode {
+export abstract class TypeNode extends Watcher implements ITypeNode {
   /**
    * 在生成dom字符串时，可以转为 attributes 的一个元素 { name: 'className', value: string }
    * 在定义ClassName时，要把当前类写入到TypeMap中；
@@ -35,18 +36,22 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   abstract dom?: HTMLElement | SVGElement | Text | undefined;
   abstract rendered: boolean;
   /**
+   * 存储 传入的参数。 只需要到处json时有就行。
+   */
+  params: ITypeConfig;
+  /**
    * 属性项
    * setConfig/mergeConfig 等方法赋值，都不改变引用的地址。
    */
   props: ITypeConfig;
-  // 存储 传入的参数。 只需要到处json时有就行。
-  params: ITypeConfig;
   parent?: TypeElement | undefined;
   // 该节点不是当前位置的组件的子节点；要避免加入到组件的子节点中；
   // 挂载到指定的组件的DOM,甚至直接指向 body；Teleport 中才需要。
   to?: HTMLElement;
   isContext?: boolean;
   items?: ITypeConfig[];
+
+  // textNode?: TextNode;
 
   protected constructor() {
     super();
@@ -82,7 +87,6 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   methods?: IMethods;
   provides?: Record<string | symbol, any>;
   template?: string | undefined;
-  subscriptions?: Subscription[];
   // data$?: XObservable<IXProxyConfig>
   // data$?: Observer;
   /**
@@ -155,7 +159,11 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
     return this.props as T;
   }
 
-  mergeConfig<T extends ITypeConfig>(config?: T): T {
+  mergeConfig<T extends ITypeConfig>(config: T = {} as T): T {
+    if (!this.props) {
+      console.error('this.props is undefined . ');
+      this.props = {};
+    }
     for (const key in config) {
       if (key === 'styleObj') {
         // styleObj, attrObj要单独处理
@@ -180,24 +188,15 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   }
 
   getAttrObj() {
+    if (!this.props) {
+      console.error('this.props is undefined . ');
+      this.props = {};
+    }
     return this.props.attrObj = this.props.attrObj ?? {};
   }
 
   getStyleObj(): IStyle {
     return this.props.styleObj = this.props.styleObj ?? {};
-  }
-
-  addProp(key: string, value: any) {
-    Object.defineProperty(this.props, key, {
-      configurable: true,
-      enumerable: true,
-      get() {
-        return value;
-      },
-      set(newValue) {
-        value = newValue;
-      }
-    });
   }
 
   // config.slots中添加slot的对象
@@ -234,20 +233,31 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
       return this.parent?.getContext();
     }
   }
+  addEvents?(...rest: any[]): void;
+  /**
+   * 配置设置项
+   * @param params
+   */
+  abstract setProps<T extends ITypeConfig>(params?: T): T;
 
-  setSetting(key: string, value: ISetting) {
-    if (this.settings) {
-      this.settings[key] = value;
-    } else {
-      this.settings = { [key]: value };
-    }
-    if (value === undefined) {
-      delete this.settings?.fieldSetting;
-    }
+  addProp(key: string, value: any) {
+    Object.defineProperty(this.props, key, {
+      configurable: true,
+      enumerable: true,
+      get() {
+        return value;
+      },
+      set(newValue) {
+        value = newValue;
+      }
+    });
   }
 
-  resetSettings(settings: ISettings) {
-    this.settings = settings;
+  setProp(key: string, value?: any) {
+    this.props[key] = value;
+    if (value === undefined) {
+      delete this.props?.[key];
+    }
   }
 
   // 在定义className时，要把当前类写入到TypeMap中；
@@ -336,13 +346,21 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
     if (node.parent) {
       return node.parent;
     } else {
-      return parent?.childNodes?.find((child: TypeNode) => {
+      for (const child of parent?.childNodes || []) {
         if (child === node) {
           return parent;
         } else {
-          return this.findParent(child, node);
+          return this.findParent(child, node)
         }
-      });
+      }
+      return undefined;
+      // return parent?.childNodes?.find((child) => {
+      //   if (child === node) {
+      //     return parent;
+      //   } else {
+      //     return this.findParent(child, node);
+      //   }
+      // });
     }
   }
 
@@ -405,7 +423,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   dump(buffer: string[]): void {
     // console.log('type-node dump . ');
     if (this.nodeName === '#text') {
-      buffer.push(encodeToXmlString(this.nodeValue?.toString() ?? ''));
+      buffer.push(encodeToXmlString(this.nodeValue));
       return;
     }
     buffer.push(`<${this.nodeName}`);
@@ -547,10 +565,11 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   /**
    * 从父级中删除
    * 类似 render ，要迭代删除子节点；
+   * 要清理绑定的事件，  组件绑定的事件有可能是 绑到 document,window的，必须清理，否则逻辑可能错误。
    */
   destroy(root?: TypeNode): void {
     if (this.beforeDestroy) {
-      this.beforeDestroy();
+      this.beforeDestroy?.();
     }
     if (this.dom) {
       // 删除DOM
@@ -573,11 +592,9 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
       // todo  如果项目没有设置root，则无法删除了。或者有多个root时，可能查找有问题；
       //      this.parent 都没有了，还如何获取 this.root ?
       const parent = this.findParent(root, this);
-      parent?.childNodes?.splice(this.index, 1);
+      parent?.childNodes && parent.childNodes.splice(this.index, 1);
     }
-    if (this.destroyed) {
-      this.destroyed();
-    }
+    this.destroyed?.();
   }
 
   destroyed?(): void;

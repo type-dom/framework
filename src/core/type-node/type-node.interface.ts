@@ -1,13 +1,13 @@
 import { Subscription } from 'rxjs';
 import { IStyle } from '@type-dom/css-type';
 import { type IJsonDataProp, IJsonData, IObData, AnyFn } from '../../interface';
-import { UnwrapNestedRefs } from '../../reactivity/reactive';
+import { Ref } from '../../reactivity/ref';
 import { XProxy } from '../../observer';
 import { IEmits, IEvents } from '../../events/events.interface';
-import type { ITypeAttribute } from '../type-element/type-element.interface';
-import { TypeElement } from '../type-element/type-element.abstract';
-import { TypeNode } from './type-node.abstract';
 import { SlotNode } from '../../components/slot-node/slot-node.class';
+import type { ITypeAttribute } from '../type-element/type-element.interface';
+import { TypeNode } from './type-node.abstract';
+import { ITypeBase } from './type-base.interface';
 
 export interface IAttr {
   name: string;
@@ -50,7 +50,6 @@ export interface IPath {
 }
 
 /**
- * TypeDom 最基础的接口，所有节点都实现了这个接口。
  * 这个接口定义了节点的基本属性，如：
  * 1. 节点类名
  * 2. 节点属性数组  数组形式的属性名和值，如：[{name: 'id', value: '123'}, {name: 'class', value: 'active'}]，解析dom字符串时，会将属性名和值分开。
@@ -67,53 +66,9 @@ export interface IPath {
  *
  * 同时可以对应json格式的接口，也是json存储的数据结构（除去parent/TypeClass）
  */
-export interface ITypeNode {
-  className?: string;
+export interface ITypeNode extends  ITypeBase {
   params?: ITypeConfig | undefined; // 传入参数, ITypeConfig 中是undefined
-  attributes?: IAttr[];
-  nodeName?: 'fragment' | string | undefined;
-  /**
-   * nodeValue只在 TextNode中才有。
-   * nodeValue存在时，就应该是 TextNode类
-   */
-  nodeValue?: string | number | undefined;
-
-  /**
-   * 移动到 DOM 中 app 之外的其他位置的方式。
-   * 该节点不是当前位置的组件的子节点；要避免加入到组件的子节点中；要挂载到指定的组件的DOM,甚至直接指向 body；
-   */
-  to?: HTMLElement;
-
-  /**
-   * parent 可选
-   * 且为 TypeElement
-   */
-  parent?: TypeElement;
-  /**
-   * 上下文，用于查找上下文。
-   * 对应于创建该对象的类对象。
-   * 在setConfig时，对所有子对象进行设置。
-   */
-  context?: TypeNode;
-  /**
-   * 节点类型
-   * 是否根节点；
-   * root()方法返回的节点，就是根节点。
-   */
-  isRoot?: boolean; // 是否是根节点 一般TypeRoot才为true，其他为false。也可以自定义。
-
-  subscriptions?: Subscription[];
-
-  emits?: IEmits; //
-  // TextNode 肯定没有 childNodes， Element 可以没有 childNodes;
-  childNodes?: ITypeNode[] | undefined;
-  data?: UnwrapNestedRefs<IObData>; // 数据  ITypeConfig 需要继承
-  // 绑定的事件集合, TypeElement 才有
-  // 生成json时，subscriptions；
-  // 反向转为类时，要转为subscriptions的值
-  methods?: IMethods;
-  settings?: ISettings; // config不会转为json
-  // type?: string;
+  // emits?: IEmits; //
 }
 
 export interface IMethods {
@@ -154,12 +109,10 @@ export interface IOptionSetting extends ISettings {
 }
 
 // 参数接口
-export interface ITypeConfig extends ITypeNode {
+export interface ITypeConfig extends ITypeBase {
   name?: string | number; // 节点名称, 转化为 attrObj.name;
-  // props?: undefined; // 参数中没有
-  config?: undefined; // 参数中没有
   // 当前对象引用
-  ref?: XProxy<IJsonData>;
+  ref?: XProxy<IJsonData> |  Ref<any>;
   text?: boolean | string | number | XProxy<IJsonData>; // 只是简单的添加一个文本节点时用，
   /**
    * 属性对象，除了style对应的属性之外的其他属性。
@@ -170,18 +123,24 @@ export interface ITypeConfig extends ITypeNode {
    */
   styleObj?: IStyle | undefined;
   // 类实例对象；  与 ITypeNode 中的 childNodes: ITypeNode[] 与ITypeNode 中的 childNodes: ITypeNode[] 不同；
-  childNodes?: TypeNode[] | undefined;
+  childNodes?: TypeNode[] | undefined; // todo 象slot一样字符串、数字类型等。
 
   // 设置子元素的属性，并根据属性创建子元素；是json对象；指定的元素类型；
   items?: ITypeConfig[];
   // 多个插槽 ———— 对应的 是 TypeNode | TypeNode[], 不同于一般的属性；需要组件本身单独处理的。setConfig方法中没有默认处理方法；
   slots?: IConfigSlots; // 指定多个不同位置的插槽，需要有插槽名称的；需要在类中添加插槽的位置；
-  // 默认插槽  同 slots.default
+  // 默认插槽  同 slots.default  组件没有插槽时，为undefined。这时子元素只能用 childNodes 属性；
   slot?: IConfigSlot; // OnlyChild 默认位置的插槽, 可以是单个元素，也可以是多个元素，即数组；如何直接插入当前元素，则相当与 childNodes属性；
   html?: string;
   /**
-   * 绑定的事件集合,转化为 subscriptions;
-   * 一般在构造函数的参数（config）中传入；
+   * 自定义的事件监听器，与 events 不同，events 是绑定在元素上的事件，而 emits 是在元素上触发的事件；
+   * 与 addEmits 方法配合；
+   * emit 方法 触发时，会调用挂载的方法；
+   */
+  emits?: IEmits;
+  /**
+   * 绑定的事件集合,转化为 Subscription; fromEvent
+   * 一般在构造函数的参数（params）中传入；
    * 与 addEvents方法配合；
    * initEvents 钩子 调用
    */
@@ -191,6 +150,8 @@ export interface ITypeConfig extends ITypeNode {
    * 标签必须闭合， 如 <input /> 这样才能闭合。
    */
   template?: string; // 模板 默认TypeClass为XElement
+  fieldSetting?: IOptionSetting;
+  [propName: string]: any;
 }
 
 export interface ISlotNodes {
@@ -245,4 +206,3 @@ export interface INodeHandler<T extends ITypeNode> {
    */
   deleteProperty?(target: T, prop: string): void;
 }
-
