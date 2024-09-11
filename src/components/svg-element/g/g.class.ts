@@ -17,6 +17,6 @@ export class SvgG extends TypeSvg implements ISvgG {
       this.nodeName
     );
     this.childNodes = [];
-    this.setParams(params);
+    this.setProps(params);
   }
 }

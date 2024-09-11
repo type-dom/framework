@@ -19,6 +19,6 @@ export class SvgClipPath extends TypeSvg implements ISvgClipPath {
     );
     // this.textNode = new WebTextNode(this, '字');
     this.childNodes = [];
-    this.setParams(params);
+    this.setProps(params);
   }
 }

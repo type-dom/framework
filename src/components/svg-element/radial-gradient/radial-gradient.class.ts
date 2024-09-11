@@ -12,7 +12,7 @@ export class SvgRadialGradient extends TypeSvg implements ISvgRadialGradient {
   override props: ISvgRadialGradientConfig;
   override childNodes: SvgStop[];
 
-  constructor(params?: ISvgRadialGradientConfig) {
+  constructor(params: ISvgRadialGradientConfig = {}) {
     super();
     this.nodeName = 'radialGradient';
     this.className = 'SvgRadialGradient';
@@ -21,8 +21,7 @@ export class SvgRadialGradient extends TypeSvg implements ISvgRadialGradient {
       this.nodeName
     );
     this.childNodes = [];
-    this.subscriptions = [];
-    this.props = this.setParams(params);
+    this.props = this.setProps(params);
   }
 
   reset(id: string): void {

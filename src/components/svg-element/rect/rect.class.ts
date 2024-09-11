@@ -31,7 +31,7 @@ export class SvgRect extends TypeSvg implements ISvgRect {
       width: this.width,
       height: this.height,
     });
-    this.props = this.setParams(params);
+    this.props = this.setProps(params);
   }
 
   // 单位是px

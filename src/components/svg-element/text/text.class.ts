@@ -33,6 +33,6 @@ export class SvgText extends TypeSvg implements ISvgText {
     if (params.text) {
       this.textNode.setText(params.text);
     }
-    this.setParams(params);
+    this.setProps(params);
   }
 }

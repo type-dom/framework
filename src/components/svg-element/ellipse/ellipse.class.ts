@@ -34,7 +34,7 @@ export class SvgEllipse extends TypeSvg implements ISvgEllipse {
       rx: this.rx,
       ry: this.ry,
     });
-    this.props = this.setParams(params);
+    this.props = this.setProps(params);
   }
 
   reset(cx: number, cy: number, rx: number, ry: number): SvgEllipse {

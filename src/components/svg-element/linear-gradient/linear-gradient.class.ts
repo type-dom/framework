@@ -13,7 +13,7 @@ export class SvgLinearGradient extends TypeSvg implements ISvgLinearGradient {
   // override attrObj: ISvgLinearGradientAttribute;
   override childNodes: SvgStop[];
 
-  constructor(params?: ISvgLinearGradientConfig) {
+  constructor(params: ISvgLinearGradientConfig = {}) {
     super();
     this.nodeName = 'linearGradient';
     this.className = 'SvgLinearGradient';
@@ -29,8 +29,7 @@ export class SvgLinearGradient extends TypeSvg implements ISvgLinearGradient {
       y2: 0,
     });
     this.childNodes = [];
-    this.subscriptions = [];
-    this.props = this.setParams(params);
+    this.props = this.setProps(params);
   }
 
   reset(id: string): void {

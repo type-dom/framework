@@ -24,7 +24,7 @@ export class SvgStop extends TypeSvg implements ISvgStop {
       offset: '0%',
       stopColor: '#000',
     });
-    this.setParams(params);
+    this.setProps(params);
   }
 
   reset(offset: number, stopColor: string): void {

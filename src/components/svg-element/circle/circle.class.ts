@@ -19,6 +19,6 @@ export class SvgCircle extends TypeSvg implements ISvgCircle {
       this.nodeName
     );
     this.childNodes = [];
-    this.setParams(params);
+    this.setProps(params);
   }
 }

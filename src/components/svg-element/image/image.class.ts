@@ -27,6 +27,6 @@ export class SvgImage extends TypeSvg implements ISvgImage {
       this.nodeName
     );
     this.childNodes = [];
-    this.props = this.setParams(params);
+    this.props = this.setProps(params);
   }
 }

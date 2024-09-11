@@ -11,7 +11,7 @@ export class SvgPath extends TypeSvg implements ISvgPath {
   // override attrObj: ISvgPathAttribute;
   override childNodes: [];
 
-  constructor(params?: ISvgPathConfig) {
+  constructor(params: ISvgPathConfig = {}) {
     super();
     this.nodeName = 'path';
     this.dom = document.createElementNS(
@@ -23,7 +23,7 @@ export class SvgPath extends TypeSvg implements ISvgPath {
       d: '',
     });
     this.childNodes = [];
-    this.props = this.setParams(params);
+    this.props = this.setProps(params);
   }
 
   get pathData(): string {

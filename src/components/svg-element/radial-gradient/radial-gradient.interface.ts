@@ -21,5 +21,5 @@ export interface ISvgRadialGradient extends ITypeSvg {
 }
 
 export interface ISvgRadialGradientConfig extends ITypeConfig {
-  parent: SvgDefs;
+  parent?: SvgDefs;
 }
