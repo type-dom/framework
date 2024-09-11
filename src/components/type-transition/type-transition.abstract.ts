@@ -11,54 +11,56 @@ export abstract class TypeTransition extends TypeFragment implements ITypeTransi
   mode: 'in-out' | 'out-in' | 'default';
   display?: string; // 显示/隐藏 切换时控制显示的display的值
   timer?: NodeJS.Timeout;
-  slotNode: SlotNode;
+  // slotNode: SlotNode;
   override props: ITransitionConfig;
+  private el: TypeHtml | TypeSvg | undefined;
 
-  constructor(params?: ITransitionConfig) {
+  constructor(public override params: ITransitionConfig = {}) {
     super();
     this.nodeName = 'fragment';
     this.dom = undefined;
     this.mode = params?.mode || 'in-out';
     this.parent = params?.parent;
-    this.slotNode = new SlotNode('default');
-    this.addChild(this.slotNode);
-    if (params?.slot) {
-      this.slotNode.addSlot(params.slot)
-    }
+
+    this.el = this.params.childNodes?.[0];
     // 处理 params, to props
-    this.props = this.setParams(params);
+    // todo 如果是多个子节点，transition本身要成为一个 div 。
+    //   现在只能有一个子节点。
+
+    this.props = this.setProps(params);
   }
 
   // 显示、隐藏 slot
   showSlot(show: boolean) {
     console.log('Transition showSlot, show is ', show);
-    if (!this.props.slot) {
+    if (!this.el) {
+      console.warn('Transition showSlot, el is undefined.');
       return;
     }
     if (show) {
       if (this.timer) {
-        clearTimeout(this.timer);
+        clearTimeout(this.timer as unknown as number);
       }
-      this.props.slot.ctrl.setStyleObj({
+      this.el?.ctrl.setStyleObj({
         display: this.display,
       });
-      this.beforeEnter(this.props.slot);
-      this.enter(this.props.slot);
-      this.afterEnter(this.props.slot);
+      this.beforeEnter(this.el);
+      this.enter(this.el);
+      this.afterEnter(this.el);
     } else {
-      this.beforeLeave(this.props.slot);
-      this.leave(this.props.slot);
-      this.afterLeave(this.props.slot);
+      this.beforeLeave(this.el);
+      this.leave(this.el);
+      this.afterLeave(this.el);
 
       nextFrame(() => {
-        if (this.props.slot?.dom) {
-          const { timeout } = getTransitionInfo(this.props.slot.dom);
+        if (this.el?.dom) {
+          const { timeout } = getTransitionInfo(this.el.dom);
           console.log('timeout is ', timeout);
           if (this.timer) {
-            clearTimeout(this.timer);
+            clearTimeout(this.timer as unknown as number);
           }
           this.timer = setTimeout(() => {
-            this.props.slot?.ctrl.setStyleObj({
+            this.el?.ctrl.setStyleObj({
               display: 'none',
             });
           }, timeout);
@@ -67,27 +69,24 @@ export abstract class TypeTransition extends TypeFragment implements ITypeTransi
     }
   }
 
-  addSlot(slot: string | TypeNode | TypeNode[]) {
-    this.slotNode.addSlot(slot);
-  }
   // 加载 slot，并挂载到父级dom上；
   loadSlot() {
-    if (!this.props.slot) {
+    if (!this.el) {
       return;
     }
-    this.beforeEnter(this.props.slot);
-    this.enter(this.props.slot);
-    this.afterEnter(this.props.slot);
+    this.beforeEnter(this.el);
+    this.enter(this.el);
+    this.afterEnter(this.el);
   }
 
   // 删除 slot
   deleteSlot() {
-    if (!this.props.slot) {
+    if (!this.el) {
       return;
     }
-    this.beforeLeave(this.props.slot);
-    this.leave(this.props.slot);
-    this.afterLeave(this.props.slot);
+    this.beforeLeave(this.el);
+    this.leave(this.el);
+    this.afterLeave(this.el);
   }
 
   beforeEnter(el: TypeHtml | TypeSvg) {
@@ -162,7 +161,7 @@ export abstract class TypeTransition extends TypeFragment implements ITypeTransi
     super.render();
     // 要渲染后再获取，否则会是空的。
     // ToDo 要考虑渲染后display是空的情况。
-    const display = this.props.slot?.dom.style.display;
+    const display = this.el?.dom.style.display;
     console.log(' display is ', display);
     this.display = display;
   }

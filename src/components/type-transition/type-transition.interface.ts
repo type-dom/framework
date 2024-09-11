@@ -62,7 +62,9 @@ export interface ITypeTransitionConfig<
   onAppearCancelled?: (el: HostElement) => void;
 
   //   todo
-  slot?: TypeElement;
+  slot?: undefined;
+
+  childNodes?: (TypeHtml | TypeSvg)[];
 }
 
 export interface TransitionHooks<HostElement = TypeElement> {
