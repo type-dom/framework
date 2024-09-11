@@ -35,7 +35,6 @@ export interface ITransitionConfig extends ITypeTransitionConfig<TypeHtml | Type
   leaveToClass?: string;
 
   parent?: TypeElement;
-  slot?: TypeHtml | TypeSvg;
 }
 
 export interface CSSTransitionInfo {
