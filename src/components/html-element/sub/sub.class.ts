@@ -8,6 +8,6 @@ export class Sub extends TypeSub implements ISub {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Sub';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

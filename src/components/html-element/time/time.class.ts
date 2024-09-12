@@ -8,6 +8,6 @@ export class Time extends TypeTime implements ITime {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Time';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

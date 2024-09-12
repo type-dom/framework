@@ -8,6 +8,6 @@ export class Dialog extends TypeDialog implements IDialog {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Dialog';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

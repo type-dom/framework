@@ -12,6 +12,6 @@ export class TableDataCell extends TypeTableDataCell implements ITableDataCell {
     if (params?.slot) {
       this.slotChild(params?.slot);
     }
-    this.setParams(params);
+    this.setProps(params);
   }
 }

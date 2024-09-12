@@ -8,6 +8,6 @@ export class Br extends TypeBr implements IBr {
   constructor(params?: IBrConfig) {
     super();
     this.className = 'Br';
-    this.props = this.setParams(params);
+    this.props = this.setProps(params);
   }
 }

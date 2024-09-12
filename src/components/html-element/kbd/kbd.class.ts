@@ -8,6 +8,6 @@ export class Kbd extends TypeKbd implements IKbd {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Kbd';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

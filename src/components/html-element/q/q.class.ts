@@ -8,6 +8,6 @@ export class Q extends TypeQ implements IQ {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Q';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

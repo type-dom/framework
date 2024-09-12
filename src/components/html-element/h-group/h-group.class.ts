@@ -8,6 +8,6 @@ export class HGroup extends TypeHGroup implements IHGroup {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'HGroup';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

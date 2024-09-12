@@ -8,6 +8,6 @@ export class Abbr extends TypeAbbr implements IAbbr {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Abbr';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

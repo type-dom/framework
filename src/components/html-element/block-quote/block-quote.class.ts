@@ -8,6 +8,6 @@ export class BlockQuote extends TypeBlockQuote implements IBlockQuote {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'BlockQuote';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

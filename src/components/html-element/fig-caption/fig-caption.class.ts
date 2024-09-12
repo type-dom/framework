@@ -8,6 +8,6 @@ export class FigCaption extends TypeFigCaption implements IFigCaption {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'FigCaption';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

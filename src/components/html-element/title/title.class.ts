@@ -8,6 +8,6 @@ export class Title extends TypeTitle implements ITitle {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Title';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

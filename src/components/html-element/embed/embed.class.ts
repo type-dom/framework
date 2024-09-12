@@ -8,6 +8,6 @@ export class Embed extends TypeEmbed implements IEmbed {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Embed';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

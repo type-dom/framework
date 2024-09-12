@@ -8,6 +8,6 @@ export class Map extends TypeMap implements IMap {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Map';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

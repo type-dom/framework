@@ -8,6 +8,6 @@ export class Var extends TypeVar implements IVar {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Var';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

@@ -8,6 +8,6 @@ export class Dfn extends TypeDfn implements IDfn {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Dfn';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

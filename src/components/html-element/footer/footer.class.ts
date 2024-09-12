@@ -8,6 +8,6 @@ export class Footer extends TypeFooter implements IFooter {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Footer';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

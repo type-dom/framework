@@ -8,6 +8,6 @@ export class Pre extends TypePre implements IPre {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Pre';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

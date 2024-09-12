@@ -8,6 +8,6 @@ export class Bdi extends TypeBdi implements IBdi {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Bdi';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

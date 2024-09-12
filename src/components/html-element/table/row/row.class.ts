@@ -19,6 +19,6 @@ export class TableRow extends TypeTableRow implements ITableRow {
       // this.slotChild(config?.slot);
       this.slotNode.addSlot(params.slot);
     }
-    this.setParams(params);
+    this.setProps(params);
   }
 }

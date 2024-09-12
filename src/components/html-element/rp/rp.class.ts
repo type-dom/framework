@@ -8,6 +8,6 @@ export class Rp extends TypeRp implements IRp {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Rp';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

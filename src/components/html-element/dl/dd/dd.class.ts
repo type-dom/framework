@@ -8,6 +8,6 @@ export class DD extends TypeDD implements IDD {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'DD';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

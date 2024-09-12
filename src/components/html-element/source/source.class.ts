@@ -8,6 +8,6 @@ export class Source extends TypeSource implements ISource {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Source';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

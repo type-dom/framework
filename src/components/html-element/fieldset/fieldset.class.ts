@@ -8,6 +8,6 @@ export class Fieldset extends TypeFieldset implements IFieldset {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Fieldset';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

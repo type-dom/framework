@@ -8,6 +8,6 @@ export class Samp extends TypeSamp implements ISamp {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Samp';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

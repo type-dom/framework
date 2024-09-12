@@ -8,6 +8,6 @@ export class Article extends TypeArticle implements IArticle {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Article';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

@@ -8,6 +8,6 @@ export class Summary extends TypeSummary implements ISummary {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Summary';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

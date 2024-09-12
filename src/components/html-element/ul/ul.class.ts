@@ -8,6 +8,6 @@ export class UL extends TypeUL implements IUL {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'UL';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

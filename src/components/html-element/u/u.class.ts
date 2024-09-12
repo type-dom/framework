@@ -8,6 +8,6 @@ export class U extends TypeU implements IU {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'U';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

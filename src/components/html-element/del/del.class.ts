@@ -8,6 +8,6 @@ export class Del extends TypeDel implements IDel {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Del';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

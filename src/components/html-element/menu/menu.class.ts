@@ -8,6 +8,6 @@ export class Menu extends TypeMenu implements IMenu {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Menu';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

@@ -8,6 +8,6 @@ export class A extends TypeA implements IA {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'A';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

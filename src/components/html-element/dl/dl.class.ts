@@ -8,6 +8,6 @@ export class DL extends TypeDL implements IDL {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'DL';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

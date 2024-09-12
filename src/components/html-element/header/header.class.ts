@@ -10,6 +10,6 @@ export class Header extends TypeHeader implements IHeader {
     this.nodeName = 'header';
     this.dom = document.createElement(this.nodeName);
     this.className = 'Header';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

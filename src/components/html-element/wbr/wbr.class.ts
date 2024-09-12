@@ -8,6 +8,6 @@ export class Wbr extends TypeWbr implements IWbr {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Wbr';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

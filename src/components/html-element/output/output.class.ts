@@ -8,6 +8,6 @@ export class Output extends TypeOutput implements IOutput {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Output';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

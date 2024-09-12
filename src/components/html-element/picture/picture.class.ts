@@ -8,6 +8,6 @@ export class Picture extends TypePicture implements IPicture {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Picture';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

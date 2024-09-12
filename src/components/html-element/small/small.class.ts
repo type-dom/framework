@@ -8,6 +8,6 @@ export class Small extends TypeSmall implements ISmall {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Small';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

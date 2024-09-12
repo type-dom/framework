@@ -18,7 +18,7 @@ export class OptGroup extends TypeHtml implements IOptGroup {
     this.ctrl.addAttrName( 'option');
     this.textNode = new TextNode('一个选项');
     this.childNodes = [this.textNode];
-    this.props = this.setParams(params);
+    this.props = this.setProps(params);
   }
 
 }

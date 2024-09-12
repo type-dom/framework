@@ -8,6 +8,6 @@ export class P extends TypeP implements IP {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'P';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

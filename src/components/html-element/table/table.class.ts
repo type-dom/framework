@@ -15,6 +15,6 @@ export class Table extends TypeTable implements ITable {
     if (params?.slot) {
       this.slotChild(params?.slot);
     }
-    this.setParams(params);
+    this.setProps(params);
   }
 }

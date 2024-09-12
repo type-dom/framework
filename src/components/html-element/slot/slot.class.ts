@@ -8,6 +8,6 @@ export class Slot extends TypeSlot implements ISlot {
   constructor(params?: ISlotConfig) {
     super();
     this.className = 'Slot';
-    this.props = this.setParams(params);
+    this.props = this.setProps(params);
   }
 }

@@ -10,7 +10,7 @@ export class Textarea extends TypeTextarea implements ITextarea {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'TextArea';
-    this.setParams(params);
+    this.setProps(params);
   }
 
   get value(): string {

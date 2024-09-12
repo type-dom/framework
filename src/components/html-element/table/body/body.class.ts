@@ -10,6 +10,6 @@ export class TableBody extends TypeTableBody implements ITableBody {
     super();
     this.className = 'TableBody';
     this.childNodes = [];
-    this.setParams(params);
+    this.setProps(params);
   }
 }

@@ -8,6 +8,6 @@ export class Canvas extends TypeCanvas implements ICanvas {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Canvas';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

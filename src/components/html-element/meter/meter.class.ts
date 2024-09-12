@@ -8,6 +8,6 @@ export class Meter extends TypeMeter implements IMeter {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Meter';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

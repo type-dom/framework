@@ -8,6 +8,6 @@ export class Audio extends TypeAudio implements IAudio {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Audio';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

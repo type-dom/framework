@@ -12,6 +12,6 @@ export class Select extends TypeSelect implements ISelect {
     super();
     this.className = 'Select';
     this.childNodes = [];
-    this.setParams(params);
+    this.setProps(params);
   }
 }

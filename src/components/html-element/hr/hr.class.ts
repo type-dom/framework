@@ -8,6 +8,6 @@ export class Hr extends TypeHr implements IHr {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Hr';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

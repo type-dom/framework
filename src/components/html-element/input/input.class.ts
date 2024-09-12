@@ -16,7 +16,7 @@ export class Input extends TypeHtml implements IInput {
     this.className = 'Input';
     this.childNodes = [];
 
-    this.setParams(params);
+    this.setProps(params);
   }
 
   /**

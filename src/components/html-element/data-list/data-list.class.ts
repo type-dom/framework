@@ -8,6 +8,6 @@ export class DataList extends TypeDataList implements IDataList {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'DataList';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

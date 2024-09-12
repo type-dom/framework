@@ -8,6 +8,6 @@ export class I extends TypeI implements II {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'I';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

@@ -8,6 +8,6 @@ export class Main extends TypeMain implements IMain {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Main';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

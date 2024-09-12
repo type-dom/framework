@@ -8,6 +8,6 @@ export class Div extends TypeDiv implements IDiv {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Div';
-    this.setParams(params);
+    this.setProps(params);
   }
 }

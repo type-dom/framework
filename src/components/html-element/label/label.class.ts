@@ -15,7 +15,7 @@ export class Label extends TypeLabel implements ILabel {
     this.ctrl.addAttrName('label');
     // this.textNode = new TextNode();
     this.childNodes = [];
-    this.setParams(params);
+    this.setProps(params);
   }
 
   // createInstance(labelLiteral: ILabel): void {
