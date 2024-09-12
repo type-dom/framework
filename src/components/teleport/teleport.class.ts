@@ -8,15 +8,15 @@ export class Teleport extends TypeFragment implements ITeleport {
   override to?: HTMLElement;
   disabled?: boolean;
 
-  constructor(params?: ITeleportConfig) {
+  constructor(params: ITeleportConfig = {}) {
     super();
     this.className = 'Teleport';
     this.nodeName = 'fragment';
     this.dom = undefined;
-    this.to = params?.to;
+    this.to = params.to;
     this.disabled = params?.disabled;
 
-    this.setParams(params);
+    this.setProps(params);
   }
 
   // process(
