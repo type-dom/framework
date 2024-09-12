@@ -18,7 +18,7 @@ export class SlotNode extends TypeFragment {
     if (slot) {
       this.resetSlot(slot);
     }
-    // this.props = this.setParams({
+    // this.props = this.setProps({
     //   name,
     //   slot
     // })
