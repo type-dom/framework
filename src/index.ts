@@ -9,13 +9,13 @@ export * from './util/index';
 export * from './components/index';
 export { TypeNode } from './core/type-node/type-node.abstract';
 export type * from './core/type-node/type-node.interface';
-export { TypeTransition } from './components/type-transition/type-transition.abstract';
-export type * from './components/type-transition/type-transition.interface';
+export { TypeTransition } from './core/type-transition/type-transition.abstract';
+export type * from './core/type-transition/type-transition.interface';
 
 export { TextNode } from './core/text-node/text-node.class';
 export type { ITextNode } from './core/text-node/text-node.interface';
-export { TypeRoot } from './components/type-root/type-root.abstract';
-export type * from './components/type-root/type-root.interface';
+export { TypeRoot } from './core/type-root/type-root.abstract';
+export type * from './core/type-root/type-root.interface';
 // export * from './core/element';
 export * from './core';
 export * from './use';
