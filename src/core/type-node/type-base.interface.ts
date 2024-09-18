@@ -1,7 +1,7 @@
 import type { IObData } from '../../interface';
 import { UnwrapNestedRefs } from '../../reactivity/reactive';
 import { TypeElement } from '../type-element/type-element.abstract';
-import type { IAttr, IMethods, ISettings, ITypeNode } from './type-node.interface';
+import type { IMethods, ISettings, ITypeNode } from './type-node.interface';
 import { TypeNode } from './type-node.abstract';
 
 /**

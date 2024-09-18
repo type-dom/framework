@@ -153,13 +153,37 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
     return this.childNodes || [];
   }
 
+  /**
+   * 配置设置项
+   * @param params
+   */
+  abstract useParams<T extends ITypeConfig>(params?: T): T;
 
   // 可重置config 的接口类型
   getProps<T extends ITypeConfig>(): T {
     return this.props as T;
   }
+  addProp(key: string, value: any) {
+    Object.defineProperty(this.props, key, {
+      configurable: true,
+      enumerable: true,
+      get() {
+        return value;
+      },
+      set(newValue) {
+        value = newValue;
+      }
+    });
+  }
 
-  mergeConfig<T extends ITypeConfig>(config: T = {} as T): T {
+  setProp(key: string, value?: any) {
+    this.props[key] = value;
+    if (value === undefined) {
+      delete this.props?.[key];
+    }
+  }
+
+  buildProps<T extends ITypeConfig>(config: T = {} as T): T {
     if (!this.props) {
       console.error('this.props is undefined . ');
       this.props = {};
@@ -208,7 +232,7 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
     this.props.slots[name] = slot;
   }
 
-  setAsRoot(isRoot: boolean) {
+  setRoot(isRoot: boolean) {
     this.isRoot = isRoot;
   }
 
@@ -234,31 +258,6 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
     }
   }
   addEvents?(...rest: any[]): void;
-  /**
-   * 配置设置项
-   * @param params
-   */
-  abstract setProps<T extends ITypeConfig>(params?: T): T;
-
-  addProp(key: string, value: any) {
-    Object.defineProperty(this.props, key, {
-      configurable: true,
-      enumerable: true,
-      get() {
-        return value;
-      },
-      set(newValue) {
-        value = newValue;
-      }
-    });
-  }
-
-  setProp(key: string, value?: any) {
-    this.props[key] = value;
-    if (value === undefined) {
-      delete this.props?.[key];
-    }
-  }
 
   // 在定义className时，要把当前类写入到TypeMap中；
   //   todo 创建类实例时都要运行一遍。
@@ -288,10 +287,13 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
    * 依赖 parent 递归注入
    * 要在 created 中调用，否则可能会parent没有初始化。
    * @param key
+   * @param defaultValue
    */
-  inject<T>(key: string | symbol): T | undefined {
+  inject<T>(key: string | symbol, defaultValue?: T): T | undefined {
     if (this.provides && this.provides[key]) {
       return this.provides[key];
+    } else if (defaultValue) {
+      return defaultValue;
     } else {
       return this.parent?.inject<T>(key);
     }
