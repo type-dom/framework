@@ -23,7 +23,7 @@ export class RouterView extends TypeFragment {
   component?: TypeElement;
   constructor(params?: IRouterViewConfig) {
     super();
-    this.props = this.setProps(params);
+    this.props = this.useParams(params);
     this.loaded = false;
   }
 
