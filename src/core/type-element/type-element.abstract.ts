@@ -131,10 +131,11 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   }
 
   /**
-   * 配置设置项
+   * 配置参数
+   * 使用传入的参数，与节点结合
    * @param params
    */
-  setProps<T extends ITypeConfig>(params = {} as T): T {
+  useParams<T extends ITypeConfig>(params = {} as T): T {
     this.params = params;
     if (params.parent) {
       this.parent = params.parent;
@@ -185,7 +186,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       // this.childNodes = params.childNodes;
       // this.addChildren(...params.childNodes);
     }
-    this.mergeConfig(params);
+    this.buildProps(params);
     return this.props as T;
   }
 
@@ -198,7 +199,6 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
     return this.textNode;
   }
-
 
   isFragment() {
     return this.nodeName === 'fragment' && this.dom === undefined;
