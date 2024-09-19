@@ -66,7 +66,7 @@ export class XElement extends TypeElement implements IXElement {
           return new TextNode(child.nodeValue, this);
         }
       }) || [];
-    this.props = this.setProps(params);
+    this.props = this.useParams(params);
   }
 
   override setup(): void {
