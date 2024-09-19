@@ -101,9 +101,9 @@ export class TextNode extends TypeNode implements ITextNode {
     return this.nodeValue.length;
   }
 
-  setProps<T extends ITypeConfig>(params = {} as T): T {
+  useParams<T extends ITypeConfig>(params = {} as T): T {
     this.params = params;
-    this.mergeConfig(params);
+    this.buildProps(params);
     return this.props as T;
   }
 
