@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeAbbr } from '../../type-html/abbr/abbr.abstract';
+import { TypeAbbr } from '../../../core/type-html/abbr/abbr.abstract';
 import type { IAbbr } from './abbr.interface';
 
 export class Abbr extends TypeAbbr implements IAbbr {
@@ -8,6 +8,6 @@ export class Abbr extends TypeAbbr implements IAbbr {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Abbr';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

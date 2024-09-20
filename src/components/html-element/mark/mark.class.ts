@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeMark } from '../../type-html/mark/mark.abstract';
+import { TypeMark } from '../../../core/type-html/mark/mark.abstract';
 import type { IMark } from './mark.interface';
 
 export class Mark extends TypeMark implements IMark {
@@ -8,6 +8,6 @@ export class Mark extends TypeMark implements IMark {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Mark';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

@@ -1,4 +1,4 @@
-import type { ITypeTableFoot } from '../../../type-html/table/foot/foot.interface';
+import type { ITypeTableFoot } from '../../../../core/type-html/table/foot/foot.interface';
 import type { ITableRow } from '../row/row.interface';
 
 export interface ITableFoot extends ITypeTableFoot {

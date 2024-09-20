@@ -1,4 +1,4 @@
-import { TypeTableRow } from '../../../type-html/table/row/row.abstract';
+import { TypeTableRow } from '../../../../core/type-html/table/row/row.abstract';
 import { ITypeConfig } from '../../../../core/type-node/type-node.interface';
 import { SlotNode } from '../../../slot-node/slot-node.class';
 import { TableDataCell } from '../data-cell/data-cell.class';
@@ -19,6 +19,6 @@ export class TableRow extends TypeTableRow implements ITableRow {
       // this.slotChild(config?.slot);
       this.slotNode.addSlot(params.slot);
     }
-    this.setProps(params);
+    this.useParams(params);
   }
 }

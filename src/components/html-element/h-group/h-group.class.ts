@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeHGroup } from '../../type-html/hgroup/hgroup.abstract';
+import { TypeHGroup } from '../../../core/type-html/hgroup/hgroup.abstract';
 import type { IHGroup } from './h-group.interface';
 
 export class HGroup extends TypeHGroup implements IHGroup {
@@ -8,6 +8,6 @@ export class HGroup extends TypeHGroup implements IHGroup {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'HGroup';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

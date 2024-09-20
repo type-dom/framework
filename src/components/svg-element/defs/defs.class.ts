@@ -2,7 +2,7 @@
  * `SvgDefs` 类定义了SVG定义元素的封装，用于创建和管理SVG定义（如渐变、过滤器等）。
  * 它继承自 `TypeSvg` 类，实现了 `ISvgDefs` 接口。
  */
-import { TypeSvg } from '../../type-svg/type-svg.abstract';
+import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
 import { ITypeConfig } from '../../../core/type-node/type-node.interface';
 import type { ISvgDefs } from './defs.interface';
 
@@ -26,6 +26,6 @@ export class SvgDefs extends TypeSvg implements ISvgDefs {
       this.nodeName
     );
     this.childNodes = []; // 初始化子节点数组
-    this.setProps(params); // 设置传入的配置项
+    this.useParams(params); // 设置传入的配置项
   }
 }

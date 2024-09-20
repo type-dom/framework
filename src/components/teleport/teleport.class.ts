@@ -16,7 +16,7 @@ export class Teleport extends TypeFragment implements ITeleport {
     this.to = params.to;
     this.disabled = params?.disabled;
 
-    this.setProps(params);
+    this.useParams(params);
   }
 
   // process(

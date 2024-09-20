@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeMap } from '../../type-html/map/map.abstract';
+import { TypeMap } from '../../../core/type-html/map/map.abstract';
 import type { IMap } from './map.interface';
 
 export class Map extends TypeMap implements IMap {
@@ -8,6 +8,6 @@ export class Map extends TypeMap implements IMap {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Map';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

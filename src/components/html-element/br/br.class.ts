@@ -1,4 +1,4 @@
-import { TypeBr } from '../../type-html/br/br.abstract';
+import { TypeBr } from '../../../core/type-html/br/br.abstract';
 import { IBr, IBrConfig } from './br.interface';
 
 export class Br extends TypeBr implements IBr {
@@ -8,6 +8,6 @@ export class Br extends TypeBr implements IBr {
   constructor(params?: IBrConfig) {
     super();
     this.className = 'Br';
-    this.props = this.setProps(params);
+    this.props = this.useParams(params);
   }
 }

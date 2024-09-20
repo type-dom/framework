@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeTitle } from '../../type-html/title/title.abstract';
+import { TypeTitle } from '../../../core/type-html/title/title.abstract';
 import type { ITitle } from './title.interface';
 
 export class Title extends TypeTitle implements ITitle {
@@ -8,6 +8,6 @@ export class Title extends TypeTitle implements ITitle {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Title';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

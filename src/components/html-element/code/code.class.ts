@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeCode } from '../../type-html/code/code.abstract';
+import { TypeCode } from '../../../core/type-html/code/code.abstract';
 import type { ICode } from './code.interface';
 
 export class Code extends TypeCode implements ICode {
@@ -8,6 +8,6 @@ export class Code extends TypeCode implements ICode {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Code';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

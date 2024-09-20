@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeSelect } from '../../type-html/select/select.abstract';
+import { TypeSelect } from '../../../core/type-html/select/select.abstract';
 import { Option } from '../option/option.class';
 import type { ISelect } from './select.interface';
 
@@ -12,6 +12,6 @@ export class Select extends TypeSelect implements ISelect {
     super();
     this.className = 'Select';
     this.childNodes = [];
-    this.setProps(params);
+    this.useParams(params);
   }
 }

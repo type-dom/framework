@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypePre } from '../../type-html/pre/pre.abstract';
+import { TypePre } from '../../../core/type-html/pre/pre.abstract';
 import type { IPre } from './pre.interface';
 
 export class Pre extends TypePre implements IPre {
@@ -8,6 +8,6 @@ export class Pre extends TypePre implements IPre {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Pre';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

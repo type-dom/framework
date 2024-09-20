@@ -1,4 +1,4 @@
-import { TypeSvg } from '../../type-svg/type-svg.abstract';
+import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
 import { SvgRadialGradient } from '../radial-gradient/radial-gradient.class';
 import { SvgLinearGradient } from '../linear-gradient/linear-gradient.class';
 import type { ISvgStop, ISvgStopAttribute } from './stop.interface';
@@ -24,7 +24,7 @@ export class SvgStop extends TypeSvg implements ISvgStop {
       offset: '0%',
       stopColor: '#000',
     });
-    this.setProps(params);
+    this.useParams(params);
   }
 
   reset(offset: number, stopColor: string): void {

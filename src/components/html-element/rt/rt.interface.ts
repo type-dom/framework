@@ -1,4 +1,4 @@
-import type { ITypeRt } from '../../type-html/rt/rt.interface';
+import type { ITypeRt } from '../../../core/type-html/rt/rt.interface';
 
 export interface IRt extends ITypeRt {
   className: 'Rt';

@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeAside } from '../../type-html/aside/aside.abstract';
+import { TypeAside } from '../../../core/type-html/aside/aside.abstract';
 import type { IAside } from './aside.interface';
 
 export class Aside extends TypeAside implements IAside {
@@ -8,6 +8,6 @@ export class Aside extends TypeAside implements IAside {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Aside';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

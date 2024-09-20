@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeStrong } from '../../type-html/strong/strong.abstract';
+import { TypeStrong } from '../../../core/type-html/strong/strong.abstract';
 import type { IStrong } from './strong.interface';
 
 export class Strong extends TypeStrong implements IStrong {
@@ -8,6 +8,6 @@ export class Strong extends TypeStrong implements IStrong {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Strong';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

@@ -1,4 +1,4 @@
-import type { ITypeVideo } from '../../type-html/video/video.interface';
+import type { ITypeVideo } from '../../../core/type-html/video/video.interface';
 
 export interface IVideo extends ITypeVideo {
   className: 'Video';

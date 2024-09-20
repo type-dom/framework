@@ -1,4 +1,4 @@
-import { TypeSvg } from '../../type-svg/type-svg.abstract';
+import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
 import { ISvgLine, ISvgLineAttribute, ISvgLineConfig } from './line.interface';
 
 export class SvgLine extends TypeSvg implements ISvgLine {
@@ -30,7 +30,7 @@ export class SvgLine extends TypeSvg implements ISvgLine {
       x2: this.x2,
       y2: this.y2,
     });
-    this.props = this.setProps(params);
+    this.props = this.useParams(params);
   }
 
   reset(x1: number, y1: number, x2: number, y2: number): SvgLine {

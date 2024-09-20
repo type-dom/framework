@@ -1,4 +1,4 @@
-import { TypeTableFoot } from '../../../type-html/table/foot/foot.abstract';
+import { TypeTableFoot } from '../../../../core/type-html/table/foot/foot.abstract';
 import { TableRow } from '../row/row.class';
 import { Table } from '../table.class';
 import type { ITableFoot } from './foot.interface';

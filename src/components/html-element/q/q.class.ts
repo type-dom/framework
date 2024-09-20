@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeQ } from '../../type-html/q/q.abstract';
+import { TypeQ } from '../../../core/type-html/q/q.abstract';
 import type { IQ } from './q.interface';
 
 export class Q extends TypeQ implements IQ {
@@ -8,6 +8,6 @@ export class Q extends TypeQ implements IQ {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Q';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

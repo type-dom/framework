@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeSamp } from '../../type-html/samp/samp.abstract';
+import { TypeSamp } from '../../../core/type-html/samp/samp.abstract';
 import type { ISamp } from './samp.interface';
 
 export class Samp extends TypeSamp implements ISamp {
@@ -8,6 +8,6 @@ export class Samp extends TypeSamp implements ISamp {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Samp';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

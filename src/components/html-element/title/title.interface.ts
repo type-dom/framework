@@ -1,4 +1,4 @@
-import type { ITypeTitle } from '../../type-html/title/title.interface';
+import type { ITypeTitle } from '../../../core/type-html/title/title.interface';
 
 export interface ITitle extends ITypeTitle {
   className: 'Title';

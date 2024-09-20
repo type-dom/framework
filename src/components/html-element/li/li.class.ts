@@ -1,5 +1,5 @@
 import { TypeElement } from '../../../core/type-element/type-element.abstract';
-import { TypeLI } from '../../type-html/li/li.abstract';
+import { TypeLI } from '../../../core/type-html/li/li.abstract';
 import { TextNode } from '../../../core/text-node/text-node.class';
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
 import type { ILI } from './li.interface';
@@ -23,6 +23,6 @@ export class LI extends TypeLI implements ILI {
     });
     this.ctrl.addAttrName('list-item');
 
-    this.setProps(params);
+    this.useParams(params);
   }
 }

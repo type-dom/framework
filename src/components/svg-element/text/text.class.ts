@@ -1,6 +1,6 @@
 import { TextNode } from '../../../core/text-node/text-node.class';
-import { TypeSvgSvg } from '../../type-svg/svg/svg.abstract';
-import { TypeSvg } from '../../type-svg/type-svg.abstract';
+import { TypeSvgSvg } from '../../../core/type-svg/svg/svg.abstract';
+import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
 import type {
   ISvgText,
   ISvgTextAttribute,
@@ -33,6 +33,6 @@ export class SvgText extends TypeSvg implements ISvgText {
     if (params.text) {
       this.textNode.setText(params.text);
     }
-    this.setProps(params);
+    this.useParams(params);
   }
 }

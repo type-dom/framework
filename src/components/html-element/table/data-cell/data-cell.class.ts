@@ -1,4 +1,4 @@
-import { TypeTableDataCell } from '../../../type-html/table/data-cell/data-cell.abstract';
+import { TypeTableDataCell } from '../../../../core/type-html/table/data-cell/data-cell.abstract';
 import { ITypeConfig } from '../../../../core/type-node/type-node.interface';
 import type { ITableDataCell } from './data-cell.interface';
 
@@ -12,6 +12,6 @@ export class TableDataCell extends TypeTableDataCell implements ITableDataCell {
     if (params?.slot) {
       this.slotChild(params?.slot);
     }
-    this.setProps(params);
+    this.useParams(params);
   }
 }

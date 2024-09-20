@@ -1,4 +1,4 @@
-import type { ITypeDel } from '../../type-html/del/del.interface';
+import type { ITypeDel } from '../../../core/type-html/del/del.interface';
 
 export interface IDel extends ITypeDel {
   className: 'Del';

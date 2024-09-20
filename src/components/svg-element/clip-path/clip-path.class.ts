@@ -1,4 +1,4 @@
-import { TypeSvg } from '../../type-svg/type-svg.abstract';
+import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
 import { ISvgClipPath } from './clip-path.interface';
 import { ITypeConfig } from '../../../core/type-node/type-node.interface';
 
@@ -19,6 +19,6 @@ export class SvgClipPath extends TypeSvg implements ISvgClipPath {
     );
     // this.textNode = new WebTextNode(this, '字');
     this.childNodes = [];
-    this.setProps(params);
+    this.useParams(params);
   }
 }

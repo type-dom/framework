@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeS } from '../../type-html/s/s.abstract';
+import { TypeS } from '../../../core/type-html/s/s.abstract';
 import type { IS } from './s.interface';
 
 export class S extends TypeS implements IS {
@@ -8,6 +8,6 @@ export class S extends TypeS implements IS {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'S';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

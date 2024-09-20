@@ -1,4 +1,4 @@
-import { TypeSvg } from '../../type-svg/type-svg.abstract';
+import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
 import { ISvgRect, ISvgRectAttribute, ISvgRectConfig } from './rect.interface';
 
 export class SvgRect extends TypeSvg implements ISvgRect {
@@ -31,7 +31,7 @@ export class SvgRect extends TypeSvg implements ISvgRect {
       width: this.width,
       height: this.height,
     });
-    this.props = this.setProps(params);
+    this.props = this.useParams(params);
   }
 
   // 单位是px

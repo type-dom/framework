@@ -1,7 +1,7 @@
-import { ITypeTransition, ITypeTransitionConfig } from '../type-transition/type-transition.interface';
+import { ITypeTransition, ITypeTransitionConfig } from '../../core/type-transition/type-transition.interface';
 import { TypeElement } from '../../core/type-element/type-element.abstract';
-import { TypeHtml } from '../type-html/type-html.abstract';
-import { TypeSvg } from '../type-svg/type-svg.abstract';
+import { TypeHtml } from '../../core/type-html/type-html.abstract';
+import { TypeSvg } from '../../core/type-svg/type-svg.abstract';
 
 export interface ITransition extends ITypeTransition {
   className: 'Transition' | string;

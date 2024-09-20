@@ -1,4 +1,4 @@
-import { TypeDiv } from '../../type-html/div/div.abstract';
+import { TypeDiv } from '../../../core/type-html/div/div.abstract';
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
 import type { IDiv } from './div.interface';
 
@@ -8,6 +8,6 @@ export class Div extends TypeDiv implements IDiv {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Div';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeBlockQuote } from '../../type-html/block-quote/block-quote.abstract';
+import { TypeBlockQuote } from '../../../core/type-html/block-quote/block-quote.abstract';
 import type { IBlockQuote } from './block-quote.interface';
 
 export class BlockQuote extends TypeBlockQuote implements IBlockQuote {
@@ -8,6 +8,6 @@ export class BlockQuote extends TypeBlockQuote implements IBlockQuote {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'BlockQuote';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

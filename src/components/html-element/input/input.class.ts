@@ -1,4 +1,4 @@
-import { TypeHtml } from '../../type-html/type-html.abstract';
+import { TypeHtml } from '../../../core/type-html/type-html.abstract';
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
 import type { IInput } from './input.interface';
 
@@ -16,7 +16,7 @@ export class Input extends TypeHtml implements IInput {
     this.className = 'Input';
     this.childNodes = [];
 
-    this.setProps(params);
+    this.useParams(params);
   }
 
   /**

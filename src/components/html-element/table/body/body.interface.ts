@@ -1,4 +1,4 @@
-import type { ITypeTableBody } from '../../../type-html/table/body/body.interface';
+import type { ITypeTableBody } from '../../../../core/type-html/table/body/body.interface';
 import { ITypeConfig } from '../../../../core/type-node/type-node.interface';
 import type { ITableRow } from '../row/row.interface';
 import { Table } from '../table.class';

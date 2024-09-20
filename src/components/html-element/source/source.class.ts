@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeSource } from '../../type-html/source/source.abstract';
+import { TypeSource } from '../../../core/type-html/source/source.abstract';
 import type { ISource } from './source.interface';
 
 export class Source extends TypeSource implements ISource {
@@ -8,6 +8,6 @@ export class Source extends TypeSource implements ISource {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Source';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

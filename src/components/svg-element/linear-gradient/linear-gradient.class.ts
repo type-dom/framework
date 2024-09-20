@@ -1,4 +1,4 @@
-import { TypeSvg } from '../../type-svg/type-svg.abstract';
+import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
 import { SvgStop } from '../stop/stop.class';
 import type {
   ISvgLinearGradient,
@@ -29,7 +29,7 @@ export class SvgLinearGradient extends TypeSvg implements ISvgLinearGradient {
       y2: 0,
     });
     this.childNodes = [];
-    this.props = this.setProps(params);
+    this.props = this.useParams(params);
   }
 
   reset(id: string): void {

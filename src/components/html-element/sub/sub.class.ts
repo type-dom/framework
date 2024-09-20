@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeSub } from '../../type-html/sub/sub.abstract';
+import { TypeSub } from '../../../core/type-html/sub/sub.abstract';
 import type { ISub } from './sub.interface';
 
 export class Sub extends TypeSub implements ISub {
@@ -8,6 +8,6 @@ export class Sub extends TypeSub implements ISub {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Sub';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

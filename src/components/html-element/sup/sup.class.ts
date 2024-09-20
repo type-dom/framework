@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeSup } from '../../type-html/sup/sup.abstract';
+import { TypeSup } from '../../../core/type-html/sup/sup.abstract';
 import type { ISup } from './sup.interface';
 
 export class Sup extends TypeSup implements ISup {
@@ -8,6 +8,6 @@ export class Sup extends TypeSup implements ISup {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Sup';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

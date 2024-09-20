@@ -1,6 +1,6 @@
 import { TypeNode } from '../../../core/type-node/type-node.abstract';
 import { TextNode } from '../../../core/text-node/text-node.class';
-import { TypeHtml } from '../../type-html/type-html.abstract';
+import { TypeHtml } from '../../../core/type-html/type-html.abstract';
 import type { IOptGroup, IOptGroupConfig } from './opt-group.interface';
 
 export class OptGroup extends TypeHtml implements IOptGroup {
@@ -18,7 +18,7 @@ export class OptGroup extends TypeHtml implements IOptGroup {
     this.ctrl.addAttrName( 'option');
     this.textNode = new TextNode('一个选项');
     this.childNodes = [this.textNode];
-    this.props = this.setProps(params);
+    this.props = this.useParams(params);
   }
 
 }

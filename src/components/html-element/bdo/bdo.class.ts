@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeBdo } from '../../type-html/bdo/bdo.abstract';
+import { TypeBdo } from '../../../core/type-html/bdo/bdo.abstract';
 import type { IBdo } from './bdo.interface';
 
 export class Bdo extends TypeBdo implements IBdo {
@@ -8,6 +8,6 @@ export class Bdo extends TypeBdo implements IBdo {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Bdo';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

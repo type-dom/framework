@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeDfn } from '../../type-html/dfn/dfn.abstract';
+import { TypeDfn } from '../../../core/type-html/dfn/dfn.abstract';
 import type { IDfn } from './dfn.interface';
 
 export class Dfn extends TypeDfn implements IDfn {
@@ -8,6 +8,6 @@ export class Dfn extends TypeDfn implements IDfn {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Dfn';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

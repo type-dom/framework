@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeTime } from '../../type-html/time/time.abstract';
+import { TypeTime } from '../../../core/type-html/time/time.abstract';
 import type { ITime } from './time.interface';
 
 export class Time extends TypeTime implements ITime {
@@ -8,6 +8,6 @@ export class Time extends TypeTime implements ITime {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Time';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

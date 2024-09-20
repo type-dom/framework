@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeRp } from '../../type-html/rp/rp.abstract';
+import { TypeRp } from '../../../core/type-html/rp/rp.abstract';
 import type { IRp } from './rp.interface';
 
 export class Rp extends TypeRp implements IRp {
@@ -8,6 +8,6 @@ export class Rp extends TypeRp implements IRp {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Rp';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

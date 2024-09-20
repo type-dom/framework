@@ -1,4 +1,4 @@
-import type { ITypeButton } from '../../type-html/button/button.interface';
+import type { ITypeButton } from '../../../core/type-html/button/button.interface';
 
 export interface IButton extends ITypeButton {
   className: 'Button';

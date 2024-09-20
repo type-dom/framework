@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeDel } from '../../type-html/del/del.abstract';
+import { TypeDel } from '../../../core/type-html/del/del.abstract';
 import type { IDel } from './del.interface';
 
 export class Del extends TypeDel implements IDel {
@@ -8,6 +8,6 @@ export class Del extends TypeDel implements IDel {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Del';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

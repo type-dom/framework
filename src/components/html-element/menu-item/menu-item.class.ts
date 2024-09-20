@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeMenuItem } from '../../type-html/menu-item/menu-item.abstract';
+import { TypeMenuItem } from '../../../core/type-html/menu-item/menu-item.abstract';
 import type { IMenuItem } from './menu-item.interface';
 
 /**
@@ -14,6 +14,6 @@ export class MenuItem extends TypeMenuItem implements IMenuItem {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'MenuItem';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

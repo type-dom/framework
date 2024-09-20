@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import type { ITypeHead } from '../../type-html/head/head.interface';
+import type { ITypeHead } from '../../../core/type-html/head/head.interface';
 
 export interface IHead extends ITypeHead {
   nodeName: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';

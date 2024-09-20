@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeEm } from '../../type-html/em/em.abstract';
+import { TypeEm } from '../../../core/type-html/em/em.abstract';
 import type { IEm } from './em.interface';
 
 export class Em extends TypeEm implements IEm {
@@ -8,6 +8,6 @@ export class Em extends TypeEm implements IEm {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Em';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

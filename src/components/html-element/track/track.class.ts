@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeTrack } from '../../type-html/track/track.abstract';
+import { TypeTrack } from '../../../core/type-html/track/track.abstract';
 import type { ITrack } from './track.interface';
 
 export class Track extends TypeTrack implements ITrack {
@@ -8,6 +8,6 @@ export class Track extends TypeTrack implements ITrack {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Track';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

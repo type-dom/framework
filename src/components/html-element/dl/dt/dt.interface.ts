@@ -1,4 +1,4 @@
-import type { ITypeDT } from '../../../type-html/dl/dt/dt.interface';
+import type { ITypeDT } from '../../../../core/type-html/dl/dt/dt.interface';
 
 export interface IDT extends ITypeDT {
   className: 'DT';

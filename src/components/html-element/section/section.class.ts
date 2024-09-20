@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeSection } from '../../type-html/section/section.abstract';
+import { TypeSection } from '../../../core/type-html/section/section.abstract';
 import type { ISection } from './section.interface';
 
 export class Section extends TypeSection implements ISection {
@@ -15,6 +15,6 @@ export class Section extends TypeSection implements ISection {
     this.ctrl.addAttrObj({
       name: 'section',
     });
-    this.setProps(params);
+    this.useParams(params);
   }
 }

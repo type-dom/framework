@@ -1,4 +1,4 @@
-import { TypeTransition } from '../type-transition/type-transition.abstract';
+import { TypeTransition } from '../../core/type-transition/type-transition.abstract';
 import type { ITransition, ITransitionConfig } from './transition.interface';
 
 export class Transition extends TypeTransition implements ITransition {

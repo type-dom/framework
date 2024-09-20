@@ -10,9 +10,8 @@ import {
 import {
   Hook,
   ITypeTransitionConfig,
-} from '../type-transition/type-transition.interface';
-import { TypeHtml } from '../type-html/type-html.abstract';
-
+} from '../../core/type-transition/type-transition.interface';
+import { TypeHtml } from '../../core/type-html/type-html.abstract';
 
 const DOMTransitionPropsValidators = {
   name: String,
@@ -233,7 +232,7 @@ const callHook = (
   if (isArray(hook)) {
     hook.forEach((h) => h(...args));
   } else if (hook) {
-    hook(...args);
+    (hook as Hook<any>)(...args);
   }
 };
 
@@ -272,7 +271,7 @@ export function whenTransitionEnds(
   const endEvent = type + 'end';
   let ended = 0;
   const end = () => {
-    el.removeEventListener(endEvent, onEnd);
+    el.removeEventListener(endEvent as keyof ElementEventMap , onEnd);
     resolveIfNotStale();
   };
   const onEnd = (e: Event) => {
@@ -285,7 +284,7 @@ export function whenTransitionEnds(
       end();
     }
   }, timeout + 1);
-  el.addEventListener(endEvent, onEnd);
+  el.addEventListener(endEvent as keyof ElementEventMap, onEnd);
 }
 
 export const vtcKey = Symbol('_vtc');
@@ -381,11 +380,11 @@ export function getTransitionInfo(
   // JSDOM may return undefined for transition properties
   const getStyleProperties = (key: StylePropertiesKey) =>
     (styles[key] || '').split(', ');
-  const transitionDelays = getStyleProperties(`${TransitionUtil}Delay`);
-  const transitionDurations = getStyleProperties(`${TransitionUtil}Duration`);
+  const transitionDelays = getStyleProperties(`${TransitionUtil}Delay` as  StylePropertiesKey);
+  const transitionDurations = getStyleProperties(`${TransitionUtil}Duration` as  StylePropertiesKey);
   const transitionTimeout = getTimeout(transitionDelays, transitionDurations);
-  const animationDelays = getStyleProperties(`${ANIMATION}Delay`);
-  const animationDurations = getStyleProperties(`${ANIMATION}Duration`);
+  const animationDelays = getStyleProperties(`${ANIMATION}Delay` as  StylePropertiesKey);
+  const animationDurations = getStyleProperties(`${ANIMATION}Duration` as  StylePropertiesKey);
   const animationTimeout = getTimeout(animationDelays, animationDurations);
 
   let type: CSSTransitionInfo['type'] = null;
@@ -421,7 +420,7 @@ export function getTransitionInfo(
   const hasTransform =
     type === TransitionUtil &&
     /\b(transform|all)(,|$)/.test(
-      getStyleProperties(`${TransitionUtil}Property`).toString()
+      getStyleProperties(`${TransitionUtil}Property` as StylePropertiesKey).toString()
     );
   return {
     type,

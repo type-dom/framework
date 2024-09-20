@@ -1,4 +1,4 @@
-import type { ITypeEm } from '../../type-html/em/em.interface';
+import type { ITypeEm } from '../../../core/type-html/em/em.interface';
 
 export interface IEm extends ITypeEm {
   className: 'Em';

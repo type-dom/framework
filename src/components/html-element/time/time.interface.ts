@@ -1,4 +1,4 @@
-import type { ITypeTime } from '../../type-html/time/time.interface';
+import type { ITypeTime } from '../../../core/type-html/time/time.interface';
 
 export interface ITime extends ITypeTime {
   className: 'Time';

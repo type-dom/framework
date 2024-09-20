@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeFigure } from '../../type-html/figure/figure.abstract';
+import { TypeFigure } from '../../../core/type-html/figure/figure.abstract';
 import type { IFigure } from './figure.interface';
 
 export class Figure extends TypeFigure implements IFigure {
@@ -8,6 +8,6 @@ export class Figure extends TypeFigure implements IFigure {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Figure';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

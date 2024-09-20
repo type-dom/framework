@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeAddress } from '../../type-html/address/address.abstract';
+import { TypeAddress } from '../../../core/type-html/address/address.abstract';
 import type { IAddress } from './address.interface';
 
 export class Address extends TypeAddress implements IAddress {
@@ -8,6 +8,6 @@ export class Address extends TypeAddress implements IAddress {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Address';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

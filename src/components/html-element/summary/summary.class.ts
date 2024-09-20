@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeSummary } from '../../type-html/summary/summary.abstract';
+import { TypeSummary } from '../../../core/type-html/summary/summary.abstract';
 import type { ISummary } from './summary.interface';
 
 export class Summary extends TypeSummary implements ISummary {
@@ -8,6 +8,6 @@ export class Summary extends TypeSummary implements ISummary {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Summary';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeKbd } from '../../type-html/kbd/kbd.abstract';
+import { TypeKbd } from '../../../core/type-html/kbd/kbd.abstract';
 import type { IKbd } from './kbd.interface';
 
 export class Kbd extends TypeKbd implements IKbd {
@@ -8,6 +8,6 @@ export class Kbd extends TypeKbd implements IKbd {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Kbd';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

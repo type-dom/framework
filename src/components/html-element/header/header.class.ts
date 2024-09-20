@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeHeader } from '../../type-html/header/header.abstract';
+import { TypeHeader } from '../../../core/type-html/header/header.abstract';
 import type { IHeader } from './header.interface';
 
 export class Header extends TypeHeader implements IHeader {
@@ -10,6 +10,6 @@ export class Header extends TypeHeader implements IHeader {
     this.nodeName = 'header';
     this.dom = document.createElement(this.nodeName);
     this.className = 'Header';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

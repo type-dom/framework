@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeB } from '../../type-html/b/b.abstract';
+import { TypeB } from '../../../core/type-html/b/b.abstract';
 import type { IB } from './b.interface';
 
 export class B extends TypeB implements IB {
@@ -8,6 +8,6 @@ export class B extends TypeB implements IB {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'B';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

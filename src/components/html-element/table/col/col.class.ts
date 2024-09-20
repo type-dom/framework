@@ -1,4 +1,4 @@
-import { TypeTableCol } from '../../../type-html/table/col/col.abstract';
+import { TypeTableCol } from '../../../../core/type-html/table/col/col.abstract';
 import { Table } from '../table.class';
 import type { ITableCol } from './col.interface';
 

@@ -1,4 +1,4 @@
-import { TypeTable } from '../../type-html/table/table.abstract';
+import { TypeTable } from '../../../core/type-html/table/table.abstract';
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
 import { TableRow } from './row/row.class';
 import { TableHead } from './head/head.class';
@@ -15,6 +15,6 @@ export class Table extends TypeTable implements ITable {
     if (params?.slot) {
       this.slotChild(params?.slot);
     }
-    this.setProps(params);
+    this.useParams(params);
   }
 }

@@ -1,4 +1,4 @@
-import type { ITypeSelect } from '../../type-html/select/select.interface';
+import type { ITypeSelect } from '../../../core/type-html/select/select.interface';
 import type { IOption } from '../option/option.interface';
 
 export interface ISelect extends ITypeSelect {

@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeFooter } from '../../type-html/footer/footer.abstract';
+import { TypeFooter } from '../../../core/type-html/footer/footer.abstract';
 import type { IFooter } from './footer.interface';
 
 export class Footer extends TypeFooter implements IFooter {
@@ -8,6 +8,6 @@ export class Footer extends TypeFooter implements IFooter {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Footer';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

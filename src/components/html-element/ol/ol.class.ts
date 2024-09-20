@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeOL } from '../../type-html/ol/ol.abstract';
+import { TypeOL } from '../../../core/type-html/ol/ol.abstract';
 import type { IOL } from './ol.interface';
 
 export class OL extends TypeOL implements IOL {
@@ -8,6 +8,6 @@ export class OL extends TypeOL implements IOL {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'OL';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

@@ -1,4 +1,4 @@
-import { TypeTableBody } from '../../../type-html/table/body/body.abstract';
+import { TypeTableBody } from '../../../../core/type-html/table/body/body.abstract';
 import { TableRow } from '../row/row.class';
 import type { ITableBody, ITableBodyConfig } from './body.interface';
 
@@ -10,6 +10,6 @@ export class TableBody extends TypeTableBody implements ITableBody {
     super();
     this.className = 'TableBody';
     this.childNodes = [];
-    this.setProps(params);
+    this.useParams(params);
   }
 }

@@ -1,5 +1,5 @@
-import { TypeSvg } from '../../type-svg/type-svg.abstract';
-import { TypeSvgSvg } from '../../type-svg/svg/svg.abstract';
+import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
+import { TypeSvgSvg } from '../../../core/type-svg/svg/svg.abstract';
 import { ITypeConfig } from '../../../core/type-node/type-node.interface';
 import type { ISvgPolygon } from './polygon.interface';
 
@@ -20,6 +20,6 @@ export class SvgPolygon extends TypeSvg implements ISvgPolygon {
     );
     this.childNodes = [];
 
-    this.setProps(params);
+    this.useParams(params);
   }
 }

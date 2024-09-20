@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeU } from '../../type-html/u/u.abstract';
+import { TypeU } from '../../../core/type-html/u/u.abstract';
 import type { IU } from './u.interface';
 
 export class U extends TypeU implements IU {
@@ -8,6 +8,6 @@ export class U extends TypeU implements IU {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'U';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

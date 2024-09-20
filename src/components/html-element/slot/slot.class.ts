@@ -1,4 +1,4 @@
-import { TypeSlot } from '../../type-html/slot/slot.abstract';
+import { TypeSlot } from '../../../core/type-html/slot/slot.abstract';
 import type { ISlot, ISlotConfig } from './slot.interface';
 
 export class Slot extends TypeSlot implements ISlot {
@@ -8,6 +8,6 @@ export class Slot extends TypeSlot implements ISlot {
   constructor(params?: ISlotConfig) {
     super();
     this.className = 'Slot';
-    this.props = this.setProps(params);
+    this.props = this.useParams(params);
   }
 }

@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeIFrame } from '../../type-html/iframe/iframe.abstract';
+import { TypeIFrame } from '../../../core/type-html/iframe/iframe.abstract';
 import type { IIFrame } from './iframe.interface';
 
 export class IFrame extends TypeIFrame implements IIFrame {
@@ -8,6 +8,6 @@ export class IFrame extends TypeIFrame implements IIFrame {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'IFrame';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

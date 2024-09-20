@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeOutput } from '../../type-html/output/output.abstract';
+import { TypeOutput } from '../../../core/type-html/output/output.abstract';
 import type { IOutput } from './output.interface';
 
 export class Output extends TypeOutput implements IOutput {
@@ -8,6 +8,6 @@ export class Output extends TypeOutput implements IOutput {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Output';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

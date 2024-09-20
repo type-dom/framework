@@ -1,6 +1,6 @@
 import { TextNode } from '../../../core/text-node/text-node.class';
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeLabel } from '../../type-html/label/label.abstract';
+import { TypeLabel } from '../../../core/type-html/label/label.abstract';
 import type { Input } from '../input/input.class';
 import type { ILabel } from './label.interface';
 
@@ -15,7 +15,7 @@ export class Label extends TypeLabel implements ILabel {
     this.ctrl.addAttrName('label');
     // this.textNode = new TextNode();
     this.childNodes = [];
-    this.setProps(params);
+    this.useParams(params);
   }
 
   // createInstance(labelLiteral: ILabel): void {

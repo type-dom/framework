@@ -1,5 +1,5 @@
 import { IStyle } from '@type-dom/css-type';
-import type { ITypeSvg } from '../../type-svg/type-svg.interface';
+import type { ITypeSvg } from '../../../core/type-svg/type-svg.interface';
 import { ITypeAttribute } from '../../../index';
 import { ITypeConfig } from '../../../core/type-node/type-node.interface';
 

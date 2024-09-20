@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeTextarea } from '../../type-html/textarea/textarea.abstract';
+import { TypeTextarea } from '../../../core/type-html/textarea/textarea.abstract';
 import type { ITextarea } from './textarea.interface';
 
 export class Textarea extends TypeTextarea implements ITextarea {
@@ -10,7 +10,7 @@ export class Textarea extends TypeTextarea implements ITextarea {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'TextArea';
-    this.setProps(params);
+    this.useParams(params);
   }
 
   get value(): string {

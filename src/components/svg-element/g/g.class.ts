@@ -1,4 +1,4 @@
-import { TypeSvg } from '../../type-svg/type-svg.abstract';
+import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
 import { ITypeConfig } from '../../../core/type-node/type-node.interface';
 import { ISvgG } from './g.interface';
 
@@ -17,6 +17,6 @@ export class SvgG extends TypeSvg implements ISvgG {
       this.nodeName
     );
     this.childNodes = [];
-    this.setProps(params);
+    this.useParams(params);
   }
 }

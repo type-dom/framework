@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeHr } from '../../type-html/hr/hr.abstract';
+import { TypeHr } from '../../../core/type-html/hr/hr.abstract';
 import type { IHr } from './hr.interface';
 
 export class Hr extends TypeHr implements IHr {
@@ -8,6 +8,6 @@ export class Hr extends TypeHr implements IHr {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Hr';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

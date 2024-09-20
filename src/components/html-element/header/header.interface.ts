@@ -1,4 +1,4 @@
-import type { ITypeHeader } from '../../type-html/header/header.interface';
+import type { ITypeHeader } from '../../../core/type-html/header/header.interface';
 
 export interface IHeader extends ITypeHeader {
   nodeName: 'header';

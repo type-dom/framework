@@ -1,4 +1,4 @@
-import { TypeTableHead } from '../../../type-html/table/head/head.abstract';
+import { TypeTableHead } from '../../../../core/type-html/table/head/head.abstract';
 import { TableHeaderCell } from '../header-cell/header-cell.class';
 import { Table } from '../table.class';
 import type { ITableHead } from './head.interface';

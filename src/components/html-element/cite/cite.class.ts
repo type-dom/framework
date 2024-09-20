@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeCite } from '../../type-html/cite/cite.abstract';
+import { TypeCite } from '../../../core/type-html/cite/cite.abstract';
 import type { ICite } from './cite.interface';
 
 export class Cite extends TypeCite implements ICite {
@@ -8,6 +8,6 @@ export class Cite extends TypeCite implements ICite {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Cite';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

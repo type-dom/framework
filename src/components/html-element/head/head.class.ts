@@ -1,4 +1,4 @@
-import { TypeHead } from '../../type-html/head/head.abstract';
+import { TypeHead } from '../../../core/type-html/head/head.abstract';
 import type { IHead, IHeadConfig } from './head.interface';
 
 export class Head extends TypeHead implements IHead {
@@ -8,6 +8,6 @@ export class Head extends TypeHead implements IHead {
   constructor(params?: IHeadConfig) {
     super(params?.nodeName);
     this.className = 'Head';
-    this.props = this.setProps(params);
+    this.props = this.useParams(params);
   }
 }

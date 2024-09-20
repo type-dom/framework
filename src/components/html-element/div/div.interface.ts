@@ -1,4 +1,4 @@
-import type { ITypeDiv } from '../../type-html/div/div.interface';
+import type { ITypeDiv } from '../../../core/type-html/div/div.interface';
 
 export interface IDiv extends ITypeDiv {
   className: 'Div';

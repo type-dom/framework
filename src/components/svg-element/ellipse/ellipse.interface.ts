@@ -1,6 +1,6 @@
 import { IStyle, Property } from '@type-dom/css-type';
 import type { ITypeAttribute } from '../../../core/type-element/type-element.interface';
-import type { ITypeSvg } from '../../type-svg/type-svg.interface';
+import type { ITypeSvg } from '../../../core/type-svg/type-svg.interface';
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
 import { TypeSvg } from '../../../index';
 

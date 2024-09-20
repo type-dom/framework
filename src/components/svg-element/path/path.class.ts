@@ -1,5 +1,5 @@
-import { TypeSvg } from '../../type-svg/type-svg.abstract';
-import { TypeSvgSvg } from '../../type-svg/svg/svg.abstract';
+import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
+import { TypeSvgSvg } from '../../../core/type-svg/svg/svg.abstract';
 import { ISvgPath, ISvgPathAttribute, ISvgPathConfig } from './path.interface';
 
 export class SvgPath extends TypeSvg implements ISvgPath {
@@ -23,7 +23,7 @@ export class SvgPath extends TypeSvg implements ISvgPath {
       d: '',
     });
     this.childNodes = [];
-    this.props = this.setProps(params);
+    this.props = this.useParams(params);
   }
 
   get pathData(): string {

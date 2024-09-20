@@ -1,4 +1,4 @@
-import type { ITypeHtml } from '../../type-html/type-html.interface';
+import type { ITypeHtml } from '../../../core/type-html/type-html.interface';
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
 import { TypeSelect } from '../../../index';
 

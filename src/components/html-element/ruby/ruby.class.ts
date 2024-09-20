@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeRuby } from '../../type-html/ruby/ruby.abstract';
+import { TypeRuby } from '../../../core/type-html/ruby/ruby.abstract';
 import type { IRuby } from './ruby.interface';
 
 export class Ruby extends TypeRuby implements IRuby {
@@ -8,6 +8,6 @@ export class Ruby extends TypeRuby implements IRuby {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Ruby';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

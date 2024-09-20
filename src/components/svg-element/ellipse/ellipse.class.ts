@@ -1,4 +1,4 @@
-import { TypeSvg } from '../../type-svg/type-svg.abstract';
+import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
 import type {
   ISvgEllipse,
   ISvgEllipseConfig,
@@ -34,7 +34,7 @@ export class SvgEllipse extends TypeSvg implements ISvgEllipse {
       rx: this.rx,
       ry: this.ry,
     });
-    this.props = this.setProps(params);
+    this.props = this.useParams(params);
   }
 
   reset(cx: number, cy: number, rx: number, ry: number): SvgEllipse {

@@ -1,5 +1,5 @@
 import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeEmbed } from '../../type-html/embed/embed.abstract';
+import { TypeEmbed } from '../../../core/type-html/embed/embed.abstract';
 import type { IEmbed } from './embed.interface';
 
 export class Embed extends TypeEmbed implements IEmbed {
@@ -8,6 +8,6 @@ export class Embed extends TypeEmbed implements IEmbed {
   constructor(params?: ITypeConfig) {
     super();
     this.className = 'Embed';
-    this.setProps(params);
+    this.useParams(params);
   }
 }

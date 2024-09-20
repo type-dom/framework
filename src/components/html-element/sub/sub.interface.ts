@@ -1,4 +1,4 @@
-import type { ITypeSub } from '../../type-html/sub/sub.interface';
+import type { ITypeSub } from '../../../core/type-html/sub/sub.interface';
 
 export interface ISub extends ITypeSub {
   className: 'Sub';
