@@ -4,8 +4,8 @@ import { IJsonData } from '../../interface';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { mustacheNode } from '../util';
-import type { ITextNode } from './text-node.interface';
 import type { ITypeConfig } from '../type-node/type-node.interface';
+import type { ITextNode } from './text-node.interface';
 
 /**
  * 文本节点类
@@ -25,11 +25,12 @@ export class TextNode extends TypeNode implements ITextNode {
    */
   nodeValue: string;
   // text: string;
+  style: undefined;
+  attr: undefined;
   /**
    * DOM 文本节点对象
    */
   dom?: Text;
-  ctrl: undefined;
   /**
    * 子节点，此处未定义
    */
