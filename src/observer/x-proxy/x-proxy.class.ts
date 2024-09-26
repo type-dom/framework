@@ -1,25 +1,17 @@
 import {
   deepClone,
-  isArray,
-  isBoolean,
-  isNumber,
-  isObject,
   isPrimitive,
-  isString,
-  isUndefined,
 } from '@type-dom/utils';
-import { IJsonData, IJsonDataProp } from '../../interface';
+import { AnyFn, IJsonData, IJsonDataProp } from '../../interface';
 import { IXProxy, IXProxyHandler } from './x-proxy.interface';
 import { TypeElement } from '../../core';
-import { BehaviorSubject, debounceTime, Subscription } from 'rxjs';
 import { TextNode } from '../../core/text-node/text-node.class';
 
 export class XProxy<T extends IJsonData> implements IXProxy<T> {
   _target: T;
   _handler?: IXProxyHandler<T>;
-  _subject: BehaviorSubject<T>;
-  _subs: Subscription[] = [];
-
+  _subs: AnyFn[] = [];
+  value: any;
   // public proxy: { [P in keyof T]: T[P] };
   [key: string]: IJsonDataProp | T | IXProxyHandler<T> | any;
 
@@ -28,7 +20,6 @@ export class XProxy<T extends IJsonData> implements IXProxy<T> {
   constructor(target: T, handler?: IXProxyHandler<T>) {
     this._target = deepClone(target);
     this._handler = handler;
-    this._subject = new BehaviorSubject<T>(target);
     // this.proxy = {} as { [P in keyof T]: T[P] }; // 初始化为空对象并暂时忽略类型错误
     for (const key in this._target) {
       if (Object.prototype.hasOwnProperty.call(this._target, key)) {
@@ -37,7 +28,6 @@ export class XProxy<T extends IJsonData> implements IXProxy<T> {
       }
     }
     makePropertyNonEnumerable(this, '_subs');
-    makePropertyNonEnumerable(this, '_subject');
     // debugger;
   }
 
@@ -48,7 +38,7 @@ export class XProxy<T extends IJsonData> implements IXProxy<T> {
   private defineProperty<K extends keyof T>(key: K, initialValue?: T[K]): void {
     Object.defineProperty(this, key, {
       configurable: true,
-      enumerable: !(key === '_subs' || key === '_subject'),
+      enumerable: !(key === '_subs'),
       get() {
         let value: T[K] = this._target[key];
 
@@ -135,7 +125,7 @@ export class XProxy<T extends IJsonData> implements IXProxy<T> {
 
   addDep(element: TypeElement | TextNode, callback: (...rest: any[]) => void) {
     console.log('x-proxy addDep . ');
-    this._subs.push(this._subject.subscribe(callback));
+    this._subs.push(callback);
   }
 
   toJsonData(): IJsonData {
@@ -165,7 +155,9 @@ export class XProxy<T extends IJsonData> implements IXProxy<T> {
 
   next(data: T) {
     // console.log('next , data is ', data);
-    this._subject.next(data);
+    this._subs.forEach(sub => {
+      sub(data);
+    })
   }
 }
 
