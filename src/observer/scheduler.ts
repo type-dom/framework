@@ -8,8 +8,8 @@ import { cleanupDeps, Dep } from './dep';
 // import { warn, nextTick, inBrowser, isIE } from '../util/index'
 import type { ITypeNode as Component } from '../core/type-node/type-node.interface';
 import { inBrowser, isIE, nextTick } from '../util';
-// // import type { Component } from 'types/component'
-//
+// import type { Component } from 'types/component'
+
 export const MAX_UPDATE_COUNT = 100;
 const queue: Array<Watcher> = [];
 const activatedChildren: Array<Component> = [];

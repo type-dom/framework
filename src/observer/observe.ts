@@ -1,9 +1,8 @@
+import { isArray, isPlainObject } from '@type-dom/utils';
 import { TypeNode } from '../core/type-node/type-node.abstract';
-import { IObData } from '../interface';
-import { Observer } from './observer';
-import { isArray, isObject, isPlainObject } from '@type-dom/utils';
 import { isServerRendering } from '../util/env';
 import { isRef } from './util';
+import { Observer } from './observer';
 
 /**
  * In some cases we may want to disable observation inside a component's
