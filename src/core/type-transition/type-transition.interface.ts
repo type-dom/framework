@@ -62,7 +62,7 @@ export interface ITypeTransitionConfig<
   onAppearCancelled?: (el: HostElement) => void;
 
   //   todo
-  slot?: undefined;
+  slot?: TypeHtml | TypeSvg; // 只能有一个子节点
 
   childNodes?: (TypeHtml | TypeSvg)[];
 }

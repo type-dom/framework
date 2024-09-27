@@ -19,8 +19,8 @@ export abstract class TypeTransition extends TypeFragment implements ITypeTransi
     this.dom = undefined;
     this.mode = params?.mode || 'in-out';
     this.parent = params?.parent;
-
-    this.el = this.params.childNodes?.[0];
+    this.slotChild(params.slot);
+    this.el = this.childNodes[0] as TypeHtml | TypeSvg | undefined;
     // 处理 params, to props
     // todo 如果是多个子节点，transition本身要成为一个 div 。
     //   现在只能有一个子节点。
@@ -39,7 +39,7 @@ export abstract class TypeTransition extends TypeFragment implements ITypeTransi
       if (this.timer) {
         clearTimeout(this.timer as unknown as number);
       }
-      this.el?.ctrl.setStyleObj({
+      this.el?.style.setObj({
         display: this.display,
       });
       this.beforeEnter(this.el);
@@ -58,7 +58,7 @@ export abstract class TypeTransition extends TypeFragment implements ITypeTransi
             clearTimeout(this.timer as unknown as number);
           }
           this.timer = setTimeout(() => {
-            this.el?.ctrl.setStyleObj({
+            this.el?.style.setObj({
               display: 'none',
             });
           }, timeout);
@@ -91,7 +91,7 @@ export abstract class TypeTransition extends TypeFragment implements ITypeTransi
     if (this.props.onBeforeEnter) {
       this.props.onBeforeEnter(el);
     } else {
-      el.ctrl.setStyleObj({
+      el.style.setObj({
         opacity: 0,
         transition: 'opacity 0.3s ease-' + this.mode,
       });
@@ -104,7 +104,7 @@ export abstract class TypeTransition extends TypeFragment implements ITypeTransi
         console.log('enter , done . ');
       });
     } else {
-      el.ctrl.setStyleObj({
+      el.style.setObj({
         opacity: 1,
       });
     }
@@ -114,8 +114,8 @@ export abstract class TypeTransition extends TypeFragment implements ITypeTransi
     if (this.props.onAfterEnter) {
       this.props.onAfterEnter(el);
     } else {
-      el.ctrl.setStyleObj({
-        opacity: el.props.styleObj?.opacity,
+      el.style.setObj({
+        opacity: el.style.obj?.opacity,
       });
     }
   }
@@ -124,7 +124,7 @@ export abstract class TypeTransition extends TypeFragment implements ITypeTransi
     if (this.props.onBeforeLeave) {
       this.props.onBeforeLeave(el);
     } else {
-      el?.ctrl.setStyleObj({
+      el?.style.setObj({
         opacity: 1,
         transition: 'opacity 0.3s ease-' + this.mode,
       });
@@ -137,7 +137,7 @@ export abstract class TypeTransition extends TypeFragment implements ITypeTransi
         console.log('leave , done . ');
       });
     } else {
-      el.ctrl.setStyleObj({
+      el.style.setObj({
         opacity: 0,
       });
     }
@@ -148,8 +148,8 @@ export abstract class TypeTransition extends TypeFragment implements ITypeTransi
     if (this.props.onAfterLeave) {
       this.props.onAfterLeave(el);
     } else {
-      el.ctrl.setStyleObj({
-        opacity: el.props.styleObj?.opacity,
+      el.style.setObj({
+        opacity: el.params.styleObj?.opacity,
       });
     }
   }
