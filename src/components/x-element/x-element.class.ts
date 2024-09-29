@@ -90,7 +90,7 @@ export class XElement extends TypeElement implements IXElement {
         //       value = value[keys[i]];
         //     }
         //     if (value !== undefined) {
-        //       this.ctrl.addAttrObj({
+        //       this.attr.addObj({
         //         [attrName]: value
         //       });
         //     }
@@ -99,7 +99,7 @@ export class XElement extends TypeElement implements IXElement {
       } else if (attr.name.startsWith('@')) {
         // 过滤掉，不加入属性中。专门绑定事件时处理。
       } else {
-        this.ctrl.addAttrObj({
+        this.attr.addObj({
           [attr.name]: attr.value,
         });
       }
@@ -107,7 +107,7 @@ export class XElement extends TypeElement implements IXElement {
   }
 
   //   绑定事件
-  override initEvents() {
+  override mounted() {
     for (const attr of this.attributes) {
       if (attr.name.startsWith('@')) {
         console.log('attr.name is ', attr.name);
