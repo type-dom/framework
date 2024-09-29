@@ -12,7 +12,7 @@ export abstract class TypeSvgSvg extends TypeSvg implements ITypeSvgSvg {
     super();
     this.nodeName = 'svg';
     this.dom = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    this.ctrl.addAttrObj({
+    this.attr.addObj({
       version: '1.1',
       xmlns: 'http://www.w3.org/2000/svg',
       width: this.width,
@@ -23,7 +23,7 @@ export abstract class TypeSvgSvg extends TypeSvg implements ITypeSvgSvg {
   }
 
   resetSize(width: string | number, height: string | number): void {
-    this.ctrl.setAttrObj({
+    this.attr.setObj({
       width,
       height,
     });
