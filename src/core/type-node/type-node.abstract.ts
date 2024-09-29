@@ -1,12 +1,10 @@
-import { Subscription } from 'rxjs';
 import { IStyle } from '@type-dom/css-type';
 import { encodeToXmlString, camelToDash } from '@type-dom/utils';
 import type { IJsonData, IJsonDataProp } from '../../interface';
-import { Watcher } from '../../events/watcher.abstract';
-// import { XProxy } from '../../observer';
+import { Watcher } from '../events/watcher.abstract';
 import { TypeElement } from '../type-element/type-element.abstract';
-import { TypeElementController } from '../type-element/type-element.controller';
-import { TextNode } from '../text-node/text-node.class';
+import { Style } from '../style/style.class';
+import { Attribute } from '../attribute/attribute.class';
 import type {
   IAttr,
   IMethods,
@@ -15,6 +13,7 @@ import type {
   ITypeConfig,
   ITypeNode
 } from './type-node.interface';
+import { ITypeAttribute } from '../type-element/type-element.interface';
 
 /**
  * 虚拟DOM，TypeNode 抽象节点类, 所有节点类的抽象类；
@@ -29,7 +28,8 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
    * 在定义ClassName时，要把当前类写入到TypeMap中；
    */
   abstract className: string; // 最终实体类的名称，解析转换时需要创建对应的类； 必然有；
-  abstract ctrl?: TypeElementController | undefined;
+  abstract style?: Style | undefined;
+  abstract attr?: Attribute | undefined;
   abstract nodeName?: '#text' | 'fragment' | string | undefined;
   abstract nodeValue?: string | number | undefined;
   abstract childNodes?: TypeNode[] | undefined;
@@ -41,9 +41,9 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
   params: ITypeConfig;
   /**
    * 属性项
-   * setConfig/mergeConfig 等方法赋值，都不改变引用的地址。
+   * 排除 params中的 styleObj, attrObj；
    */
-  props: ITypeConfig;
+  props: Omit<ITypeConfig, 'styleObj' | 'attrObj' | 'events'>;
   parent?: TypeElement | undefined;
   // 该节点不是当前位置的组件的子节点；要避免加入到组件的子节点中；
   // 挂载到指定的组件的DOM,甚至直接指向 body；Teleport 中才需要。
@@ -79,7 +79,6 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
   abstract update(): void;
 
   // abstract attrObj?: ITypeAttribute | undefined; // 合并到 this.props中
-  // abstract styleObj?: IStyle | undefined;
   isRoot?: boolean; // 是否是根节点 只有TypeRoot才为true
   attributes?: IAttr[] | undefined;
   settings?: ISettings;
@@ -183,44 +182,33 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
     }
   }
 
-  buildProps<T extends ITypeConfig>(config: T = {} as T): T {
+  // props中要去掉 styleObj, attrObj;
+  buildProps<T extends ITypeConfig, K extends Omit<T, 'styleObj' | 'attrObj'>>(config: T = {} as T): K {
     if (!this.props) {
       console.error('this.props is undefined . ');
       this.props = {};
     }
     for (const key in config) {
+      // styleObj, attrObj, events 要单独处理
       if (key === 'styleObj') {
-        // styleObj, attrObj要单独处理
-        if (!this.props.styleObj) {
-          this.props.styleObj = {};
-        }
-        Object.assign(this.props.styleObj, config.styleObj);
+        // this.style?.addObj(config.styleObj);
+        // Object.assign(this.style.obj, config.styleObj);
       } else if (key === 'attrObj') {
-        if (!this.props.attrObj) {
-          this.props.attrObj = {};
-        }
-        Object.assign(this.props.attrObj, config.attrObj);
+        // if (config.attrObj) {
+        //   this.attr?.addObj(config.attrObj);
+        // }
+        // Object.assign(this.attr?.obj, config.attrObj);
+      } else if (key === 'events') {
+        // this.addEvents?.(config.events);
       } else {
         (this.props as T)[key] = config[key];
       }
     }
-    return this.props as T;
+    return this.props as K;
   }
 
   getPropsValue(key: keyof ITypeConfig) {
     return this.props[key];
-  }
-
-  getAttrObj() {
-    if (!this.props) {
-      console.error('this.props is undefined . ');
-      this.props = {};
-    }
-    return this.props.attrObj = this.props.attrObj ?? {};
-  }
-
-  getStyleObj(): IStyle {
-    return this.props.styleObj = this.props.styleObj ?? {};
   }
 
   // config.slots中添加slot的对象
@@ -236,12 +224,12 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
     this.isRoot = isRoot;
   }
 
-  getRootElement<T extends TypeNode>(): T | undefined {
+  getRoot<T extends TypeNode>(): T | undefined {
     if (this.isRoot) {
       return this as unknown as T;
     } else {
       // 要保证parent不为null，否则会获取不到。要保证应用项目中的parent都设置过了。
-      return this.parent?.getRootElement();
+      return this.parent?.getRoot();
     }
   }
 
@@ -300,8 +288,7 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
   }
 
   setParent(parent: TypeElement): void {
-    this.parent = parent;
-    // parent.addChild(this); // 单一原则
+    this.parent = parent; // 单一原则
   }
 
   appendParent(parent: TypeElement): void {
@@ -316,19 +303,45 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
   /**
    * 找到下级指定 键名/键值 的第一个节点
    * 会递归遍历子节点
-   * @param key 如： className    index
-   * @param value 如： TdIcon      1
+   * @param expr 字符串类型，表示用于评估的表达式，可以是嵌套属性的路径（用点分隔）
+   *            如： className    index   router.path
+   * @param value 如：TdIcon        1       /home
    */
-  down<T extends TypeNode>(key: string, value: string | number | boolean): T | undefined {
-    // console.log('findNode className is ', className);
+  down<T extends TypeNode>(expr: string, value: any): T | undefined {
+    // console.log('down expr is ', expr, ' value is ', value);
+    if (value === undefined) {
+      return;
+    }
+    const path = expr.split('.');
     for (const child of this.children) {
-      if (child[key as keyof TypeNode] === value) {
+      let propValue = path.reduce((acc: any, curr: string) => {
+        // 如果当前累积值为 null 或 undefined，则返回 undefined
+        if (!acc) {
+          return undefined;
+        }
+        // 返回下一层的对象或属性值
+        return acc[curr];
+      }, child);
+      if (!propValue) {
+        propValue = path.reduce((acc: any, curr: string) => {
+          // 如果当前累积值为 null 或 undefined，则返回 undefined
+          if (!acc) {
+            return undefined;
+          }
+          // 返回下一层的对象或属性值
+          return acc[curr];
+        }, child.props);
+      }
+      if (propValue === value) {
         return child as T;
       } else if (child.children.length > 0) {
-        return child.down(key, value);
+        const res = child.down(expr, value)
+        if (res) { // 有值才返回，否则继续遍历
+          return res as T;
+        }
       }
     }
-    return undefined;
+    // return undefined;
   }
 
   up<T extends TypeElement>(className: string): T | undefined {
@@ -430,8 +443,8 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
     }
     buffer.push(`<${this.nodeName}`);
     // 下面组装 属性 和 样式
-    if (this.props?.attrObj) {
-      for (let key in this.props.attrObj) {
+    if (this.attr?.obj) {
+      for (let key in this.attr.obj) {
         // 下面几个属性不需要转
         if (
           key !== 'viewBox' &&
@@ -442,22 +455,22 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
         }
         // todo
         buffer.push(
-          ` ${key}="${encodeToXmlString(String(this.props.attrObj[key]))}"`
+          ` ${key}="${encodeToXmlString(String(this.attr.obj[key]))}"`
         );
       }
     }
-    if (this.props?.styleObj) {
+    if (this.style?.obj) {
       let style = '';
-      for (const key in this.props.styleObj) {
+      for (const key in this.style.obj) {
         style += `${camelToDash(key)}: ${encodeToXmlString(
-          String((this.props.styleObj as any)[key])
+          String((this.style.obj as any)[key])
         )};`;
       }
       if (style !== '') {
         buffer.push(` style="${style}"`);
       }
     }
-    // todo this.attributes may be repeated with this.props.attrObj
+    // todo this.attributes may be repeated with this.attr.obj
     if (this.attributes) {
       for (const attribute of this.attributes) {
         buffer.push(
@@ -494,8 +507,8 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
     return {
       className: this.className,
       config: {
-        attrObj: this.props?.attrObj,
-        styleObj: this.props?.styleObj
+        attrObj: this.attr?.obj,
+        styleObj: this.style?.obj
       },
       nodeName: this.nodeName,
       nodeValue: this.nodeValue,
@@ -580,8 +593,8 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
     }
     this.childNodes?.forEach(child => child.destroy());
     this.childNodes = undefined;
-    delete this.props?.styleObj;
-    delete this.props?.attrObj;
+    delete this.style;
+    delete this.attr;
     // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // // @ts-expect-error
     // delete this.props;

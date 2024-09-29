@@ -1,9 +1,8 @@
-import { Subscription } from 'rxjs';
 import { IStyle } from '@type-dom/css-type';
 import { type IJsonDataProp, IJsonData, IObData, AnyFn } from '../../interface';
 import { Ref } from '../../reactivity/ref';
 import { XProxy } from '../../observer';
-import { IEmits, IEvents } from '../../events/events.interface';
+import { IEmits, IEvents } from '../events/events.interface';
 import { SlotNode } from '../../components/slot-node/slot-node.class';
 import type { ITypeAttribute } from '../type-element/type-element.interface';
 import { TypeNode } from './type-node.abstract';
@@ -151,7 +150,7 @@ export interface ITypeConfig extends ITypeBase {
    */
   template?: string; // 模板 默认TypeClass为XElement
   fieldSetting?: IOptionSetting;
-  [propName: string]: any;
+  // [propName: string]: any;
 }
 
 export interface ISlotNodes {
