@@ -1,6 +1,6 @@
 export type * from './interface';
-export type * from './events/events.interface';
-export * from './style/index';
+export type * from './core/events/events.interface';
+export * from './core/style/index';
 export * from './parser';
 export * from './router';
 export * from './observer/index';
