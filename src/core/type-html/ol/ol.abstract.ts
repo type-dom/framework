@@ -23,9 +23,9 @@ export abstract class TypeOL extends TypeHtml implements ITypeOL {
     super();
     this.nodeName = 'ol';
     this.dom = document.createElement(this.nodeName);
-    // this.props.attrObj.type = type;
-    // this.props.attrObj.start = start;
-    // this.ctrl.addAttrObj({
+    // this.attr.obj.type = type;
+    // this.attr.obj.start = start;
+    // this.attr.addObj({
     //   type,
     //   start,
     // });
