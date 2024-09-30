@@ -10,7 +10,7 @@ export abstract class TypeUL extends TypeHtml implements ITypeUL {
   protected constructor() {
     super();
     this.nodeName = 'ul';
-    this.ctrl.addStyleObj({
+    this.style.addObj({
       margin: '0',
       padding: '0',
     });
