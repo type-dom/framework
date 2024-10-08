@@ -14,13 +14,10 @@ export abstract class TypeButton extends TypeHtml implements ITypeButton {
     super();
     this.nodeName = 'button';
     this.dom = document.createElement(this.nodeName);
-    this.ctrl.addStyleObj(buttonStyle);
-    this.ctrl.addAttrObj({
+    this.style.addObj(buttonStyle);
+    this.attr.addObj({
       type: 'button'
-    })
-    // this.props.attrObj = {
-    //   type: 'button',
-    // };
+    });
     this.textNode = new TextNode('');
     this.childNodes = [this.textNode]; // 默认值
   }
