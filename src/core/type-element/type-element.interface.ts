@@ -8,8 +8,17 @@ export interface ITypeAttribute {
   class?: string;
   name?: string;
   type?: string;
-
-  [key: string]: string | number | boolean | undefined | ITypeAttribute;
+  fill?: string; // rgb(0,0,255) blue
+  strokeWidth?: number | string;
+  stroke?: string; // rgb(0,0,0) pink
+  x?: number;
+  y?: number;
+  rx?: number;
+  ry?: number;
+  width?: number | string;
+  height?: number | string; // px
+  d?: string;
+  [key: string]: string | number | boolean | undefined;
 }
 
 /**
