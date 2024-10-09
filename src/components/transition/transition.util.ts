@@ -271,7 +271,7 @@ export function whenTransitionEnds(
   const endEvent = type + 'end';
   let ended = 0;
   const end = () => {
-    el.removeEventListener(endEvent as keyof ElementEventMap , onEnd);
+    el.removeEventListener(endEvent as keyof ElementEventMap, onEnd);
     resolveIfNotStale();
   };
   const onEnd = (e: Event) => {
