@@ -19,15 +19,13 @@ export class SvgPath extends TypeSvg implements ISvgPath {
       this.nodeName
     );
     this.className = 'SvgPath';
-    this.ctrl.addAttrObj({
-      d: '',
-    });
+    this.attr.addObj({ d: params.attrObj?.d ?? '' });
     this.childNodes = [];
     this.props = this.useParams(params);
   }
 
   get pathData(): string {
-    return this.props.attrObj?.d as string ?? '';
+    return this.attr.obj.d ?? '';
   }
 
   /**
@@ -40,7 +38,7 @@ export class SvgPath extends TypeSvg implements ISvgPath {
   }
 
   addData(...rest: string[]): void {
-    this.ctrl.addAttribute('d', rest.join(' '));
+    this.attr.add('d', rest.join(' '));
   }
 
   renderData(...rest: string[]): void {
@@ -53,7 +51,7 @@ export class SvgPath extends TypeSvg implements ISvgPath {
    * @param color
    */
   setFill(color: string) {
-    this.ctrl.addAttrObj({
+    this.attr.addObj({
       fill: color,
     });
   }

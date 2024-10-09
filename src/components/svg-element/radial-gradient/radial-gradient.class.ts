@@ -25,7 +25,7 @@ export class SvgRadialGradient extends TypeSvg implements ISvgRadialGradient {
   }
 
   reset(id: string): void {
-    this.ctrl.setAttrObj({
+    this.attr.setObj({
       id,
     });
   }

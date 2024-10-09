@@ -24,7 +24,7 @@ export class SvgText extends TypeSvg implements ISvgText {
       this.nodeName
     );
     this.className = 'SvgText';
-    this.ctrl.addAttrObj({
+    this.attr.addObj({
       x: 0,
       y: 0,
     });

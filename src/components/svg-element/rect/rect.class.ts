@@ -13,7 +13,7 @@ export class SvgRect extends TypeSvg implements ISvgRect {
   width = 60;
   height = 60;
 
-  constructor(params?: ISvgRectConfig) {
+  constructor(params: ISvgRectConfig = {}) {
     super();
     this.nodeName = 'rect';
     this.className = 'SvgRect';
@@ -22,7 +22,7 @@ export class SvgRect extends TypeSvg implements ISvgRect {
       this.nodeName
     );
     this.childNodes = [];
-    this.ctrl.addAttrObj({
+    this.attr.addObj({
       // fill: 'none',
       // stroke: '#000',
       strokeWidth: 1,
@@ -40,7 +40,7 @@ export class SvgRect extends TypeSvg implements ISvgRect {
     this.y = y;
     this.width = width;
     this.height = height;
-    this.ctrl.setAttrObj({
+    this.attr.setObj({
       x,
       y,
       width,

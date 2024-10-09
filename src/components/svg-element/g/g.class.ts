@@ -8,7 +8,7 @@ export class SvgG extends TypeSvg implements ISvgG {
   dom: SVGGElement;
   override childNodes: TypeSvg[];
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.nodeName = 'g';
     this.className = 'SvgG';

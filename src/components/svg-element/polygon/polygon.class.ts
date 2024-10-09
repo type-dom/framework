@@ -10,7 +10,7 @@ export class SvgPolygon extends TypeSvg implements ISvgPolygon {
   override parent?: TypeSvgSvg;
   override childNodes: [];
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.nodeName = 'polygon';
     this.className = 'SvgPolygon';

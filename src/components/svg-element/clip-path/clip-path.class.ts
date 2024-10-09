@@ -9,7 +9,7 @@ export class SvgClipPath extends TypeSvg implements ISvgClipPath {
   dom: SVGClipPathElement;
   override childNodes: TypeSvg[];
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.nodeName = 'clipPath';
     this.className = 'SvgClipPath';

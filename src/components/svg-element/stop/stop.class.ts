@@ -20,7 +20,7 @@ export class SvgStop extends TypeSvg implements ISvgStop {
       this.nodeName
     );
     this.childNodes = [];
-    this.ctrl.addAttrObj({
+    this.attr.addObj({
       offset: '0%',
       stopColor: '#000',
     });
@@ -28,7 +28,7 @@ export class SvgStop extends TypeSvg implements ISvgStop {
   }
 
   reset(offset: number, stopColor: string): void {
-    this.ctrl.setAttrObj({
+    this.attr.setObj({
       offset,
       stopColor,
     });

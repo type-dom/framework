@@ -16,7 +16,7 @@ export class SvgDefs extends TypeSvg implements ISvgDefs {
    * 构造函数初始化 `SvgDefs` 实例。
    * @param {ITypeConfig} config 可选的配置对象，用于配置SVG定义元素。
    */
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super(); // 调用父类的构造函数
     this.nodeName = 'defs'; // 设置节点名称
     this.className = 'SvgDefs'; // 设置类名

@@ -25,7 +25,7 @@ export class SvgEllipse extends TypeSvg implements ISvgEllipse {
       this.nodeName
     );
     this.childNodes = [];
-    this.ctrl.addAttrObj({
+    this.attr.addObj({
       fill: 'none',
       stroke: '#000',
       strokeWidth: 1,
@@ -42,7 +42,7 @@ export class SvgEllipse extends TypeSvg implements ISvgEllipse {
     this.cy = cy;
     this.rx = rx;
     this.ry = ry;
-    this.ctrl.setAttrObj({
+    this.attr.setObj({
       cx,
       cy,
       rx,

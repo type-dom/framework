@@ -6,7 +6,7 @@ import type { ISvgSvg } from './svg.interface';
 export class SvgSvg extends TypeSvgSvg implements ISvgSvg {
   className: 'SvgSvg';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'SvgSvg';
     this.useParams(params);

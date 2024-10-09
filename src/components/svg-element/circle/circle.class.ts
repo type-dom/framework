@@ -10,7 +10,7 @@ export class SvgCircle extends TypeSvg implements ISvgCircle {
   override parent?: TypeSvgSvg;
   override childNodes: [];
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.nodeName = 'circle';
     this.className = 'SvgCircle';

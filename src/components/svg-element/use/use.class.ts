@@ -10,7 +10,7 @@ export class SvgUse extends TypeSvg implements ISvgUse {
   override parent?: TypeSvgSvg;
   override childNodes: [];
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.nodeName = 'use';
     this.className = 'SvgUse';

@@ -22,7 +22,7 @@ export class SvgLine extends TypeSvg implements ISvgLine {
       this.nodeName
     );
     this.childNodes = [];
-    this.ctrl.addAttrObj({
+    this.attr.addObj({
       strokeWidth: 1,
       stroke: '#000',
       x1: this.x1,
@@ -38,7 +38,7 @@ export class SvgLine extends TypeSvg implements ISvgLine {
     this.y1 = y1;
     this.x2 = x2;
     this.y2 = y2;
-    this.ctrl.setAttrObj({
+    this.attr.setObj({
       x1,
       y1,
       x2,
