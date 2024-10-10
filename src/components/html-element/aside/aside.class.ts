@@ -5,7 +5,7 @@ import type { IAside } from './aside.interface';
 export class Aside extends TypeAside implements IAside {
   className: 'Aside';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Aside';
     this.useParams(params);

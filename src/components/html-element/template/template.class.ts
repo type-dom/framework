@@ -5,7 +5,7 @@ import type { ITemplate } from './template.interface';
 export class Template extends TypeTemplate implements ITemplate {
   className: 'Template';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Template';
     this.useParams(params);

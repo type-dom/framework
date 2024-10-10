@@ -5,7 +5,7 @@ import type { IVar } from './var.interface';
 export class Var extends TypeVar implements IVar {
   className: 'Var';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Var';
     this.useParams(params);

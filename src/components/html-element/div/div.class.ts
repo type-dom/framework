@@ -5,7 +5,7 @@ import type { IDiv } from './div.interface';
 export class Div extends TypeDiv implements IDiv {
   className: 'Div';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Div';
     this.useParams(params);

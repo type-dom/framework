@@ -5,7 +5,7 @@ import type { IOL } from './ol.interface';
 export class OL extends TypeOL implements IOL {
   className: 'OL';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'OL';
     this.useParams(params);

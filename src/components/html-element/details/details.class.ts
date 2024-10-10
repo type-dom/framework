@@ -5,7 +5,7 @@ import type { IDetails } from './details.interface';
 export class Details extends TypeDetails implements IDetails {
   className: 'Details';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Details';
     this.useParams(params);

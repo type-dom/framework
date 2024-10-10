@@ -7,7 +7,7 @@ export class Textarea extends TypeTextarea implements ITextarea {
 
   // value: string | number | boolean | undefined;
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'TextArea';
     this.useParams(params);

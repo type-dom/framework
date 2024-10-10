@@ -5,7 +5,7 @@ import type { IAbbr } from './abbr.interface';
 export class Abbr extends TypeAbbr implements IAbbr {
   className: 'Abbr';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Abbr';
     this.useParams(params);

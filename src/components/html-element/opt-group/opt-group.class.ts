@@ -15,7 +15,7 @@ export class OptGroup extends TypeHtml implements IOptGroup {
     this.nodeName = 'optgroup';
     this.dom = document.createElement(this.nodeName);
     this.className = 'OptGroup';
-    this.ctrl.addAttrName( 'option');
+    this.attr.addName( 'option');
     this.textNode = new TextNode('一个选项');
     this.childNodes = [this.textNode];
     this.props = this.useParams(params);

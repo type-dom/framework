@@ -5,7 +5,7 @@ import type { IIns } from './ins.interface';
 export class Ins extends TypeIns implements IIns {
   className: 'Ins';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Ins';
     this.useParams(params);

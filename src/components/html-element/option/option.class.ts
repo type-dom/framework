@@ -16,7 +16,7 @@ export class Option extends TypeHtml implements IOption {
     this.nodeName = 'option';
     this.dom = document.createElement(this.nodeName);
     this.className = 'Option';
-    this.ctrl.addAttrName('option');
+    this.attr.addName('option');
     this.textNode = new TextNode('一个选项');
     this.childNodes = [this.textNode];
     this.props = this.useParams(params);

@@ -5,7 +5,7 @@ import type { ISamp } from './samp.interface';
 export class Samp extends TypeSamp implements ISamp {
   className: 'Samp';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Samp';
     this.useParams(params);

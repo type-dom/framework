@@ -5,7 +5,7 @@ import type { ITrack } from './track.interface';
 export class Track extends TypeTrack implements ITrack {
   className: 'Track';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Track';
     this.useParams(params);

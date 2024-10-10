@@ -5,7 +5,7 @@ import type { IRuby } from './ruby.interface';
 export class Ruby extends TypeRuby implements IRuby {
   className: 'Ruby';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Ruby';
     this.useParams(params);

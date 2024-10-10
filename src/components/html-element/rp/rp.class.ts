@@ -5,7 +5,7 @@ import type { IRp } from './rp.interface';
 export class Rp extends TypeRp implements IRp {
   className: 'Rp';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Rp';
     this.useParams(params);

@@ -5,7 +5,7 @@ import type { IRt } from './rt.interface';
 export class Rt extends TypeRt implements IRt {
   className: 'Rt';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Rt';
     this.useParams(params);

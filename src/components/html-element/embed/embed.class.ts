@@ -5,7 +5,7 @@ import type { IEmbed } from './embed.interface';
 export class Embed extends TypeEmbed implements IEmbed {
   className: 'Embed';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Embed';
     this.useParams(params);

@@ -8,7 +8,7 @@ export class Select extends TypeSelect implements ISelect {
   override childNodes: Option[];
   value?: string | number | boolean;
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Select';
     this.childNodes = [];

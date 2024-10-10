@@ -8,11 +8,11 @@ export class LI extends TypeLI implements ILI {
   className: 'LI';
   override childNodes: (TypeElement | TextNode)[];
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'LI';
     this.childNodes = [];
-    this.ctrl.addStyleObj({
+    this.style.addObj({
       // todo: 应该在具体组件中配置样式
       width: '100px',
       textAlign: 'center',
@@ -21,7 +21,7 @@ export class LI extends TypeLI implements ILI {
       borderBottom: 'none',
       boxSizing: 'border-box',
     });
-    this.ctrl.addAttrName('list-item');
+    this.attr.addName('list-item');
 
     this.useParams(params);
   }

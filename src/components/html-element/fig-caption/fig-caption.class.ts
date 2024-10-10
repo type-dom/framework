@@ -5,7 +5,7 @@ import type { IFigCaption } from './fig-caption.interface';
 export class FigCaption extends TypeFigCaption implements IFigCaption {
   className: 'FigCaption';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'FigCaption';
     this.useParams(params);

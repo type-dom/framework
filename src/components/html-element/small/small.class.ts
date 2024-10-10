@@ -5,7 +5,7 @@ import type { ISmall } from './small.interface';
 export class Small extends TypeSmall implements ISmall {
   className: 'Small';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Small';
     this.useParams(params);

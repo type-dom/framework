@@ -5,7 +5,7 @@ import type { IForm } from './form.interface';
 export class Form extends TypeForm implements IForm {
   className: 'Form';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Form';
     this.useParams(params);

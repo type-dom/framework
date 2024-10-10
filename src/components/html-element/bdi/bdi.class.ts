@@ -5,7 +5,7 @@ import type { IBdi } from './bdi.interface';
 export class Bdi extends TypeBdi implements IBdi {
   className: 'Bdi';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Bdi';
     this.useParams(params);

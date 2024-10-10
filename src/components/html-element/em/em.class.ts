@@ -5,7 +5,7 @@ import type { IEm } from './em.interface';
 export class Em extends TypeEm implements IEm {
   className: 'Em';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Em';
     this.useParams(params);

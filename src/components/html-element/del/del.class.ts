@@ -5,7 +5,7 @@ import type { IDel } from './del.interface';
 export class Del extends TypeDel implements IDel {
   className: 'Del';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Del';
     this.useParams(params);

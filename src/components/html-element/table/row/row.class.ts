@@ -9,7 +9,7 @@ export class TableRow extends TypeTableRow implements ITableRow {
   slotNode: SlotNode;
   override childNodes: TableDataCell[];
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'TableRow';
     this.slotNode = new SlotNode('default');

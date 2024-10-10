@@ -5,7 +5,7 @@ import type { IHGroup } from './h-group.interface';
 export class HGroup extends TypeHGroup implements IHGroup {
   className: 'HGroup';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'HGroup';
     this.useParams(params);

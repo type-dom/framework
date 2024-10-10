@@ -5,7 +5,7 @@ import type { ISub } from './sub.interface';
 export class Sub extends TypeSub implements ISub {
   className: 'Sub';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Sub';
     this.useParams(params);

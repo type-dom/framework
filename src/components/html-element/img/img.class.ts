@@ -5,7 +5,7 @@ import type { IImg } from './img.interface';
 export class Img extends TypeImg implements IImg {
   className: 'Img';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Img';
     this.useParams(params);

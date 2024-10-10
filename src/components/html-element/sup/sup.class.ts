@@ -5,7 +5,7 @@ import type { ISup } from './sup.interface';
 export class Sup extends TypeSup implements ISup {
   className: 'Sup';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Sup';
     this.useParams(params);

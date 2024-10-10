@@ -5,14 +5,14 @@ import type { ISection } from './section.interface';
 export class Section extends TypeSection implements ISection {
   className: 'Section';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Section';
-    this.ctrl.addStyleObj({
+    this.style.addObj({
       display: 'flex',
       justifyContent: 'space-between',
     });
-    this.ctrl.addAttrObj({
+    this.attr.addObj({
       name: 'section',
     });
     this.useParams(params);

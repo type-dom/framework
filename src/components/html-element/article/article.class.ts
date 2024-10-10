@@ -5,7 +5,7 @@ import type { IArticle } from './article.interface';
 export class Article extends TypeArticle implements IArticle {
   className: 'Article';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Article';
     this.useParams(params);

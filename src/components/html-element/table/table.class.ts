@@ -8,7 +8,7 @@ export class Table extends TypeTable implements ITable {
   className: 'Table';
   override childNodes: (TableHead | TableRow)[];
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Table';
     this.childNodes = [];

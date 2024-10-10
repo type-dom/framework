@@ -5,7 +5,7 @@ import type { ICanvas } from './canvas.interface';
 export class Canvas extends TypeCanvas implements ICanvas {
   className: 'Canvas';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Canvas';
     this.useParams(params);

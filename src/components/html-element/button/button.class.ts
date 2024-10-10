@@ -5,7 +5,7 @@ import type { IButton } from './button.interface';
 export class Button extends TypeButton implements IButton {
   className: 'Button';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Button';
     this.useParams(params);

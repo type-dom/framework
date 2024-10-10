@@ -5,7 +5,7 @@ import type { ISpan } from './span.interface';
 export class Span extends TypeSpan implements ISpan {
   className: 'Span';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Span';
     this.useParams(params);

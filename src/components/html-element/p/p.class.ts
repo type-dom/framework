@@ -5,7 +5,7 @@ import type { IP } from './p.interface';
 export class P extends TypeP implements IP {
   className: 'P';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'P';
     this.useParams(params);

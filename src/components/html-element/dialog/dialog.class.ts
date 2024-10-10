@@ -5,7 +5,7 @@ import type { IDialog } from './dialog.interface';
 export class Dialog extends TypeDialog implements IDialog {
   className: 'Dialog';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Dialog';
     this.useParams(params);

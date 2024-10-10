@@ -5,7 +5,7 @@ import type { IBdo } from './bdo.interface';
 export class Bdo extends TypeBdo implements IBdo {
   className: 'Bdo';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Bdo';
     this.useParams(params);

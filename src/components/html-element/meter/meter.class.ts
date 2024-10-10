@@ -5,7 +5,7 @@ import type { IMeter } from './meter.interface';
 export class Meter extends TypeMeter implements IMeter {
   className: 'Meter';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Meter';
     this.useParams(params);

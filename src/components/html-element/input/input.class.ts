@@ -9,7 +9,7 @@ export class Input extends TypeHtml implements IInput {
   override childNodes: [];
 
   // value: string | number | boolean | undefined;
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.nodeName = 'input';
     this.dom = document.createElement(this.nodeName);
@@ -30,7 +30,7 @@ export class Input extends TypeHtml implements IInput {
    * month week date time datetime datetime-local[注意]IE和firefox这6种日期类型都不支持，chrome不支持datetime类型
    */
   get type(): string {
-    return this.props.attrObj?.type as string;
+    return this.attr.obj?.type as string;
   }
 
   /**
@@ -42,7 +42,7 @@ export class Input extends TypeHtml implements IInput {
   }
 
   set value(value: string | number | boolean) {
-    this.ctrl.setAttribute('value', value);
+    this.attr.set('value', value);
     this.dom.value = String(value);
   }
 

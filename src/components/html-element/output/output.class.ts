@@ -5,7 +5,7 @@ import type { IOutput } from './output.interface';
 export class Output extends TypeOutput implements IOutput {
   className: 'Output';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Output';
     this.useParams(params);

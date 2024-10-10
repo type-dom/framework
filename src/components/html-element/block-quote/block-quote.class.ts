@@ -5,7 +5,7 @@ import type { IBlockQuote } from './block-quote.interface';
 export class BlockQuote extends TypeBlockQuote implements IBlockQuote {
   className: 'BlockQuote';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'BlockQuote';
     this.useParams(params);

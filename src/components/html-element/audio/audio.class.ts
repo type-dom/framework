@@ -5,7 +5,7 @@ import type { IAudio } from './audio.interface';
 export class Audio extends TypeAudio implements IAudio {
   className: 'Audio';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Audio';
     this.useParams(params);

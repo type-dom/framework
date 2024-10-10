@@ -5,7 +5,7 @@ import type { IBase } from './base.interface';
 export class Base extends TypeBase implements IBase {
   className: 'Base';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Base';
     this.useParams(params);

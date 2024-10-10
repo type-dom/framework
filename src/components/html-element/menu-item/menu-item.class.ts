@@ -11,7 +11,7 @@ import type { IMenuItem } from './menu-item.interface';
 export class MenuItem extends TypeMenuItem implements IMenuItem {
   className: 'MenuItem';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'MenuItem';
     this.useParams(params);

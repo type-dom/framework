@@ -5,7 +5,7 @@ import type { ILegend } from './legend.interface';
 export class Legend extends TypeLegend implements ILegend {
   className: 'Legend';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Legend';
     this.useParams(params);

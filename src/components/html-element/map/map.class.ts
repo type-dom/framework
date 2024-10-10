@@ -5,7 +5,7 @@ import type { IMap } from './map.interface';
 export class Map extends TypeMap implements IMap {
   className: 'Map';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Map';
     this.useParams(params);

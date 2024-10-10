@@ -5,7 +5,7 @@ import type { IU } from './u.interface';
 export class U extends TypeU implements IU {
   className: 'U';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'U';
     this.useParams(params);

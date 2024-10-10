@@ -5,7 +5,7 @@ import type { IProgress } from './progress.interface';
 export class Progress extends TypeProgress implements IProgress {
   className: 'Progress';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Progress';
     this.useParams(params);

@@ -5,7 +5,7 @@ import type { IMain } from './main.interface';
 export class Main extends TypeMain implements IMain {
   className: 'Main';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Main';
     this.useParams(params);

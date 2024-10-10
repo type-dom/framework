@@ -5,7 +5,7 @@ import type { IB } from './b.interface';
 export class B extends TypeB implements IB {
   className: 'B';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'B';
     this.useParams(params);

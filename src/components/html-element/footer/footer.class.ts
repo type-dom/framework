@@ -5,7 +5,7 @@ import type { IFooter } from './footer.interface';
 export class Footer extends TypeFooter implements IFooter {
   className: 'Footer';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Footer';
     this.useParams(params);

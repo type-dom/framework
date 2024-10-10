@@ -5,7 +5,7 @@ import type { ISummary } from './summary.interface';
 export class Summary extends TypeSummary implements ISummary {
   className: 'Summary';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Summary';
     this.useParams(params);

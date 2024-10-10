@@ -5,7 +5,7 @@ import type { IDfn } from './dfn.interface';
 export class Dfn extends TypeDfn implements IDfn {
   className: 'Dfn';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Dfn';
     this.useParams(params);

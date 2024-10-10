@@ -9,18 +9,18 @@ export class Label extends TypeLabel implements ILabel {
   override childNodes: (Input | TextNode)[];
   override textNode?: TextNode;
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Label';
-    this.ctrl.addAttrName('label');
+    this.attr.addName('label');
     // this.textNode = new TextNode();
     this.childNodes = [];
     this.useParams(params);
   }
 
   // createInstance(labelLiteral: ILabel): void {
-  // this.ctrl.resetAttrObj(labelLiteral.attrObj);
-  // this.ctrl.resetStyleObj(labelLiteral.styleObj);
+  // this.attr.resetObj(labelLiteral.attrObj);
+  // this.style.resetObj(labelLiteral.styleObj);
   //   for (const idx in labelLiteral.childNodes) {
   //     if (this.childNodes[idx]) {
   //       this.childNodes[0].setText(labelLiteral.childNodes[0].nodeValue);

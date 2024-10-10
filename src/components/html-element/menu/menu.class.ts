@@ -5,7 +5,7 @@ import type { IMenu } from './menu.interface';
 export class Menu extends TypeMenu implements IMenu {
   className: 'Menu';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Menu';
     this.useParams(params);

@@ -5,7 +5,7 @@ import type { IUL } from './ul.interface';
 export class UL extends TypeUL implements IUL {
   className: 'UL';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'UL';
     this.useParams(params);

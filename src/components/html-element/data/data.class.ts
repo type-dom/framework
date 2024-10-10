@@ -5,7 +5,7 @@ import type { IData } from './data.interface';
 export class Data extends TypeData implements IData {
   className: 'Data';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Data';
     this.useParams(params);

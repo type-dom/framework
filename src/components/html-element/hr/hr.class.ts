@@ -5,7 +5,7 @@ import type { IHr } from './hr.interface';
 export class Hr extends TypeHr implements IHr {
   className: 'Hr';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Hr';
     this.useParams(params);

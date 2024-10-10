@@ -5,7 +5,7 @@ import type { ISource } from './source.interface';
 export class Source extends TypeSource implements ISource {
   className: 'Source';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Source';
     this.useParams(params);

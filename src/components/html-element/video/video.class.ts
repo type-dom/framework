@@ -5,7 +5,7 @@ import type { IVideo } from './video.interface';
 export class Video extends TypeVideo implements IVideo {
   className: 'Video';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Video';
     this.useParams(params);

@@ -5,7 +5,7 @@ import type { ICode } from './code.interface';
 export class Code extends TypeCode implements ICode {
   className: 'Code';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Code';
     this.useParams(params);

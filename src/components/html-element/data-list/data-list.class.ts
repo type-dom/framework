@@ -5,7 +5,7 @@ import type { IDataList } from './data-list.interface';
 export class DataList extends TypeDataList implements IDataList {
   className: 'DataList';
 
-  constructor(params?: ITypeConfig) {
+  constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'DataList';
     this.useParams(params);
