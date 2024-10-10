@@ -242,8 +242,8 @@ export class AppRoot extends TypeRoot {
   constructor(option?: ITypeNode) {
     super(option);
     this.className = 'AppRoot';
-    this.ctrl.addAttrName('app-root');
-    this.ctrl.addStyleObj({
+    this.attr.addName('app-root');
+    this.style.addObj({
       display: 'flex',
       flexDirection: 'column',
       // padding: '10px',
@@ -277,7 +277,7 @@ export class AppElement extends HTMLElement {
   connectedCallback() { // 省去了监听document加载完毕
     const title = 'type-app';
     const appRoot = new AppRoot();
-    appRoot.ctrl.setAttrName(title);
+    appRoot.attr.setName(title);
     // 使用路由
     appRoot.useRouter();
     const shadowRoot = this.attachShadow({ mode: 'open' }); // mode "closed" | "open"
