@@ -3,7 +3,6 @@ import { TypeElement } from '../../core';
 import { IRoute } from '../route.interface';
 import { getClassFromModule } from '../util';
 import { IRouterViewConfig } from './router-view.interface';
-import { TypeNode } from '../../core/type-node/type-node.abstract';
 
 /**
  * 路由视图组件
@@ -21,7 +20,7 @@ export class RouterView extends TypeFragment {
   // component?: TypeElement;
   // override slot?: TypeElement; // 唯一子元素
   component?: TypeElement;
-  constructor(params?: IRouterViewConfig) {
+  constructor(params: IRouterViewConfig = {}) {
     super();
     this.props = this.useParams(params);
     this.loaded = false;

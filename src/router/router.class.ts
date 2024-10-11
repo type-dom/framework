@@ -4,7 +4,7 @@
  */
 import { TypeElement } from '../core/type-element/type-element.abstract';
 import type { IRoute } from './route.interface';
-import type { IRouterOption, IRouter } from './router.interface';
+import type { IRouter, IBeforeEachGuard, INext } from './router.interface';
 import { findMatchingRoute, formatRoutes, loadRoute } from './util';
 
 /**
@@ -17,14 +17,20 @@ export class Router implements IRouter {
   // popstate 监听时需要获取最后一次的路由变化。
   private lastPath: { from: string; to: string }; // 记录上一个和当前的路由路径，用于popstate事件处理
 
+  // 前置守卫集合
+  private beforeEachGuards: IBeforeEachGuard[] = [];
+
   /**
    * 构造函数，初始化路由器实例。
    * @param option 路由器的配置选项，包括路由模式和路由配置数组。
    */
-  constructor(option: IRouterOption) {
+  constructor(option: IRouter) {
     this.routes = option.routes;
     if (option.history) {
       this.mode = 'history';
+    }
+    if (option.root) {
+      this.root = option.root;
     }
     this.lastPath = {
       from: '/',
@@ -85,13 +91,33 @@ export class Router implements IRouter {
   }
 
   /**
+   * 注册前置守卫
+   * @param guard 前置守卫函数
+   */
+  beforeEach(guard: IBeforeEachGuard) {
+    this.beforeEachGuards.push(guard);
+  }
+
+  /**
+   * 执行所有注册的前置守卫
+   * @param to 目标路由
+   * @param from 当前路由
+   * @param next 回调函数
+   */
+  private async runBeforeEachGuards(to: IRoute, from: IRoute | undefined, next: INext): Promise<void> {
+    for (const guard of this.beforeEachGuards) {
+      await guard(to, from, next);
+    }
+  }
+
+  /**
    * 处理路由变化，根据当前路径加载对应的路由组件。
    * 当路由改变时，此函数负责根据新的路由路径找到对应的路由配置，并执行相应的加载操作。
    * @param to 新的路由路径，以字符串形式传递。
    * @param from 上一个路由路径，以字符串形式传递。
    * @param type
    */
-  handleRouteChange(
+  async handleRouteChange(
     to: string,
     from?: string,
     type: 'push' | 'replace' = 'push'
@@ -103,10 +129,24 @@ export class Router implements IRouter {
     }
     // 根据路由定位到对应的component（组件）
     const toRoute = findMatchingRoute(to.replace(/^#/, ''), this.routes);
+
+    // 运行前置守卫  类似拦截器
+    const next: INext = (value?: string) => {
+      if (value !== undefined) {
+        // 继续处理路由跳转
+        // ...其他代码...
+        console.log('Route change value is ', value);
+        this.handleRouteChange(value);
+      } else {
+        console.warn('Route change was cancelled by a guard.');
+      }
+    };
+
     if (toRoute) {
       // 如果路由配置中存在重定向，则直接进行重定向操作，不再加载当前路由的组件。
       if (toRoute?.redirect) {
         console.log('toRoute.redirect is ', toRoute.redirect);
+        await this.runBeforeEachGuards(toRoute, undefined, next);
         toRoute?.routerView?.loadRoute(toRoute).then(() => {
           if (type === 'push') {
             toRoute.redirect && this.push(toRoute.redirect);
@@ -122,6 +162,7 @@ export class Router implements IRouter {
           this.routes
         );
         console.error('from is ', from, ' , fromRoute is ', fromRoute);
+        await this.runBeforeEachGuards(toRoute, fromRoute, next);
         // todo 父路由的子路由，直接加载子路由的组件
         if (fromRoute === toRoute.parent) { // 如果是父路由转子路由
           fromRoute?.routerView?.component?.routerView?.loadRoute(toRoute);
@@ -140,6 +181,7 @@ export class Router implements IRouter {
         }
       } else {
         // 加载对应的路由组件，此操作通常包括异步获取组件代码并执行。
+        await this.runBeforeEachGuards(toRoute, undefined, next);
         loadRoute(toRoute);
       }
     } else {
