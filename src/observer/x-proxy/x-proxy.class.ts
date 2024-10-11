@@ -1,11 +1,8 @@
-import {
-  deepClone,
-  isPrimitive,
-} from '@type-dom/utils';
+import { deepClone, isPrimitive } from '@type-dom/utils';
 import { AnyFn, IJsonData, IJsonDataProp } from '../../interface';
-import { IXProxy, IXProxyHandler } from './x-proxy.interface';
-import { TypeElement } from '../../core';
+import { TypeElement } from '../../core/type-element/type-element.abstract';
 import { TextNode } from '../../core/text-node/text-node.class';
+import { IXProxy, IXProxyHandler } from './x-proxy.interface';
 
 export class XProxy<T extends IJsonData> implements IXProxy<T> {
   _target: T;
@@ -15,7 +12,7 @@ export class XProxy<T extends IJsonData> implements IXProxy<T> {
   // public proxy: { [P in keyof T]: T[P] };
   [key: string]: IJsonDataProp | T | IXProxyHandler<T> | any;
 
-  // ToDo T number | boolean | string | IJsonData | Array<number | boolean | string | IJsonData>
+  // ToDo number | boolean | string | IJsonData | Array<number | boolean | string | IJsonData>
   // createProxy 中配置。
   constructor(target: T, handler?: IXProxyHandler<T>) {
     this._target = deepClone(target);
@@ -31,6 +28,14 @@ export class XProxy<T extends IJsonData> implements IXProxy<T> {
     // debugger;
   }
 
+  // get value(): T {
+  //   return this._value;
+  // }
+  //
+  // set value(newValue: T) {
+  //   this._value = newValue;
+  //   this.observer.notify(newValue);
+  // }
   addProp<K extends keyof T>(key: K, value: T[K]) {
     this.defineProperty(key, value);
   }
@@ -68,16 +73,16 @@ export class XProxy<T extends IJsonData> implements IXProxy<T> {
           if (this[key] === newValue) {
             return true;
           }
-          this[key] = newValue;
+          this[key] = newValue as any;
         } else {
           // 新值不是 value 的情况， 要判断obj[key]本身是不是基础XProxy
           if (key === 'value') {
             if (this[key] === newValue) {
               return true;
             }
-            this[key] = newValue; // this.value的值是普通数据类型，不是XProxy类型；
+            this[key] = newValue as any; // this.value的值是普通数据类型，不是XProxy类型；
           } else {
-            this[key] = createProxy(newValue);
+            this[key] = createProxy(newValue) as any;
           }
         }
         return true;
@@ -120,7 +125,7 @@ export class XProxy<T extends IJsonData> implements IXProxy<T> {
   }
 
   setValue(value: IJsonDataProp) {
-    this.value = value;
+    this.value = value as T;
   }
 
   addDep(element: TypeElement | TextNode, callback: (...rest: any[]) => void) {
