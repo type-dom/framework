@@ -18,8 +18,8 @@ export function toJSON(element: TypeElement): ITypeElement {
     nodeName: element.nodeName,
     className: element.className,
     params: {
-      styleObj: deepClone(element.style.obj), // 深拷贝
-      attrObj: deepClone(element.attr.obj), // 深拷贝
+      styleObj: deepClone(element.style.getObj()), // 深拷贝
+      attrObj: deepClone(element.attr.getObj()), // 深拷贝
     },
     settings: element?.settings,
     // items, page ----> 不起作用
