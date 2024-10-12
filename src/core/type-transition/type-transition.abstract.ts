@@ -13,7 +13,7 @@ export abstract class TypeTransition extends TypeFragment implements ITypeTransi
   override props: ITransitionConfig;
   private el: TypeHtml | TypeSvg | undefined;
 
-  constructor(public override params: ITransitionConfig = {}) {
+  constructor(params: ITransitionConfig = {}) {
     super();
     this.nodeName = 'fragment';
     this.dom = undefined;
@@ -115,7 +115,7 @@ export abstract class TypeTransition extends TypeFragment implements ITypeTransi
       this.props.onAfterEnter(el);
     } else {
       el.style.setObj({
-        opacity: el.style.obj?.opacity,
+        opacity: el.style.get('opacity'),
       });
     }
   }
