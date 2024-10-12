@@ -1,19 +1,11 @@
 import { IStyle } from '@type-dom/css-type';
-import { encodeToXmlString, camelToDash } from '@type-dom/utils';
-import type { IJsonData, IJsonDataProp } from '../../interface';
+import { camelToDash, encodeToXmlString } from '@type-dom/utils';
+import type { IJsonData } from '../../interface';
 import { Watcher } from '../events/watcher.abstract';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { Style } from '../style/style.class';
 import { Attribute } from '../attribute/attribute.class';
-import type {
-  IAttr,
-  IMethods,
-  ISetting,
-  ISettings,
-  ITypeConfig,
-  ITypeNode
-} from './type-node.interface';
-import { ITypeAttribute } from '../type-element/type-element.interface';
+import type { IAttr, IMethods, ISettings, ITypeConfig, ITypeNode } from './type-node.interface';
 
 /**
  * 虚拟DOM，TypeNode 抽象节点类, 所有节点类的抽象类；
@@ -41,12 +33,12 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
   params: ITypeConfig;
   /**
    * 属性项
-   * 排除 params中的 styleObj, attrObj；
    */
-  props: Omit<ITypeConfig, 'styleObj' | 'attrObj' | 'events'>;
+  props: ITypeConfig;
   parent?: TypeElement | undefined;
-  // 该节点不是当前位置的组件的子节点；要避免加入到组件的子节点中；
-  // 挂载到指定的组件的DOM,甚至直接指向 body；Teleport 中才需要。
+  /**
+   * 挂载到指定的组件的DOM,可以直接指向 body
+   */
   to?: HTMLElement;
   isContext?: boolean;
   items?: ITypeConfig[];
@@ -57,7 +49,7 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
     super();
     this.params = {}; // Object.freeze({}) as ITypeConfig;
     this.props = {}; // Object.freeze({}) as ITypeConfig;
-    this.beforeCreate?.(); // 挂载前，执行一些初始化操作。其实也就是操作 config 本身。
+    this.beforeCreate?.(); // 挂载前，执行一些初始化操作。其实也就是操作 config本身。
   }
 
   /**
@@ -121,7 +113,7 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
       return undefined;
     }
     const index = childNodes.indexOf(this);
-    if (index === -1) {
+    if (index === -1 || index >= childNodes.length - 1) {
       return undefined;
     }
     return childNodes[index + 1];
@@ -162,6 +154,11 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
   getProps<T extends ITypeConfig>(): T {
     return this.props as T;
   }
+
+  getProp<T extends keyof ITypeConfig>(key: T) {
+    return this.props[key];
+  }
+
   addProp(key: string, value: any) {
     Object.defineProperty(this.props, key, {
       configurable: true,
@@ -175,15 +172,18 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
     });
   }
 
-  setProp(key: string, value?: any) {
-    this.props[key] = value;
+  setProp<T extends ITypeConfig>(key: keyof T, value?: any) {
+    (this.props as T)[key] = value;
     if (value === undefined) {
-      delete this.props?.[key];
+      delete (this.props as T)?.[key];
     }
   }
 
-  // props中要去掉 styleObj, attrObj;
-  buildProps<T extends ITypeConfig, K extends Omit<T, 'styleObj' | 'attrObj'>>(config: T = {} as T): K {
+  /**
+   * 构建属性
+   * @param config
+   */
+  buildProps<T extends ITypeConfig>(config = {} as T): T {
     if (!this.props) {
       console.error('this.props is undefined . ');
       this.props = {};
@@ -191,24 +191,20 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
     for (const key in config) {
       // styleObj, attrObj, events 要单独处理
       if (key === 'styleObj') {
-        // this.style?.addObj(config.styleObj);
-        // Object.assign(this.style.obj, config.styleObj);
+        this.style?.addObj(config.styleObj);
       } else if (key === 'attrObj') {
-        // if (config.attrObj) {
-        //   this.attr?.addObj(config.attrObj);
-        // }
-        // Object.assign(this.attr?.obj, config.attrObj);
+        if (config.attrObj) {
+          this.attr?.addObj(config.attrObj);
+        }
       } else if (key === 'events') {
-        // this.addEvents?.(config.events);
-      } else {
-        (this.props as T)[key] = config[key];
+        this.addEvents?.(config.events);
+      } else if (key === 'emits') {
+        this.addEmits?.(config.emits);
       }
-    }
-    return this.props as K;
-  }
 
-  getPropsValue(key: keyof ITypeConfig) {
-    return this.props[key];
+      (this.props as T)[key] = config[key];
+    }
+    return this.props as T;
   }
 
   // config.slots中添加slot的对象
@@ -245,6 +241,7 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
       return this.parent?.getContext();
     }
   }
+  addEmits?(...rest: any[]): void;
   addEvents?(...rest: any[]): void;
 
   // 在定义className时，要把当前类写入到TypeMap中；
@@ -310,7 +307,7 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
   down<T extends TypeNode>(expr: string, value: any): T | undefined {
     // console.log('down expr is ', expr, ' value is ', value);
     if (value === undefined) {
-      return;
+      return undefined;
     }
     const path = expr.split('.');
     for (const child of this.children) {
@@ -341,7 +338,7 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
         }
       }
     }
-    // return undefined;
+    return undefined;
   }
 
   up<T extends TypeElement>(className: string): T | undefined {
@@ -355,6 +352,7 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
   /**
    * 查找节点的父节点
    * 当parent不存在时，通过root 迭代查找
+   * @param parent
    * @param node
    */
   findParent(parent: TypeNode | undefined, node: TypeNode): TypeNode | undefined {
@@ -443,8 +441,8 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
     }
     buffer.push(`<${this.nodeName}`);
     // 下面组装 属性 和 样式
-    if (this.attr?.obj) {
-      for (let key in this.attr.obj) {
+    if (this.attr?.getObj()) {
+      for (let key in this.attr?.getObj()) {
         // 下面几个属性不需要转
         if (
           key !== 'viewBox' &&
@@ -455,15 +453,15 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
         }
         // todo
         buffer.push(
-          ` ${key}="${encodeToXmlString(String(this.attr.obj[key]))}"`
+          ` ${key}="${encodeToXmlString(String(this.attr?.get(key)))}"`
         );
       }
     }
-    if (this.style?.obj) {
+    if (this.style?.getObj()) {
       let style = '';
-      for (const key in this.style.obj) {
+      for (const key in this.style?.getObj()) {
         style += `${camelToDash(key)}: ${encodeToXmlString(
-          String((this.style.obj as any)[key])
+          String(this.style?.get(key as keyof IStyle))
         )};`;
       }
       if (style !== '') {
@@ -507,8 +505,8 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
     return {
       className: this.className,
       config: {
-        attrObj: this.attr?.obj,
-        styleObj: this.style?.obj
+        attrObj: this.attr?.getObj(),
+        styleObj: this.style?.getObj()
       },
       nodeName: this.nodeName,
       nodeValue: this.nodeValue,
@@ -595,8 +593,6 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
     this.childNodes = undefined;
     delete this.style;
     delete this.attr;
-    // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // // @ts-expect-error
     // delete this.props;
     Reflect.deleteProperty(this, 'props');
     if (this.parent) {

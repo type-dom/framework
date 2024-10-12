@@ -1,16 +1,17 @@
 import { IStyle } from '@type-dom/css-type';
-import { type IJsonDataProp, IJsonData, IObData, AnyFn } from '../../interface';
+import { type IJsonDataProp, IJsonData } from '../../interface';
 import { Ref } from '../../reactivity/ref';
+import { SlotNode } from '../../components/slot-node/slot-node.class';
 import { XProxy } from '../../observer';
 import { IEmits, IEvents } from '../events/events.interface';
-import { SlotNode } from '../../components/slot-node/slot-node.class';
 import type { ITypeAttribute } from '../type-element/type-element.interface';
 import { TypeNode } from './type-node.abstract';
 import { ITypeBase } from './type-base.interface';
+import { TypeElement } from '../type-element/type-element.abstract';
 
 export interface IAttr {
   name: string;
-  value: string; // | number | boolean; // | undefined | unknown;
+  value: string | number; // | boolean; // | undefined | unknown;
 }
 
 export interface IAttrID extends IAttr {
@@ -50,15 +51,15 @@ export interface IPath {
 
 /**
  * 这个接口定义了节点的基本属性，如：
- * 1. 节点类名
- * 2. 节点属性数组  数组形式的属性名和值，如：[{name: 'id', value: '123'}, {name: 'class', value: 'active'}]，解析dom字符串时，会将属性名和值分开。
- * 3. 节点值
- * 4. 节点类型
- * 5. 父节点
- * 6. 节点属性对象 (除了style对应的属性之外的其他属性) 要挂载到DOM的属性上的
- * 7. 节点样式对象
- * 8. 子节点数组
- * 9. 节点模板
+ * 1.  节点类名
+ * 2.  节点属性数组  数组形式的属性名和值，如：[{name: 'id', value: '123'}, {name: 'class', value: 'active'}]，解析dom字符串时，会将属性名和值分开。
+ * 3.  节点值
+ * 4.  节点类型
+ * 5.  父节点
+ * 6.  节点属性对象 (除了style对应的属性之外的其他属性) 要挂载到DOM的属性上的
+ * 7.  节点样式对象
+ * 8.  子节点数组
+ * 9.  节点模板
  * 10. 节点数据
  * 11. 节点方法
  * 12. 节点配置
@@ -67,13 +68,14 @@ export interface IPath {
  */
 export interface ITypeNode extends  ITypeBase {
   params?: ITypeConfig | undefined; // 传入参数, ITypeConfig 中是undefined
-  // emits?: IEmits; //
+  // emits?: IEmits;
 }
 
 export interface IMethods {
   [propName: string]: (...args: any[]) => void;
 }
 
+export type IXDataItem = string | number | boolean | undefined | IXData | IXData[];
 export interface IXData {
   [propName: string]: string | number | boolean | undefined | IXData | IXData[];
 }
@@ -112,6 +114,7 @@ export interface ITypeConfig extends ITypeBase {
   name?: string | number; // 节点名称, 转化为 attrObj.name;
   // 当前对象引用
   ref?: XProxy<IJsonData> |  Ref<any>;
+  refId?: string | number;
   text?: boolean | string | number | XProxy<IJsonData>; // 只是简单的添加一个文本节点时用，
   /**
    * 属性对象，除了style对应的属性之外的其他属性。
@@ -131,6 +134,7 @@ export interface ITypeConfig extends ITypeBase {
   // 默认插槽  同 slots.default  组件没有插槽时，为undefined。这时子元素只能用 childNodes 属性；
   slot?: IConfigSlot; // OnlyChild 默认位置的插槽, 可以是单个元素，也可以是多个元素，即数组；如何直接插入当前元素，则相当与 childNodes属性；
   html?: string;
+  init?: (element?: TypeElement) => void;
   /**
    * 自定义的事件监听器，与 events 不同，events 是绑定在元素上的事件，而 emits 是在元素上触发的事件；
    * 与 addEmits 方法配合；
@@ -150,7 +154,21 @@ export interface ITypeConfig extends ITypeBase {
    */
   template?: string; // 模板 默认TypeClass为XElement
   fieldSetting?: IOptionSetting;
-  // [propName: string]: any;
+  /**
+   * The other props of the element.
+   */
+  [dataKey: `data-${string}` | `on${string}` | `td-${string}`]: unknown;
+
+  // sourceWrapper?:  string | XProxy<IJsonData>;
+  // showcase?:  TypeElement[];
+  // width?: number | string;
+  // route?: IRoute,
+  // router?: Router;
+  // visibilityHeight?: string | number;
+  // arrowOffset?: string | number;
+  // callback?: (...args: any[]) => void;
+  // parent?: TypeElement;
+  // [propName: string]: any; // todo should be removed
 }
 
 export interface ISlotNodes {
