@@ -3,8 +3,8 @@
  * 这个类提供了HTML元素的基本结构和行为的抽象。
  */
 import { TypeElement } from '../../core/type-element/type-element.abstract';
-import type { ITypeHtml } from './type-html.interface';
 import type { ITypeConfig } from '../type-node/type-node.interface';
+import type { ITypeHtml } from './type-html.interface';
 
 export abstract class TypeHtml extends TypeElement implements ITypeHtml {
   abstract override nodeName: string; // 必然有；
