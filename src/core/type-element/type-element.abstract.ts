@@ -1,21 +1,19 @@
 import { camelToDash } from '@type-dom/utils';
-import { IStyle } from '@type-dom/css-type';
 
 import { AnyFn, IJsonDataProp, IObData } from '../../interface';
 import { RouterView } from '../../router/router-view/router-view.class';
 import { XProxy } from '../../observer/x-proxy/x-proxy.class';
 import { Observer } from '../../observer/observer';
-import { reactive } from '../../reactivity';
+// import { reactive } from '../../reactivity';
 import { UnwrapNestedRefs } from '../../reactivity/reactive';
-import { IEvent, IEvents } from '../events/events.interface';
 import { Parser } from '../../parser';
+import { IEvent, IEvents } from '../events/events.interface';
 import type { ITypeConfig } from '../type-node/type-node.interface';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TextNode } from '../text-node/text-node.class';
 import { Style } from '../style/style.class';
 import { Attribute } from '../attribute/attribute.class';
 import type { IBoundBox, ITypeElement } from './type-element.interface';
-import { ITypeAttribute } from './type-element.interface';
 
 export const vHash = Math.round(Math.random() * 1000000);
 
@@ -49,16 +47,27 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     [propName: string]: AnyFn[] | undefined;
   };
 
+  lifeCycles: {
+    created?: AnyFn[];
+    beforeMount?: AnyFn[];
+    mounted?: AnyFn[];
+    beforeUpdate?: AnyFn[];
+    updated?: AnyFn[];
+    beforeUnmount?: AnyFn[];
+    unmounted?: AnyFn[];
+  };
+
   protected constructor() {
     super();
     this.style = new Style(this);
     this.attr = new Attribute(this);
-    // this.attr.obj = {
+    // this.attr.addObj({
     //   ['data-v-' + vHash]: true,
-    // };
+    // });
     this.attributes = [];
     this.childNodes = [];
     this.events = {};
+    this.lifeCycles = {};
     this.rendered = false;
   }
 
@@ -71,32 +80,11 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   }
 
   get id(): string {
-    return this.attr.obj.id as string;
+    return this.attr.get('id') as string;
   }
 
-  // get clientHeight(): string {
-  //   if (this.dom) {
-  //     return (this.dom.clientHeight / Ratio.mm2px).toFixed(2) + "mm"; // px ---> mm
-  //   } else {
-  //     return '0px';
-  //   }
-  // }
-
-  /**
-   * 获取dom的高度，带单位的。
-   * 包括margin的高度。
-   * margin 的单位 px ---> 单位换算
-   */
-  // get elementHeight(): string {
-  //   const style = getComputedStyle(this.dom);
-  //   const marginTop = parseFloat(style.marginTop);
-  //   const marginBottom = parseFloat(style.marginBottom);
-  //   const itemHeight = this.dom.offsetHeight + marginTop + marginBottom;
-  //   return (itemHeight / mm2pxRatio).toFixed(2) + "mm"; // px ---> mm
-  // }
-
   // get value(): string | undefined {
-  //   return this.attr.obj.value ? this.attr.obj.value as string : undefined;
+  //   return this.attr.get('value') ? this.attr.get('value') as string : undefined;
   // }
   // set value(str: string | undefined) {
   //   if (str !== undefined) {
@@ -107,10 +95,6 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   //     this.attr.remove('value');
   //   }
   // }
-
-  get isShow() {
-    return 'none' !== this.dom?.style?.display;
-  }
 
   get boundBox(): IBoundBox {
     if (this.dom === undefined) {
@@ -137,18 +121,18 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * @param params
    */
   useParams<T extends ITypeConfig>(params = {} as T): T {
+    if (params?.init) {
+      params.init(this);
+    }
+    if (params?.name) {
+      this.attr.addName(params.name);
+    }
     this.params = params;
     if (params.parent) {
       this.parent = params.parent;
     }
-    if (params?.emits) {
-      this.addEmits(params.emits);
-    }
     if (params?.ref !== undefined) {
       params.ref.value = this;
-    }
-    if (params?.name) {
-      this.attr.addName(params.name);
     }
     // text: boolean 是td-button组件是否是text类型的属性
     if (params?.text !== undefined && typeof params.text !== 'boolean') {
@@ -171,11 +155,11 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       const xElement = parser.parseFromString(params.html);
       this.addChild(xElement);
     }
-    if (params?.data) {
-      // this.setDataObservable(params.data);
-      this.data = reactive(params.data);
-      // console.log('this.data$ is ', this.data$);
-    }
+    // if (params?.data) {
+    //   // this.setDataObservable(params.data);
+    //   this.data = reactive(params.data);
+    //   // console.log('this.data$ is ', this.data$);
+    // }
     // todo 是否要单独处理。因为 parent 链是依赖addChild的。
     // 组件库中的组件 是没有 params.childNodes 的；
     if (params?.childNodes) {
@@ -187,15 +171,15 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       // this.childNodes = params.childNodes;
       // this.addChildren(...params.childNodes);
     }
-    if (params.styleObj) {
-      this.style.addObj(params.styleObj);
-    }
-    if (params.attrObj) {
-      this.attr.addObj(params.attrObj);
-    }
-    if (params.events) {
-      this.addEvents(params.events);
-    }
+    // if (params.styleObj) {
+    //   this.style.addObj(params.styleObj);
+    // }
+    // if (params.attrObj) {
+    //   this.attr.addObj(params.attrObj);
+    // }
+    // if (params.events) {
+    //   this.addEvents(params.events);
+    // }
     this.buildProps(params);
     return this.props as T;
   }
@@ -208,7 +192,8 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       } else if (key === 'styleObj' && config?.styleObj) {
         this.style.addObj(config.styleObj);
       } else {
-        this.props[key] = config?.[key];
+        this.addProp(key, config?.[key]);
+        // this.props[key] = config?.[key];
       }
     }
     return this.getProps<T>() as T;
@@ -266,6 +251,8 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
             this.addChild(item);
           } else if (typeof item === 'string') {
             this.addChild(new TextNode(item));
+          } else {
+            console.error('slotChild is not string or TypeNode . ')
           }
         });
       }
@@ -519,6 +506,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     // this.clearChildren(); // 清理子节点，包括DOM  todo ??? 不能加。
     this.setup?.();
     this.created?.();
+    this.lifeCycles.created?.forEach((cb) => cb());
     // this.recurseSetup(); // 挂载时，递归执行setup
     if (!this.dom && this.nodeName) {
       if (this.nodeName === 'fragment') {
@@ -544,6 +532,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     //     appEl = this.dom;
     //   }
     // }
+    this.lifeCycles.beforeMount?.forEach((cb) => cb());
     this.beforeMount?.();
     if (this.nodeName === 'fragment') {
       for (const child of this.children) {
@@ -570,6 +559,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       }
     }
     this.mounted?.();
+    this.lifeCycles.mounted?.forEach((cb) => cb());
     // fragment 可以设置监听事件。但监听的dom对象不是fragment的dom。
     this.initEvents?.();
     this.listenEvents();
@@ -578,7 +568,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
 
   // todo
   update() {
-    // console.warn('mount .');
+    // console.warn('update .');
     // this.clearChildren(); // 清理子节点，包括DOM  todo ??? 不能加。
     // this.recurseSetup(); // 挂载时，递归执行setup
     if (!this.dom && this.nodeName) {
@@ -588,6 +578,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
         this.dom = document.createElement(this.nodeName);
       }
     }
+    this.lifeCycles.beforeUpdate?.forEach((cb) => cb());
     this.beforeUpdate?.();
     if (this.nodeName === 'fragment') {
       for (const child of this.children) {
@@ -602,9 +593,10 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       }
     }
     this.updated?.();
-    this.listenEvents();
+    this.lifeCycles.updated?.forEach((cb) => cb());
     // fragment 可以设置监听事件。但监听的dom对象不是fragment的dom。
     // this.initEvents && this.initEvents();
+    this.listenEvents();
   }
 
   /**
@@ -637,7 +629,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * @param emits 包含事件名称与监听器的映射对象
    * todo 与 events 合并；
    */
-  addEmits(emits: Record<string, AnyFn>) {
+  override addEmits(emits: Record<string, AnyFn>) {
     // 遍历事件映射，为每个事件名称添加监听器
     Object.entries(emits).forEach(([eventName, listener]) => {
       this.on(eventName, listener);
@@ -856,7 +848,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     for (const [key, value] of Object.entries(this)) {
       // console.log(`${key}: ${value}`);
       if (value instanceof Observer) {
-        //   绑定值
+        // 绑定值
         console.log('Observer key is ', key);
       }
       if (value instanceof XProxy) {
@@ -898,7 +890,6 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * WebPage要另外处理
    */
   render(): void {
-    // console.log('this.style.obj is ', this.style.obj);
     this.preRender();
     this.clearChildrenDom(); // 清理子节点的DOM
     if (this.nodeName !== 'fragment') {
@@ -913,7 +904,51 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
 
   override destroy(root?: TypeNode) {
     // TypeElement 需要单独清理事件
+    this.lifeCycles.beforeUnmount?.forEach((fn) => fn());
     this.clearEvents();
     super.destroy(root);
+    this.lifeCycles.unmounted?.forEach((fn) => fn());
+  }
+
+  onCreated(fn: AnyFn): void {
+    if (!this.lifeCycles.created) {
+      this.lifeCycles.created = [];
+    }
+    this.lifeCycles.created.push(fn);
+  }
+
+  onMounted(fn: AnyFn): void {
+    if (!this.lifeCycles.mounted) {
+      this.lifeCycles.mounted = [];
+    }
+    this.lifeCycles.mounted.push(fn);
+  }
+
+  onBeforeUpdate(fn: AnyFn): void {
+    if (!this.lifeCycles.beforeUpdate) {
+      this.lifeCycles.beforeUpdate = [];
+    }
+    this.lifeCycles.beforeUpdate.push(fn);
+  }
+
+  onUpdated(fn: AnyFn): void {
+    if (!this.lifeCycles.updated) {
+      this.lifeCycles.updated = [];
+    }
+    this.lifeCycles.updated.push(fn);
+  }
+
+  onBeforeUnmount(fn: AnyFn): void {
+    if (!this.lifeCycles.beforeUnmount) {
+      this.lifeCycles.beforeUnmount = [];
+    }
+    this.lifeCycles.beforeUnmount.push(fn);
+  }
+
+  onUnmounted(fn: AnyFn): void {
+    if (!this.lifeCycles.unmounted) {
+      this.lifeCycles.unmounted = [];
+    }
+    this.lifeCycles.unmounted.push(fn);
   }
 }
