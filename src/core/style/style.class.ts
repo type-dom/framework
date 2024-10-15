@@ -1,5 +1,5 @@
 import { IStyle, Property } from '@type-dom/css-type';
-import { addUnit, camelToDash, colorFormat } from '@type-dom/utils';
+import { addUnit, camelToDash, colorFormat, Ratio } from '@type-dom/utils';
 import { TypeElement } from '../type-element/type-element.abstract';
 
 export class Style {
@@ -7,15 +7,43 @@ export class Style {
   // private dom: HTMLElement | SVGElement | undefined;
   // private nodeName: 'fragment' | string;
   private el: TypeElement;
-  obj: IStyle;
+  private obj: IStyle;
 
   constructor(el: TypeElement) {
     this.el = el;
     this.obj = {};
   }
 
-  get(key: keyof IStyle): string | number | undefined {
-    return this.obj[key];
+  get clientHeight(): string {
+    if (this.el.dom) {
+      return (this.el.dom.clientHeight / Ratio.mm2px).toFixed(2) + 'mm'; // px ---> mm
+    } else {
+      return '0px';
+    }
+  }
+
+  /**
+   * 获取dom的高度，带单位的。
+   * 包括margin的高度。
+   * margin 的单位 px ---> 单位换算
+   */
+  get elementHeight(): string | undefined {
+    if (!this.el.dom || !(this.el.dom instanceof HTMLElement)) {
+      return;
+    }
+    const style = getComputedStyle(this.el.dom);
+    const marginTop = parseFloat(style.marginTop);
+    const marginBottom = parseFloat(style.marginBottom);
+    const itemHeight = this.el.dom.offsetHeight + marginTop + marginBottom;
+    return (itemHeight / Ratio.mm2px).toFixed(2) + 'mm'; // px ---> mm
+  }
+
+  get isShow() {
+    return 'none' !== this.el.dom?.style?.display;
+  }
+
+  get<T>(key: keyof IStyle): T {
+    return this.obj[key] as T;
   }
 
   getObj() {
@@ -144,13 +172,13 @@ export class Style {
       }
     }
     // todo 样式一次性渲染。下面的代码 Tag 组件checkable 有问题；
-    // const style = { ...this.el.style.obj, ...styleObj };
+    // const style = { ...this.obj, ...styleObj };
     // let styleString = '';
     // for (const key in style) {
     //   if (Object.hasOwnProperty.call(style, key)) {
     //     const value = style[key as keyof IStyle];
     //     if (value === undefined) {
-    //       delete this.el.style.obj[key as keyof IStyle];
+    //       this.el.style.remove[key as keyof IStyle];
     //       continue;
     //     }
     //     styleString += `${camelToDash(key)}:${value};`;
@@ -245,4 +273,5 @@ export class Style {
   hide(): void {
     this.set('display', 'none');
   }
+
 }

@@ -34,3 +34,11 @@ describe('createStyle', () => {
     expect(styleElement.textContent).toContain(cssStyles);
   });
 });
+
+//       this.attr.addClass('hover-shadow');
+//       createClass('hover-shadow:hover', {
+//         boxShadow: $boxShadow.light
+//       });
+//       createClass('hover-shadow:focus', {
+//         boxShadow: $boxShadow.light
+//       });
