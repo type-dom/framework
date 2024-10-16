@@ -4,14 +4,14 @@ import { ITypeAttribute } from '../type-element/type-element.interface'
 
 export class Attribute {
   private el: TypeElement;
-  obj: ITypeAttribute ;
+  private obj: ITypeAttribute ;
   constructor(el: TypeElement) {
     this.el = el;
     this.obj = {};
   }
 
-  get(key: string) {
-    return this.obj[key];
+  get<T>(key: string): T {
+    return this.obj[key] as T;
   }
 
   getObj<T extends ITypeAttribute>(): T {
