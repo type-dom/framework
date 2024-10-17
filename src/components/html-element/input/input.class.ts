@@ -30,7 +30,7 @@ export class Input extends TypeHtml implements IInput {
    * month week date time datetime datetime-local[注意]IE和firefox这6种日期类型都不支持，chrome不支持datetime类型
    */
   get type(): string {
-    return this.attr.obj?.type as string;
+    return this.attr.get('type') as string;
   }
 
   /**
