@@ -25,7 +25,7 @@ export class SvgPath extends TypeSvg implements ISvgPath {
   }
 
   get pathData(): string {
-    return this.attr.obj.d ?? '';
+    return this.attr.get('d') ?? '';
   }
 
   /**
