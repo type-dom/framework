@@ -1,7 +1,7 @@
 import { IStyle } from '@type-dom/css-type';
 import { camelToDash, encodeToXmlString } from '@type-dom/utils';
 import type { IJsonData } from '../../interface';
-import { Watcher } from '../events/watcher.abstract';
+import { EventEmitter } from '../event-emitter/event-emitter.abstract';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { Style } from '../style/style.class';
 import { Attribute } from '../attribute/attribute.class';
@@ -14,7 +14,7 @@ import type { IAttr, IMethods, ISettings, ITypeConfig, ITypeNode } from './type-
  *    TypeElement
  *    TextNode
  */
-export abstract class TypeNode extends Watcher implements ITypeNode {
+export abstract class TypeNode extends EventEmitter implements ITypeNode {
   /**
    * 在生成dom字符串时，可以转为 attributes 的一个元素 { name: 'className', value: string }
    * 在定义ClassName时，要把当前类写入到TypeMap中；
@@ -22,10 +22,8 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
   abstract className: string; // 最终实体类的名称，解析转换时需要创建对应的类； 必然有；
   abstract style?: Style | undefined;
   abstract attr?: Attribute | undefined;
-  abstract nodeName?: '#text' | 'fragment' | string | undefined;
   abstract nodeValue?: string | number | undefined;
   abstract childNodes?: TypeNode[] | undefined;
-  abstract dom?: HTMLElement | SVGElement | Text | undefined;
   abstract rendered: boolean;
   /**
    * 存储 传入的参数。 只需要到处json时有就行。
@@ -241,8 +239,6 @@ export abstract class TypeNode extends Watcher implements ITypeNode {
       return this.parent?.getContext();
     }
   }
-  addEmits?(...rest: any[]): void;
-  addEvents?(...rest: any[]): void;
 
   // 在定义className时，要把当前类写入到TypeMap中；
   //   todo 创建类实例时都要运行一遍。

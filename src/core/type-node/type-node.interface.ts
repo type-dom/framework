@@ -3,11 +3,11 @@ import { type IJsonDataProp, IJsonData } from '../../interface';
 import { Ref } from '../../reactivity/ref';
 import { SlotNode } from '../../components/slot-node/slot-node.class';
 import { XProxy } from '../../observer';
-import { IEmits, IEvents } from '../events/events.interface';
 import type { ITypeAttribute } from '../type-element/type-element.interface';
+import { TypeElement } from '../type-element/type-element.abstract';
+import { IEmits, IEvents } from '../event-emitter/event-emitter.interface';
 import { TypeNode } from './type-node.abstract';
 import { ITypeBase } from './type-base.interface';
-import { TypeElement } from '../type-element/type-element.abstract';
 
 export interface IAttr {
   name: string;
