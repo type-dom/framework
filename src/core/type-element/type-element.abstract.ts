@@ -1,5 +1,4 @@
 import { camelToDash } from '@type-dom/utils';
-
 import { AnyFn, IJsonDataProp, IObData } from '../../interface';
 import { RouterView } from '../../router/router-view/router-view.class';
 import { XProxy } from '../../observer/x-proxy/x-proxy.class';
@@ -7,7 +6,6 @@ import { Observer } from '../../observer/observer';
 // import { reactive } from '../../reactivity';
 import { UnwrapNestedRefs } from '../../reactivity/reactive';
 import { Parser } from '../../parser';
-import { IEvent, IEvents } from '../events/events.interface';
 import type { ITypeConfig } from '../type-node/type-node.interface';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TextNode } from '../text-node/text-node.class';
@@ -625,206 +623,6 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   }
 
   /**
-   * 批量添加事件监听器
-   * @param emits 包含事件名称与监听器的映射对象
-   * todo 与 events 合并；
-   */
-  override addEmits(emits: Record<string, AnyFn>) {
-    // 遍历事件映射，为每个事件名称添加监听器
-    Object.entries(emits).forEach(([eventName, listener]) => {
-      this.on(eventName, listener);
-    });
-  }
-
-  /**
-   * 添加事件监听器 on
-   * @param eventName 自定义事件名称
-   * @param listener 事件监听器，一个函数
-   * @throws 如果监听器不是函数，抛出错误
-   * @returns 返回this，允许链式调用
-   */
-  on(eventName: string, listener: AnyFn) {
-    // 确保监听器是一个函数
-    if (typeof listener !== 'function') {
-      throw new Error('Listener must be a function');
-    }
-    // 如果事件名称不存在于映射中，则初始化为空数组
-    if (!this.events[eventName]) {
-      this.events[eventName] = [];
-    }
-    // 将监听器添加到对应事件的数组中
-    this.events[eventName]?.push(listener);
-    return this;
-  }
-
-  /**
-   * 添加一次性事件监听器，事件触发后自动移除监听器
-   * @param eventName 事件名称
-   * @param listener 事件监听器，一个函数
-   * @returns 返回this，允许链式调用
-   */
-  once(eventName: string, listener: AnyFn) {
-    // 创建一个包装后的监听器，触发后会自动移除自身
-    const wrappedListener = (...args: any[]) => {
-      this.offEmit(eventName, wrappedListener);
-      listener(...args);
-    };
-    // 将包装后的监听器添加到事件中
-    this.on(eventName, wrappedListener);
-    return this;
-  }
-
-  /**
-   * 移除事件监听器
-   * @param eventName 事件名称
-   * @param listener 要移除的事件监听器
-   * @returns 返回this，允许链式调用
-   */
-  offEmit(eventName: string, listener: AnyFn) {
-    // 如果事件名称不存在，直接返回
-    if (!this.events[eventName]) {
-      return this;
-    }
-    if (!listener) {
-      // 如果没有指定监听器，则移除该事件的所有监听器
-      delete this.events[eventName];
-    }
-    // 过滤掉指定的监听器，更新事件监听器数组
-    this.events[eventName] = this.events[eventName]!.filter(
-      (existingListener) => {
-        if (existingListener === listener) {
-          // todo 移除订阅者
-          if (this.dom) {
-            this.dom.removeEventListener(eventName as keyof GlobalEventHandlersEventMap, existingListener);
-          }
-          // if (listener instanceof Subscription) {
-          //   listener.unsubscribe();
-          // }
-          return false;
-        } else {
-          return true;
-        }
-      }
-    );
-    return this;
-  }
-
-  /**
-   * 触发指定事件，执行所有对应监听器
-   * @param eventName 事件名称
-   * @param args 传递给监听器的参数
-   * @returns 返回this，允许链式调用
-   */
-  emit(eventName: string, ...args: any[]) {
-    // 获取事件的监听器数组，如果存在则遍历执行每个监听器
-    const listeners = this.events[eventName];
-    if (listeners) {
-      listeners.forEach((listener) => {
-        if (this.dom) {
-          // dom 事件触发不需要 emit 方法。
-        } else {
-          listener(...args);
-        }
-      });
-    }
-    return this;
-  }
-
-  /**
-   * 检查是否存在指定事件的监听器
-   * @param eventName 事件名称
-   * @returns 如果存在监听器，返回true；否则返回false
-   */
-  hasListeners(eventName: string) {
-    // 检查事件名称是否存在监听器数组，并且数组长度大于0
-    return Boolean(
-      this.events?.[eventName] && this.events[eventName]?.length > 0
-    );
-  }
-
-  /**
-   * 添加事件
-   */
-  override addEvents(events: Partial<IEvents>) {
-    if (this.nodeName === 'fragment') {
-      console.log('fragment cannot add events . ');
-      return;
-    }
-    for (const key in events) {
-      const eventFun = events[key as keyof IEvents];
-      if (eventFun) {
-        this.addEvent(key, eventFun);
-      }
-    }
-  }
-
-  // 只考虑组件自身的事件。
-  addEvent<T extends Event>(key: string, handleEvent: AnyFn) {
-    if (this.events[key] === undefined) {
-      this.events[key] = [];
-    }
-    const eventHandler = (evt: T) => {
-      handleEvent(evt, this);
-    };
-    this.events[key]?.push(eventHandler);
-  }
-
-  // 设置一个事件监听器，添加到dom上
-  setEvents(events: Partial<IEvents>) {
-    if (this.nodeName === 'fragment') {
-      console.log('fragment cannot add events . ');
-      return;
-    }
-    for (const key in events) {
-      const eventFun = events[key as keyof IEvents];
-      if (eventFun) {
-        this.setEvent(key, eventFun as IEvent);
-      }
-    }
-  }
-
-  // 添加一个事件监听器，并添加到dom上
-  setEvent<T extends Event>(key: string, handleEvent: IEvent<T>) {
-    if (this.events[key] === undefined) {
-      this.events[key] = [];
-    }
-    const eventHandler = (evt: Event) => {
-      handleEvent(evt as T, this);
-    };
-    this.events[key]?.push(eventHandler);
-    this.dom!.addEventListener(key as keyof GlobalEventHandlersEventMap, eventHandler);
-  }
-
-  // 移除一个事件监听器
-  offEvent(key: string, listener: AnyFn) {
-    console.error('offEvent .');
-    if (this.dom) {
-      this.events[key]?.map((item, index: number) => {
-        if (item === listener) {
-          this.events[key]!.splice(index, 1);
-        }
-        this.dom!.removeEventListener(key as keyof GlobalEventHandlersEventMap, item);
-      });
-    } else {
-      console.warn('offEvent dom is undefined . ');
-    }
-  }
-
-  // 清除移除所有事件监听器
-  clearEvents(): void {
-    for (const key in this.events) {
-      // 移除该事件的所有监听器； 移除了 emit方法就没有触发的回调了。
-      if (this.dom) {
-        this.events[key]?.map((item) => {
-          this.dom!.removeEventListener(key as keyof GlobalEventHandlersEventMap, item);
-        });
-        this.events[key] = [];
-      }
-      delete this.events[key];
-    }
-  }
-
-  /**
    * 渲染前拦截，预处理
    */
   preRender(): void {
@@ -872,12 +670,15 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     if (!this.dom) {
       return;
     }
-    if (this.events) {
+    if (this.observers) {
       // dom 监听事件要挂载到真实dom上。
-      for (const key in this.events) {
-        for (const listenFn of this.events[key]!) {
-          this.dom && this.dom.addEventListener(key as keyof GlobalEventHandlersEventMap, listenFn);
-        }
+      for (const key in this.observers) {
+        const cloned = Array.from(this.observers[key].entries());
+        cloned.forEach(([observer, numTimesAdded]) => {
+          for (let i = 0; i < numTimesAdded; i++) {
+            this.dom && this.dom.addEventListener(key as keyof GlobalEventHandlersEventMap, observer);
+          }
+        });
       }
     }
   }
