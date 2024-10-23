@@ -1,5 +1,4 @@
 export type * from './interface';
-export type * from './core/events/events.interface';
 export * from './core/style/index';
 export * from './parser';
 export * from './router';
