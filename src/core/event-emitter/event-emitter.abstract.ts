@@ -4,8 +4,13 @@ import { Defer } from '../defer/defer';
 import { IEmits, IEvent, IEvents } from './event-emitter.interface';
 
 export abstract class EventEmitter extends Defer {
+  /**
+   * 存储事件名称与事件监听器数组的映射
+   * key 事件名 value: callback[]  回调数组
+   * @private
+   */
   observers: Record<string, Map<AnyFn, number>>;
-  abstract nodeName?: '#text' | 'fragment' | string | undefined;
+  abstract nodeName: '#text' | 'fragment' | string | undefined;
   abstract dom?: HTMLElement | SVGElement | Text | undefined;
   constructor() {
     super();
@@ -87,7 +92,9 @@ export abstract class EventEmitter extends Defer {
    * @returns 返回this，允许链式调用
    */
   off(event: string, listener?: AnyFn) {
-    if (!this.observers[event]) return;
+    if (!this.observers[event]) {
+      return;
+    }
     if (!listener) {
       if (this.dom) { // 不是 fragment组件
         for (const observer of this.observers[event].keys()) {
