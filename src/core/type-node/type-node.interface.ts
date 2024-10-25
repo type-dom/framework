@@ -112,6 +112,7 @@ export interface IOptionSetting extends ISettings {
 // 参数接口
 export interface ITypeConfig extends ITypeBase {
   name?: string | number; // 节点名称, 转化为 attrObj.name;
+  tag?: 'fragment' | string;
   // 当前对象引用
   ref?: XProxy<IJsonData> |  Ref<any>;
   refId?: string | number;
@@ -134,7 +135,7 @@ export interface ITypeConfig extends ITypeBase {
   // 默认插槽  同 slots.default  组件没有插槽时，为undefined。这时子元素只能用 childNodes 属性；
   slot?: IConfigSlot; // OnlyChild 默认位置的插槽, 可以是单个元素，也可以是多个元素，即数组；如何直接插入当前元素，则相当与 childNodes属性；
   html?: string;
-  init?: (element?: TypeElement) => void;
+  init?: <T extends TypeElement = TypeElement>(element: T) => void;
   /**
    * 自定义的事件监听器，与 events 不同，events 是绑定在元素上的事件，而 emits 是在元素上触发的事件；
    * 与 addEmits 方法配合；
@@ -172,6 +173,7 @@ export interface ITypeConfig extends ITypeBase {
 }
 
 export interface ISlotNodes {
+  default?: SlotNode;
   [propName: string]: SlotNode | undefined;
 }
 

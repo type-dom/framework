@@ -178,6 +178,26 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   }
 
   /**
+   * 使用指定的标签创建一个DOM元素
+   *
+   * @param {string} tag - 可选参数，定义要创建的DOM元素的标签名，默认为 div
+   *
+   * 此方法主要负责初始化一个DOM元素，通过接收一个标签名参数来创建对应类型的DOM元素
+   * 它首先将标签名赋值给实例的nodeName属性，然后使用document.createElement()方法
+   * 根据提供的标签名创建一个DOM元素，并将该元素赋值给实例的dom属性
+   */
+  useTag<T extends HTMLElement | SVGElement | Text | undefined>(tag: '#text' | 'fragment' | string = 'div') {
+    this.nodeName = tag;
+    if (this.nodeName === 'fragment') {
+      this.dom = undefined as T;
+    } else if (this.nodeValue === '#text') {
+      this.dom = document.createTextNode(''); // todo content
+    } else {
+      this.dom = document.createElement(this.nodeName.trim()) as T;
+    }
+  }
+
+  /**
    * 构建属性
    * @param config
    */
