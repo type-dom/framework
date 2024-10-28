@@ -118,7 +118,7 @@ export class Compile {
 // 添加对数组方法的支持
 const methods = ['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'reverse'];
 methods.forEach(method => {
-  const original = Array.prototype[method as keyof Array<any>];
+  const original = Array.prototype[method as keyof Array<any>] as Function;
   Object.defineProperty(Array.prototype, method, {
     value: function(...args: any[]) {
       let result = original.apply(this, args);
