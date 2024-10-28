@@ -6,7 +6,7 @@ import { Observer } from '../../observer/observer';
 // import { reactive } from '../../reactivity';
 import { UnwrapNestedRefs } from '../../reactivity/reactive';
 import { Parser } from '../../parser';
-import type { ITypeConfig } from '../type-node/type-node.interface';
+import type { ISlotNodes, ITypeConfig } from '../type-node/type-node.interface';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TextNode } from '../text-node/text-node.class';
 import { Style } from '../style/style.class';
@@ -20,12 +20,11 @@ export const vHash = Math.round(Math.random() * 1000000);
  * 可以对应到虚拟dom树。 createDom(tag, attr, children)
  * 与对应的导出时的数据结构是不一样的。
  * 除了 TextNode 之外的其它类型的 Node 。
- * todo 是否需要把相关的操作也添加进来。
  */
 export abstract class TypeElement extends TypeNode implements ITypeElement {
-  abstract override dom?: HTMLElement | SVGElement | undefined; // 不会是Text；
+  override dom?: HTMLElement | SVGElement | undefined; // 不会是Text；
   // 包括 fragment
-  abstract override nodeName: 'fragment' | string; // 必然有；
+  nodeName!: 'fragment' | string; // 必然有； 且不为 #text
   nodeValue?: undefined;
   childNodes: TypeNode[];
   routerView?: RouterView; // 其实就是一个特殊的 SlotNode ;
@@ -33,17 +32,9 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   data?: UnwrapNestedRefs<IObData>; // ITypeNode 中设置了
   modelValue?: IJsonDataProp;
   rendered: boolean;
-  // private slotNodes?: ISlotNodes;
+  slotNodes: ISlotNodes;
   style: Style;
   attr: Attribute;
-  /**
-   * 存储事件名称与事件监听器数组的映射
-   * key 事件名 value: callback[]  回调数组
-   * @private
-   */
-  events: {
-    [propName: string]: AnyFn[] | undefined;
-  };
 
   lifeCycles: {
     created?: AnyFn[];
@@ -64,7 +55,10 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     // });
     this.attributes = [];
     this.childNodes = [];
-    this.events = {};
+
+    this.slotNodes = {
+      // default: new SlotNode('default'),
+    };
     this.lifeCycles = {};
     this.rendered = false;
   }
@@ -294,7 +288,8 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * @param newChild
    */
   addChild(newChild: TypeNode): void {
-    newChild.setParent(this); // 如果不是子类，是其它地方的对象加过来，要重设其父类。 一个对象挂载到不同的父类中，可能会造成混乱。
+    // 如果不是子类，是其它地方的对象加过来，要重设其父类。 一个对象挂载到不同的父类中，可能会造成混乱。
+    newChild.setParent(this);
     this.childNodes.push(newChild);
   }
 
@@ -553,7 +548,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       // 如CollapsibleBox中，contents重新赋值后，children会变，而childNodes是不变的。
       for (const child of this.children) {
         // this.renderChild(child);
-        child.mount(this.dom);
+        child.mount(this.dom!);
       }
     }
     this.mounted?.();
