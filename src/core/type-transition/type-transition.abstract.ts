@@ -9,7 +9,6 @@ export abstract class TypeTransition extends TypeFragment implements ITypeTransi
   mode: 'in-out' | 'out-in' | 'default';
   display?: string; // 显示/隐藏 切换时控制显示的display的值
   timer?: NodeJS.Timeout;
-  // slotNode: SlotNode;
   override props: ITransitionConfig;
   private el: TypeHtml | TypeSvg | undefined;
 
