@@ -3,7 +3,7 @@ import { ITeleport, ITeleportConfig } from './teleport.interface';
 
 export class Teleport extends TypeFragment implements ITeleport {
   className: 'Teleport';
-  __isTeleport = true;
+  // __isTeleport = true;
   // override slot?: TypeElement | TypeElement[];
   override to?: HTMLElement;
   disabled?: boolean;
