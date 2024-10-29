@@ -1,5 +1,5 @@
 import { TextNode } from '../../core/text-node/text-node.class';
-import { Div } from '../../components/html-element/div/div.class';
+import { Div } from '../html-element/div/div.class';
 import { SlotNode } from './slot-node.class';
 
 describe('SlotNode', () => {

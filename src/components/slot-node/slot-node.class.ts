@@ -1,4 +1,5 @@
 import { TypeFragment } from '../../core/type-fragment/type-fragment.abstract';
+// import { TypeComponent } from '../../core/type-component/type-component.abstract';
 import { TypeNode } from '../../core/type-node/type-node.abstract';
 import { ISlotNodeConfig } from './slot-node.interface';
 
