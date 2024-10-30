@@ -4,3 +4,5 @@ export { vHash, TypeElement } from './type-element/type-element.abstract';
 export type * from './type-element/type-element.interface';
 export * from './style/index';
 export type * from './event-emitter/event-emitter.interface';
+export { TypeComponent } from './type-component/type-component.abstract';
+export type { ITypeComponent } from './type-component/type-component.interface';
