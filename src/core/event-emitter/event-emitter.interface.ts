@@ -24,18 +24,19 @@ export type IEvent<T extends Event = Event, K extends TypeElement = TypeElement>
  *
  * 对应 GlobalEventHandlersEventMap
  */
-export interface IEvents<K extends TypeElement = TypeElement> {
+export interface IEvents {
   abort: IEvent<UIEvent>;
+  beforeinput: IEvent<InputEvent>;
   blur: IEvent<FocusEvent>;
   cancel: IEvent;
   canplay: IEvent;
   canplaythrough: IEvent;
   change: IEvent; // newValue = evt.target.value
-  click: IEvent<MouseEvent, K>;
+  click: IEvent<MouseEvent>;
   close: IEvent;
-  compositionstart: IEvent<CompositionEvent, K>;
-  compositionupdate: IEvent<CompositionEvent, K>;
-  compositionend: IEvent<CompositionEvent, K>;
+  compositionstart: IEvent<CompositionEvent>;
+  compositionupdate: IEvent<CompositionEvent>;
+  compositionend: IEvent<CompositionEvent>;
   contextmenu: IEvent<MouseEvent>;
   copy: IEvent<ClipboardEvent>;
   cut: IEvent<ClipboardEvent>;
@@ -60,9 +61,9 @@ export interface IEvents<K extends TypeElement = TypeElement> {
   input: IEvent<InputEvent>;
   // inputenter: (evt?: InputEvent, element?: TypeElement) => void;
   invalid: IEvent;
-  keydown: IEvent<KeyboardEvent, K>;
-  keyup: IEvent<KeyboardEvent, K>;
-  keypress: IEvent<KeyboardEvent, K>;
+  keydown: IEvent<KeyboardEvent>;
+  keyup: IEvent<KeyboardEvent>;
+  keypress: IEvent<KeyboardEvent>;
   // keypressenter: IEvent;
   load: IEvent;
   loadeddata: IEvent;
