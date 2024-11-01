@@ -190,7 +190,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
     this.nodeName = tag;
     if (this.nodeName === 'fragment') {
       this.dom = undefined as T;
-    } else if (this.nodeValue === '#text') {
+    } else if (this.nodeName === '#text') {
       this.dom = document.createTextNode(''); // todo content
     } else {
       this.dom = document.createElement(this.nodeName.trim()) as T;
