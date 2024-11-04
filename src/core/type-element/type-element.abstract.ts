@@ -501,11 +501,12 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.created?.();
     this.lifeCycles.created?.forEach((cb) => cb());
     // this.recurseSetup(); // 挂载时，递归执行setup
-    if (!this.dom && this.nodeName) {
+    if (!this.dom) {
       if (this.nodeName === 'fragment') {
         this.dom = undefined;
       } else {
-        this.dom = document.createElement(this.nodeName);
+        // this.dom = document.createElement(this.nodeName);
+        this.useTag(this.props.tag);
       }
     }
     let appEl: HTMLElement | SVGElement | ShadowRoot | null | undefined;
