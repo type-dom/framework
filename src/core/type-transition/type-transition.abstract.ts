@@ -14,8 +14,7 @@ export abstract class TypeTransition extends TypeFragment implements ITypeTransi
 
   constructor(params: ITransitionConfig = {}) {
     super();
-    this.nodeName = 'fragment';
-    this.dom = undefined;
+    this.useTag('fragment');
     this.mode = params?.mode || 'in-out';
     this.parent = params?.parent;
     this.slotChild(params.slot);
