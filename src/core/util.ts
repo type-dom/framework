@@ -1,18 +1,20 @@
 import { deepClone } from '@type-dom/utils';
-import { TypeNode } from '../core/type-node/type-node.abstract';
 import { XProxy } from '../observer/x-proxy/x-proxy.class';
 import { IJsonData, IJsonDataProp } from '../interface';
+import { TypeNode } from './type-node/type-node.abstract';
 import { TypeElement } from './type-element/type-element.abstract';
 import { ITypeElement } from './type-element/type-element.interface';
 import { ITextNode } from './text-node/text-node.interface';
 import { ITypeNode } from './type-node/type-node.interface';
+import { TypeHtml } from './type-html/type-html.abstract';
+import { TypeSvg } from './type-svg/type-svg.abstract'
 
 /**
  * 保存数据时使用。
  * 把当前数据层对象转换为 JSON 字面量。
  * 但是就数据层存储而言，是不需要转化page及其子元素的。
  */
-export function toJSON(element: TypeElement): ITypeElement {
+export function toJSON(element: TypeHtml | TypeSvg): ITypeElement {
   return {
     // nodeName: element.nodeName,
     nodeName: element.nodeName,
@@ -24,7 +26,7 @@ export function toJSON(element: TypeElement): ITypeElement {
     settings: element?.settings,
     // items, page ----> 不起作用
     childNodes: element.childNodes.map((child) => {
-      if (child instanceof TypeElement) {
+      if (child instanceof TypeHtml || child instanceof TypeSvg) {
         return toJSON(child);
       } else {
         return {
