@@ -1,4 +1,4 @@
-import { TypeElement } from '../core/type-element/type-element.abstract';
+import { TypeHtml } from '../core/type-html/type-html.abstract';
 
 export interface UseElementBoundingOptions {
   /**
@@ -36,7 +36,7 @@ export interface UseElementBoundingOptions {
  * @param target
  */
 export function useElementBounding(
-  target: TypeElement,
+  target: TypeHtml,
   options: UseElementBoundingOptions = {}
 ) {
   const {
