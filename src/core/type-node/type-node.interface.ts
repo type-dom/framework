@@ -109,6 +109,16 @@ export interface IOptionSetting extends ISettings {
   options: IOptionSet[];
 }
 
+export interface IPropsSetting {
+  [propName: string]: IPropSetting;
+}
+
+export interface IPropSetting {
+  type: string;
+  values?: string | number | boolean | string[];
+  default?: string | number | boolean;
+}
+
 // 参数接口
 export interface ITypeConfig extends ITypeBase {
   name?: string | number; // 节点名称, 转化为 attrObj.name;
@@ -135,7 +145,7 @@ export interface ITypeConfig extends ITypeBase {
   // 默认插槽  同 slots.default  组件没有插槽时，为undefined。这时子元素只能用 childNodes 属性；
   slot?: IConfigSlot; // OnlyChild 默认位置的插槽, 可以是单个元素，也可以是多个元素，即数组；如何直接插入当前元素，则相当与 childNodes属性；
   html?: string;
-  init?: <T extends TypeElement = TypeElement>(element: T) => void;
+  init?: (element: TypeElement) => void;
   /**
    * 自定义的事件监听器，与 events 不同，events 是绑定在元素上的事件，而 emits 是在元素上触发的事件；
    * 与 addEmits 方法配合；

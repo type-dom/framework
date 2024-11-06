@@ -5,7 +5,14 @@ import { EventEmitter } from '../event-emitter/event-emitter.abstract';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { Style } from '../style/style.class';
 import { Attribute } from '../attribute/attribute.class';
-import type { IAttr, IMethods, ISettings, ITypeConfig, ITypeNode } from './type-node.interface';
+import type {
+  IAttr,
+  IMethods,
+  IPropsSetting,
+  ISettings,
+  ITypeConfig,
+  ITypeNode
+} from './type-node.interface';
 
 /**
  * 虚拟DOM，TypeNode 抽象节点类, 所有节点类的抽象类；
@@ -56,7 +63,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
    * todo 要理顺与 render 方法的关系。 render 最终要私有化；
    * @param el
    */
-  abstract mount(el?: string | HTMLElement | SVGElement | ShadowRoot): void;
+  abstract mount(el?: string | HTMLElement | SVGElement | DocumentFragment | ShadowRoot): void;
 
   /**
    * 渲染出真实DOM
@@ -186,28 +193,35 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
    * 它首先将标签名赋值给实例的nodeName属性，然后使用document.createElement()方法
    * 根据提供的标签名创建一个DOM元素，并将该元素赋值给实例的dom属性
    */
-  useTag<T extends HTMLElement | SVGElement | Text | undefined>(tag: '#text' | 'fragment' | string = 'div') {
-    this.nodeName = tag;
+  useTag<T extends (HTMLElement | SVGElement | DocumentFragment | Text)>(tag?: '#text' | 'fragment' | string) {
+    // Assign the nodeName based on the presence of the tag parameter or retain the current nodeName, defaulting to 'div' if neither is available.
+    this.nodeName = tag ? tag : this.nodeName ? this.nodeName : 'div';
     if (this.nodeName === 'fragment') {
-      this.dom = undefined as T;
+      this.dom = document.createDocumentFragment();
     } else if (this.nodeName === '#text') {
-      this.dom = document.createTextNode(''); // todo content
+      this.dom = document.createTextNode(this.nodeValue?.toString() || ''); // todo content
     } else {
+      // todo SVGElement 必须直接创建dom；不能为空。
       this.dom = document.createElement(this.nodeName.trim()) as T;
     }
   }
 
   /**
-   * 构建属性
+   * 组装属性
+   * 根据提供的配置参数构建属性
    * @param config
    */
-  buildProps<T extends ITypeConfig>(config = {} as T): T {
+  assignProps<T extends ITypeConfig>(config = {} as T): T {
     if (!this.props) {
-      console.error('this.props is undefined . ');
-      this.props = {};
+      // console.error('this.props is undefined . ');
+      // this.props = {};
+      throw Error('this.props is undefined . ');
     }
     for (const key in config) {
       // styleObj, attrObj, events 要单独处理
+      // todo 如果是fragment，要判断是否有子节点，
+      //    只有一个子节点，styleObj就加到子节点上,
+      //    如果是多个子节点，要怎么处理？？？？
       if (key === 'styleObj') {
         this.style?.addObj(config.styleObj);
       } else if (key === 'attrObj') {
@@ -552,6 +566,50 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   }
 
   /**
+   * 清除自有dom节点。对象自身还没有被删除。
+   * 删除对象，要在父级中。
+   * this.dom的值也没有变。
+   */
+  removeDom(): void {
+    if (this.dom) {
+      if (this.dom instanceof DocumentFragment) {
+        this.childNodes?.forEach(child => child.removeDom());
+      } else {
+        this.dom.remove();
+      }
+    } else {
+      console.error('this.dom has been removed . ');
+    }
+  }
+
+  resetFragment(): void {
+    if (this.dom instanceof DocumentFragment) {
+      console.error('this.dom is DocumentFragment . ');
+      // 检查子节点是否为空
+      if (this.dom.childElementCount === 0) {
+        console.log('DocumentFragment 的子节点为空');
+        this.childNodes?.forEach(child => {
+          if (!child.dom) {
+            child.render();
+          }
+          child.resetFragment();
+          // todo fragment的子节点是不是又被清理了？？？？
+          this.dom?.appendChild(child.dom as HTMLElement | SVGElement | DocumentFragment | Text);
+        });
+      }
+      // else {
+      //   this.childNodes?.forEach(child => {
+      //     if (!child.dom) {
+      //       child.render();
+      //     }
+      //     this.dom?.appendChild(child.dom as HTMLElement | SVGElement | DocumentFragment);
+      //   });
+      //   console.log('DocumentFragment 的子节点不为空');
+      // }
+    }
+  }
+
+  /**
    * 生命周期
    * beforeCreate 渲染前
    * created 渲染前
@@ -601,9 +659,20 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
       this.beforeDestroy?.();
     }
     if (this.dom) {
-      // 删除DOM
-      this.dom.remove();
-      this.dom = undefined;
+      if (this.dom instanceof DocumentFragment) {
+        // 清空 DocumentFragment
+        if (this.dom.replaceChildren) {
+          this.dom.replaceChildren();
+        } else {
+          while (this.dom.firstChild) {
+            this.dom.removeChild(this.dom.firstChild);
+          }
+        }
+      } else {
+        // 删除DOM
+        this.dom.remove();
+        this.dom = undefined;
+      }
     }
     this.childNodes?.forEach(child => child.destroy());
     this.childNodes = undefined;
