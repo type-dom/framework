@@ -1,13 +1,14 @@
 import { TextNode } from '../text-node/text-node.class';
-// import { TypeElement } from '../type-element/type-element.abstract';
-import { TypeComponent } from '../type-component/type-component.abstract';
-import type { ITypeSvg } from './type-svg.interface';
 import type { ITypeConfig } from '../type-node/type-node.interface';
+import { Style } from '../style/style.class';
+import { Attribute } from '../attribute/attribute.class';
+import { TypeElement } from '../type-element/type-element.abstract';
+import type { ITypeSvg } from './type-svg.interface';
 
 /**
  * TypeSvg类是TypeElement的抽象子类，实现了ITypeSvg接口，用于定义SVG类型元素的基本行为和属性。
  */
-export abstract class TypeSvg<T extends SVGElement = SVGElement> extends TypeComponent<T> implements ITypeSvg {
+export abstract class TypeSvg<T extends SVGElement = SVGElement> extends TypeElement implements ITypeSvg {
   /**
    * 节点名，需由子类覆盖提供具体的节点名。
    */
@@ -21,8 +22,12 @@ export abstract class TypeSvg<T extends SVGElement = SVGElement> extends TypeCom
    */
   override childNodes: (TypeSvg | TextNode)[];
 
+  style: Style;
+  attr: Attribute;
   protected constructor() {
     super();
+    this.style = new Style(this);
+    this.attr = new Attribute(this);
     this.childNodes = []; // 初始化子节点数组为空
   }
 
