@@ -1,3 +1,4 @@
+import { SlotNode } from '../../components/slot-node/slot-node.class';
 import type { ITransitionConfig } from '../../components/transition/transition.interface';
 import { getTransitionInfo, nextFrame } from '../../components/transition/transition.util';
 import { TypeFragment } from '../type-fragment/type-fragment.abstract';
@@ -14,7 +15,6 @@ export abstract class TypeTransition extends TypeFragment implements ITypeTransi
 
   constructor(params: ITransitionConfig = {}) {
     super();
-    this.useTag('fragment');
     this.mode = params?.mode || 'in-out';
     this.parent = params?.parent;
     this.slotChild(params.slot);
@@ -24,6 +24,17 @@ export abstract class TypeTransition extends TypeFragment implements ITypeTransi
     //   现在只能有一个子节点。
 
     this.props = this.useParams(params);
+  }
+
+  /**
+   * 确保slot存在，不存在则创建；
+   * 要在useSlots之后调用
+   * teleport.class.ts:2 Uncaught ReferenceError: Cannot access 'TypeFragment' before initialization
+   * @param name
+   */
+  getSlotNode(name = 'default') {
+    // return this.slotNodes[name];
+    return this.slotNodes[name] = this.slotNodes[name] ?? new SlotNode(name);
   }
 
   // 显示、隐藏 slot
