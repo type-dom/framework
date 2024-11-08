@@ -1,3 +1,6 @@
+export { TypeHtml } from './type-html.abstract';
+export type { ITypeHtml } from './type-html.interface';
+
 export { TypeA } from './a/a.abstract';
 export type { ITypeA } from './a/a.interface';
 export { TypeAbbr } from './abbr/abbr.abstract';
