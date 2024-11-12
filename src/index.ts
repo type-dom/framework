@@ -1,11 +1,10 @@
 export type * from './interface';
-export * from './core/style/index';
 export * from './parser';
 export * from './router';
 export * from './observer/index';
 export * from './reactivity/index';
 export * from './util/index';
-export * from './components/index';
+export * from './core/style/index';
 export { TypeNode } from './core/type-node/type-node.abstract';
 export type * from './core/type-node/type-node.interface';
 export { TypeTransition } from './core/type-transition/type-transition.abstract';
@@ -18,3 +17,7 @@ export type * from './core/type-root/type-root.interface';
 // export * from './core/element';
 export * from './core';
 export * from './use';
+
+export * from './components/index';
+
+export * from './decorators/index'
