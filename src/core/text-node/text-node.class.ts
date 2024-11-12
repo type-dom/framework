@@ -104,7 +104,7 @@ export class TextNode extends TypeNode implements ITextNode {
 
   useParams<T extends ITypeConfig>(params = {} as T): T {
     this.params = params;
-    this.buildProps(params);
+    this.assignProps(params);
     return this.props as T;
   }
 
@@ -215,16 +215,18 @@ export class TextNode extends TypeNode implements ITextNode {
     // this.parent?.mount();
   }
 
-  mount(el?: HTMLElement | SVGElement | ShadowRoot | string) {
+  mount(el?: HTMLElement | SVGElement | DocumentFragment | ShadowRoot | string) {
     this.created?.();
     this.render();
     this.beforeMount?.();
     if (this.dom) {
-      let appEl: HTMLElement | SVGElement | ShadowRoot | null | undefined;
+      let appEl: HTMLElement | SVGElement | DocumentFragment | ShadowRoot | null | undefined;
       if (
-        el instanceof HTMLElement ||
-        el instanceof SVGElement ||
-        el instanceof ShadowRoot) {
+        el instanceof HTMLElement
+        || el instanceof SVGElement
+        || el instanceof ShadowRoot
+        || el instanceof DocumentFragment
+       ) {
         appEl = el;
       } else if (typeof el === 'string') {
         appEl = document.querySelector<HTMLElement>(el);
