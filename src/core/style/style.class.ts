@@ -1,15 +1,17 @@
 import { IStyle, Property } from '@type-dom/css-type';
 import { addUnit, camelToDash, colorFormat, Ratio } from '@type-dom/utils';
-import { TypeElement } from '../type-element/type-element.abstract';
+import { XElement } from '../../components/x-element/x-element.class';
+import { TypeHtml } from '../type-html/type-html.abstract';
+import { TypeSvg } from '../type-svg/type-svg.abstract';
 
 export class Style {
   // private props: ITypeConfig;
   // private dom: HTMLElement | SVGElement | undefined;
   // private nodeName: 'fragment' | string;
-  private el: TypeElement;
+  private el: TypeHtml | TypeSvg | XElement;
   private obj: IStyle;
 
-  constructor(el: TypeElement) {
+  constructor(el: TypeHtml | TypeSvg | XElement) {
     this.el = el;
     this.obj = {};
   }
