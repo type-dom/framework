@@ -10,8 +10,8 @@ export abstract class EventEmitter extends Defer {
    * @private
    */
   observers: Record<string, Map<AnyFn, number>>;
-  abstract nodeName: '#text' | 'fragment' | string | undefined;
-  abstract dom?: HTMLElement | SVGElement | Text | undefined;
+  abstract nodeName: '#text' | 'fragment' | string;
+  abstract dom?: HTMLElement | SVGElement | DocumentFragment | Text | undefined;
   constructor() {
     super();
     // This is an Object containing Maps:

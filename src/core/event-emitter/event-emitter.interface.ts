@@ -8,7 +8,12 @@ import { TypeElement } from '../type-element/type-element.abstract';
 // }
 
 export interface IEmits {
-  [key: string]: AnyFn;
+  mouseenter?: (evt: MouseEvent) => void; // todo 与events合并；
+  mouseleave?: (evt: MouseEvent) => void;
+  focus?: (evt: FocusEvent) => void;
+  blur?: (evt: FocusEvent) => void;
+  close?: () => void;
+  [key: string]: AnyFn | undefined;
 }
 
 /**
