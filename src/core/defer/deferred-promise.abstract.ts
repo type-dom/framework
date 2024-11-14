@@ -28,8 +28,8 @@ export class DeferredPromise<T> {
   }
 
   private _executeCallbacks() {
-    while (this._callbacks.length > 0) {
-      const callback = this._callbacks.shift();
+    while (this._callbacks?.length > 0) {
+      const callback = this._callbacks?.shift();
       if (callback) {
         callback();
       }
@@ -37,14 +37,14 @@ export class DeferredPromise<T> {
   }
 
   private _enqueueCallback(callback: () => void) {
-    this._callbacks.push(callback);
+    this._callbacks?.push(callback);
   }
 
   then<U>(onFulfilled?: (value: T) => U | PromiseLike<U>, onRejected?: (reason: any) => void | U | PromiseLike<U>): DeferredPromise<U> {
     return new DeferredPromise<U>((resolve, reject) => {
       if (this._state === 'fulfilled') {
         try {
-          const result = onFulfilled ? onFulfilled(this._value) : this._value;
+          const result = onFulfilled ? onFulfilled(this._value!) : this._value;
           resolve(result);
         } catch (error) {
           reject(error);
