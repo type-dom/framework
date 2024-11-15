@@ -4,9 +4,12 @@ import { TypeElement } from '../../core/type-element/type-element.abstract';
 import type { IAttr } from '../../core/type-node/type-node.interface';
 import { TextNode } from '../../core/text-node/text-node.class';
 import { IXElement, IXElementConfig } from './x-element.interface';
+import { Style } from '../../core/style/style.class';
+import { Attribute } from '../../core/attribute/attribute.class';
+import { TypeHtml } from '../../core/type-html/type-html.abstract';
 
 /**
- * XElement是一个通用元素基础组件，是其它类组件的子节点
+ * XElement是一个通用元素基础组件，是其它类组件的子节点,Html/Svg
  * DOM/XML
  * 不包括 文本节点类
  * 模板页面时用到，解析文本DOM。
@@ -15,15 +18,17 @@ import { IXElement, IXElementConfig } from './x-element.interface';
  */
 export class XElement extends TypeElement implements IXElement {
   className: 'XElement';
-  nodeName: string;
+  override nodeName: string; // 不能是 fragment
   // parent?: XElement; // 在解析时，onEndElement时，重新赋值。
-  override childNodes: (XElement | TextNode)[];
+  // override childNodes: (XElement | TextNode)[];
+  style: Style;
+  attr: Attribute;
   // override template?: string;
   // data?: Record<string, any>;
   // override methods?: Record<string, any>;
   // config?: Record<string, any>; // config不会转为json
   override attributes: IAttr[]; // 去掉了?号；
-  override dom?: HTMLElement | SVGElement;
+  override dom: HTMLElement | SVGElement;
 
   /**
    * 在 Parser 中使用 XElement 时， 限制了不能直接使用 parent 参数。
@@ -33,9 +38,16 @@ export class XElement extends TypeElement implements IXElement {
   constructor(params: IXElementConfig = {}) {
     super();
     this.className = 'XElement';
-    this.nodeName = params?.nodeName || 'div';
-    this.attributes = params?.attributes || [];
+    this.nodeName = params?.tag || params.nodeName || 'div';
+    this.dom = document.createElement(this.nodeName);
+    // this.useTag(params?.tag || params.nodeName)
     console.log('x-element . ');
+    if (this.nodeName === 'fragment') {
+      console.error('x-element can not use fragment . ');
+    }
+    this.attributes = params?.attributes || [];
+    this.style = new Style(this);
+    this.attr = new Attribute(this);
     if (params?.template !== undefined) {
       const parser = new Parser();
       const item = parser.parseFromString(params.template) as XElement;
@@ -72,9 +84,9 @@ export class XElement extends TypeElement implements IXElement {
   override setup(): void {
     console.log('XElement setup . ');
     // todo nodejs下没有document，Parser可能会用到
-    if (!this.dom) {
-      this.dom = document.createElement(this.nodeName);
-    }
+    // if (!this.dom) {
+    //   this.dom = document.createElement(this.nodeName);
+    // }
     // 加载自定义属性
     for (const attr of this.attributes) {
       if (attr.name.startsWith(':')) {
@@ -99,7 +111,7 @@ export class XElement extends TypeElement implements IXElement {
       } else if (attr.name.startsWith('@')) {
         // 过滤掉，不加入属性中。专门绑定事件时处理。
       } else {
-        this.attr.addObj({
+        this.attr?.addObj({
           [attr.name]: attr.value,
         });
       }
