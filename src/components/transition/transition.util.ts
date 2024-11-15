@@ -1,5 +1,4 @@
 import { isArray, isObject, isString } from '@type-dom/utils';
-import { TypeElement } from '../../core/type-element/type-element.abstract';
 import {
   ANIMATION,
   CSSTransitionInfo,
@@ -136,7 +135,7 @@ export function resolveTransitionProps(
   };
 
   return Object.assign(baseProps, {
-    onBeforeEnter(element: TypeElement) {
+    onBeforeEnter(element: TypeHtml) {
       const el = element.dom;
       if (!el) {
         throw Error('element.dom is undefined . ');
@@ -148,7 +147,7 @@ export function resolveTransitionProps(
       // }
       addTransitionClass(el, enterActiveClass);
     },
-    onBeforeAppear(element: TypeElement) {
+    onBeforeAppear(element: TypeHtml) {
       const el = element.dom;
       if (!el) {
         throw Error('element.dom is undefined . ');
@@ -162,7 +161,7 @@ export function resolveTransitionProps(
     },
     onEnter: makeEnterHook(false),
     onAppear: makeEnterHook(true),
-    onLeave(element: TypeElement & { _isLeaving?: boolean }, done: () => void) {
+    onLeave(element: TypeHtml & { _isLeaving?: boolean }, done: () => void) {
       const el = element.dom;
       if (!el) {
         throw Error('element.dom is undefined . ');
@@ -194,7 +193,7 @@ export function resolveTransitionProps(
       });
       callHook(onLeave, [el, resolve]);
     },
-    onEnterCancelled(element: TypeElement) {
+    onEnterCancelled(element: TypeHtml) {
       const el = element.dom;
       if (!el) {
         throw Error('element.dom is undefined . ');
@@ -202,7 +201,7 @@ export function resolveTransitionProps(
       finishEnter(el, false);
       callHook(onEnterCancelled, [el]);
     },
-    onAppearCancelled(element: TypeElement) {
+    onAppearCancelled(element: TypeHtml) {
       const el = element.dom;
       if (!el) {
         throw Error('element.dom is undefined . ');
@@ -210,7 +209,7 @@ export function resolveTransitionProps(
       finishEnter(el, true);
       callHook(onAppearCancelled, [el]);
     },
-    onLeaveCancelled(element: TypeElement) {
+    onLeaveCancelled(element: TypeHtml) {
       const el = element.dom;
       if (!el) {
         throw Error('element.dom is undefined . ');
