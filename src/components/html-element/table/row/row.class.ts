@@ -12,12 +12,12 @@ export class TableRow extends TypeTableRow implements ITableRow {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'TableRow';
-    this.slotNode = new SlotNode('default');
+    this.slotNode = new SlotNode();
     this.childNodes = [];
 
     if (params?.slot) {
-      // this.slotChild(config?.slot);
-      this.slotNode.addSlot(params.slot);
+      this.slotChild(params.slot);
+      // this.slotNode.addSlot(params.slot);
     }
     this.useParams(params);
   }
