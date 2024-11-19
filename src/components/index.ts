@@ -12,12 +12,4 @@ export type { IXElement } from './x-element/x-element.interface';
 export * from './html-element';
 export * from './svg-element';
 
-export { TypeHtml } from '../core/type-html/type-html.abstract';
-export type { ITypeHtml } from '../core/type-html/type-html.interface';
-export * from '../core/type-html';
-export { TypeSvg } from '../core/type-svg/type-svg.abstract';
-export type { ITypeSvg } from '../core/type-svg/type-svg.interface';
-export { TypeSvgSvg } from '../core/type-svg/svg/svg.abstract';
-export type { ITypeSvgSvg } from '../core/type-svg/svg/svg.interface';
-
 // export type { HtmlTypes } from './HtmlTypes';
