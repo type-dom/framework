@@ -1,7 +1,7 @@
-import { activeEffect, Effect } from './effect';
+import { activeEffect, EffectScope } from './effect-scope';
 
 export class Dep {
-  private subs: Set<Effect> = new Set();
+  private subs: Set<EffectScope> = new Set();
 
   depend() {
     if (activeEffect) {

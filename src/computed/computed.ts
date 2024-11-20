@@ -1,17 +1,16 @@
-import { Effect } from './effect';
-import { reactive } from './reactive';
+import { EffectScope } from './effect-scope';
 
 type ComputedGetter<T> = () => T;
-type ComputedSetter<T> = (v: T) => void;
+type ComputedSetter<T> = (v: T | undefined) => void;
 
 interface WritableComputedOptions<T> {
   get: ComputedGetter<T>;
   set: ComputedSetter<T>;
 }
 
-export function computed<T>(getter: ComputedGetter<T>): { value: T };
-export function computed<T>(options: WritableComputedOptions<T>): { value: T };
-export function computed<T>(getterOrOptions: ComputedGetter<T> | WritableComputedOptions<T>): { value: T } {
+export function computed<T>(getter: ComputedGetter<T>): { value: T | undefined };
+export function computed<T>(options: WritableComputedOptions<T>): { value: T | undefined };
+export function computed<T>(getterOrOptions: ComputedGetter<T> | WritableComputedOptions<T>): { value: T | undefined } {
   let getter: ComputedGetter<T>;
   let setter: ComputedSetter<T>;
 
@@ -25,11 +24,11 @@ export function computed<T>(getterOrOptions: ComputedGetter<T> | WritableCompute
     setter = getterOrOptions.set;
   }
 
-  const effect = new Effect(getter);
+  const effect = new EffectScope(getter);
 
   return {
     get value() {
-      return effect.run();
+      return effect.run<T>();
     },
     set value(newValue) {
       setter(newValue);

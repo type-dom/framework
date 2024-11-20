@@ -5,10 +5,10 @@ export function reactive<T extends object>(target: T): T {
   return new Proxy(target, {
     get(target, key) {
       dep.depend();
-      return target[key];
+      return (target as any)[key];
     },
     set(target, key, value) {
-      target[key] = value;
+      (target as any)[key] = value;
       dep.notify();
       return true;
     }
