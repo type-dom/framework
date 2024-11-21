@@ -7,7 +7,7 @@ export class XProxy<T> {
   constructor(initialValue: T) {
     this._value = initialValue;
     this.observer = new Observer(initialValue);
-    this._value = new Proxy(initialValue, this.createHandler());
+    // this._value = new Proxy(initialValue, this.createHandler());
   }
 
   get value(): T {
@@ -27,17 +27,17 @@ export class XProxy<T> {
     this.observer.removeObserver(observer);
   }
 
-  private createHandler(): ProxyHandler<T> {
-    const self = this;
-    return {
-      get(target, prop, receiver) {
-        return Reflect.get(target, prop, receiver);
-      },
-      set(target, prop, value, receiver) {
-        const result = Reflect.set(target, prop, value, receiver);
-        self.observer.notify(target);
-        return result;
-      }
-    };
-  }
+  // private createHandler(): ProxyHandler<T> {
+  //   const self = this;
+  //   return {
+  //     // get(target, prop, receiver) {
+  //     //   return Reflect.get(target, prop, receiver);
+  //     // },
+  //     set(target, prop, value, receiver) {
+  //       const result = Reflect.set(target, prop, value, receiver);
+  //       self.observer.notify(target);
+  //       return result;
+  //     }
+  //   };
+  // }
 }

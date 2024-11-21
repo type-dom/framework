@@ -1,7 +1,8 @@
 export class Observer {
   private observers: Set<(newValue: any) => void> = new Set();
 
-  constructor(private value: any) {}
+  constructor(private value: any) {
+  }
 
   addObserver(observer: (newValue: any) => void): void {
     this.observers.add(observer);
