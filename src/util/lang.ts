@@ -29,7 +29,7 @@ export function def(
     value: val,
     enumerable: !!enumerable,
     writable: true,
-    configurable: true,
+    configurable: true
   });
 }
 
@@ -43,7 +43,7 @@ export function parsePath(path: string) {
     return;
   }
   const segments = path.split('.');
-  return function (obj: IJsonData) {
+  return function(obj: IJsonData) {
     let result;
     for (let i = 0; i < segments.length; i++) {
       if (!obj) return;
