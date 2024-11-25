@@ -16,8 +16,9 @@ export interface IRouter {
 // }
 
 export interface INext {
-  (value?: string): void
+  (value?: string): void;
 }
+
 export interface IBeforeEachGuard {
   (to: IRoute, from: IRoute | undefined, next: INext): void;
 }

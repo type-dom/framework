@@ -34,7 +34,7 @@ export class Router implements IRouter {
     }
     this.lastPath = {
       from: '/',
-      to: window.location.pathname,
+      to: window.location.pathname
     };
   }
 
@@ -169,7 +169,7 @@ export class Router implements IRouter {
         } else if (
           fromRoute?.parent?.routerView?.component &&
           fromRoute?.parent?.routerView?.component?.className ===
-            toRoute?.parent?.routerView?.component?.className
+          toRoute?.parent?.routerView?.component?.className
         ) {
           console.log(
             'fromRoute?.parent?.routerView?.component is ',

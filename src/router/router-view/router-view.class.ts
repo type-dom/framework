@@ -14,12 +14,13 @@ import { IRouterViewConfig } from './router-view.interface';
  */
 export class RouterView extends TypeFragment {
   className = 'RouterView';
-   override props: IRouterViewConfig;
+  override props: IRouterViewConfig;
   // childNodes: TypeNode[];
   loaded: boolean; // 判断是不是已经被渲染过了；
   // component?: TypeElement;
   // override slot?: TypeElement; // 唯一子元素
   component?: TypeElement;
+
   constructor(params: IRouterViewConfig = {}) {
     super();
     this.props = this.useParams(params);
@@ -33,6 +34,7 @@ export class RouterView extends TypeFragment {
   setComponent(component: TypeElement) {
     this.component = component;
   }
+
   /**
    * 加载路由
    * 加载时，目标路由的RouterView就指定为当前RouterView对象了。
@@ -63,7 +65,7 @@ export class RouterView extends TypeFragment {
       this.clearChildren();
       this.addChild(this.component);
       console.log('this is ', this);
-      this.elementParent?.mount()
+      this.elementParent?.mount();
     });
   }
 }
