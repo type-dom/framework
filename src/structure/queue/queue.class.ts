@@ -1,4 +1,5 @@
 import { IQueue } from './queue.interface';
+
 export class Queue<T> implements IQueue<T> {
   private items: T[] = [];
 
