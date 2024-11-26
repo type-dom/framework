@@ -7,10 +7,10 @@
 //   toRawType,
 //   isServerRendering
 // } from 'core/util'
+import { isArray, isPrimitive, toRawType } from '@type-dom/utils';
 import type { Ref, UnwrapRefSimple, RawSymbol } from './ref';
 import { Observer } from '../observer/observer';
 import { def, isServerRendering, warn } from '../util';
-import { isArray, isPrimitive, toRawType } from '@type-dom/utils';
 import { observe } from '../observer/observe';
 import { __DEV__ } from '../config';
 
@@ -140,3 +140,4 @@ export function isCollectionType(value: unknown): boolean {
     type === 'Map' || type === 'WeakMap' || type === 'Set' || type === 'WeakSet'
   );
 }
+

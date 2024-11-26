@@ -9,6 +9,7 @@ export class Watcher {
   private expr: string;
   private cb: ICallback;
   private value: IJsonDataProp;
+
   constructor(target: IJsonData, expr: string, cb: ICallback) {
     this.target = target;
     this.expr = expr;
@@ -49,6 +50,7 @@ export class Watcher {
     // 返回最终的属性值
     return objRes;
   }
+
   /**
    * 根据属性名数组获取嵌套对象的属性值。
    * @param obj - 嵌套对象

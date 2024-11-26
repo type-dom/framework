@@ -3,7 +3,7 @@ import { isArray } from '@type-dom/utils';
 import {
   isReactive,
   ReactiveFlags,
-  type ShallowReactiveMarker,
+  type ShallowReactiveMarker
 } from './reactive';
 // import type { IfAny } from 'types/utils'
 // import Dep from 'core/observer/dep'
@@ -89,11 +89,11 @@ export function triggerRef(ref: Ref) {
   }
   if (__DEV__) {
     ref.dep &&
-      ref.dep.notify({
-        type: TriggerOpTypes.SET,
-        target: ref,
-        key: 'value',
-      });
+    ref.dep.notify({
+      type: TriggerOpTypes.SET,
+      target: ref,
+      key: 'value'
+    });
   } else {
     ref.dep && ref.dep.notify();
   }
@@ -142,7 +142,7 @@ export function proxyWithRefUnwrap(
       } else {
         source[key] = value;
       }
-    },
+    }
   });
 }
 
@@ -162,7 +162,7 @@ export function customRef<T>(factory: CustomRefFactory<T>): Ref<T> {
         dep.depend({
           target: ref,
           type: TrackOpTypes.GET,
-          key: 'value',
+          key: 'value'
         });
       } else {
         dep.depend();
@@ -173,7 +173,7 @@ export function customRef<T>(factory: CustomRefFactory<T>): Ref<T> {
         dep.notify({
           target: ref,
           type: TriggerOpTypes.SET,
-          key: 'value',
+          key: 'value'
         });
       } else {
         dep.notify();
@@ -186,7 +186,7 @@ export function customRef<T>(factory: CustomRefFactory<T>): Ref<T> {
     },
     set value(newVal) {
       set(newVal);
-    },
+    }
   } as any;
   def(ref, RefFlag, true);
   return ref;
@@ -236,7 +236,7 @@ export function toRef<T extends object, K extends keyof T>(
     },
     set value(newVal) {
       object[key] = newVal;
-    },
+    }
   } as any;
   def(ref, RefFlag, true);
   return ref;
@@ -268,25 +268,24 @@ export type ShallowUnwrapRef<T> = {
     ? V
     : // if `V` is `unknown` that means it does not extend `Ref` and is undefined
     T[K] extends Ref<infer V> | undefined
-    ? unknown extends V
-      ? undefined
-      : V | undefined
-    : T[K];
+      ? unknown extends V
+        ? undefined
+        : V | undefined
+      : T[K];
 };
 
 export type UnwrapRef<T> = T extends ShallowRef<infer V>
   ? V
   : T extends Ref<infer V>
-  ? UnwrapRefSimple<V>
-  : UnwrapRefSimple<T>;
+    ? UnwrapRefSimple<V>
+    : UnwrapRefSimple<T>;
 
 type BaseTypes = string | number | boolean;
 type CollectionTypes = IterableCollections | WeakCollections;
 type IterableCollections = Map<any, any> | Set<any>;
 type WeakCollections = WeakMap<any, any> | WeakSet<any>;
 
-export type UnwrapRefSimple<T> = T extends
-  | Function
+export type UnwrapRefSimple<T> = T extends | Function
   | CollectionTypes
   | BaseTypes
   | Ref
@@ -294,9 +293,9 @@ export type UnwrapRefSimple<T> = T extends
   | { [RawSymbol]?: true }
   ? T
   : T extends Array<any>
-  ? { [K in keyof T]: UnwrapRefSimple<T[K]> }
-  : T extends object & { [ShallowReactiveMarker]?: never }
-  ? {
-      [P in keyof T]: P extends symbol ? T[P] : UnwrapRef<T[P]>;
-    }
-  : T;
+    ? { [K in keyof T]: UnwrapRefSimple<T[K]> }
+    : T extends object & { [ShallowReactiveMarker]?: never }
+      ? {
+        [P in keyof T]: P extends symbol ? T[P] : UnwrapRef<T[P]>;
+      }
+      : T;

@@ -1,9 +1,9 @@
-
 import { Dep } from '../dep/dep.class';
 import { IJsonData, IJsonDataProp } from '../../interface';
 
 export class Observer {
   private value: IJsonData;
+
   constructor(value: IJsonData) {
     this.value = value;
     this.walk(value);

@@ -3,6 +3,7 @@ import { Watcher } from '../watcher/watcher.class';
 export class Dep {
   private deps: Watcher[];
   static target?: Watcher;
+
   constructor() {
     this.deps = [];
   }

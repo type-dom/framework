@@ -5,6 +5,7 @@ import { Observer } from '../observer/observer.class';
 export class Compile {
   private el: Node | null;
   private vm: IJsonData;
+
   constructor(el: string, vm: IJsonData) {
     this.el = document.querySelector(el);
     console.log('el is found . el is ', el);
