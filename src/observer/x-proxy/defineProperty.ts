@@ -67,6 +67,6 @@ export function defineProxyProperty(
         }
         return true;
       }
-    },
+    }
   });
 }

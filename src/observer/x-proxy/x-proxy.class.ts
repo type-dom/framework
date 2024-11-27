@@ -9,6 +9,7 @@ export class XProxy<T extends IJsonData> implements IXProxy<T> {
   _handler?: IXProxyHandler<T>;
   _subs: AnyFn[] = [];
   value: any;
+
   // public proxy: { [P in keyof T]: T[P] };
   [key: string]: IJsonDataProp | T | IXProxyHandler<T> | any;
 
@@ -86,7 +87,7 @@ export class XProxy<T extends IJsonData> implements IXProxy<T> {
           }
         }
         return true;
-      },
+      }
     });
   }
 
@@ -162,7 +163,7 @@ export class XProxy<T extends IJsonData> implements IXProxy<T> {
     // console.log('next , data is ', data);
     this._subs.forEach(sub => {
       sub(data);
-    })
+    });
   }
 }
 
@@ -222,6 +223,6 @@ export function makePropertyNonEnumerable<T extends object, K extends keyof T>(
     configurable: true, // 是否可以被删除或修改特性
     enumerable: false, // 是否可枚举
     writable: true, // 是否可被重新赋值
-    value: obj[key], // 属性的值
+    value: obj[key] // 属性的值
   });
 }
