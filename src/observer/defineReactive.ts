@@ -37,8 +37,8 @@ export function defineReactive(
   let childOb = shallow
     ? val && val.__ob__
     : isObject(val)
-    ? observe(val, false, mock)
-    : val;
+      ? observe(val, false, mock)
+      : val;
 
   Object.defineProperty(obj, key, {
     enumerable: true,
@@ -77,7 +77,7 @@ export function defineReactive(
         ? newVal && newVal.__ob__
         : observe(newVal, false, mock);
       dep.notify();
-    },
+    }
   });
   return dep;
 }
