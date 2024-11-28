@@ -1,12 +1,12 @@
 function bindToView(target: any, key: string, descriptor?: PropertyDescriptor) {
   let originalValue = descriptor?.get?.call(target);
 
-  const getter = function () {
+  const getter = function() {
     console.log(`Getting value of ${key}: ${originalValue}`);
     return originalValue;
   };
 
-  const setter = function (newValue: any) {
+  const setter = function(newValue: any) {
     console.log(`Setting value of ${key} to ${newValue}`);
     if (newValue !== originalValue) {
       originalValue = newValue;

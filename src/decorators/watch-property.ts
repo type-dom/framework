@@ -1,15 +1,16 @@
 interface PropertyHistory {
   [key: string]: string[];
 }
+
 export function watchProperty(target: any, key: string, descriptor?: PropertyDescriptor) {
   let originalValue = descriptor?.get?.call(target);
 
-  const getter = function () {
+  const getter = function() {
     console.log(`Getting value of ${key}: ${originalValue}`);
     return originalValue;
   };
 
-  const setter = function (newValue: string) {
+  const setter = function(newValue: string) {
     console.log(`Setting value of ${key} to ${newValue}`);
     originalValue = newValue;
     // 记录属性的历史值
@@ -27,6 +28,7 @@ export function watchProperty(target: any, key: string, descriptor?: PropertyDes
   }
   return descriptor as any;
 }
+
 //
 class MyClass {
   private history: PropertyHistory = {};
@@ -42,6 +44,7 @@ class MyClass {
     return this.history[key];
   }
 }
+
 //
 // const instance = new MyClass();
 // instance.myProperty = 'first change';

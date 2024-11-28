@@ -41,7 +41,7 @@ describe('@Watch decorator', () => {
   it('should handle nested objects recursively', () => {
     class DeepTestClass {
       @watch
-      nested: { deeper: { value: number } } = { deeper: { value: 10 }};
+      nested: { deeper: { value: number } } = { deeper: { value: 10 } };
       // todo
       @watch
       nestedObject = {
@@ -51,6 +51,7 @@ describe('@Watch decorator', () => {
         }
       };
     }
+
 // 测试属性变化
 //     instance.nestedObject.a = 10; // 输出: Property nestedObject.a changed from 1 to 10
 //     instance.nestedObject.b.c = 20; // 输出: Property nestedObject.b.c changed from 2 to 20

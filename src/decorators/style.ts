@@ -4,7 +4,7 @@ import { IStyle, Property } from '@type-dom/css-type';
 
 export function StyleManager(target: Function) {
   Object.defineProperty(target.prototype, 'clientHeight', {
-    get: function () {
+    get: function() {
       if (this && this.dom) {
         return (this.dom.clientHeight / Ratio.mm2px).toFixed(2) + 'mm';
       } else {
@@ -18,7 +18,7 @@ export function StyleManager(target: Function) {
    * margin 的单位 px ---> 单位换算
    */
   Object.defineProperty(target.prototype, 'elementHeight', {
-    get: function (): string | undefined {
+    get: function(): string | undefined {
       if (!this.dom || !(this.dom instanceof HTMLElement)) {
         return;
       }
@@ -31,21 +31,21 @@ export function StyleManager(target: Function) {
   });
 
   Object.defineProperty(target.prototype, 'isShow', {
-    get: function (): boolean {
+    get: function(): boolean {
       return 'none' !== this.dom?.style?.display;
     }
-  })
+  });
 
   target.prototype.getStyle = function <T>(key: keyof IStyle): T {
     if (!this.props.styleObj) {
       this.props.styleObj = {};
     }
     return this.props.styleObj[key] as T;
-  }
+  };
 
-  target.prototype.getStyleObj = function (): IStyle {
+  target.prototype.getStyleObj = function(): IStyle {
     return this.props.styleObj = this.props.styleObj ?? {};
-  }
+  };
 
   /**
    * 添加样式对象；
@@ -53,7 +53,7 @@ export function StyleManager(target: Function) {
    *    fluentUI中使用了 mergeStyles 方法；
    * @param styleObj
    */
-  target.prototype.addStyleObj = function (styleObj?: IStyle): void {
+  target.prototype.addStyleObj = function(styleObj?: IStyle): void {
     if (!styleObj) return;
     for (const key in styleObj) {
       if (Object.hasOwnProperty.call(styleObj, key)) {
@@ -64,7 +64,7 @@ export function StyleManager(target: Function) {
     }
   };
 
-  target.prototype.addStyle = function (key: keyof IStyle, value: string | number | boolean | undefined): void {
+  target.prototype.addStyle = function(key: keyof IStyle, value: string | number | boolean | undefined): void {
     if (!this.props.styleObj) {
       console.warn('this.props.styleObj is undefined .');
       this.props.styleObj = {};
@@ -89,7 +89,7 @@ export function StyleManager(target: Function) {
    * @param value 样式属性的值，可以是字符串、数字或布尔值。
    * @throws 如果this.dom为null，则抛出错误，指示元素不存在。
    */
-  target.prototype.renderStyle = function (key: keyof IStyle, value: string | number): void {
+  target.prototype.renderStyle = function(key: keyof IStyle, value: string | number): void {
     // 当样式属性为width或height时，确保值以px为单位
     // todo width height 等属性是数字时的处理
     //    padding margin 等类似的数字值的处理
@@ -127,7 +127,7 @@ export function StyleManager(target: Function) {
    * @param key 样式属性的键，对应于`IStyle`接口中的属性名。
    * @param value 样式属性的值，可以是字符串、数字或布尔值。
    */
-  target.prototype.setStyle = function (key: keyof IStyle, value: string | number | undefined): void {
+  target.prototype.setStyle = function(key: keyof IStyle, value: string | number | undefined): void {
     // 当值为undefined时，调用removeStyle方法来删除这个样式属性
     // todo type ???
     if (value === undefined) {
@@ -143,7 +143,7 @@ export function StyleManager(target: Function) {
   };
 
   // 删除样式
-  target.prototype.removeStyle = function (key: keyof IStyle): void {
+  target.prototype.removeStyle = function(key: keyof IStyle): void {
     if (this.getStyleObj() && this.getStyleObj()[key]) {
       delete this.getStyleObj()[key];
     }
@@ -159,7 +159,7 @@ export function StyleManager(target: Function) {
    * 没有传的样式，不变；
    * @param styleObj
    */
-  target.prototype.setStyleObj = function (styleObj?: IStyle): void {
+  target.prototype.setStyleObj = function(styleObj?: IStyle): void {
     for (const key in styleObj) {
       if (Object.hasOwnProperty.call(styleObj, key)) {
         // todo 如何优化
@@ -184,31 +184,31 @@ export function StyleManager(target: Function) {
     // this.renderObj(styleObj);
   };
 
-  target.prototype.addWidth = function (width: string | number): void {
+  target.prototype.addWidth = function(width: string | number): void {
     this.addStyleObj({ width: addUnit(width) });
   };
 
-  target.prototype.setWidth = function (width: string | number): void {
+  target.prototype.setWidth = function(width: string | number): void {
     this.setStyleObj({ width: addUnit(width) });
   };
 
-  target.prototype.addHeight = function (height: string | number): void {
+  target.prototype.addHeight = function(height: string | number): void {
     this.addStyleObj({ height: addUnit(height) });
   };
 
-  target.prototype.setHeight = function (height: string | number): void {
+  target.prototype.setHeight = function(height: string | number): void {
     this.setStyleObj({ height: addUnit(height) });
   };
 
-  target.prototype.addBackgroundColor = function (backgroundColor: string): void {
+  target.prototype.addBackgroundColor = function(backgroundColor: string): void {
     this.addStyleObj({ backgroundColor });
   };
 
-  target.prototype.setBackgroundColor = function (backgroundColor: string): void {
+  target.prototype.setBackgroundColor = function(backgroundColor: string): void {
     this.setStyleObj({ backgroundColor });
   };
 
-  target.prototype.setCursor = function (cursor: Property.Cursor) {
+  target.prototype.setCursor = function(cursor: Property.Cursor) {
     this.setStyleObj({ cursor });
   };
 
@@ -217,7 +217,7 @@ export function StyleManager(target: Function) {
    * 清除原有样式，全部替换为新的样式
    * @param styleObj
    */
-  target.prototype.resetStyleObj = function (styleObj?: IStyle): void {
+  target.prototype.resetStyleObj = function(styleObj?: IStyle): void {
     this.dom?.removeAttribute('style'); // 需要单独清理一下DOM的style
     this.clearStyleObj();
     if (styleObj !== undefined) {
@@ -227,7 +227,7 @@ export function StyleManager(target: Function) {
     }
   };
 
-  target.prototype.removeObj = function (styleObj: IStyle): void {
+  target.prototype.removeObj = function(styleObj: IStyle): void {
     for (const key in styleObj) {
       if (Object.hasOwnProperty.call(styleObj, key)) {
         this.removeStyle(key as keyof IStyle);
@@ -235,7 +235,7 @@ export function StyleManager(target: Function) {
     }
   };
 
-  target.prototype.clearObj = function () {
+  target.prototype.clearObj = function() {
     for (const key in this.props.styleObj) {
       if (Object.hasOwnProperty.call(this.props.styleObj, key)) {
         this.removeStyle(key as keyof IStyle);
@@ -243,7 +243,7 @@ export function StyleManager(target: Function) {
     }
   };
 
-  target.prototype.renderObj = function (styleObj?: IStyle): void {
+  target.prototype.renderObj = function(styleObj?: IStyle): void {
     if (!styleObj) {
       styleObj = this.props.styleObj;
     }
@@ -260,11 +260,11 @@ export function StyleManager(target: Function) {
    * 可指定具体显示模式
    * @param mode
    */
-  target.prototype.show = function (mode?: Property.Display): void {
+  target.prototype.show = function(mode?: Property.Display): void {
     this.set('display', mode ?? 'block');
   };
 
-  target.prototype.hide = function (): void {
+  target.prototype.hide = function(): void {
     this.set('display', 'none');
   };
 }

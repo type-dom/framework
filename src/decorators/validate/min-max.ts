@@ -1,5 +1,5 @@
 export function minMax(min: number, max: number) {
-  return function (target: any, propertyKey: string) {
+  return function(target: any, propertyKey: string) {
     let val = target[propertyKey];
 
     const getter = () => val;
