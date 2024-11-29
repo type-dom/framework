@@ -61,17 +61,17 @@ export interface Stoppable<StartFnArgs extends any[] = any[]> {
   /**
    * A ref indicate whether a stoppable instance is executing
    */
-  isPending: Readonly<boolean>
+  isPending: Readonly<boolean>;
 
   /**
    * Stop the effect from executing
    */
-  stop: Fn
+  stop: Fn;
 
   /**
    * Start the effects
    */
-  start: (...args: StartFnArgs) => void
+  start: (...args: StartFnArgs) => void;
 }
 
 /**
