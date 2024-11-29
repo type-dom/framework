@@ -20,4 +20,7 @@ export * from './use';
 
 export * from './components/index';
 
-export * from './decorators/index'
+export * from './decorators/index';
+
+export { inject } from './util/inject';
+export { computed } from './computed/computed';
