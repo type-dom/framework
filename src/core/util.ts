@@ -7,7 +7,7 @@ import { ITypeElement } from './type-element/type-element.interface';
 import { ITextNode } from './text-node/text-node.interface';
 import { ITypeNode } from './type-node/type-node.interface';
 import { TypeHtml } from './type-html/type-html.abstract';
-import { TypeSvg } from './type-svg/type-svg.abstract'
+import { TypeSvg } from './type-svg/type-svg.abstract';
 
 /**
  * 保存数据时使用。
@@ -21,7 +21,7 @@ export function toJSON(element: TypeHtml | TypeSvg): ITypeElement {
     className: element.className,
     params: {
       styleObj: deepClone(element.style.getObj()), // 深拷贝
-      attrObj: deepClone(element.attr.getObj()), // 深拷贝
+      attrObj: deepClone(element.attr.getObj()) // 深拷贝
     },
     settings: element?.settings,
     // items, page ----> 不起作用
@@ -32,10 +32,10 @@ export function toJSON(element: TypeHtml | TypeSvg): ITypeElement {
         return {
           // className: 'TextNode',
           // nodeName: '#text',
-          nodeValue: child.nodeValue, // textContent
+          nodeValue: child.nodeValue // textContent
         } as ITextNode;
       }
-    }),
+    })
   } as ITypeElement;
 }
 
@@ -151,6 +151,25 @@ export function defineNodeProperty(
       } else {
         (node as any)[key] = newValue;
       }
-    },
+    }
   });
+}
+
+// packages/runtime-core/src/component.ts
+
+let currentInstance: TypeNode | null = null
+
+export function getCurrentInstance (): TypeNode | null {
+  return currentInstance
+}
+export function setCurrentInstance(instance: TypeNode | null) {
+  currentInstance = instance
+}
+
+export function getCurrentInstanceForWarning(): TypeNode | null {
+  return currentInstance
+}
+
+export function hasInjectionContext(instance: TypeNode): boolean {
+  return instance.provide != null || instance.parent?.provide != null
 }
