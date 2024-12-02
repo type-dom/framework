@@ -13,6 +13,7 @@ import type {
   ITypeConfig,
   ITypeNode
 } from './type-node.interface';
+import { SlotNode } from '../slot-node/slot-node.class';
 
 /**
  * 虚拟DOM，TypeNode 抽象节点类, 所有节点类的抽象类；
@@ -40,11 +41,11 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
    * 属性项
    */
   props: ITypeConfig;
-  parent?: TypeElement | undefined;
+  parent?: TypeElement | SlotNode | undefined;
   /**
    * 挂载到指定的组件的DOM,可以直接指向 body
    */
-  to?: HTMLElement;
+  to?: string | HTMLElement;
   isContext?: boolean;
   items?: ITypeConfig[];
 
@@ -73,7 +74,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   /**
    * 更新，更新属性，样式，事件等。
    */
-  abstract update(): void;
+  abstract update(el?: string | HTMLElement | SVGElement | ShadowRoot | DocumentFragment): void;
 
   // abstract attrObj?: ITypeAttribute | undefined; // 合并到 this.props中
   isRoot?: boolean; // 是否是根节点 只有TypeRoot才为true
@@ -292,7 +293,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   // }
 
   // 提供
-  provide<T>(key: string | symbol, value: T) {
+  provide = <T>(key: string | symbol, value: T)=> {
     this.provides = this.provides || {};
     this.provides[key] = value;
   }
@@ -314,11 +315,11 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
     }
   }
 
-  setParent(parent: TypeElement): void {
+  setParent(parent: TypeElement | SlotNode): void {
     this.parent = parent; // 单一原则
   }
 
-  appendParent(parent: TypeElement): void {
+  appendParent(parent: TypeElement | SlotNode): void {
     this.parent = parent;
     parent.addChild(this);
   }
@@ -362,7 +363,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
       if (propValue === value) {
         return child as T;
       } else if (child.children.length > 0) {
-        const res = child.down(expr, value)
+        const res = child.down(expr, value);
         if (res) { // 有值才返回，否则继续遍历
           return res as T;
         }
@@ -393,7 +394,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
         if (child === node) {
           return parent;
         } else {
-          return this.findParent(child, node)
+          return this.findParent(child, node);
         }
       }
       return undefined;
@@ -650,17 +651,19 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   beforeDestroy?(): void;
 
   /**
+   * 销毁对象
    * 从父级中删除
    * 类似 render ，要迭代删除子节点；
-   * 要清理绑定的事件，  组件绑定的事件有可能是 绑到 document,window的，必须清理，否则逻辑可能错误。
+   * 删除dom,
+   * 要清理绑定的事件，  组件中绑定的事件时，有可能是 绑到 document,window的，必须清理，否则逻辑可能错误。
    */
-  destroy(root?: TypeNode): void {
+  destroy(root?: TypeElement): void {
     if (this.beforeDestroy) {
       this.beforeDestroy?.();
     }
     if (this.dom) {
       if (this.dom instanceof DocumentFragment) {
-        // 清空 DocumentFragment
+        // 清空 DocumentFragment； 如果没有挂载，dom 会有子dom
         if (this.dom.replaceChildren) {
           this.dom.replaceChildren();
         } else {
@@ -679,7 +682,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
     delete this.style;
     delete this.attr;
     // delete this.props;
-    Reflect.deleteProperty(this, 'props');
+    // Reflect.deleteProperty(this, 'props');
     if (this.parent) {
       this.parent.childNodes.splice(this.index, 1);
     } else {
@@ -691,6 +694,11 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
       parent?.childNodes && parent.childNodes.splice(this.index, 1);
     }
     this.destroyed?.();
+  //   ToDo
+    // this = undefined;
+    // for (let key in this) {
+    //   delete this[key];
+    // }
   }
 
   destroyed?(): void;

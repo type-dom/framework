@@ -1,6 +1,5 @@
-import type { IObData } from '../../interface';
-import { UnwrapNestedRefs } from '../../reactivity/reactive';
 import { TypeElement } from '../type-element/type-element.abstract';
+import { SlotNode } from '../slot-node/slot-node.class';
 import type { IMethods, ISettings, ITypeNode } from './type-node.interface';
 import { TypeNode } from './type-node.abstract';
 
@@ -23,14 +22,15 @@ export interface ITypeBase {
   /**
    * 移动到 DOM 中 app 之外的其他位置的方式。
    * 该节点不是当前位置的组件的子节点；要避免加入到组件的子节点中；要挂载到指定的组件的DOM,甚至直接指向 body；
+   * string 类型，可以指定一个选择器；
    */
-  to?: HTMLElement;
+  to?: string | HTMLElement;
 
   /**
    * parent 可选
    * 且为 TypeElement
    */
-  parent?: TypeElement;
+  parent?: TypeElement | SlotNode;
   /**
    * 上下文，用于查找上下文。
    * 对应于创建该对象的类对象。
@@ -49,11 +49,12 @@ export interface ITypeBase {
   // emits?: IEmits; //
   // TextNode 肯定没有 childNodes， Element 可以没有 childNodes;
   childNodes?: ITypeNode[] | undefined; // todo  string number type ?
-  data?: UnwrapNestedRefs<IObData>; // 数据  ITypeConfig 需要继承
+  // data?: UnwrapNestedRefs<IObData>; // 数据  ITypeConfig 需要继承
   // 绑定的事件集合, TypeElement 才有
   // 生成json时，subscriptions；
   // 反向转为类时，要转为subscriptions的值
   methods?: IMethods;
   settings?: ISettings; // todo 有了 props 还需要 吗？
+  defaults?: ISettings; // 同 Extjs 中的defaults
   // type?: string;
 }

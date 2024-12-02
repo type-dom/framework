@@ -1,11 +1,11 @@
 import { IStyle } from '@type-dom/css-type';
 import { type IJsonDataProp, IJsonData } from '../../interface';
 import { Ref } from '../../reactivity/ref';
-import { SlotNode } from '../../components/slot-node/slot-node.class';
 import { XProxy } from '../../observer';
 import type { ITypeAttribute } from '../type-element/type-element.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { IEmits, IEvents } from '../event-emitter/event-emitter.interface';
+import { SlotNode } from '../slot-node/slot-node.class';
 import { TypeNode } from './type-node.abstract';
 import { ITypeBase } from './type-base.interface';
 
@@ -66,18 +66,19 @@ export interface IPath {
  *
  * 同时可以对应json格式的接口，也是json存储的数据结构（除去parent/TypeClass）
  */
-export interface ITypeNode extends  ITypeBase {
+export interface ITypeNode extends ITypeBase {
   params?: ITypeConfig | undefined; // 传入参数, ITypeConfig 中是undefined
   // emits?: IEmits;
 }
 
 export interface IMethods {
-  [propName: string]: (...args: any[]) => void;
+  [propName: string]: (...args: any[]) => any;
 }
 
 export type IXDataItem = string | number | boolean | undefined | IXData | IXData[];
+
 export interface IXData {
-  [propName: string]: string | number | boolean | undefined | IXData | IXData[];
+  [propName: string]: IXDataItem;
 }
 
 export interface IOptionSet extends IXData {
@@ -124,7 +125,15 @@ export interface ITypeConfig extends ITypeBase {
   name?: string | number; // 节点名称, 转化为 attrObj.name;
   tag?: 'fragment' | string;
   // 当前对象引用
-  ref?: XProxy<IJsonData> |  Ref<any>;
+  ref?: XProxy<IJsonData> | Ref<any>;
+  /**
+   * 是否创建dom，默认为 true，如果为 false，则不创建dom，不挂载到dom树中。
+   */
+  ifDom?: boolean;
+  /**
+   * 是否显示，默认为 true，如果为 false，则不创建dom，不挂载到dom树中。
+   */
+  isShow?: boolean;
   refId?: string | number;
   text?: boolean | string | number | XProxy<IJsonData>; // 只是简单的添加一个文本节点时用，
   /**
@@ -145,7 +154,7 @@ export interface ITypeConfig extends ITypeBase {
   // 默认插槽  同 slots.default  组件没有插槽时，为undefined。这时子元素只能用 childNodes 属性；
   slot?: IConfigSlot; // OnlyChild 默认位置的插槽, 可以是单个元素，也可以是多个元素，即数组；如何直接插入当前元素，则相当与 childNodes属性；
   html?: string;
-  init?: (element: TypeElement) => void;
+  init?: (element: TypeElement | SlotNode) => void;
   /**
    * 自定义的事件监听器，与 events 不同，events 是绑定在元素上的事件，而 emits 是在元素上触发的事件；
    * 与 addEmits 方法配合；
@@ -165,10 +174,11 @@ export interface ITypeConfig extends ITypeBase {
    */
   template?: string; // 模板 默认TypeClass为XElement
   fieldSetting?: IOptionSetting;
+
   /**
    * The other props of the element.
    */
-  [dataKey: `data-${string}` | `on${string}` | `td-${string}`]: unknown;
+  // [dataKey: `data-${string}` | `on${string}` | `td-${string}`]: unknown;
 
   // sourceWrapper?:  string | XProxy<IJsonData>;
   // showcase?:  TypeElement[];
@@ -184,6 +194,7 @@ export interface ITypeConfig extends ITypeBase {
 
 export interface ISlotNodes {
   default?: SlotNode;
+
   [propName: string]: SlotNode | undefined;
 }
 
