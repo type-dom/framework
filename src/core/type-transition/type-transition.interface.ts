@@ -19,7 +19,7 @@ export type Hook<T = () => void> = T | T[];
  * 每个阶段都有before、after和cancelled（取消）四个时刻，供用户在不同的时刻插入自定义逻辑。
  */
 export interface ITypeTransitionConfig<
-  HostElement extends (TypeHtml | TypeSvg) = TypeHtml | TypeSvg
+  HostElement extends TypeHtml = TypeHtml
 > extends ITypeConfig {
   mode?: 'in-out' | 'out-in' | 'default';
   appear?: boolean;
@@ -62,9 +62,9 @@ export interface ITypeTransitionConfig<
   onAppearCancelled?: (el: HostElement) => void;
 
   //   todo
-  slot?: TypeHtml | TypeSvg; // 只能有一个子节点
+  slot?: TypeHtml; // | TypeSvg; // 只能有一个子节点
 
-  childNodes?: (TypeHtml | TypeSvg)[];
+  childNodes?: TypeElement[];
 }
 
 export interface TransitionHooks<HostElement = TypeElement> {
