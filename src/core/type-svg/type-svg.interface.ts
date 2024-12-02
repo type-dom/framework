@@ -1,7 +1,7 @@
 import type { ITextNode } from '../text-node/text-node.interface';
 import type {
   ITypeAttribute,
-  ITypeElement,
+  ITypeElement
 } from '../type-element/type-element.interface';
 
 export interface ITypeSvg extends ITypeElement {

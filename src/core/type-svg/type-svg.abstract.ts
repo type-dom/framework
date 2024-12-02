@@ -24,6 +24,7 @@ export abstract class TypeSvg<T extends SVGElement = SVGElement> extends TypeEle
 
   style: Style;
   attr: Attribute;
+
   protected constructor() {
     super();
     this.style = new Style(this);
@@ -36,7 +37,8 @@ export abstract class TypeSvg<T extends SVGElement = SVGElement> extends TypeEle
     if (params.slot) {
       this.slotChild(params.slot);
     }
-    return super.useParams(params);
+    super.useParams(params);
+    return this.props as T;
   }
 
   /**
