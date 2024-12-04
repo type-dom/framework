@@ -98,7 +98,10 @@ export class Style {
     // 当样式属性为width或height时，确保值以px为单位
     // todo width height 等属性是数字时的处理
     //    padding margin 等类似的数字值的处理
-    if (key === 'width' || key === 'height') {
+    if (key === 'width' || key === 'height'
+      || key === 'right' || key === 'top'
+      || key === 'bottom' || key === 'left'
+    ) {
       value = addUnit(value);
     }
     // 检查dom元素是否存在，如果不存在则抛出错误
@@ -215,7 +218,7 @@ export class Style {
 
   setCursor(cursor: Property.Cursor) {
     this.setObj({
-      cursor,
+      cursor
     });
   }
 
@@ -250,6 +253,7 @@ export class Style {
       }
     }
   }
+
   renderObj(styleObj?: IStyle): void {
     if (!styleObj) {
       styleObj = this.obj;
