@@ -49,7 +49,7 @@ export class TextNode extends TypeNode implements ITextNode {
    * @param parent 父级节点
    */
   constructor(
-    text: string | number | XProxy<IJsonData> = '\u200c',
+    text: boolean | string | number | XProxy<IJsonData> = '\u200c',
     parent?: TypeElement
   ) {
     super();
@@ -113,7 +113,7 @@ export class TextNode extends TypeNode implements ITextNode {
    *
    * @param text 文本内容
    */
-  setText(text: string | number | XProxy<IJsonData>): void {
+  setText(text: boolean | string | number | XProxy<IJsonData>): void {
     if (text instanceof XProxy) {
       this.nodeValue = text.value;
     } else {
@@ -226,7 +226,7 @@ export class TextNode extends TypeNode implements ITextNode {
         || el instanceof SVGElement
         || el instanceof ShadowRoot
         || el instanceof DocumentFragment
-       ) {
+      ) {
         appEl = el;
       } else if (typeof el === 'string') {
         appEl = document.querySelector<HTMLElement>(el);
@@ -264,7 +264,21 @@ export class TextNode extends TypeNode implements ITextNode {
     this.rendered = true;
   }
 
-  update() {
+  update(el?: string | HTMLElement | SVGElement | ShadowRoot | DocumentFragment): void {
+    let appEl: HTMLElement | SVGElement | ShadowRoot | DocumentFragment | null | undefined;
+    if (
+      el instanceof HTMLElement ||
+      el instanceof SVGElement ||
+      el instanceof ShadowRoot
+    ) {
+      appEl = el;
+    } else if (typeof el === 'string') {
+      appEl = document.querySelector<HTMLElement>(el);
+    }
     this.render();
+    if (appEl && this.dom) {
+      appEl.appendChild(this.dom);
+    }
+    this.updated?.();
   }
 }
