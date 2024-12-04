@@ -1,6 +1,6 @@
 import { camelToDash } from '@type-dom/utils';
 import { AnyFn, IJsonDataProp, IObData } from '../../interface';
-import { StyleManager } from '../../decorators/style';
+// import { StyleManager } from '../../decorators/style';
 import { RouterView } from '../../router/router-view/router-view.class';
 import { XProxy } from '../../observer/x-proxy/x-proxy.class';
 import { Observer } from '../../observer/observer';
@@ -11,6 +11,8 @@ import type { ISlotNodes, ITypeConfig } from '../type-node/type-node.interface';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TextNode } from '../text-node/text-node.class';
 import type { IBoundBox, ITypeElement } from './type-element.interface';
+import { SlotNode } from '../slot-node/slot-node.class';
+import { ITransitionConfig } from '../../components';
 
 export const vHash = Math.round(Math.random() * 1000000);
 
@@ -22,15 +24,16 @@ export let componentId = 0;
  * 与对应的导出时的数据结构是不一样的。
  * 除了 TextNode 之外的其它类型的 Node 。
  */
-@StyleManager
+// @StyleManager
 export abstract class TypeElement extends TypeNode implements ITypeElement {
-  abstract override dom: HTMLElement | SVGElement | DocumentFragment; // 不会是Text；
+  abstract override dom?: HTMLElement | SVGElement | DocumentFragment; // 不会是Text；
   // 包括 fragment
   abstract override nodeName: 'fragment' | string; // 必然有； 且不为 #text
   nodeValue?: undefined;
   childNodes: TypeNode[];
   routerView?: RouterView; // 其实就是一个特殊的 SlotNode ;
   textNode?: TextNode;
+  transitionProps?: ITransitionConfig;
   data?: UnwrapNestedRefs<IObData>; // ITypeNode 中设置了
   modelValue?: IJsonDataProp;
   rendered: boolean;
@@ -93,7 +96,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
         left: 0,
         top: 0,
         width: 0,
-        height: 0,
+        height: 0
       };
     }
     const { left, top, width, height } = this.dom.getBoundingClientRect();
@@ -102,8 +105,12 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       left: left + 'px',
       top: top + 'px',
       width: width + 'px',
-      height: height + 'px',
+      height: height + 'px'
     };
+  }
+
+  setTransitionProps(props: ITransitionConfig) {
+    this.transitionProps = props;
   }
 
   /**
@@ -219,6 +226,29 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   }
 
   /**
+   * 确保slot存在，不存在则创建；
+   * 要在useSlots之后调用
+   * teleport.class.ts:2 Uncaught ReferenceError: Cannot access 'TypeFragment' before initialization
+   * @param name
+   */
+  getSlotNode(name = 'default') {
+    // return this.slotNodes[name];
+    return this.slotNodes[name] = this.slotNodes[name] ?? new SlotNode(name);
+  }
+
+  // 要先执行
+  useSlots(params?: ITypeConfig): ISlotNodes {
+    if (params?.slot) {
+      this.getSlotNode().resetSlot(params.slot);
+    }
+    params?.slots &&
+    Object.keys(params.slots).forEach((key) => {
+      this.getSlotNode(key).resetSlot(params.slots?.[key]);
+    });
+    return this.slotNodes;
+  }
+
+  /**
    * 此函数用于向slot的元素添加或前置插入到子元素。通过参数`type`来决定是添加（默认）还是前置插入子元素。
    * `slot`参数可以是一个或多个子元素，根据`type`的不同，这些子元素会被添加到元素的末尾或前置到元素的开头。
    * @param slot 要添加或插入的子元素或子元素数组。
@@ -257,7 +287,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
           } else if (typeof item === 'string') {
             this.addChild(new TextNode(item));
           } else {
-            console.error('slotChild is not string or TypeNode . ')
+            console.error('slotChild is not string or TypeNode . ');
           }
         });
       }
@@ -416,7 +446,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     if (this.dom instanceof DocumentFragment) {
       this.childNodes.forEach((child) => {
         child.removeDom();
-      })
+      });
     } else {
       let first = this.dom?.firstElementChild;
       while (first) {
@@ -428,6 +458,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
 
   // 清理子节点
   clearChildNodes(): void {
+    // this.childNodes.forEach(child => child.destroy());
     this.childNodes = [];
   }
 
@@ -488,6 +519,11 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
   }
 
+  /**
+   * 不要在setup中添加子节点；
+   * 因为 mount会多次调用，导致子节点重复添加。
+   * @param params
+   */
   setup?(params?: ITypeConfig): void;
 
   recurseSetup() {
@@ -513,17 +549,34 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     el?: string | HTMLElement | SVGElement | ShadowRoot
   ): T {
     // console.warn('mount .');
-    // this.clearChildren(); // 清理子节点，包括DOM  todo ??? 不能加。
+    // 如果不清理，再次挂载时，子节点会再添加一次。 2024/11/07 22:34
+    // this.clearChildren(); // 清理子节点，包括DOM  todo ??? 不能加 ？？？？没有加载子节点。 useParams
     this.setup?.();
     this.created?.();
     this.lifeCycles.created?.forEach((cb) => cb());
     // this.recurseSetup(); // 挂载时，递归执行setup
+    if (this.props.ifDom === false) {
+      console.log('this.props.ifDom === false');
+      // if (this.dom instanceof DocumentFragment) {
+      //   this.dom.childNodes.forEach(child => child.remove());
+      // } else {
+      //   this.dom.remove()
+      // }
+      // 只要不挂载就行了。
+      return this as unknown as T;
+    }
+    this.createDom?.();
+    if (this.props.isShow === false) {
+      this.style?.setObj({
+        display: 'none',
+      });
+    }
     if (!this.dom) {
       if (this.nodeName === 'fragment') {
         this.dom = document.createDocumentFragment();
       } else {
         // this.dom = document.createElement(this.nodeName);
-        this.useTag(this.props.tag);
+        this.useTag(this.props?.tag);
       }
     }
     let appEl: HTMLElement | SVGElement | ShadowRoot | DocumentFragment | null | undefined;
@@ -560,7 +613,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       // todo end
       for (const child of this.children) {
         // fragment 的dom是DocumentFragment。
-        child.dom && this.dom.appendChild(child.dom); // todo 如何处理？？？
+        child.dom && this.dom?.appendChild(child.dom); // todo 如何处理？？？
         // todo child 是 Transition时，这里的逻辑有问题
         // appEl = appEl || this.parent?.elementParent?.dom;
         if (this.to) {
@@ -592,36 +645,72 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   }
 
   // todo
-  update() {
-    // console.warn('update .');
+  update(el?: string | HTMLElement | SVGElement | ShadowRoot | DocumentFragment): void  {
+    console.warn('update . ');
+    let appEl: HTMLElement | SVGElement | ShadowRoot | DocumentFragment | null | undefined;
+    if (
+      el instanceof HTMLElement ||
+      el instanceof SVGElement ||
+      el instanceof ShadowRoot
+    ) {
+      appEl = el;
+    } else if (typeof el === 'string') {
+      appEl = document.querySelector<HTMLElement>(el);
+    }
     // this.clearChildren(); // 清理子节点，包括DOM  todo ??? 不能加。
     // this.recurseSetup(); // 挂载时，递归执行setup
-    if (!this.dom && this.nodeName) {
-      if (this.nodeName === 'fragment') {
-        this.dom = document.createDocumentFragment();
-      } else {
-        this.dom = document.createElement(this.nodeName);
-      }
-    }
     this.lifeCycles.beforeUpdate?.forEach((cb) => cb());
     this.beforeUpdate?.();
-    if (this.nodeName === 'fragment') {
+    if (this.props.ifDom === false) {
+      console.log('this.props.ifDom === false');
+      // todo transition
+      this.deleteDom?.();
+      // 只要不挂载就行了。
+      if (this.dom instanceof Element) {
+        this.dom?.remove();
+        this.dom = undefined;
+      }
+      return;
+    } else if (this.props.ifDom === true) {
+      this.createDom?.();
+    }
+    if (this.nodeName === 'fragment') { // todo DocumentFragment 挂载到其他元素上，子节点要根据数组重新赋值。
       for (const child of this.children) {
-        child.update();
+        // fragment 的dom是DocumentFragment。
+        child.dom && this.dom?.appendChild(child.dom); // todo 如何处理？？？
+        // todo child 是 Transition时，这里的逻辑有问题
+        // appEl = appEl || this.parent?.elementParent?.dom;
+        if (this.to) {
+          child.update(this.to);
+          console.log('this.to is ', this.to);
+        } else if (appEl) {
+          child.update(appEl);
+        } else {
+          // throw Error('Can not find el . ');
+          if (child.className === 'Teleport') {
+            child.update();
+          } else {
+            child.update(this.elementParent?.dom);
+          }
+        }
       }
     } else {
       this.render(); // setStyleObj, setAttrObj
+      if (appEl && this.dom) {
+        appEl.appendChild(this.dom);
+      }
       // 如CollapsibleBox中，contents重新赋值后，children会变，而childNodes是不变的。
       for (const child of this.children) {
         // this.renderChild(child);
-        child.update();
+        child.update(this.dom);
       }
     }
     this.updated?.();
     this.lifeCycles.updated?.forEach((cb) => cb());
     // fragment 可以设置监听事件。但监听的dom对象不是fragment的dom。
-    // this.initEvents && this.initEvents();
-    this.listenEvents();
+    // todo 应该是有变化时才需要
+    // this.initEvents?.();
+    // this.listenEvents();
   }
 
   /**
@@ -700,11 +789,9 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     if (this.observers) {
       // dom 监听事件要挂载到真实dom上。
       for (const key in this.observers) {
-        const cloned = Array.from(this.observers[key].entries());
-        cloned.forEach(([observer, numTimesAdded]) => {
-          for (let i = 0; i < numTimesAdded; i++) {
-            this.dom && this.dom.addEventListener(key as keyof GlobalEventHandlersEventMap, observer);
-          }
+        const cloned =this.observers[key];
+        cloned.forEach((observer) => {
+          this.dom && this.dom.addEventListener(key as keyof GlobalEventHandlersEventMap, observer);
         });
       }
     }
@@ -719,7 +806,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    */
   render(): void {
     this.preRender();
-    this.clearChildrenDom(); // 清理子节点的DOM
+    // this.clearChildrenDom(); // todo 清理子节点的DOM
     if (this.nodeName !== 'fragment') {
       this.style?.renderObj();
       this.attr?.renderObj();
@@ -730,7 +817,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.rendered = true;
   }
 
-  override destroy(root?: TypeNode) {
+  override destroy(root?: TypeElement) {
     // TypeElement 需要单独清理事件
     this.lifeCycles.beforeUnmount?.forEach((fn) => fn());
     this.clearEvents();
@@ -779,4 +866,62 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
     this.lifeCycles.unmounted.push(fn);
   }
+
+  // todo 与 transition 中对应的方法
+  createDom?(
+    // content: string, enterClass: string = 'enter', enterActiveClass: string = 'enter-active', leaveClass: string = 'leave', leaveActiveClass: string = 'leave-active'
+  ): void;
+  // {
+  //   if (!this.dom) {
+  //     this.dom = document.createElement(this.nodeName);
+  //   }
+  //   if (this.dom instanceof HTMLElement) {
+  //     // this.dom.textContent = content;
+  //     // this.dom!.className = `${enterClass} ${enterActiveClass}`;
+  //
+  //     // 确保过渡效果生效
+  //     this.dom.offsetHeight; // 触发重绘
+  //     // this.dom.classList.remove(enterClass);
+  //   }
+  // }
+  //
+  // showDom(enterClass: string = 'enter', enterActiveClass: string = 'enter-active'): void {
+  //   if (this.dom instanceof HTMLElement) {
+  //     this.dom.classList.add(enterClass);
+  //     this.dom.offsetHeight; // 触发重绘
+  //     this.dom.classList.remove(enterClass);
+  //     this.dom.classList.add(enterActiveClass);
+  //   }
+  // }
+  //
+  // hideDom(leaveClass: string = 'leave', leaveActiveClass: string = 'leave-active'): void {
+  //   if (this.dom instanceof HTMLElement) {
+  //     this.dom.classList.add(leaveClass);
+  //     this.dom.offsetHeight; // 触发重绘
+  //     this.dom.classList.remove(leaveClass);
+  //     this.dom.classList.add(leaveActiveClass);
+  //     this.dom.addEventListener('transitionend', () => {
+  //       // this.dom?.classList.remove(leaveActiveClass);
+  //       //
+  //     }, { once: true });
+  //   }
+  // }
+  //
+  deleteDom?(
+    // leaveClass: string = 'leave', leaveActiveClass: string = 'leave-active'
+  ): void; // {
+    // if (this.dom instanceof HTMLElement) {
+    //   this.dom.classList.add(leaveClass);
+    //   this.dom.offsetHeight; // 触发重绘
+    //   this.dom.classList.remove(leaveClass);
+    //   this.dom.classList.add(leaveActiveClass);
+    //   this.dom.addEventListener('transitionend', () => {
+    //     // if (this.dom.parentNode === this.container) {
+    //     //   this.container.removeChild(this.element);
+    //     (this.dom as HTMLElement)?.remove();
+    //     this.dom = undefined;
+    //     // }
+    //   }, { once: true });
+    // }
+  // }
 }

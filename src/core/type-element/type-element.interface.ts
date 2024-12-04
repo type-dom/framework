@@ -18,6 +18,7 @@ export interface ITypeAttribute {
   width?: number | string;
   height?: number | string; // px
   d?: string;
+
   [key: string]: string | number | boolean | undefined;
 }
 
