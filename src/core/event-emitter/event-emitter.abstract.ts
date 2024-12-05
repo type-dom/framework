@@ -7,11 +7,13 @@ export abstract class EventEmitter extends Defer {
   /**
    * 存储事件名称与事件监听器数组的映射
    * key 事件名 value: callback[]  回调数组
-   * @private
+   * 注：  Map是es6新特性，所以这里用它来代替数组可能会有兼容问题。
+   *
    */
-  observers: Record<string, Map<AnyFn, number>>;
+  observers: Record<string, AnyFn[]>;
   abstract nodeName: '#text' | 'fragment' | string;
   abstract dom?: HTMLElement | SVGElement | DocumentFragment | Text | undefined;
+
   constructor() {
     super();
     // This is an Object containing Maps:
@@ -57,11 +59,13 @@ export abstract class EventEmitter extends Defer {
     events.split(' ').forEach((event) => {
       // 如果事件名称不存在于映射中，则创建新Map
       if (!this.observers[event]) {
-        this.observers[event] = new Map();
+        this.observers[event] = [];
       }
-      const numListeners = this.observers[event].get(listener!) || 0;
-      // 将监听器添加到对应事件的Map中
-      this.observers[event].set(listener!, numListeners + 1);
+      // const numListeners = this.observers[event].get(listener!) || 0;
+      // // 将监听器添加到对应事件的Map中
+      // this.observers[event].set(listener!, numListeners + 1);
+      // todo 是否要过滤相同的监听器 ？？？
+      this.observers[event].push(listener);
     });
     return this;
   }
@@ -97,7 +101,7 @@ export abstract class EventEmitter extends Defer {
     }
     if (!listener) {
       if (this.dom) { // 不是 fragment组件
-        for (const observer of this.observers[event].keys()) {
+        for (const observer of this.observers[event]) {
           console.log(`observer : ${observer.name}`);
           this.dom && this.dom.removeEventListener(event as keyof GlobalEventHandlersEventMap, observer);
         }
@@ -109,7 +113,10 @@ export abstract class EventEmitter extends Defer {
     if (this.dom) { // 不是 fragment组件
       this.dom.removeEventListener(event as keyof GlobalEventHandlersEventMap, listener);
     }
-    this.observers[event].delete(listener);
+    const index = this.observers[event].indexOf(listener);
+    if (index !== -1) {
+      this.observers[event].splice(index, 1);
+    }
   }
 
   /**
@@ -120,20 +127,16 @@ export abstract class EventEmitter extends Defer {
    */
   emit(event: string, ...args: any[]): void {
     if (this.observers[event]) {
-      const cloned = Array.from(this.observers[event].entries());
-      cloned.forEach(([observer, numTimesAdded]) => {
-        for (let i = 0; i < numTimesAdded; i++) {
-          observer(...args);
-        }
+      const cloned = this.observers[event];
+      cloned.forEach((observer) => {
+        observer(...args);
       });
     }
 
     if (this.observers['*']) {
-      const cloned = Array.from(this.observers['*'].entries());
-      cloned.forEach(([observer, numTimesAdded]) => {
-        for (let i = 0; i < numTimesAdded; i++) {
-          observer.apply(observer, [event, ...args]);
-        }
+      const cloned = this.observers['*'];
+      cloned.forEach((observer, numTimesAdded) => {
+          observer(...args);
       });
     }
   }
@@ -146,7 +149,7 @@ export abstract class EventEmitter extends Defer {
   hasListeners(eventName: string) {
     // 检查事件名称是否存在监听器数组，并且数组长度大于0
     return Boolean(
-      this.observers[eventName] && Array.from(this.observers[eventName].entries()).length > 0
+      this.observers[eventName] && this.observers[eventName].length > 0
     );
   }
 
@@ -168,6 +171,7 @@ export abstract class EventEmitter extends Defer {
 
   // 只考虑组件自身的事件。
   addEvent<T extends Event>(key: string, handleEvent: AnyFn) {
+    // todo 这样移除监听时怎么找监听器。
     const eventHandler = (evt: T) => {
       handleEvent(evt, this);
     };

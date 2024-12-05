@@ -13,6 +13,7 @@ export interface IEmits {
   focus?: (evt: FocusEvent) => void;
   blur?: (evt: FocusEvent) => void;
   close?: () => void;
+
   [key: string]: AnyFn | undefined;
 }
 
