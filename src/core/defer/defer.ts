@@ -20,6 +20,7 @@ export class Defer<T = unknown> {
       this._reject = reject;
     });
   }
+
   get promise(): Promise<T> {
     return this._promise;
   }
