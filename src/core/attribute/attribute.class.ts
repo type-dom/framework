@@ -2,12 +2,13 @@ import { camelToDash } from '@type-dom/utils';
 import { XElement } from '../../components/x-element/x-element.class';
 import { vHash } from '../type-element/type-element.abstract';
 import { ITypeAttribute } from '../type-element/type-element.interface';
-import { TypeHtml } from '../type-html/type-html.abstract'
+import { TypeHtml } from '../type-html/type-html.abstract';
 import { TypeSvg } from '../type-svg/type-svg.abstract';
 
 export class Attribute {
   private el: TypeHtml | TypeSvg | XElement;
-  private obj: ITypeAttribute ;
+  private obj: ITypeAttribute;
+
   constructor(el: TypeHtml | TypeSvg | XElement) {
     this.el = el;
     this.obj = {};
