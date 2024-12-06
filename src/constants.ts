@@ -16,7 +16,8 @@ export const LIFECYCLE_HOOKS = [
   'errorCaptured', // 捕获到子孙组件抛出的错误时调用，允许全局处理错误。
   'serverPrefetch', // 在服务器端渲染期间，组件可以在其自己的作用域内预加载数据。
   'renderTracked', // 数据响应式追踪开始时触发，用于调试TypeDom的响应式系统。
-  'renderTriggered', // 数据响应式追踪结束时触发，同样用于调试响应式系统。
+  'renderTriggered' // 数据响应式追踪结束时触发，同样用于调试响应式系统。
 ] as const;
 
-export const NOOP = () => {/* 空函数 */};
+export const NOOP = () => {/* 空函数 */
+};
