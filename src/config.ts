@@ -123,7 +123,7 @@ export const config = {
   /**
    * Exposed for legacy reasons
    */
-  _lifecycleHooks: LIFECYCLE_HOOKS,
+  _lifecycleHooks: LIFECYCLE_HOOKS
 } as unknown as Config;
 
 export const __DEV__ = true;
