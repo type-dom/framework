@@ -3,10 +3,9 @@ import { reactive } from '../../reactivity';
 import { TypeElement } from '../../core/type-element/type-element.abstract';
 import type { IAttr } from '../../core/type-node/type-node.interface';
 import { TextNode } from '../../core/text-node/text-node.class';
-import { IXElement, IXElementConfig } from './x-element.interface';
 import { Style } from '../../core/style/style.class';
 import { Attribute } from '../../core/attribute/attribute.class';
-import { TypeHtml } from '../../core/type-html/type-html.abstract';
+import { IXElement, IXElementConfig } from './x-element.interface';
 
 /**
  * XElement是一个通用元素基础组件，是其它类组件的子节点,Html/Svg
@@ -52,32 +51,33 @@ export class XElement extends TypeElement implements IXElement {
       const parser = new Parser();
       const item = parser.parseFromString(params.template) as XElement;
       //   todo 绑定和指令等
-      if (params.data) {
-        console.log('params.data is ', params.data);
-        item.data = reactive(params.data);
-      }
+      // if (params.data) {
+      //   console.log('params.data is ', params.data);
+      //   item.data = reactive(params.data);
+      // }
       if (params.methods) {
         console.log('params.methods is ', params.methods);
         item.methods = params.methods;
       }
-      this.parent?.addChild(item);
+      // this.parent?.addChild(item); // this.parent is undefined
+      this.addChild(item);
     }
     // todo 报错 template 和 childNodes 同时存在时
-    this.childNodes =
-      params?.items?.map((child) => {
-        console.log('x-element child is ', child);
-        if (child.nodeValue === undefined) {
-          // if (child.TypeClass) {
-          //   // todo 其它的类还要加载进来吗？
-          //   return new child.TypeClass(child);
-          // } else {
-          // 解析json结构的子元素。
-          return new XElement(child);
-          // }
-        } else {
-          return new TextNode(child.nodeValue, this);
-        }
-      }) || [];
+    // this.childNodes =
+    //   params?.items?.map((child) => {
+    //     console.log('x-element child is ', child);
+    //     if (child.nodeValue === undefined) {
+    //       // if (child.TypeClass) {
+    //       //   // todo 其它的类还要加载进来吗？
+    //       //   return new child.TypeClass(child);
+    //       // } else {
+    //       // 解析json结构的子元素。
+    //       return new XElement(child);
+    //       // }
+    //     } else {
+    //       return new TextNode(child.nodeValue, this);
+    //     }
+    //   }) || [];
     this.props = this.useParams(params);
   }
 
@@ -112,7 +112,7 @@ export class XElement extends TypeElement implements IXElement {
         // 过滤掉，不加入属性中。专门绑定事件时处理。
       } else {
         this.attr?.addObj({
-          [attr.name]: attr.value,
+          [attr.name]: attr.value
         });
       }
     }

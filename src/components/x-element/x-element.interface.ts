@@ -14,5 +14,5 @@ export interface IXElement extends ITypeElement {
 }
 
 export interface IXElementConfig extends ITypeConfig {
-  attributes?: IAttr[]
+  attributes?: IAttr[];
 }
