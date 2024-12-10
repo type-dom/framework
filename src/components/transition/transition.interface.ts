@@ -18,7 +18,7 @@ export const ANIMATION = 'animation';
 
 export type AnimationTypes = typeof TransitionUtil | typeof ANIMATION;
 
-export interface ITransitionConfig extends ITypeTransitionConfig<TypeHtml | TypeSvg> {
+export interface ITransitionConfig extends ITypeTransitionConfig<TypeHtml> {
   name?: string;
   type?: AnimationTypes;
   css?: boolean;
