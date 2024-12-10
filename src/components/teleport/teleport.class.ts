@@ -1,5 +1,4 @@
 import { TypeFragment } from '../../core/type-fragment/type-fragment.abstract';
-// import { TypeElement } from '../../core/type-element/type-element.abstract';
 import { ITeleport, ITeleportConfig } from './teleport.interface';
 
 export class Teleport extends TypeFragment implements ITeleport {
@@ -10,7 +9,7 @@ export class Teleport extends TypeFragment implements ITeleport {
   // attr: undefined;
   // __isTeleport = true;
   // override slot?: TypeElement | TypeElement[];
-  override to?: HTMLElement;
+  override to?: string | HTMLElement;
   disabled?: boolean;
 
   constructor(params: ITeleportConfig = {}) {
@@ -20,7 +19,7 @@ export class Teleport extends TypeFragment implements ITeleport {
     // this.dom = document.createDocumentFragment();
     this.to = params.to;
     this.disabled = params?.disabled;
-
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 

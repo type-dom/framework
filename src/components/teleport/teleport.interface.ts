@@ -7,6 +7,6 @@ export interface ITeleport extends ITypeNode {
 }
 
 export interface ITeleportConfig extends ITypeConfig {
-  to?: HTMLElement;
+  to?: string | HTMLElement;
   disabled?: boolean;
 }
