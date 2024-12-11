@@ -5,7 +5,7 @@ export class SvgRect extends TypeSvg implements ISvgRect {
   nodeName: 'rect';
   className: 'SvgRect';
   dom: SVGRectElement;
-  override props: ISvgRectConfig
+  override props: ISvgRectConfig;
   // override attrObj: ISvgRectAttribute;
   override childNodes: [];
   x = 0;
@@ -29,7 +29,7 @@ export class SvgRect extends TypeSvg implements ISvgRect {
       x: this.x,
       y: this.y,
       width: this.width,
-      height: this.height,
+      height: this.height
     });
     this.props = this.useParams(params);
   }
@@ -44,7 +44,7 @@ export class SvgRect extends TypeSvg implements ISvgRect {
       x,
       y,
       width,
-      height,
+      height
     });
   }
 }

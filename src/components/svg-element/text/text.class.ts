@@ -4,7 +4,7 @@ import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
 import type {
   ISvgText,
   ISvgTextAttribute,
-  ISvgTextConfig,
+  ISvgTextConfig
 } from './text.interface';
 
 export class SvgText extends TypeSvg implements ISvgText {
@@ -26,7 +26,7 @@ export class SvgText extends TypeSvg implements ISvgText {
     this.className = 'SvgText';
     this.attr.addObj({
       x: 0,
-      y: 0,
+      y: 0
     });
     this.textNode = new TextNode();
     this.childNodes = [this.textNode];
