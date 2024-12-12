@@ -9,13 +9,14 @@ export class OptGroup extends TypeHtml implements IOptGroup {
   override dom: HTMLOptGroupElement;
   override childNodes: TypeNode[];
   override textNode: TextNode;
-  override props: IOptGroupConfig
+  override props: IOptGroupConfig;
+
   constructor(params: IOptGroupConfig) {
     super();
     this.nodeName = 'optgroup';
     this.dom = document.createElement(this.nodeName);
     this.className = 'OptGroup';
-    this.attr.addName( 'option');
+    this.attr.addName('option');
     this.textNode = new TextNode('一个选项');
     this.childNodes = [this.textNode];
     this.props = this.useParams(params);

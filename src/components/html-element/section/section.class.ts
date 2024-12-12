@@ -10,10 +10,10 @@ export class Section extends TypeSection implements ISection {
     this.className = 'Section';
     this.style.addObj({
       display: 'flex',
-      justifyContent: 'space-between',
+      justifyContent: 'space-between'
     });
     this.attr.addObj({
-      name: 'section',
+      name: 'section'
     });
     this.useParams(params);
   }

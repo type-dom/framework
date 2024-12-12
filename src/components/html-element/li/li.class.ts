@@ -19,7 +19,7 @@ export class LI extends TypeLI implements ILI {
       padding: '6px 14px',
       borderRadius: '4px 4px 0px 0px',
       borderBottom: 'none',
-      boxSizing: 'border-box',
+      boxSizing: 'border-box'
     });
     this.attr.addName('list-item');
 

@@ -4,6 +4,7 @@ import type { ITableCol } from './col.interface';
 
 export class TableCol extends TypeTableCol implements ITableCol {
   className: 'TableCol';
+
   constructor(public override parent: Table) {
     super();
     this.className = 'TableCol';

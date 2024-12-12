@@ -176,7 +176,7 @@ import {
   TableFoot,
   TableHead,
   TableHeaderCell,
-  TableRow,
+  TableRow
 } from './table';
 import { Summary } from './summary/summary.class';
 import { Sup } from './sup/sup.class';
