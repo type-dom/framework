@@ -1,3 +1,5 @@
+import { QueueEvent } from './queue-event';
+
 export interface IQueue<T> {
   // 检查队列是否为空
   isEmpty(): boolean;
@@ -25,4 +27,73 @@ export interface IQueue<T> {
 
   // 打印队列的内容
   print(): void;
+}
+
+// Type definitions for Queue
+// Project: https://github.com/jessetane/queue
+// Definitions by: Alex Miller <https://github.com/codex->
+// Additions by Maksim Lavrenyuk <https://github.com/MaksimLavrenyuk>
+
+
+
+export type EventsMap = {
+  end: { error?: Error }
+  error: { error: Error, job?: QueueWorker }
+  timeout: { next: (err?: Error, ...result: any[]) => void, job?: QueueWorker }
+  success: { result: any[] }
+  start: { job?: QueueWorker }
+}
+
+
+export type EventListenerOrEventListenerObject<Event extends QueueEvent<keyof EventsMap, EventsMap[keyof EventsMap]>> = (event: Event) => void | {
+  handleEvent(Event: Event): void;
+};
+
+
+export interface Options {
+  /**
+   * Max number of jobs the queue should process concurrently.
+   *
+   * @default Infinity
+   */
+  concurrency?: number;
+
+  /**
+   * Milliseconds to wait for a job to execute its callback.
+   *
+   * @default 0
+   */
+  timeout?: number;
+
+  /**
+   * Ensures the queue is always running if jobs are available. Useful in situations where you are using a queue only for concurrency control.
+   *
+   * @default false
+   */
+  autostart?: boolean;
+
+  /**
+   * An array to set job callback arguments on.
+   *
+   * @default null
+   */
+  results?: any[] | null;
+}
+
+export interface QueueWorker {
+  (callback?: QueueWorkerCallback): undefined | Promise<any>;
+
+  /**
+   * Override queue timeout.
+   */
+  timeout?: number;
+  /**
+   *  If the QueueWorker returns a promise, it will be moved to this field.
+   *  This can be useful when tracking timeout events
+   */
+  promise?: Promise<any>
+}
+
+export interface QueueWorkerCallback {
+  (error?: Error, data?: object): void;
 }

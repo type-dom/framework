@@ -1,60 +1,37 @@
-import { Queue } from './queue.class';
+import { Queue } from './queue.class'; // Update with the correct path to your Queue implementation
 
 describe('Queue', () => {
-  it('should create an empty queue', () => {
-    const queue = new Queue<number>();
-    expect(queue.isEmpty()).toBe(true);
-    expect(queue.size()).toBe(0);
+  it('should create an instance of Queue', () => {
+    const queue = new Queue();
+    expect(queue).toBeInstanceOf(Queue);
   });
 
-  it('should enqueue and dequeue elements correctly', () => {
-    const queue = new Queue<number>();
-    queue.enqueue(1);
-    queue.enqueue(2);
-    expect(queue.dequeue()).toBe(1);
-    expect(queue.dequeue()).toBe(2);
-    expect(queue.isEmpty()).toBe(true);
+  it('should start the queue when autostart is true', () => {
+    const mockWorker = jest.fn();
+    const queue = new Queue({ autostart: true });
+    queue.push(mockWorker);
+    // Assuming _start() sets running to true
+    expect(queue.running).toBe(true);
   });
 
-  it('should return undefined when dequeuing from an empty queue', () => {
-    const queue = new Queue<number>();
-    expect(queue.dequeue()).toBe(undefined);
+  it('should add a job to the queue and call it when started', async () => {
+    const mockWorker = jest.fn().mockResolvedValue(console.log);
+    const queue = new Queue({ autostart: false });
+    queue.push(mockWorker);
+    await queue.start();
+    expect(mockWorker).toHaveBeenCalled();
   });
 
-  it('should return the front and back elements correctly', () => {
-    const queue = new Queue<number>();
-    queue.enqueue(1);
-    queue.enqueue(2);
-    expect(queue.front()).toBe(1);
-    expect(queue.back()).toBe(2);
+  it('should handle errors when a job fails', (done) => {
+    const mockWorker = jest.fn().mockRejectedValue(new Error('Test error'));
+    const queue = new Queue({ autostart: true });
+    queue.push(mockWorker);
+    queue.addEventListener('error', (event) => {
+      expect(event.detail.error).toBeInstanceOf(Error);
+      expect(event.detail.error.message).toBe('Test error');
+      done();
+    });
   });
 
-  it('should return undefined for front and back on an empty queue', () => {
-    const queue = new Queue<number>();
-    expect(queue.front()).toBe(undefined);
-    expect(queue.back()).toBe(undefined);
-  });
-
-  it('should return the correct size of the queue', () => {
-    const queue = new Queue<number>();
-    queue.enqueue(1);
-    queue.enqueue(2);
-    expect(queue.size()).toBe(2);
-  });
-
-  it('should clear the queue', () => {
-    const queue = new Queue<number>();
-    queue.enqueue(1);
-    queue.enqueue(2);
-    queue.clear();
-    expect(queue.isEmpty()).toBe(true);
-    expect(queue.size()).toBe(0);
-  });
-
-  it('should return an array representation of the queue', () => {
-    const queue = new Queue<number>();
-    queue.enqueue(1);
-    queue.enqueue(2);
-    expect(queue.toArray()).toEqual([1, 2]);
-  });
+  // Add more tests here to cover different aspects of the Queue functionality
 });
