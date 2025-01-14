@@ -7,6 +7,7 @@
 import { isClient } from '@type-dom/utils';
 import { AnyFn, Stoppable } from '../interface';
 import { toValue } from './toValue';
+import { tryOnScopeDispose } from './tryOnScopeDispose';
 
 export interface UseTimeoutFnOptions {
   /**
@@ -57,10 +58,10 @@ export function useTimeoutFn<CallbackFn extends AnyFn>(
       timer = null;
 
       cb(...args);
-    }, toValue(interval));
+    }, interval);
   }
 
-  console.log('immediate is ', immediate);
+  // console.log('immediate is ', immediate);
   if (immediate) {
     isPending = true;
     if (isClient) {
@@ -68,7 +69,7 @@ export function useTimeoutFn<CallbackFn extends AnyFn>(
     }
   }
 
-  // tryOnScopeDispose(stop)
+  tryOnScopeDispose(stop)
 
   return {
     isPending: isPending,
