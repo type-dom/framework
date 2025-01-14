@@ -7,13 +7,13 @@
 import { __DEV__, config } from '../config';
 import type { TypeNode as Component } from '../core/type-node/type-node.abstract';
 import { noop } from '@type-dom/utils';
+import { currentInstance } from '../core';
 
 export let warn: (msg: string, vm?: Component | null) => void = noop;
 export let tip = noop;
 export let generateComponentTrace: (vm: Component) => string; // work around flow check
 export let formatComponentName: (vm: Component, includeFile?: false) => string;
 
-export const currentInstance: Component | null = null;
 
 if (__DEV__) {
   const hasConsole = typeof console !== 'undefined';

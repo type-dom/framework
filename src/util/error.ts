@@ -1,5 +1,5 @@
 import { inBrowser, isPromise } from '@type-dom/utils';
-import { pushTarget, popTarget } from '../observer/dep';
+// import { pushTarget, popTarget } from '../observer/dep';
 import { TypeNode } from '../core/type-node/type-node.abstract';
 
 // import { Config } from '../config'
@@ -7,7 +7,7 @@ import { TypeNode } from '../core/type-node/type-node.abstract';
 export function handleError(err: Error, vm: any, info: string) {
   // Deactivate deps tracking while processing error handler to avoid possible infinite rendering.
   // See: https://github.com/vuejs/vuex/issues/1505
-  pushTarget();
+  // pushTarget();
   try {
     if (vm) {
       let cur = vm;
@@ -27,7 +27,7 @@ export function handleError(err: Error, vm: any, info: string) {
     }
     globalHandleError(err, vm, info);
   } finally {
-    popTarget();
+    // popTarget();
   }
 }
 
