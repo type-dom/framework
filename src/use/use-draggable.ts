@@ -1,4 +1,5 @@
 import { addUnit } from '@type-dom/utils';
+import { onBeforeUnmount, onMounted } from '../core/apiLifecycle';
 
 export const useDraggable = (
   targetRef: HTMLElement | undefined,
@@ -72,19 +73,19 @@ export const useDraggable = (
     }
   };
   // todo 钩子要处理
-  // onMounted(() => {
-  //   watchEffect(() => {
-  //     if (draggable.value) {
-  //       onDraggable()
-  //     } else {
-  //       offDraggable()
-  //     }
-  //   })
-  // })
-  //
-  // onBeforeUnmount(() => {
-  //   offDraggable()
-  // })
+  onMounted(() => {
+    // watchEffect(() => {
+    //   if (draggable) {
+    //     onDraggable()
+    //   } else {
+    //     offDraggable()
+    //   }
+    // })
+  })
+
+  onBeforeUnmount(() => {
+    offDraggable()
+  })
   return { // add by me 2024-08-07 22:01
     onDraggable,
     offDraggable
