@@ -60,7 +60,7 @@ export function findMatchingRoute(
  * @param routes
  */
 export function formatRoutes(routes: IRoute[], el?: TypeElement) {
-  console.error('formatRoutes . ');
+  // console.error('formatRoutes . ');
   routes.forEach((route: IRoute) => {
     // if (component.routerView) {
     //   route.component.parent = component.routerView;
@@ -115,8 +115,8 @@ export function getClassFromModule(module: any): any {
  * @param root
  */
 export async function loadRoute(route: IRoute) {
-  console.error('loadRoute . ');
-  console.log('route is ', route);
+  // console.error('loadRoute . ');
+  // console.log('route is ', route);
   if (!route.component) {
     // 如果route.component不存在，直接返回
     throw Error('route.component is undefined . ');
@@ -148,7 +148,7 @@ export async function loadRoute(route: IRoute) {
  */
 export async function loadUpRoute(upRoute: IRoute): Promise<void> {
   // 输出上层路由信息用于调试
-  console.log('loadUpRoute upRoute is ', upRoute);
+  // console.log('loadUpRoute upRoute is ', upRoute);
 
   // 检查上层路由的组件是否定义，如果没有定义则抛出错误
   if (!upRoute.component) {
@@ -159,14 +159,14 @@ export async function loadUpRoute(upRoute: IRoute): Promise<void> {
   // 等待组件加载完毕
   await upRoute.component().then((module) => {
     // 输出模块信息用于调试
-    console.log('module is ', module);
+    // console.log('module is ', module);
 
     // 从模块中获取组件类
     const Component = getClassFromModule(module);
     // 创建组件实例
     const component = new Component();
     // 输出组件实例信息用于调试
-    console.log('component is ', component);
+    // console.log('component is ', component);
 
     // 如果组件有routerView属性，则将其赋值给上层路由的routerView属性
     if (component.routerView) {

@@ -21,7 +21,7 @@ export class RouterView extends TypeFragment {
   // override slot?: TypeElement; // 唯一子元素
   component?: TypeElement;
 
-  constructor(params: IRouterViewConfig = {}) {
+  constructor(params = {} as IRouterViewConfig) {
     super();
     this.props = this.useParams(params);
     this.loaded = false;
@@ -50,13 +50,13 @@ export class RouterView extends TypeFragment {
     // 等待组件加载完毕
     await route.component().then((module) => {
       // 输出模块信息用于调试
-      console.log('module is ', module);
+      // console.log('module is ', module);
       // 从模块中获取组件类
       const Component = getClassFromModule(module);
       // 创建组件实例
       this.component = new Component() as TypeElement;
       // 输出组件实例信息用于调试
-      console.log('this.slot is ', this.component);
+      // console.log('this.slot is ', this.component);
       if (this.component.routerView) {
         route.children?.forEach((childRoute) => {
           childRoute.routerView = this.component?.routerView;
@@ -64,7 +64,7 @@ export class RouterView extends TypeFragment {
       }
       this.clearChildren();
       this.addChild(this.component);
-      console.log('this is ', this);
+      // console.log('this is ', this);
       this.elementParent?.mount();
     });
   }

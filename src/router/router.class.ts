@@ -46,7 +46,7 @@ export class Router implements IRouter {
   init(root: TypeElement) {
     this.root = root;
     formatRoutes(this.routes, root);
-    console.log('this.routes is ', this.routes);
+    // console.log('this.routes is ', this.routes);
     root.routerView?.setLoaded(false);
     // 创建一个可观察的路由状态
     // 当打包后, dist测试时；路由为 /apps/ui-doc/index.html 时
@@ -57,7 +57,7 @@ export class Router implements IRouter {
        * 只有监听的方式，后退、前进操作才会加载路由组件；
        */
       window.addEventListener('hashchange', (evt) => {
-        console.log('hashchange， evt is ', evt);
+        // console.log('hashchange， evt is ', evt);
         const oldUrl = evt.oldURL;
         const newUrl = evt.newURL;
         const to = newUrl.split('#')[1];
@@ -69,7 +69,7 @@ export class Router implements IRouter {
       // 监听路由变化事件
       // popstate事件。这个事件会在执行history.back()、history.forward()或history.go()方法，以及用户点击浏览器的前进或后退按钮时触发。但是，直接使用pushState或replaceState时，这个事件不会触发，因此需要额外的管理机制来处理这些情况。
       window.addEventListener('popstate', (evt) => {
-        console.log('popstate, evt is ', evt);
+        // console.log('popstate, evt is ', evt);
         path = window.location.pathname;
         const { from, to } = this.lastPath;
         if (path === to) {
@@ -123,7 +123,7 @@ export class Router implements IRouter {
     type: 'push' | 'replace' = 'push'
   ) {
     // 移除路径中的#符号，这通常是URL中的锚点符号，不参与路由匹配。
-    console.log('handleRouteChange . to is ', to);
+    // console.log('handleRouteChange . to is ', to);
     if (to === from) {
       return;
     }
@@ -135,7 +135,7 @@ export class Router implements IRouter {
       if (value !== undefined) {
         // 继续处理路由跳转
         // ...其他代码...
-        console.log('Route change value is ', value);
+        // console.log('Route change value is ', value);
         this.handleRouteChange(value);
       } else {
         console.warn('Route change was cancelled by a guard.');
@@ -145,7 +145,7 @@ export class Router implements IRouter {
     if (toRoute) {
       // 如果路由配置中存在重定向，则直接进行重定向操作，不再加载当前路由的组件。
       if (toRoute?.redirect) {
-        console.log('toRoute.redirect is ', toRoute.redirect);
+        // console.log('toRoute.redirect is ', toRoute.redirect);
         await this.runBeforeEachGuards(toRoute, undefined, next);
         toRoute?.routerView?.loadRoute(toRoute).then(() => {
           if (type === 'push') {
@@ -161,7 +161,7 @@ export class Router implements IRouter {
           from?.replace(/^#/, '') || '/',
           this.routes
         );
-        console.error('from is ', from, ' , fromRoute is ', fromRoute);
+        // console.error('from is ', from, ' , fromRoute is ', fromRoute);
         await this.runBeforeEachGuards(toRoute, fromRoute, next);
         // todo 父路由的子路由，直接加载子路由的组件
         if (fromRoute === toRoute.parent) { // 如果是父路由转子路由
@@ -171,10 +171,10 @@ export class Router implements IRouter {
           fromRoute?.parent?.routerView?.component?.className ===
           toRoute?.parent?.routerView?.component?.className
         ) {
-          console.log(
-            'fromRoute?.parent?.routerView?.component is ',
-            fromRoute?.parent?.routerView?.component
-          );
+          // console.log(
+          //   'fromRoute?.parent?.routerView?.component is ',
+          //   fromRoute?.parent?.routerView?.component
+          // );
           fromRoute?.routerView?.loadRoute(toRoute);
         } else {
           loadRoute(toRoute);
@@ -186,7 +186,7 @@ export class Router implements IRouter {
       }
     } else {
       // 如果找不到匹配的路由配置，则发出警告，并抛出一个错误。
-      console.warn('No matching route found for', to);
+      // console.warn('No matching route found for', to);
       throw Error('route is undefined . ');
     }
   }
@@ -201,7 +201,7 @@ export class Router implements IRouter {
    */
   push(to: string) {
     // 输出导航路径供调试使用
-    console.log('navigateTo path is ', to);
+    // console.log('navigateTo path is ', to);
 
     // 检查路径是否为字符串类型且非空，若不满足条件，则打印错误信息并返回
     if (typeof to !== 'string' || to.trim() === '') {
@@ -225,7 +225,7 @@ export class Router implements IRouter {
 
   replace(to: string) {
     // 输出导航路径供调试使用
-    console.log('navigateTo path is ', to);
+    // console.log('navigateTo path is ', to);
 
     // 检查路径是否为字符串类型且非空，若不满足条件，则打印错误信息并返回
     if (typeof to !== 'string' || to.trim() === '') {
