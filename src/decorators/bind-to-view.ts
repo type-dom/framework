@@ -7,7 +7,7 @@ function bindToView(target: any, key: string, descriptor?: PropertyDescriptor) {
   };
 
   const setter = function(newValue: any) {
-    console.log(`Setting value of ${key} to ${newValue}`);
+    // console.log(`Setting value of ${key} to ${newValue}`);
     if (newValue !== originalValue) {
       originalValue = newValue;
       // 假设这里有一个方法可以更新视图

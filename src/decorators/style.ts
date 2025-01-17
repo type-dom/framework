@@ -97,9 +97,9 @@ export function StyleManager(target: Function) {
       value = addUnit(value);
     }
     // 检查dom元素是否存在，如果不存在则抛出错误
-    if (!this.dom) {
-      this.dom = document.createElement(this.nodeName);
-    }
+    // if (!this.dom) {
+    //   this.dom = document.createElement(this.nodeName);
+    // }
 
     // 拦截已经配置的相同的样式值的样式设置
     //  todo color 会转为 rgb 格式
