@@ -305,8 +305,8 @@ export class Parser {
    * @param data
    */
   parseFromString(data: string): TextNode | XElement {
-    console.log('parser parseFromString . ');
-    console.log('data is ', data);
+    // console.log('parser parseFromString . ');
+    // console.log('data is ', data);
     this.currentFragment = [];
     this.stack = [];
     this.errorCode = XMLParserErrorCode.NoError;
