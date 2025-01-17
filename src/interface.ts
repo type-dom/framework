@@ -1,5 +1,4 @@
-import { Observer } from './observer/observer';
-import { XProxy } from './observer/x-proxy/x-proxy.class';
+import { Computed, Signal } from '@type-dom/signals';
 
 export type IPrimitive =
   | null
@@ -11,6 +10,10 @@ export type IPrimitive =
   | bigint;
 type IBrowserNativeObject = Date | FileList | File | Blob | RegExp;
 
+export type IWritableObj = {
+  get(): unknown,
+  set(val: unknown): void
+}
 /**
  * 一个通用的json数据结构的接口
  * 定义一个接口 IJsonConfig，它是一个键值对的集合，其中键是字符串类型，值是 IJsonProp 类型。
@@ -31,21 +34,16 @@ export interface IJsonData {
  */
 export type IJsonDataProp =
   | IPrimitive
-  | XProxy<IJsonData>
   | IJsonData
   | IJsonDataProp[];
 
 export interface IObData {
-  __ob__?: Observer;
+  // __ob__?: Observer;
 
   [propName: string | number | symbol]: IObDataProp;
 }
 
-export type IObDataProp = IPrimitive | Observer | IObData | IObData[];
-
-// If the type T accepts type "any", output type Y, otherwise output type N.
-// https://stackoverflow.com/questions/49927523/disallow-call-with-any/49928360#49928360
-export type IfAny<T, Y, N> = 0 extends 1 & T ? Y : N;
+export type IObDataProp = IPrimitive | IObData | IObData[];
 
 /**
  * Void function
@@ -74,9 +72,4 @@ export interface Stoppable<StartFnArgs extends any[] = any[]> {
   start: (...args: StartFnArgs) => void;
 }
 
-/**
- * 定义依赖注入的键类型，用于标识特定的服务或依赖项。
- * @typeparam T - 与该键关联的具体类型。
- */
-export type InjectionKey<T> = symbol;
-
+export type Arrayable<T> = T[] | T
