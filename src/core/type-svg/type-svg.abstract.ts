@@ -10,13 +10,9 @@ import type { ITypeSvg } from './type-svg.interface';
  */
 export abstract class TypeSvg<T extends SVGElement = SVGElement> extends TypeElement implements ITypeSvg {
   /**
-   * 节点名，需由子类覆盖提供具体的节点名。
-   */
-  abstract override nodeName: string;
-  /**
    * DOM元素，需由子类覆盖提供具体的SVG DOM元素。
    */
-  abstract override dom: T;
+  abstract override dom?: T;
   /**
    * 子节点数组，包含TypeSvg实例或TextNode实例。
    */
