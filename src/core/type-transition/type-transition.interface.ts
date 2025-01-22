@@ -4,7 +4,7 @@ import { TypeSvg } from '../type-svg/type-svg.abstract';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { TypeNode } from '../type-node/type-node.abstract';
 import type { ITypeConfig } from '../type-node/type-node.interface';
-import { ITypeFragment } from '../type-fragment/type-fragment.interface';
+import { ITypeFragment, ITypeFragmentConfig } from '../type-fragment/type-fragment.interface';
 
 export interface ITypeTransition extends ITypeFragment {
   className: string;
@@ -20,7 +20,7 @@ export type Hook<T = () => void> = T | T[];
  */
 export interface ITypeTransitionConfig<
   HostElement extends TypeHtml = TypeHtml
-> extends ITypeConfig {
+> extends ITypeFragmentConfig {
   mode?: 'in-out' | 'out-in' | 'default';
   appear?: boolean;
 

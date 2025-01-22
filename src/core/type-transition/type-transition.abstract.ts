@@ -3,6 +3,8 @@ import { getTransitionInfo, nextFrame, resolveTransitionProps } from '../../comp
 import { TypeFragment } from '../type-fragment/type-fragment.abstract';
 import { TypeHtml } from '../type-html/type-html.abstract';
 import { ITypeTransition, ITypeTransitionConfig } from './type-transition.interface';
+import { toValue } from '../../use';
+import { IStyle } from '@type-dom/css-type';
 
 export abstract class TypeTransition extends TypeFragment implements ITypeTransition {
   mode: 'in-out' | 'out-in' | 'default';
@@ -11,7 +13,7 @@ export abstract class TypeTransition extends TypeFragment implements ITypeTransi
   // 唯一子节点
   private content?: TypeHtml;
 
-  constructor(params: ITransitionConfig = {}) {
+  constructor(params: ITransitionConfig = { nodeName: 'fragment' }) {
     super();
     this.mode = params?.mode || 'in-out';
     this.parent = params?.parent;
@@ -23,7 +25,7 @@ export abstract class TypeTransition extends TypeFragment implements ITypeTransi
       // todo 如果是多个子节点，transition本身要成为一个 div 。
       //   现在只能有一个子节点。
       const props = resolveTransitionProps(params);
-      console.log('props is ', props);
+      // console.log('props is ', props);
       params.slot.setTransitionProps(props);
     }
     this.props = this.useParams(params);
@@ -78,7 +80,7 @@ export abstract class TypeTransition extends TypeFragment implements ITypeTransi
 
   // 显示、隐藏 slot
   showSlot(show: boolean, display = 'flex') {
-    console.log('Transition showSlot, show is ', show);
+    // console.log('Transition showSlot, show is ', show);
     if (!this.content) {
       console.warn('Transition showSlot, el is undefined.');
       return;
@@ -101,7 +103,7 @@ export abstract class TypeTransition extends TypeFragment implements ITypeTransi
       nextFrame(() => {
         if (this.content?.dom) {
           const { timeout } = getTransitionInfo(this.content);
-          console.log('timeout is ', timeout);
+          // console.log('timeout is ', timeout);
           if (this.timer) {
             clearTimeout(this.timer as unknown as number);
           }
@@ -197,7 +199,7 @@ export abstract class TypeTransition extends TypeFragment implements ITypeTransi
       this.props.onAfterLeave(el);
     } else {
       el.style?.setObj({
-        opacity: el.params.styleObj?.opacity,
+        opacity: (el.params.styleObj as IStyle)?.opacity,
       });
     }
   }
