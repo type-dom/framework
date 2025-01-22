@@ -1,8 +1,8 @@
 export type * from './interface';
 export * from './parser';
 export * from './router';
-export * from './observer/index';
-export * from './reactivity/index';
+// export * from './observer/index';
+// export * from './reactivity/index';
 export * from './util/index';
 export * from './core/style/index';
 export { TypeNode } from './core/type-node/type-node.abstract';
@@ -22,5 +22,3 @@ export * from './components/index';
 
 export * from './decorators/index';
 
-export { inject } from './util/inject';
-export { computed } from './computed/computed';

@@ -1,7 +1,7 @@
-// declare const __DEV__ = true;
-// declare const __TEST__: boolean
-// declare const __GLOBAL__: boolean
-//
+declare const __DEV__ = true;
+declare const __TEST__: boolean
+declare const __GLOBAL__: boolean
+
 // interface Window {
 //   __VUE_DEVTOOLS_GLOBAL_HOOK__: DevtoolsHook
 // }
