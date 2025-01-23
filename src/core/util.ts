@@ -1,11 +1,10 @@
-import { deepClone } from '@type-dom/utils';
-import { XProxy } from '../observer/x-proxy/x-proxy.class';
+import { deepClone, isArray } from '@type-dom/utils';
+import { Computed, Signal } from '@type-dom/signals';
 import { IJsonData, IJsonDataProp } from '../interface';
 import { TypeNode } from './type-node/type-node.abstract';
-import { TypeElement } from './type-element/type-element.abstract';
 import { ITypeElement } from './type-element/type-element.interface';
 import { ITextNode } from './text-node/text-node.interface';
-import { ITypeNode } from './type-node/type-node.interface';
+import { ISlotConfig, ISlotRaw, ISlotRef, ITypeNode } from './type-node/type-node.interface';
 import { TypeHtml } from './type-html/type-html.abstract';
 import { TypeSvg } from './type-svg/type-svg.abstract';
 
@@ -17,7 +16,7 @@ import { TypeSvg } from './type-svg/type-svg.abstract';
 export function toJSON(element: TypeHtml | TypeSvg): ITypeElement {
   return {
     // nodeName: element.nodeName,
-    nodeName: element.nodeName,
+    nodeName: element.props.nodeName,
     className: element.className,
     params: {
       styleObj: deepClone(element.style.getObj()), // 深拷贝
@@ -30,9 +29,10 @@ export function toJSON(element: TypeHtml | TypeSvg): ITypeElement {
         return toJSON(child);
       } else {
         return {
-          // className: 'TextNode',
           // nodeName: '#text',
-          nodeValue: child.nodeValue // textContent
+          props: {
+            nodeValue: child.props.nodeValue // textContent
+          }
         } as ITextNode;
       }
     })
@@ -119,7 +119,7 @@ export function defineNodeProperty(
     enumerable: true,
     get() {
       // 调用 handler 的 get 方法（如果已实现）
-      if (value instanceof XProxy) {
+      if (value instanceof Signal || value instanceof Computed) {
         console.log(
           `defineNodeProperty 获取属性 "${key}" 的值，值为XProxy类型，值为：`,
           value
@@ -137,7 +137,7 @@ export function defineNodeProperty(
     set(newValue) {
       // console.log(`defineNodeProperty 拦截到了对属性 "${key}" 的赋值操作，新值为：`, newValue);
       // 自定义逻辑...
-      if (newValue instanceof XProxy) {
+      if (newValue instanceof Signal || newValue instanceof Computed) {
         // modelValue
         console.error(
           `defineNodeProperty 拦截到了对属性 "${key}" 的赋值操作，newValue为XProxy类型，且值为：`,
@@ -145,7 +145,7 @@ export function defineNodeProperty(
         );
         //   todo 将当前对象加载到 XProxy 中。
       }
-      if (node[key] instanceof XProxy) {
+      if (node[key] instanceof Signal || newValue instanceof Computed) {
         console.error('节点属性的值是XProxy类型。');
         (node as any)[key] = newValue;
       } else {
@@ -155,21 +155,13 @@ export function defineNodeProperty(
   });
 }
 
-// packages/runtime-core/src/component.ts
-
-let currentInstance: TypeNode | null = null
-
-export function getCurrentInstance (): TypeNode | null {
-  return currentInstance
-}
-export function setCurrentInstance(instance: TypeNode | null) {
-  currentInstance = instance
-}
-
-export function getCurrentInstanceForWarning(): TypeNode | null {
-  return currentInstance
-}
-
-export function hasInjectionContext(instance: TypeNode): boolean {
-  return instance.provide != null || instance.parent?.provide != null
+export function arraySlot<T extends ISlotRaw = ISlotRaw>(slot?: ISlotConfig): (T | ISlotRef<T>)[] {
+  if (slot === undefined) {
+    return [];
+  }
+  if (isArray(slot)) {
+    return slot as (T | ISlotRef<T>)[];
+  } else {
+    return [slot] as (T | ISlotRef<T>)[];
+  }
 }
