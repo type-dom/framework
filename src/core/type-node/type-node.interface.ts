@@ -1,7 +1,7 @@
 import { IStyle } from '@type-dom/css-type';
-import { type IJsonDataProp, IJsonData } from '../../interface';
-import { Ref } from '../../reactivity/ref';
-import { XProxy } from '../../observer';
+import { Dayjs } from 'dayjs';
+import { Computed, MaybeRef, Signal, WritableComputedOptions } from '@type-dom/signals';
+import { type IJsonDataProp, IJsonData, IPrimitive, IWritableObj } from '../../interface';
 import type { ITypeAttribute } from '../type-element/type-element.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { IEmits, IEvents } from '../event-emitter/event-emitter.interface';
@@ -123,19 +123,46 @@ export interface IPropSetting {
 // 参数接口
 export interface ITypeConfig extends ITypeBase {
   name?: string | number; // 节点名称, 转化为 attrObj.name;
-  tag?: 'fragment' | string;
-  // 当前对象引用
-  ref?: XProxy<IJsonData> | Ref<any>;
+  tag?: keyof HTMLElementTagNameMap | 'fragment' | '#text' | string; // 转为 nodeName
+  nodeName?: keyof HTMLElementTagNameMap | 'fragment' | '#text' | string | undefined;
+  /**
+   * nodeValue只在 TextNode中才有。
+   * nodeValue存在时，就应该是 TextNode类
+   */
+  nodeValue?: string | number | undefined;
+
+  /**
+   * 是否禁用，默认为 false，如果为 true。
+   */
+  disabled?: MaybeRef<boolean>;
+
+  modelValue?: IPrimitive | object | (IPrimitive | object)[];
+  // 双向绑定的就应该是 Signal<IPrimitive | object> 类型；与 modelValue 联合使用
+  vModel?:  Signal | Computed; // Signal<IPrimitive | IPrimitive[]> | Computed<WritableComputedOptions>;
   /**
    * 是否创建dom，默认为 true，如果为 false，则不创建dom，不挂载到dom树中。
+   * 监听到值变化时，触发更新，重新处理 dom 树。
    */
-  ifDom?: boolean;
+  vIf?: MaybeRef<boolean | unknown>;
   /**
-   * 是否显示，默认为 true，如果为 false，则不创建dom，不挂载到dom树中。
+   * 是否显示，默认为 true，显示dom，display：block | flex 等;如果为 false，则不显示dom，display: none。
+   * 监听值变化，触发更新，重新设置display的值。需要保留初始样式中的display。或者直接移除display；
    */
-  isShow?: boolean;
+  vShow?: MaybeRef<boolean | unknown>;
+  /**
+   * 绑定的class对象，用于获取当前对象的class；
+   *  与 ns 方法配合使用，获取当前对象的class；
+   *  样式 theme 中的样式，需要通过 class 绑定；
+   */
+  class?: string | Computed<string[]>;
+  /**
+   * 绑定的ref对象，用于获取当前对象的dom元素；
+   */
+  ref?: MaybeRef<Element | DocumentFragment | undefined>;
+  /**
+   * 绑定的refId对象，用于父级查找到当前对象；
+   */
   refId?: string | number;
-  text?: boolean | string | number | XProxy<IJsonData>; // 只是简单的添加一个文本节点时用，
   /**
    * 属性对象，除了style对应的属性之外的其他属性。
    */
@@ -143,17 +170,16 @@ export interface ITypeConfig extends ITypeBase {
   /**
    * 样式对象。
    */
-  styleObj?: IStyle | undefined;
+  styleObj?: MaybeRef<IStyle | undefined> | undefined;
   // 类实例对象；  与 ITypeNode 中的 childNodes: ITypeNode[] 与ITypeNode 中的 childNodes: ITypeNode[] 不同；
-  childNodes?: TypeNode[] | undefined; // todo 象slot一样字符串、数字类型等。
+  // childNodes?: TypeNode[] | undefined; // todo 象slot一样字符串、数字类型等。
 
   // 设置子元素的属性，并根据属性创建子元素；是json对象；指定的元素类型；
   items?: ITypeConfig[];
   // 多个插槽 ———— 对应的 是 TypeNode | TypeNode[], 不同于一般的属性；需要组件本身单独处理的。setConfig方法中没有默认处理方法；
-  slots?: IConfigSlots; // 指定多个不同位置的插槽，需要有插槽名称的；需要在类中添加插槽的位置；
+  slots?: ISlotConfigs; // 指定多个不同位置的插槽，需要有插槽名称的；需要在类中添加插槽的位置；
   // 默认插槽  同 slots.default  组件没有插槽时，为undefined。这时子元素只能用 childNodes 属性；
-  slot?: IConfigSlot; // OnlyChild 默认位置的插槽, 可以是单个元素，也可以是多个元素，即数组；如何直接插入当前元素，则相当与 childNodes属性；
-  html?: string;
+  slot?: ISlotConfig; // 默认插槽, 可以是单个元素，也可以是多个元素，即数组；如何直接插入当前元素，则相当与 childNodes属性；
   init?: (element: TypeElement | SlotNode) => void;
   /**
    * 自定义的事件监听器，与 events 不同，events 是绑定在元素上的事件，而 emits 是在元素上触发的事件；
@@ -173,12 +199,19 @@ export interface ITypeConfig extends ITypeBase {
    * 标签必须闭合， 如 <input /> 这样才能闭合。
    */
   template?: string; // 模板 默认TypeClass为XElement
+  html?: string;
   fieldSetting?: IOptionSetting;
 
   /**
    * The other props of the element.
    */
   // [dataKey: `data-${string}` | `on${string}` | `td-${string}`]: unknown;
+  // data?: UnwrapNestedRefs<IObData>; // 数据  ITypeConfig 需要继承
+  // subscriptions?: Subscription[];
+  // 绑定的方法集合
+  methods?: IMethods;
+  defaults?: ISettings; // 同 Extjs 中的defaults
+  // type?: string;
 
   // sourceWrapper?:  string | XProxy<IJsonData>;
   // showcase?:  TypeElement[];
@@ -190,6 +223,22 @@ export interface ITypeConfig extends ITypeBase {
   // callback?: (...args: any[]) => void;
   // parent?: TypeElement;
   // [propName: string]: any; // todo should be removed
+  /**
+   * @description native `aria-label` attribute
+   */
+  ariaLabel?: MaybeRef<string>;
+  /**
+   * @description native `aria-orientation` attribute
+   */
+  ariaOrientation?: MaybeRef<'horizontal' | 'vertical' | 'undefined'>;
+  /**
+   * @description native `aria-controls` attribute
+   */
+  ariaControls?: MaybeRef<string>;
+
+  ariaDescribedby?: MaybeRef<string>;
+  ariaExpanded?: MaybeRef<string>;
+  ariaHaspopup?: MaybeRef<string>;
 }
 
 export interface ISlotNodes {
@@ -197,11 +246,12 @@ export interface ISlotNodes {
 
   [propName: string]: SlotNode | undefined;
 }
+export type ISlotRaw = string | number | TypeNode;
+export type ISlotRef<T extends ISlotRaw = ISlotRaw> = Signal<T> | Computed;
+export type ISlotConfig<T extends ISlotRaw = ISlotRaw> = T |  ISlotRef<T> | (T | ISlotRef<T>)[];
 
-export type IConfigSlot = string | TypeNode | (string | TypeNode)[] | undefined;
-
-export interface IConfigSlots {
-  [propName: 'default' | string]: IConfigSlot;
+export interface ISlotConfigs {
+  [propName: 'default' | string]: ISlotConfig | undefined;
 }
 
 export interface IOptionConfig extends ITypeConfig {

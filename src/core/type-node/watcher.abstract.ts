@@ -1,5 +1,5 @@
-import { Watcher as WatcherClass } from '../../reactivity/watcher/watcher.class';
-import { Observer } from '../../reactivity/observer/observer.class';
+// import { Watcher as WatcherClass } from '../../reactivity/watcher/watcher.class';
+// import { Observer } from '../../reactivity/observer/observer.class';
 
 import { IJsonData, IJsonDataProp } from '../../interface';
 
@@ -90,8 +90,8 @@ export abstract class Watcher {
     //     }
     //   }
     // });
-    new Observer(obj);
-    new WatcherClass(obj, path.join('.'), callback);
+    // new Observer(obj);
+    // new WatcherClass(obj, path.join('.'), callback);
   }
 
   /**
