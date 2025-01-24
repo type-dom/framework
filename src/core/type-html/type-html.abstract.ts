@@ -1,25 +1,26 @@
 /**
- * `TypeHtml`类是`TypeElement`的抽象子类，实现了`ITypeHtml`接口，用于定义HTML标签的类型。
+ * TypeHtml类是TypeElement的抽象子类，实现了ITypeHtml接口，用于定义HTML标签的类型。
  * 这个类提供了HTML元素的基本结构和行为的抽象。
+ * 将组件和dom的具体类型进行了关联；
  */
 import { IStyle } from '@type-dom/css-type';
 import { TypeElement } from '../../core/type-element/type-element.abstract';
 import { getTransitionInfo, nextFrame } from '../../components/transition/transition.util';
 import { Style } from '../style/style.class';
 import { Attribute } from '../attribute/attribute.class';
-import type { ITypeHtml } from './type-html.interface';
+import type { ITypeHtml, ITypeHtmlConfig } from './type-html.interface';
 
 export abstract class TypeHtml<T extends HTMLElement = HTMLElement>
   extends TypeElement
   implements ITypeHtml
 {
-  abstract override nodeName: string; // 必然有；
   /**
    * 代表HTML元素的抽象属性。
    * 该属性应为一个`HTMLElement`类型，是具体实现中必须提供的。
    * 子类需要实现这个属性，以提供对具体HTML元素的访问。
    */
-  abstract override dom: T;
+  abstract override dom?: T; // 构造阶段不创建dom
+  abstract override props: ITypeHtmlConfig;
   // private timer?: ReturnType<typeof rAF> | undefined;
   transitionTimer?: NodeJS.Timeout;
   style: Style;
@@ -32,26 +33,26 @@ export abstract class TypeHtml<T extends HTMLElement = HTMLElement>
     this.attr.addId(this.componentId);
   }
 
-  addStyleObj(styleObj: IStyle) {
+  addStyleObj(styleObj?: IStyle) {
     this.style.addObj(styleObj);
   }
 
-  setStyleObj(styleObj: IStyle) {
+  setStyleObj(styleObj?: IStyle) {
     this.style.setObj(styleObj);
   }
 
-  addAttrObj(attrObj: Record<string, string>) {
+  addAttrObj(attrObj?: Record<string, string>) {
     this.attr.addObj(attrObj);
   }
 
-  setAttrObj(attrObj: Record<string, string>) {
+  setAttrObj(attrObj?: Record<string, string>) {
     this.attr.setObj(attrObj);
   }
 
   override createDom() {
-    console.log('TypeHtml createDom');
+    // console.log('TypeHtml createDom');
     if (!this.dom) {
-      this.dom = document.createElement(this.nodeName) as T;
+      this.dom = document.createElement(this.props.nodeName || 'div') as T;
     }
     // todo teleport to body 下面的方法无法挂载
     // this.parent?.elementParent?.dom?.appendChild(this.dom);
@@ -70,12 +71,12 @@ export abstract class TypeHtml<T extends HTMLElement = HTMLElement>
     nextFrame(() => {
       if (this.dom) {
         const { timeout } = getTransitionInfo(this);
-        console.log('timeout is ', timeout);
+        // console.log('timeout is ', timeout);
         if (this.transitionTimer) {
           clearTimeout(this.transitionTimer as unknown as number);
         }
         this.transitionTimer = setTimeout(() => {
-          this.dom.remove();
+          this.dom?.remove();
         }, timeout);
       }
     });
@@ -83,7 +84,7 @@ export abstract class TypeHtml<T extends HTMLElement = HTMLElement>
 
   // 显示、隐藏 dom
   showDom(display = 'flex') {
-    console.log('TypeHtml showDom, show is ');
+    // console.log('TypeHtml showDom, show is ');
     if (this.transitionTimer) {
       clearTimeout(this.transitionTimer as unknown as number);
     }
@@ -102,12 +103,13 @@ export abstract class TypeHtml<T extends HTMLElement = HTMLElement>
     nextFrame(() => {
       if (this.dom) {
         const { timeout } = getTransitionInfo(this);
-        console.log('timeout is ', timeout);
+        // console.log('timeout is ', timeout);
         if (this.transitionTimer) {
           clearTimeout(this.transitionTimer as unknown as number);
         }
         this.transitionTimer = setTimeout(() => {
           this?.style?.setObj({
+            // right: 0, // 否则会保留在原地
             display: 'none',
           });
         }, timeout);
@@ -177,7 +179,7 @@ export abstract class TypeHtml<T extends HTMLElement = HTMLElement>
       this.transitionProps.onAfterLeave(this);
     } else {
       this.style?.setObj({
-        opacity: this.params.styleObj?.opacity,
+        opacity: (this.params.styleObj as IStyle)?.opacity,
       });
     }
   }

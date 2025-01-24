@@ -1,6 +1,10 @@
-import type { ITypeHtml } from '../type-html.interface';
+import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
 
 export interface ITypeImg extends ITypeHtml {
-  nodeName: 'img';
+  props: ITypeImgConfig;
   childNodes: [];
+}
+
+export interface ITypeImgConfig extends ITypeHtmlConfig {
+  nodeName?: 'img';
 }

@@ -1,5 +1,9 @@
-import type { ITypeHtml } from '../type-html.interface';
+import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
 
 export interface ITypeButton extends ITypeHtml {
-  nodeName: 'button';
+  props: ITypeButtonConfig;
+}
+
+export interface ITypeButtonConfig extends ITypeHtmlConfig {
+  nodeName?: 'button';
 }

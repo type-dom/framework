@@ -1,5 +1,9 @@
-import type { ITypeHtml } from '../type-html.interface';
+import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
 
 export interface ITypeAudio extends ITypeHtml {
-  nodeName: 'audio';
+  props: ITypeAudioConfig;
+}
+
+export interface ITypeAudioConfig extends ITypeHtmlConfig {
+  nodeName?: 'audio';
 }

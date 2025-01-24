@@ -1,13 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import type { ITypeSelect } from './select.interface';
+import { ITypeSelect, ITypeSelectConfig } from './select.interface';
 
 export abstract class TypeSelect extends TypeHtml implements ITypeSelect {
-  nodeName: 'select';
-  dom: HTMLSelectElement;
+  props: ITypeSelectConfig;
+  dom?: HTMLSelectElement;
 
   protected constructor() {
     super();
-    this.nodeName = 'select';
-    this.dom = document.createElement(this.nodeName);
+    this.props = this.useParams({
+      nodeName: 'select'
+    })
   }
 }

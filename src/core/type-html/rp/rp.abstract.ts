@@ -1,13 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import type { ITypeRp } from './rp.interface';
+import { ITypeRp, ITypeRpConfig } from './rp.interface';
 
 export abstract class TypeRp extends TypeHtml implements ITypeRp {
-  nodeName: 'rp';
-  dom: HTMLElement;
+  props: ITypeRpConfig;
+  dom?: HTMLElement;
 
   protected constructor() {
     super();
-    this.nodeName = 'rp';
-    this.dom = document.createElement(this.nodeName);
+    this.props = this.useParams({
+      nodeName: 'rp'
+    })
   }
 }

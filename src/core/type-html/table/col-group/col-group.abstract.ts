@@ -1,15 +1,14 @@
 import { TypeHtml } from '../../type-html.abstract';
-import type { ITypeTableColGroup } from './col-group.interface';
+import { ITypeTableColGroup, ITypeTableColGroupConfig } from './col-group.interface';
 
-export abstract class TypeTableColGroup
-  extends TypeHtml
-  implements ITypeTableColGroup {
-  nodeName: 'colgroup';
-  dom: HTMLTableColElement;
+export abstract class TypeTableColGroup extends TypeHtml implements ITypeTableColGroup {
+  props: ITypeTableColGroupConfig;
+  dom?: HTMLTableColElement;
 
   protected constructor() {
     super();
-    this.nodeName = 'colgroup';
-    this.dom = document.createElement(this.nodeName);
+    this.props = this.useParams({
+      nodeName: 'colgroup'
+    })
   }
 }

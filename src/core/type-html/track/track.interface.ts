@@ -1,5 +1,9 @@
-import type { ITypeHtml } from '../type-html.interface';
+import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
 
 export interface ITypeTrack extends ITypeHtml {
-  nodeName: 'track';
+  props: ITypeTrackConfig;
+}
+
+export interface ITypeTrackConfig extends ITypeHtmlConfig {
+  nodeName?: 'track';
 }

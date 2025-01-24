@@ -1,5 +1,9 @@
-import type { ITypeHtml } from '../type-html.interface';
+import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
 
 export interface ITypePre extends ITypeHtml {
-  nodeName: 'pre';
+  props: ITypePreConfig;
+}
+
+export interface ITypePreConfig extends ITypeHtmlConfig {
+  nodeName?: 'pre';
 }

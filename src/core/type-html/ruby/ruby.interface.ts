@@ -1,5 +1,9 @@
-import type { ITypeHtml } from '../type-html.interface';
+import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
 
 export interface ITypeRuby extends ITypeHtml {
-  nodeName: 'ruby';
+  props: ITypeRubyConfig;
+}
+
+export interface ITypeRubyConfig extends ITypeHtmlConfig {
+  nodeName?: 'ruby';
 }

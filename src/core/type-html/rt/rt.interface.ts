@@ -1,5 +1,9 @@
-import type { ITypeHtml } from '../type-html.interface';
+import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
 
 export interface ITypeRt extends ITypeHtml {
-  nodeName: 'rt';
+  props: ITypeRtConfig;
+}
+
+export interface ITypeRtConfig extends ITypeHtmlConfig {
+  nodeName?: 'rt';
 }

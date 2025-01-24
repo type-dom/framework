@@ -1,5 +1,9 @@
-import type { ITypeHtml } from '../type-html.interface';
+import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
 
 export interface ITypeVideo extends ITypeHtml {
-  nodeName: 'video';
+  props: ITypeVideoConfig;
+}
+
+export interface ITypeVideoConfig extends ITypeHtmlConfig {
+  nodeName?: 'video';
 }

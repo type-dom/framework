@@ -1,13 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import type { ITypeA } from './a.interface';
+import type { ITypeA, ITypeAConfig } from './a.interface';
 
 export abstract class TypeA extends TypeHtml implements ITypeA {
-  nodeName: 'a';
-  dom: HTMLAnchorElement;
+  dom?: HTMLAnchorElement;
+  override props: ITypeAConfig;
 
   protected constructor() {
     super();
-    this.nodeName = 'a';
-    this.dom = document.createElement(this.nodeName);
+    this.props = this.useParams({
+      nodeName: 'a',
+    })
   }
 }

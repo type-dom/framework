@@ -1,5 +1,8 @@
-import type { ITypeHtml } from '../type-html.interface';
+import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
 
 export interface ITypeAddress extends ITypeHtml {
-  nodeName: 'address';
+  props: ITypeAddressConfig;
+}
+export interface ITypeAddressConfig extends ITypeHtmlConfig {
+  nodeName?: 'address';
 }

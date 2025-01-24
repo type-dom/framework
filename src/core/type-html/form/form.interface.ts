@@ -1,5 +1,9 @@
-import type { ITypeHtml } from '../type-html.interface';
+import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
 
 export interface ITypeForm extends ITypeHtml {
-  nodeName: 'form';
+  props: ITypeFormConfig;
+}
+
+export interface ITypeFormConfig extends ITypeHtmlConfig {
+  nodeName?: 'form';
 }

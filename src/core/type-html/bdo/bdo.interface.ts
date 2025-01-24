@@ -1,5 +1,9 @@
-import type { ITypeHtml } from '../type-html.interface';
+import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
 
 export interface ITypeBdo extends ITypeHtml {
-  nodeName: 'bdo';
+  props: ITypeBdoConfig;
+}
+
+export interface ITypeBdoConfig extends ITypeHtmlConfig {
+  nodeName?: 'bdo';
 }

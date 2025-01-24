@@ -1,13 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import type { ITypeBdo } from './bdo.interface';
+import type { ITypeBdo, ITypeBdoConfig } from './bdo.interface';
 
 export abstract class TypeBdo extends TypeHtml implements ITypeBdo {
-  nodeName: 'bdo';
-  dom: HTMLElement;
+  props: ITypeBdoConfig;
+  dom?: HTMLElement;
 
   protected constructor() {
     super();
-    this.nodeName = 'bdo';
-    this.dom = document.createElement(this.nodeName);
+    this.props = this.useParams({
+      nodeName: 'bdo'
+    })
   }
 }

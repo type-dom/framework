@@ -1,13 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import type { ITypeDel } from './del.interface';
+import { ITypeDel, ITypeDelConfig } from './del.interface';
 
 export abstract class TypeDel extends TypeHtml implements ITypeDel {
-  nodeName: 'del';
-  dom: HTMLModElement;
+  props: ITypeDelConfig;
+  dom?: HTMLModElement;
 
   protected constructor() {
     super();
-    this.nodeName = 'del';
-    this.dom = document.createElement(this.nodeName);
+    this.props = this.useParams({
+      nodeName: 'del'
+    })
   }
 }

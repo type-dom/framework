@@ -1,13 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import type { ITypeTime } from './time.interface';
+import { ITypeTime, ITypeTimeConfig } from './time.interface';
 
 export abstract class TypeTime extends TypeHtml implements ITypeTime {
-  nodeName: 'time';
-  dom: HTMLTimeElement;
+  props: ITypeTimeConfig;
+  dom?: HTMLTimeElement;
 
   protected constructor() {
     super();
-    this.nodeName = 'time';
-    this.dom = document.createElement(this.nodeName);
+    this.props = this.useParams({
+      nodeName: 'time'
+    })
   }
 }

@@ -1,13 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import type { ITypeTextarea } from './textarea.interface';
+import type { ITypeTextarea, ITypeTextareaConfig } from './textarea.interface';
 
 export abstract class TypeTextarea extends TypeHtml implements ITypeTextarea {
-  nodeName: 'textarea';
-  dom: HTMLTextAreaElement;
+  props: ITypeTextareaConfig;
+  dom?: HTMLTextAreaElement;
 
   protected constructor() {
     super();
-    this.nodeName = 'textarea';
-    this.dom = document.createElement(this.nodeName);
+    this.props = this.useParams({
+      nodeName: 'textarea',
+    })
   }
 }

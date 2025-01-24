@@ -1,13 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import type { ITypeInput } from './input.interface';
+import { ITypeInput, ITypeInputConfig } from './input.interface';
 
 export abstract class TypeInput extends TypeHtml implements ITypeInput {
-  nodeName: 'input';
-  dom: HTMLInputElement;
+  props: ITypeInputConfig;
+  dom?: HTMLInputElement;
 
   protected constructor() {
     super();
-    this.nodeName = 'input';
-    this.dom = document.createElement(this.nodeName);
+    this.props = this.useParams({
+      nodeName: 'input'
+    })
   }
 }

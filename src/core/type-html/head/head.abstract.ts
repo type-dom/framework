@@ -1,13 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import type { ITypeHead } from './head.interface';
+import { ITypeHead, ITypeHeadConfig } from './head.interface';
 
 export abstract class TypeHead extends TypeHtml implements ITypeHead {
-  nodeName: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' = 'h1';
-  dom: HTMLHeadingElement;
+  props: ITypeHeadConfig;
+  dom?: HTMLHeadingElement;
 
   protected constructor(nodeName: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' = 'h1') {
     super();
-    this.nodeName = nodeName;
-    this.dom = document.createElement(nodeName);
+    this.props = this.useParams({
+      nodeName
+    })
   }
 }

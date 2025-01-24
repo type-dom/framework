@@ -1,13 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import type { ITypeCanvas } from './canvas.interface';
+import { ITypeCanvas, ITypeCanvasConfig } from './canvas.interface';
 
 export abstract class TypeCanvas extends TypeHtml implements ITypeCanvas {
-  nodeName: 'canvas';
-  dom: HTMLCanvasElement;
+  props: ITypeCanvasConfig;
+  dom?: HTMLCanvasElement;
 
   protected constructor() {
     super();
-    this.nodeName = 'canvas';
-    this.dom = document.createElement(this.nodeName);
+    this.props = this.useParams({
+      nodeName: 'canvas'
+    })
   }
 }

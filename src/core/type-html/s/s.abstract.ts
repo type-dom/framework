@@ -1,13 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import type { ITypeS } from './s.interface';
+import { ITypeS, ITypeSConfig } from './s.interface';
 
 export abstract class TypeS extends TypeHtml implements ITypeS {
-  nodeName: 's';
-  dom: HTMLElement;
+  props: ITypeSConfig;
+  dom?: HTMLElement;
 
   protected constructor() {
     super();
-    this.nodeName = 's';
-    this.dom = document.createElement(this.nodeName);
+    this.props = this.useParams({
+      nodeName: 's'
+    })
   }
 }

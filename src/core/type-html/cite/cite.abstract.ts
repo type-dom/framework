@@ -1,13 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import type { ITypeCite } from './cite.interface';
+import { ITypeCite, ITypeCiteConfig } from './cite.interface';
 
 export abstract class TypeCite extends TypeHtml implements ITypeCite {
-  nodeName: 'cite';
-  dom: HTMLElement;
+  props: ITypeCiteConfig;
+  dom?: HTMLElement;
 
   protected constructor() {
     super();
-    this.nodeName = 'cite';
-    this.dom = document.createElement(this.nodeName);
+    this.props = this.useParams({
+      nodeName: 'cite'
+    })
   }
 }

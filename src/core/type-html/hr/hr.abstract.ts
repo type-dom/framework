@@ -1,13 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import type { ITypeHr } from './hr.interface';
+import { ITypeHr, ITypeHrConfig } from './hr.interface';
 
 export abstract class TypeHr extends TypeHtml implements ITypeHr {
-  nodeName: 'hr';
-  dom: HTMLElement;
+  props: ITypeHrConfig;
+  dom?: HTMLElement;
 
   protected constructor() {
     super();
-    this.nodeName = 'hr';
-    this.dom = document.createElement(this.nodeName);
+    this.props = this.useParams({
+      nodeName: 'hr'
+    })
   }
 }

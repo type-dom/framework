@@ -1,15 +1,16 @@
 import { TypeHtml } from '../type-html.abstract';
-import type { ITypeImg } from './img.interface';
+import { ITypeImg, ITypeImgConfig } from './img.interface';
 
 export abstract class TypeImg extends TypeHtml implements ITypeImg {
-  nodeName: 'img';
-  dom: HTMLImageElement;
+  props: ITypeImgConfig;
+  dom?: HTMLImageElement;
   override childNodes: [];
 
   protected constructor() {
     super();
-    this.nodeName = 'img';
-    this.dom = document.createElement(this.nodeName);
+    this.props = this.useParams({
+      nodeName: 'img'
+    });
     this.childNodes = [];
   }
 }

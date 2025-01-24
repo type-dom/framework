@@ -1,5 +1,9 @@
-import type { ITypeHtml } from '../type-html.interface';
+import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
 
 export interface ITypeMap extends ITypeHtml {
-  nodeName: 'map';
+  props: ITypeMapConfig;
+}
+
+export interface ITypeMapConfig extends ITypeHtmlConfig {
+  nodeName?: 'map';
 }

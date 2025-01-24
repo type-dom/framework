@@ -1,5 +1,9 @@
-import type { ITypeHtml } from '../type-html.interface';
+import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
 
 export interface ITypeEmbed extends ITypeHtml {
-  nodeName: 'embed';
+  props: ITypeEmbedConfig;
+}
+
+export interface ITypeEmbedConfig extends ITypeHtmlConfig {
+  nodeName?: 'embed';
 }

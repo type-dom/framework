@@ -1,16 +1,17 @@
 import { TypeHtml } from '../../type-html.abstract';
 import { TypeTableRow } from '../row/row.abstract';
-import type { ITypeTableBody } from './body.interface';
+import { ITypeTableBody, ITypeTableBodyConfig } from './body.interface';
 
 export abstract class TypeTableBody extends TypeHtml implements ITypeTableBody {
-  nodeName: 'tbody';
-  dom: HTMLTableSectionElement;
+  props: ITypeTableBodyConfig;
+  dom?: HTMLTableSectionElement;
   override childNodes: TypeTableRow[];
 
   protected constructor() {
     super();
-    this.nodeName = 'tbody';
-    this.dom = document.createElement(this.nodeName);
+    this.props = this.useParams({
+      nodeName: 'tbody'
+    });
     this.childNodes = [];
   }
 }

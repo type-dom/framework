@@ -1,13 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import type { ITypeU } from './u.interface';
+import { ITypeU, ITypeUConfig } from './u.interface';
 
 export abstract class TypeU extends TypeHtml implements ITypeU {
-  nodeName: 'u';
-  dom: HTMLElement;
+  props: ITypeUConfig;
+  dom?: HTMLElement;
 
   protected constructor() {
     super();
-    this.nodeName = 'u';
-    this.dom = document.createElement(this.nodeName);
+    this.props = this.useParams({
+      nodeName: 'u'
+    })
   }
 }

@@ -1,15 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import type { ITypeBlockQuote } from './block-quote.interface';
+import { ITypeBlockQuote, ITypeBlockQuoteConfig } from './block-quote.interface';
 
-export abstract class TypeBlockQuote
-  extends TypeHtml
-  implements ITypeBlockQuote {
-  nodeName: 'blockquote';
-  dom: HTMLQuoteElement;
+export abstract class TypeBlockQuote extends TypeHtml implements ITypeBlockQuote {
+  props: ITypeBlockQuoteConfig;
+  dom?: HTMLQuoteElement;
 
   protected constructor() {
     super();
-    this.nodeName = 'blockquote';
-    this.dom = document.createElement(this.nodeName);
+    this.props = this.useParams({
+      nodeName: 'blockquote'
+    })
   }
 }

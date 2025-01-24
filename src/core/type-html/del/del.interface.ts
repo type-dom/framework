@@ -1,5 +1,9 @@
-import type { ITypeHtml } from '../type-html.interface';
+import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
 
 export interface ITypeDel extends ITypeHtml {
-  nodeName: 'del';
+  props: ITypeDelConfig;
+}
+
+export interface ITypeDelConfig extends ITypeHtmlConfig {
+  nodeName?: 'del';
 }
