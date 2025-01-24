@@ -1,13 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import type { ITypeWbr } from './wbr.interface';
+import { ITypeWbr, ITypeWbrConfig } from './wbr.interface';
 
 export abstract class TypeWbr extends TypeHtml implements ITypeWbr {
-  nodeName: 'wbr';
-  dom: HTMLElement;
+  props: ITypeWbrConfig;
+  dom?: HTMLElement;
 
   protected constructor() {
     super();
-    this.nodeName = 'wbr';
-    this.dom = document.createElement(this.nodeName);
+    this.props = this.useParams({
+      nodeName: 'wbr'
+    });
   }
 }
