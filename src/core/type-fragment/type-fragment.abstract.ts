@@ -2,22 +2,24 @@ import { IStyle } from '@type-dom/css-type';
 import { ITypeConfig } from '../type-node/type-node.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { ITypeAttribute } from '../type-element/type-element.interface';
-import { ITypeFragment } from './type-fragment.interface';
+import { ITypeFragment, ITypeFragmentConfig } from './type-fragment.interface';
+import { Computed, MaybeRef, Signal } from '@type-dom/signals';
 
 export abstract class TypeFragment extends TypeElement implements ITypeFragment {
-  override nodeName: 'fragment';
-  override dom: DocumentFragment;
+  override props: ITypeFragmentConfig;
+  override dom?: DocumentFragment;
   // abstract content: TypeElement;
   style: undefined;
   attr: undefined;
 
   constructor() {
     super();
-    this.nodeName = 'fragment';
-    this.dom = document.createDocumentFragment();
+    this.props = this.useParams({
+      nodeName: 'fragment',
+    })
   }
 
-  addStyleObj(styleObj?: IStyle) {
+  addStyleObj(styleObj?: IStyle | Signal<IStyle | undefined> | Computed<IStyle | undefined>) {
     this.childNodes.forEach(child => {
       if (child instanceof TypeFragment) {
         child.addStyleObj(styleObj);
@@ -27,7 +29,7 @@ export abstract class TypeFragment extends TypeElement implements ITypeFragment 
     });
   }
 
-  setStyleObj(styleObj?: IStyle) {
+  setStyleObj(styleObj?: IStyle | Signal<IStyle> | Computed<IStyle>) {
     this.childNodes.forEach(child => {
       if (child instanceof TypeFragment) {
         child.setStyleObj(styleObj);
@@ -37,7 +39,7 @@ export abstract class TypeFragment extends TypeElement implements ITypeFragment 
     });
   }
 
-  addAttrObj(attrObj?: ITypeAttribute) {
+  addAttrObj(attrObj?: MaybeRef<ITypeAttribute>) {
     this.childNodes.forEach(child => {
       if (child instanceof TypeFragment) {
         child.addAttrObj(attrObj);
@@ -59,12 +61,6 @@ export abstract class TypeFragment extends TypeElement implements ITypeFragment 
 
   override useParams<C extends ITypeConfig>(params = {} as C): C {
     this.useSlots(params); // todo 会改变 slot的parent指向
-    // this.nodeName = params.tag || 'div';
-    // if (this.nodeName === 'fragment') {
-    //   this.dom = undefined as T;
-    // } else {
-    //   this.dom = document.createElement(this.nodeName.trim()) as T;
-    // }
     super.useParams<C>(params);
     this.childNodes.forEach(child => {
       if (child instanceof TypeFragment) {
