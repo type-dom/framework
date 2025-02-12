@@ -17,8 +17,8 @@
   },
   "keywords": [
     "type-dom",
-    "type-dom.ts",
-    "type-dom-ts",
+    "type-dom css-type",
+    "type-dom utils",
     "front-end framework",
     "typescript",
     "TypeNode",
@@ -29,7 +29,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/xjf7711/type-dom.git"
+    "url": "git+https://github.com/type-dom/framework.git"
   },
   "devDependencies": {
     "@babel/core": "^7.22.10",
@@ -52,8 +52,9 @@
     "typescript-coverage-report": "^0.8.0"
   },
   "dependencies": {
-    "rxjs": "^7.8.1",
-    "@type-dom/utils": "^0.0.6"
+    "@type-dom/signal": "*",
+    "@type-dom/css-type": "*",
+    "@type-dom/utils": "*"
   },
   "typeCoverage": {
     "atLeast": 99,
