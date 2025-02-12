@@ -1,18 +1,18 @@
 import { camelToDash } from '@type-dom/utils';
-import { AnyFn, IJsonDataProp, IObData } from '../../interface';
-// import { StyleManager } from '../../decorators/style';
+import { Computed, isRef, Signal, unref, watch } from '@type-dom/signals';
+import { IStyle } from '@type-dom/css-type';
+import { AnyFn, IJsonDataProp } from '../../interface';
 import { RouterView } from '../../router/router-view/router-view.class';
-import { XProxy } from '../../observer/x-proxy/x-proxy.class';
-import { Observer } from '../../observer/observer';
-// import { reactive } from '../../reactivity';
-import { UnwrapNestedRefs } from '../../reactivity/reactive';
 import { Parser } from '../../parser';
-import type { ISlotNodes, ITypeConfig } from '../type-node/type-node.interface';
+import type { ISlotConfig, ISlotNodes, ITypeConfig } from '../type-node/type-node.interface';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TextNode } from '../text-node/text-node.class';
-import type { IBoundBox, ITypeElement } from './type-element.interface';
 import { SlotNode } from '../slot-node/slot-node.class';
 import { ITransitionConfig } from '../../components';
+import { setCurrentInstance } from '../instance';
+import { LifecycleHooks } from '../enums';
+import { toValue } from '../../use';
+import type { IBoundBox, ITypeElement } from './type-element.interface';
 
 export const vHash = Math.round(Math.random() * 1000000);
 
@@ -28,26 +28,17 @@ export let componentId = 0;
 export abstract class TypeElement extends TypeNode implements ITypeElement {
   abstract override dom?: HTMLElement | SVGElement | DocumentFragment; // 不会是Text；
   // 包括 fragment
-  abstract override nodeName: 'fragment' | string; // 必然有； 且不为 #text
-  nodeValue?: undefined;
+  // abstract nodeName: 'fragment' | string; // 必然有； 且不为 #text
+  // nodeValue?: undefined;
   childNodes: TypeNode[];
   routerView?: RouterView; // 其实就是一个特殊的 SlotNode ;
-  textNode?: TextNode;
+  // textNode?: TextNode;
   transitionProps?: ITransitionConfig;
-  data?: UnwrapNestedRefs<IObData>; // ITypeNode 中设置了
-  modelValue?: IJsonDataProp;
+  // data?: IObData; // ITypeNode 中设置了
+  // modelValue?: MaybeRef<IPrimitive>;
   rendered: boolean;
   slotNodes: ISlotNodes;
   componentId: number;
-  lifeCycles: {
-    created?: AnyFn[];
-    beforeMount?: AnyFn[];
-    mounted?: AnyFn[];
-    beforeUpdate?: AnyFn[];
-    updated?: AnyFn[];
-    beforeUnmount?: AnyFn[];
-    unmounted?: AnyFn[];
-  };
 
   protected constructor() {
     super();
@@ -61,12 +52,12 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     this.slotNodes = {
       // default: new SlotNode('default'),
     };
-    this.lifeCycles = {};
     this.rendered = false;
   }
 
+  // 向上获取真实的 element ;
   get elementParent(): TypeElement | undefined {
-    if (this.nodeName === 'fragment') {
+    if (this.props.nodeName=== 'fragment') {
       return this.parent?.elementParent;
     } else {
       return this;
@@ -109,6 +100,15 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     };
   }
 
+  get(key: keyof ITypeConfig) {
+    return this.props[key];
+  }
+
+  set(key: keyof ITypeConfig, value: IJsonDataProp) {
+    const propValue = this.props[key];
+
+  }
+
   setTransitionProps(props: ITransitionConfig) {
     this.transitionProps = props;
   }
@@ -125,28 +125,12 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     if (params?.name) {
       this.attr?.addName(params.name);
     }
+    if (params?.class) {
+      this.attr?.addClass(params.class);
+    }
     this.params = params;
     if (params.parent) {
       this.parent = params.parent;
-    }
-    if (params?.ref !== undefined) {
-      params.ref.value = this;
-    }
-    // text: boolean 是td-button组件是否是text类型的属性
-    if (params?.text !== undefined && typeof params.text !== 'boolean') {
-      // 添加文本
-      // 先判断子元素是否有TextNode，有的话就不再添加
-      // 要this.textNode 而不是其它的 TextNode;
-      if (this.textNode) {
-        this.textNode.setText(params.text);
-        if (this.findChildIndex(this.textNode) === -1) {
-          this.addChild(this.textNode);
-        }
-      } else {
-        this.textNode = new TextNode(params.text);
-        this.addChild(this.textNode);
-      }
-      this.textNode.setParent(this);
     }
     if (params?.html) {
       const parser = new Parser();
@@ -160,15 +144,15 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     // }
     // todo 是否要单独处理。因为 parent 链是依赖addChild的。
     // 组件库中的组件 是没有 params.childNodes 的；
-    if (params?.childNodes) {
-      // 父元素为当前元素，子元素为params.childNodes
-      params.childNodes.forEach((item) => {
-        // item.parent = this; // addChild 会设置parent。
-        this.addChild(item);
-      });
-      // this.childNodes = params.childNodes;
-      // this.addChildren(...params.childNodes);
-    }
+    // if (params?.childNodes) {
+    //   // 父元素为当前元素，子元素为params.childNodes
+    //   params.childNodes.forEach((item) => {
+    //     // item.parent = this; // addChild 会设置parent。
+    //     this.addChild(item);
+    //   });
+    //   // this.childNodes = params.childNodes;
+    //   // this.addChildren(...params.childNodes);
+    // }
     // if (params.styleObj) {
     //   this.style.addObj(params.styleObj);
     // }
@@ -211,18 +195,14 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     return this.getProps<T>() as T;
   }
 
-  getTextNode() {
+  get textNode(): TextNode | undefined {
     // 如果 textNode 已经存在，直接返回
     // 否则创建一个新的 TextNode 并返回
-    if (this.textNode === undefined) {
-      this.textNode = new TextNode();
-      this.addChild(this.textNode);
-    }
-    return this.textNode;
+    return this.down<TextNode>('className', 'TextNode');
   }
 
   isFragment() {
-    return this.nodeName === 'fragment' && this.dom === undefined;
+    return this.props.nodeName=== 'fragment' && this.dom === undefined;
   }
 
   /**
@@ -255,42 +235,129 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * @param type 操作类型，可选值为`add`（默认）或`unshift`，分别代表添加和前置插入子元素。
    */
   slotChild(
-    slot?: string | TypeNode | (string | TypeNode)[],
+    slot?: ISlotConfig,
     type: 'add' | 'unshift' = 'add'
   ) {
-    if (!slot) {
+    if (slot === undefined) {
       return;
     }
     if (type === 'unshift') {
       if (slot instanceof TypeNode) {
         this.unshiftChild(slot);
-      } else if (typeof slot === 'string') {
+      } else if (typeof slot === 'string' || typeof slot === 'number') {
         this.unshiftChild(new TextNode(slot));
-      } else {
+      } else if (slot instanceof Signal || slot instanceof Computed) {
+        const val = toValue(slot);
+        if (typeof val === 'string' || typeof val === 'number') {
+          this.unshiftChild(new TextNode(slot));
+        } else if (val instanceof TypeNode) {
+          this.unshiftChild(val);
+        }
+      } else if(slot instanceof Array) {
         slot.forEach((item) => {
           if (item instanceof TypeNode) {
             this.unshiftChild(item);
-          } else if (typeof item === 'string') {
+          } else if (typeof item === 'string' || typeof item === 'number') {
             this.unshiftChild(new TextNode(item));
+          } else if (item instanceof Signal || item instanceof Computed) {
+            const val = toValue(item);
+            if (typeof val === 'string' || typeof val === 'number') {
+              this.unshiftChild(new TextNode(val));
+            } else if (val instanceof TypeNode) {
+              this.unshiftChild(val);
+            }
           }
         });
       }
     } else {
       if (slot instanceof TypeNode) {
         this.addChild(slot);
-      } else if (typeof slot === 'string') {
+      } else if (typeof slot === 'string' || typeof slot === 'number') {
         this.addChild(new TextNode(slot));
-      } else {
+      }  else if (slot instanceof Signal || slot instanceof Computed) {
+        const val = toValue(slot);
+        if (typeof val === 'string' || typeof val === 'number') {
+          this.addChild(new TextNode(slot));
+        } else if (val instanceof TypeNode) {
+          this.addChild(val);
+        }
+      } else if (slot instanceof Array) {
         slot.forEach((item) => {
           if (item instanceof TypeNode) {
             this.addChild(item);
-          } else if (typeof item === 'string') {
+          } else if (typeof item === 'string' || typeof item === 'number') {
             this.addChild(new TextNode(item));
+          } else if (item instanceof Signal || item instanceof Computed) {
+            const val = toValue(item);
+            if (typeof val === 'string' || typeof val === 'number') {
+              this.addChild(new TextNode(item));
+            } else if (val instanceof TypeNode) {
+              this.addChild(val);
+            }
           } else {
             console.error('slotChild is not string or TypeNode . ');
           }
         });
       }
+    }
+    if (slot instanceof Computed) {
+      watch(() => slot.get(), (slot) => {
+        // console.warn('slotChild computed update . ');
+        this.clearChildren();
+        if (type === 'unshift') {
+          if (slot instanceof TypeNode) {
+            this.unshiftChild(slot);
+          } else if (typeof slot === 'string' || typeof slot === 'number') {
+            this.unshiftChild(new TextNode(slot));
+          } else if (slot instanceof Signal || slot instanceof Computed) {
+            const val = toValue(slot);
+            if (typeof val === 'string' || typeof val === 'number') {
+              this.unshiftChild(new TextNode(slot));
+            } else if (val instanceof TypeNode) {
+              this.unshiftChild(val);
+            }
+          } else if(slot instanceof Array) {
+            slot.forEach((item) => {
+              if (item instanceof TypeNode) {
+                this.unshiftChild(item);
+              } else if (typeof item === 'string' || typeof item === 'number') {
+                this.unshiftChild(new TextNode(item));
+              } else if (item instanceof Signal || item instanceof Computed) {
+                const val = toValue(item);
+                if (typeof val === 'string' || typeof val === 'number') {
+                  this.unshiftChild(new TextNode(val));
+                } else if (val instanceof TypeNode) {
+                  this.unshiftChild(val);
+                }
+              }
+            });
+          }
+        } else {
+          if (slot instanceof TypeNode) {
+            slot.update();
+            this.appendChild(slot);
+          } else if (typeof slot === 'string' || typeof slot === 'number') {
+            this.appendChild(new TextNode(slot));
+          } else if (slot instanceof Array) {
+            slot.forEach((item) => {
+              if (item instanceof TypeNode) {
+                this.appendChild(item);
+              } else if (typeof item === 'string' || typeof item === 'number') {
+                this.appendChild(new TextNode(item));
+              } else if (item instanceof Signal || item instanceof Computed) {
+                const val = toValue(item);
+                if (typeof val === 'string' || typeof val === 'number') {
+                  this.appendChild(new TextNode(item));
+                } else if (val instanceof TypeNode) {
+                  this.appendChild(val);
+                }
+              } else {
+                console.error('slotChild is not string or TypeNode . ');
+              }
+            });
+          }
+        }
+      }, { immediate: true });
     }
   }
 
@@ -365,7 +432,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * @param index 要插入的目标位置
    */
   insertChild(child: TypeNode, index: number): void {
-    console.log('insertChild . ');
+    // console.log('insertChild . ');
     this.childNodes.splice(index, 0, child);
     child.setParent(this);
   }
@@ -387,7 +454,11 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     if (this.childNodes.length > index + 1) {
       this.resetFragment();
       if (newChild.dom !== undefined) {
-        this.dom?.insertBefore(newChild.dom, this.dom!.childNodes![index]);
+        if (this.dom!.childNodes![index]) {
+          this.dom?.insertBefore(newChild.dom, this.dom!.childNodes![index]);
+        } else {
+          this.dom?.appendChild(newChild.dom);
+        }
       }
     } else {
       this.renderChild(newChild);
@@ -458,11 +529,11 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
 
   // 清理子节点
   clearChildNodes(): void {
-    // this.childNodes.forEach(child => child.destroy());
+    // this.childNodes.forEach(child => child.unmount());
     this.childNodes = [];
   }
 
-  replaceChildren(slot: string | TypeNode | (string | TypeNode)[] | undefined) {
+  replaceChildren(slot: ISlotConfig) {
     this.clearChildren();
     if (slot) {
       this.slotChild(slot);
@@ -509,14 +580,14 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
 
   setPropValue(key: keyof this, value: IJsonDataProp) {
     const propValue = this[key];
-    if (propValue instanceof XProxy) {
-      propValue.setValue(value);
-      if (key === 'modelValue') {
-        // debugger;
-        console.log('propValue is ', propValue);
-        (this as any)?.setModelValue(value);
-      }
-    }
+    // if (propValue instanceof XProxy) {
+    //   propValue.setValue(value);
+    //   if (key === 'modelValue') {
+    //     // debugger;
+    //     console.log('propValue is ', propValue);
+    //     (this as any)?.setModelValue(value);
+    //   }
+    // }
   }
 
   /**
@@ -527,7 +598,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   setup?(params?: ITypeConfig): void;
 
   recurseSetup() {
-    console.log('traverse . ');
+    // console.log('traverse . ');
     this.setup?.(this.params);
     this.childNodes.forEach((child) => {
       if (child instanceof TypeElement) {
@@ -551,33 +622,137 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     // console.warn('mount .');
     // 如果不清理，再次挂载时，子节点会再添加一次。 2024/11/07 22:34
     // this.clearChildren(); // 清理子节点，包括DOM  todo ??? 不能加 ？？？？没有加载子节点。 useParams
+    setCurrentInstance(this); // todo watch 优化 props.vIf的监听
     this.setup?.();
-    this.created?.();
-    this.lifeCycles.created?.forEach((cb) => cb());
-    // this.recurseSetup(); // 挂载时，递归执行setup
-    if (this.props.ifDom === false) {
-      console.log('this.props.ifDom === false');
-      // if (this.dom instanceof DocumentFragment) {
-      //   this.dom.childNodes.forEach(child => child.remove());
-      // } else {
-      //   this.dom.remove()
-      // }
-      // 只要不挂载就行了。
-      return this as unknown as T;
-    }
-    this.createDom?.();
-    if (this.props.isShow === false) {
-      this.style?.setObj({
-        display: 'none',
-      });
-    }
-    if (!this.dom) {
-      if (this.nodeName === 'fragment') {
-        this.dom = document.createDocumentFragment();
-      } else {
-        // this.dom = document.createElement(this.nodeName);
-        this.useTag(this.props?.tag);
+    if (Object.prototype.hasOwnProperty.call(this.props, 'vIf')) {
+      // console.log('this.props has vIf');
+      if (this.props.vIf !== undefined) {
+        if (this.props.vIf instanceof Signal || this.props.vIf instanceof Computed) {
+          // console.warn('this.props.vIf instanceof Signal || this.props.vIf instanceof Computed');
+          // 添加 监听
+          watch(this.props.vIf, (newValue, oldValue) => {
+            // console.warn('this.attr.class is ', this.attr?.get('class') + ',  watch vIf , newVal is ', newValue);
+            //   todo 优化 this.dom 分情况 HTMLElement | SVGElement | DocumentFragment
+            if (newValue) {
+              // this.update(); // 会死循环 todo
+              //   如果自身不是Fragment, upRealElement 就是自身。
+              const upEl = this.parent?.upRealElement;
+              if (upEl instanceof TypeElement) {
+                // upEl.appendChild(this);
+                if (this.dom instanceof Element) {
+                  upEl.dom?.appendChild(this.dom);
+                } else if (this.dom instanceof DocumentFragment) {
+                //   todo fragment
+                }
+              } else {
+                console.error('upEl is undefined . ');
+              }
+            } else {
+              if (this.dom instanceof DocumentFragment) {
+                //   todo
+              } else {
+                // 原为 true 时
+                oldValue && this.dom?.remove();
+              }
+              return;
+            }
+          });
+        }
       }
+    }
+
+    if (Object.prototype.hasOwnProperty.call(this.props, 'vShow')) { // 首先要判断是否有这个属性
+      if (this.props.vShow !== undefined) {
+        if (unref(this.props.vShow) === false) {
+          this.style?.addObj({
+            display: 'none',
+          });
+        }
+        if (this.props.vShow instanceof Signal || this.props.vShow instanceof Computed) {
+          watch(this.props.vShow, (newValue, oldValue) => {
+            // console.warn('watch vShow , newVal is ', newValue);
+            if (newValue === false) {
+              this.style?.setObj({
+                display: 'none',
+              });
+            } else {
+              this.style?.remove('display');
+            }
+          })
+        }
+
+      }
+    }
+
+    if (Object.prototype.hasOwnProperty.call(this.props, 'vModel')) {
+      if (this.props.vModel !== undefined) {
+        this.props.modelValue = this.props.vModel.get();
+        this.addEmits({
+          ['update:modelValue']: (newValue) => {
+            // console.warn('this.className is ', this.className + ', update:modelValue emit , newVal is ', newValue);
+            this.props.vModel?.set(newValue)
+          },
+          // change: (newValue) => {
+          //   console.warn('change emit , newValue is ', newValue);
+          //   // const isChecked  = evt.checked;
+          //     this.props.vModel?.set(newValue)
+          // },
+          // input: (newValue) => {
+          //   console.warn('input emit , evt is ', newValue);
+          //   this.props.vModel?.set(newValue);
+          // },
+        });
+        if (this.className === 'Input') { // todo
+          if (this.params.attrObj?.type === 'checkbox' || this.params.attrObj?.type === 'radio') {
+            this.addEvents({
+              change: (evt) => {
+                // console.warn('checkbox radio change emit , evt is ', evt);
+                // const isChecked  = evt.checked;
+                this.props.vModel?.set((evt?.target as HTMLInputElement).checked);
+              },
+            });
+          } else {
+            this.addEvents({
+              input: (evt) => {
+                // console.warn('text input event , evt is ', evt);
+                const value = (evt?.target as HTMLInputElement)?.value;
+                this.props.vModel?.set(value as any);
+              },
+            });
+          }
+        } else if (this.className === 'Textarea') {
+          this.addEvents({
+            input: (evt) => {
+              // console.warn('textarea event , evt is ', evt);
+              const value = (evt?.target as HTMLInputElement)?.value;
+              this.props.vModel?.set(value as any);
+            },
+          });
+        } else if (this.className === 'Select') {
+          this.addEvents({
+            change: (evt) => {
+              // console.warn('select change , evt is ', evt);
+              // const isChecked  = evt.checked;
+              this.props.vModel?.set((evt?.target as HTMLSelectElement).value as any);
+            },
+          });
+        }
+        // todo 监听 vModel,vIf,vShow
+        watch(this.props.vModel, (newValue: any)=> {
+          // console.warn('this.className is ' + this.className + ', watch vModel change value , newValue is ', newValue);
+          this.props.modelValue = newValue;
+        }, { immediate: true });
+      }
+    }
+
+    this.created?.();
+    this.lifeCycles[LifecycleHooks.CREATED]?.forEach((cb) => cb());
+    // this.recurseSetup(); // 挂载时，递归执行setup
+
+    this.createDom();
+    // 挂载时获取 dom，绑定到 ref 属性。
+    if (this.props.ref instanceof Signal) {
+      this.props.ref.set(this.dom);
     }
     let appEl: HTMLElement | SVGElement | ShadowRoot | DocumentFragment | null | undefined;
     if (
@@ -590,16 +765,16 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       appEl = document.querySelector<HTMLElement>(el);
     }
     // else {
-    //   if (this.nodeName === 'fragment') {
+    //   if (this.props.nodeName=== 'fragment') {
     //     appEl = this.parent?.elementParent?.dom;
     //   } else {
     //     appEl = this.dom;
     //   }
     // }
-    this.lifeCycles.beforeMount?.forEach((cb) => cb());
+    this.lifeCycles[LifecycleHooks.BEFORE_MOUNT]?.forEach((cb) => cb());
     this.beforeMount?.();
     // fragment会创建dom；this.dom不会为空
-    if (this.nodeName === 'fragment') { // todo DocumentFragment 挂载到其他元素上，子节点要根据数组重新赋值。
+    if (this.props.nodeName=== 'fragment') { // todo DocumentFragment 挂载到其他元素上，子节点要根据数组重新赋值。
       // todo 这段代码有问题 begin
       // this.resetFragment();
       // appEl = appEl || this.parent?.elementParent?.dom;
@@ -618,7 +793,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
         // appEl = appEl || this.parent?.elementParent?.dom;
         if (this.to) {
           child.mount(this.to);
-          console.log('this.to is ', this.to);
+          // console.log('this.to is ', this.to);
         } else if (appEl) {
           child.mount(appEl);
         } else {
@@ -628,7 +803,14 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     } else {
       this.render(); // setStyleObj, setAttrObj
       if (appEl && this.dom) {
-        appEl.appendChild(this.dom);
+        if (Object.hasOwnProperty.call(this.props, 'vIf')) {
+          if (unref(this.props.vIf)) {
+            //   todo
+            appEl.appendChild(this.dom);
+          }
+        } else {
+          appEl.appendChild(this.dom);
+        }
       }
       // 如CollapsibleBox中，contents重新赋值后，children会变，而childNodes是不变的。
       for (const child of this.children) {
@@ -637,16 +819,20 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       }
     }
     this.mounted?.();
-    this.lifeCycles.mounted?.forEach((cb) => cb());
+    this.lifeCycles[LifecycleHooks.MOUNTED]?.forEach((cb) => cb());
     // fragment 可以设置监听事件。但监听的dom对象不是fragment的dom。
     this.initEvents?.();
     this.listenEvents();
+
     return this as unknown as T;
   }
 
   // todo
   update(el?: string | HTMLElement | SVGElement | ShadowRoot | DocumentFragment): void  {
-    console.warn('update . ');
+    // console.warn('this.className is ' + this.className + ' update . ');
+    if (this.props.disabled) {
+      return;
+    }
     let appEl: HTMLElement | SVGElement | ShadowRoot | DocumentFragment | null | undefined;
     if (
       el instanceof HTMLElement ||
@@ -659,22 +845,36 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
     // this.clearChildren(); // 清理子节点，包括DOM  todo ??? 不能加。
     // this.recurseSetup(); // 挂载时，递归执行setup
-    this.lifeCycles.beforeUpdate?.forEach((cb) => cb());
+    this.lifeCycles[LifecycleHooks.BEFORE_UPDATE]?.forEach((cb) => cb());
     this.beforeUpdate?.();
-    if (this.props.ifDom === false) {
-      console.log('this.props.ifDom === false');
-      // todo transition
-      this.deleteDom?.();
-      // 只要不挂载就行了。
-      if (this.dom instanceof Element) {
-        this.dom?.remove();
-        this.dom = undefined;
+    this.createDom();
+    if (Object.hasOwnProperty.call(this.props, 'vIf')) {
+      if (unref(this.props.vIf) === false) {
+        // console.log('this.props.vIf === false');
+        // todo transition
+        // this.deleteDom?.();
+        // 只要不挂载就行了。
+        if (this.dom instanceof Element) {
+          this.dom.remove();
+          // this.dom = undefined; // dom 不会删除，只是不再挂载
+        }
+        // return;
+      } else if (unref(this.props.vIf) === true) {
+        // this.createDom?.();
+        // todo 应该时插入
+        //   如果自身不是Fragment, upRealElement 就是自身。
+        const upEl = this.parent?.upRealElement;
+        if (upEl instanceof TypeElement) {
+          // upEl.insertChildDom(this, this.index); // vIf 无法保证dom插入到原来的位置的。
+          upEl.appendChild(this);
+        } else {
+          appEl?.appendChild(this.dom!);
+          // console.error('upEl is undefined . ');
+        }
       }
-      return;
-    } else if (this.props.ifDom === true) {
-      this.createDom?.();
     }
-    if (this.nodeName === 'fragment') { // todo DocumentFragment 挂载到其他元素上，子节点要根据数组重新赋值。
+
+    if (this.props.nodeName=== 'fragment') { // todo DocumentFragment 挂载到其他元素上，子节点要根据数组重新赋值。
       for (const child of this.children) {
         // fragment 的dom是DocumentFragment。
         child.dom && this.dom?.appendChild(child.dom); // todo 如何处理？？？
@@ -682,7 +882,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
         // appEl = appEl || this.parent?.elementParent?.dom;
         if (this.to) {
           child.update(this.to);
-          console.log('this.to is ', this.to);
+          // console.log('this.to is ', this.to);
         } else if (appEl) {
           child.update(appEl);
         } else {
@@ -706,7 +906,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       }
     }
     this.updated?.();
-    this.lifeCycles.updated?.forEach((cb) => cb());
+    this.lifeCycles[LifecycleHooks.UPDATED]?.forEach((cb) => cb());
     // fragment 可以设置监听事件。但监听的dom对象不是fragment的dom。
     // todo 应该是有变化时才需要
     // this.initEvents?.();
@@ -721,7 +921,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    */
   createInstance(literal: ITypeElement): void {
     this.attr?.resetObj(literal.params?.attrObj);
-    this.style?.resetObj(literal.params?.styleObj);
+    this.style?.resetObj(literal.params?.styleObj as IStyle);
     const length = literal.childNodes.length;
     if (length < this.length) {
       for (let i = 0; i < this.length; i++) {
@@ -742,39 +942,8 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * 渲染前拦截，预处理
    */
   preRender(): void {
-    // todo nodejs下没有document，Parser可能会用到
-    if (!this.dom) {
-      if (this.nodeName === 'fragment') {
-        this.dom = document.createDocumentFragment();
-      } else {
-        this.dom = document.createElement(this.nodeName);
-      }
-    }
-    if (this.nodeName !== 'fragment') {
-      if (this.className) {
-        this.attr?.addClass(camelToDash(this.className));
-      }
-    }
-    // console.log('preRender . ');
-    if (this.className === 'TdInput') {
-      console.log('this node is TdInput . ');
-    }
-    for (const [key, value] of Object.entries(this)) {
-      // console.log(`${key}: ${value}`);
-      if (value instanceof Observer) {
-        // 绑定值
-        console.log('Observer key is ', key);
-      }
-      if (value instanceof XProxy) {
-        console.log('XProxy key is ', key);
-        console.log('node is ', this);
-        value.addDep(this, () =>
-          this.setPropValue(key as keyof this, value.value)
-        );
-        //   todo 挂载监听
-        // this.defineNodeProperty(this, key as keyof TypeNode, value);
-      }
-    }
+    // console.log('this.className is ' + this.className + ', preRender . ');
+    this.createDom();
   }
 
   /**
@@ -807,7 +976,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   render(): void {
     this.preRender();
     // this.clearChildrenDom(); // todo 清理子节点的DOM
-    if (this.nodeName !== 'fragment') {
+    if (this.props.nodeName!== 'fragment') {
       this.style?.renderObj();
       this.attr?.renderObj();
     } else {
@@ -816,75 +985,61 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     // console.log('this.dom is ', this.dom);
     this.rendered = true;
   }
-
-  override destroy(root?: TypeElement) {
+  // 原 destroy
+  override unmount(root?: TypeElement) {
     // TypeElement 需要单独清理事件
-    this.lifeCycles.beforeUnmount?.forEach((fn) => fn());
+    this.lifeCycles[LifecycleHooks.BEFORE_UNMOUNT]?.forEach((fn) => fn());
     this.clearEvents();
-    super.destroy(root);
-    this.lifeCycles.unmounted?.forEach((fn) => fn());
+    super.unmount(root);
+    this.lifeCycles[LifecycleHooks.UNMOUNTED]?.forEach((fn) => fn());
   }
 
   onCreated(fn: AnyFn): void {
-    if (!this.lifeCycles.created) {
-      this.lifeCycles.created = [];
+    if (!this.lifeCycles[LifecycleHooks.CREATED]) {
+      this.lifeCycles[LifecycleHooks.CREATED] = [];
     }
-    this.lifeCycles.created.push(fn);
+    this.lifeCycles[LifecycleHooks.CREATED].push(fn);
   }
 
   onMounted(fn: AnyFn): void {
-    if (!this.lifeCycles.mounted) {
-      this.lifeCycles.mounted = [];
+    if (!this.lifeCycles[LifecycleHooks.MOUNTED]) {
+      this.lifeCycles[LifecycleHooks.MOUNTED] = [];
     }
-    this.lifeCycles.mounted.push(fn);
+    this.lifeCycles[LifecycleHooks.MOUNTED].push(fn);
   }
 
   onBeforeUpdate(fn: AnyFn): void {
-    if (!this.lifeCycles.beforeUpdate) {
-      this.lifeCycles.beforeUpdate = [];
+    if (!this.lifeCycles[LifecycleHooks.BEFORE_UPDATE]) {
+      this.lifeCycles[LifecycleHooks.BEFORE_UPDATE] = [];
     }
-    this.lifeCycles.beforeUpdate.push(fn);
+    this.lifeCycles[LifecycleHooks.BEFORE_UPDATE].push(fn);
   }
 
   onUpdated(fn: AnyFn): void {
-    if (!this.lifeCycles.updated) {
-      this.lifeCycles.updated = [];
+    if (!this.lifeCycles[LifecycleHooks.UPDATED]) {
+      this.lifeCycles[LifecycleHooks.UPDATED] = [];
     }
-    this.lifeCycles.updated.push(fn);
+    this.lifeCycles[LifecycleHooks.UPDATED].push(fn);
   }
 
   onBeforeUnmount(fn: AnyFn): void {
-    if (!this.lifeCycles.beforeUnmount) {
-      this.lifeCycles.beforeUnmount = [];
+    if (!this.lifeCycles[LifecycleHooks.BEFORE_UNMOUNT]) {
+      this.lifeCycles[LifecycleHooks.BEFORE_UNMOUNT] = [];
     }
-    this.lifeCycles.beforeUnmount.push(fn);
+    this.lifeCycles[LifecycleHooks.BEFORE_UNMOUNT].push(fn);
   }
 
   onUnmounted(fn: AnyFn): void {
-    if (!this.lifeCycles.unmounted) {
-      this.lifeCycles.unmounted = [];
+    if (!this.lifeCycles[LifecycleHooks.UNMOUNTED]) {
+      this.lifeCycles[LifecycleHooks.UNMOUNTED] = [];
     }
-    this.lifeCycles.unmounted.push(fn);
+    this.lifeCycles[LifecycleHooks.UNMOUNTED].push(fn);
   }
 
-  // todo 与 transition 中对应的方法
-  createDom?(
-    // content: string, enterClass: string = 'enter', enterActiveClass: string = 'enter-active', leaveClass: string = 'leave', leaveActiveClass: string = 'leave-active'
-  ): void;
-  // {
-  //   if (!this.dom) {
-  //     this.dom = document.createElement(this.nodeName);
-  //   }
-  //   if (this.dom instanceof HTMLElement) {
-  //     // this.dom.textContent = content;
-  //     // this.dom!.className = `${enterClass} ${enterActiveClass}`;
-  //
-  //     // 确保过渡效果生效
-  //     this.dom.offsetHeight; // 触发重绘
-  //     // this.dom.classList.remove(enterClass);
-  //   }
-  // }
-  //
+  setDom(dom: HTMLElement) {
+    this.dom = dom;
+  }
+
   // showDom(enterClass: string = 'enter', enterActiveClass: string = 'enter-active'): void {
   //   if (this.dom instanceof HTMLElement) {
   //     this.dom.classList.add(enterClass);

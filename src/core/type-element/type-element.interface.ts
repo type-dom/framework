@@ -1,13 +1,15 @@
 /**
  * 虚拟dom的数据结构字面量接口。
  */
+import { Computed, MaybeRef, Signal } from '@type-dom/signals';
 import type { ITypeConfig, ITypeNode } from '../type-node/type-node.interface';
+import { IPrimitive } from '../../interface';
 
 export interface ITypeAttribute {
-  id?: string;
-  class?: string;
+  id?: string | Signal<string | undefined>;
+  class?: string | string[] | Computed<string[]>;
   name?: string;
-  type?: string;
+  type?: string | Computed;
   fill?: string; // rgb(0,0,255) blue
   strokeWidth?: number | string;
   stroke?: string; // rgb(0,0,0) pink
@@ -19,7 +21,7 @@ export interface ITypeAttribute {
   height?: number | string; // px
   d?: string;
 
-  [key: string]: string | number | boolean | undefined;
+  [key: string]: IPrimitive | object | Signal<IPrimitive> | Computed<IPrimitive>;
 }
 
 /**
@@ -27,8 +29,7 @@ export interface ITypeAttribute {
  */
 export interface ITypeElement extends ITypeNode {
   className: string; // todo enum ??
-  nodeName: string;
-  nodeValue?: undefined;
+  // nodeValue?: undefined;
   params: ITypeConfig;
   childNodes: Array<ITypeNode>; // contents todo 也是可以为空的啊 ？？？
 }
