@@ -1,6 +1,6 @@
+import { Computed, effect, Signal } from '@type-dom/signals';
+import { Dayjs } from 'dayjs';
 import { isMustache } from '@type-dom/utils';
-import { XProxy } from '../../observer';
-import { IJsonData } from '../../interface';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { mustacheNode } from '../util';
@@ -49,25 +49,47 @@ export class TextNode extends TypeNode implements ITextNode {
    * @param parent 父级节点
    */
   constructor(
-    text: boolean | string | number | XProxy<IJsonData> = '\u200c',
+    text: boolean | string | number | Dayjs | Signal | Computed = '\u200c',
     parent?: TypeElement
   ) {
     super();
     this.rendered = false;
     this.className = 'TextNode';
-    this.params = { text };
-    this.props.text = text;
+    // this.params = { nodeValue: text };
+    // this.props.text = text;
     this.nodeName = '#text';
-    if (text instanceof XProxy) {
-      this.nodeValue = text.value;
-      text.addDep(this, (newValue: string) => {
-        // console.error('TextNode addDep newValue is ', newValue);
-        this.setText(newValue);
-      });
+    // if (text instanceof XProxy) {
+    //   this.nodeValue = text.value;
+    //   text.addDep((newValue: string) => {
+    //     // console.error('TextNode addDep newValue is ', newValue);
+    //     this.setText(newValue);
+    //   });
+    // } else
+    if (text instanceof Signal) {
+      // console.warn('TextNode useSignal text is ', text);
+      this.nodeValue = text.get();
+      effect(() => {
+        const newVal = text.get();
+        if (newVal !== this.nodeValue) {
+          // console.warn('TextNode useSignal text is ', text);
+          this.nodeValue = text.get();
+          this.setText(this.nodeValue);
+        }
+      })
+    } else if (text instanceof Computed) {
+      this.nodeValue = text.get();
+      effect(() => {
+        // console.warn('TextNode useComputed text is ', text);
+        const newVal = text.get();
+        if (newVal !== this.nodeValue) {
+          this.nodeValue = text.get();
+          this.setText(this.nodeValue);
+        }
+      })
     } else {
       this.nodeValue = String(text);
       if (isMustache(String(text))) {
-        //   todo 订阅 dataItem 变化
+        //   todo 订阅 字符串 + 变量
         // if (this.itemData) {
         //   this.itemData.data$.subscribe((data: IXData) => {
         //     this.mount();
@@ -113,13 +135,21 @@ export class TextNode extends TypeNode implements ITextNode {
    *
    * @param text 文本内容
    */
-  setText(text: boolean | string | number | XProxy<IJsonData>): void {
-    if (text instanceof XProxy) {
-      this.nodeValue = text.value;
+  setText(text: boolean | string | number | Signal | Computed): void {
+    if (text instanceof Signal || text instanceof Computed) {
+      this.nodeValue = String(text.get());
+      effect(() => {
+        const newValue = String(text.get());
+        if (newValue !== this.nodeValue) {
+          // console.log('newValue is ', newValue);
+          this.nodeValue = newValue;
+          this.mount();
+        }
+      })
     } else {
       this.nodeValue = String(text);
+      this.mount();
     }
-    this.mount();
   }
 
   /**
@@ -244,9 +274,9 @@ export class TextNode extends TypeNode implements ITextNode {
     // 渲染出来的值，在 模板语法中需要转换的。
     let text = this.nodeValue;
     if (isMustache(this.nodeValue)) {
-      if (this.nodeValue === '基础用法 {{ title }}') {
-        console.log('this is ', this);
-      }
+      // if (this.nodeValue === '基础用法 {{ title }}') {
+      //   console.log('this is ', this);
+      // }
       // todo 监听 itemData change
       // if (this.itemData) {
       //   text = mustache(this.nodeValue, this.itemData);

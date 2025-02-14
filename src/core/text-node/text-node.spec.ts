@@ -1,11 +1,11 @@
-import { XProxy } from '../../observer'; // 路径根据实际情况调整
-import { IJsonData } from '../../interface';
+
 import { Span } from '../../components/html-element/span/span.class';
 import { TextNode } from './text-node.class';
+import { signal, Signal } from '@type-dom/signals';
 
 describe('TextNode', () => {
   let textNode: TextNode;
-  let proxy: XProxy<IJsonData>;
+  const signal1 = signal('hello . ');
   let element: Span;
 
   beforeEach(() => {
@@ -27,8 +27,9 @@ describe('TextNode', () => {
   });
 
   it('should correctly set nodeValue with proxy', () => {
-    const proxyTextNode = new TextNode(proxy);
-    expect(proxyTextNode.nodeValue).toBe('testValue');
+    signal1.set('testValue');
+    const signalTextNode = new TextNode(signal1);
+    expect(signalTextNode.nodeValue).toBe('testValue');
   });
 
   it('should correctly append text', () => {
