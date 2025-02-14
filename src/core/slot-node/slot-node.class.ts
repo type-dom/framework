@@ -1,15 +1,16 @@
+import { Computed, Signal } from '@type-dom/signals';
+import { Parser } from '../../parser';
 import { TypeNode } from '../type-node/type-node.abstract';
-import { ITypeConfig } from '../type-node/type-node.interface';
+import { ISlotConfig, ITypeConfig } from '../type-node/type-node.interface';
 import { TextNode } from '../text-node/text-node.class';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { ISlotNodeConfig } from './slot-node.interface';
-import { Parser } from '../../parser';
 
 export class SlotNode extends TypeNode {
   className: 'SlotNode';
   nodeName: 'fragment';
   nodeValue: undefined;
-  rendered: boolean
+  rendered: boolean;
   dom: DocumentFragment;
   style: undefined;
   attr: undefined;
@@ -18,7 +19,10 @@ export class SlotNode extends TypeNode {
   override props: ISlotNodeConfig;
   override childNodes: TypeNode[];
 
-  constructor(name = 'default', slot?: string | TypeNode | (string | TypeNode)[]) {
+  constructor(
+    name = 'default',
+    slot?: ISlotConfig
+  ) {
     super();
     this.className = 'SlotNode';
     this.nodeName = 'fragment';
@@ -26,17 +30,17 @@ export class SlotNode extends TypeNode {
     this.rendered = false;
     this.params = {
       name,
-      slot
+      slot,
     };
     this.name = name;
     this.childNodes = [];
     if (slot) {
       // this.resetSlot(slot);
-      this.addSlot(slot);
+      this.slotChild(slot);
     }
     this.props = this.useParams({
       name,
-      slot
+      slot,
     });
   }
 
@@ -52,43 +56,25 @@ export class SlotNode extends TypeNode {
     if (params.parent) {
       this.parent = params.parent;
     }
-    if (params?.ref !== undefined) {
-      params.ref.value = this;
-    }
-    if (params?.text !== undefined) {
-      // 添加文本
-      // 先判断子元素是否有TextNode，有的话就不再添加
-      // 要this.textNode 而不是其它的 TextNode;
-      if (this.textNode) {
-        this.textNode.setText(params.text);
-        if (this.findChildIndex(this.textNode) === -1) {
-          this.addChild(this.textNode);
-        }
-      } else {
-        this.textNode = new TextNode(params.text);
-        this.addChild(this.textNode);
-      }
-      this.textNode.setParent(this);
-    }
     if (params?.html) {
       const parser = new Parser();
       const xElement = parser.parseFromString(params.html);
       this.addChild(xElement);
     }
     // 组件库中的组件 是没有 params.childNodes 的；
-    if (params?.childNodes) {
-      // 父元素为当前元素，子元素为params.childNodes
-      params.childNodes.forEach((item) => {
-        // item.parent = this; // addChild 会设置parent。
-        this.addChild(item);
-      });
-    }
+    // if (params?.childNodes) {
+    //   // 父元素为当前元素，子元素为params.childNodes
+    //   params.childNodes.forEach((item) => {
+    //     // item.parent = this; // addChild 会设置parent。
+    //     this.addChild(item);
+    //   });
+    // }
     this.assignProps(params);
     return this.props as T;
   }
 
   // 往插槽中添加子节点 ， ToDo addSlot appendSlot insertSlot pushSlot
-  addSlot(slot?: string | TypeNode | (string | TypeNode)[]) {
+  slotChild(slot?: ISlotConfig) {
     if (!slot) {
       return;
     }
@@ -97,9 +83,9 @@ export class SlotNode extends TypeNode {
     if (slot instanceof TypeNode) {
       slot.setParent(this);
       this.childNodes.push(slot);
-    } else if (typeof slot === 'string') {
+    } else if (typeof slot === 'string' || slot instanceof Signal || slot instanceof Computed) {
       this.childNodes.push(new TextNode(slot));
-    } else {
+    } else if (slot instanceof Array) {
       slot.forEach((item) => {
         if (item instanceof TypeNode) {
           this.childNodes.push(item);
@@ -133,8 +119,9 @@ export class SlotNode extends TypeNode {
 
   // todo 要避免修改 slot 的parent，
   //    避免和直接使用 slotChild 冲突
-  resetSlot(slot?: string | TypeNode | (string | TypeNode)[]) {
-    // this.clearChildren(); // 要清空插槽
+  //    mount时，没有问题，但是 update时，挂载的真实Element如何清空是个问题
+  resetSlot(slot?: ISlotConfig) {
+    this.clearChildren(); // 要清空插槽
     // this.slotChild(slot);
     if (typeof slot === 'string') {
       this.childNodes = [new TextNode(slot)];
@@ -167,7 +154,13 @@ export class SlotNode extends TypeNode {
     // this.clearChildren(); // 清理子节点，包括DOM  todo ??? 不能加。
     this.created?.();
 
-    let appEl: HTMLElement | SVGElement | ShadowRoot | DocumentFragment | null | undefined;
+    let appEl:
+      | HTMLElement
+      | SVGElement
+      | ShadowRoot
+      | DocumentFragment
+      | null
+      | undefined;
     if (
       el instanceof HTMLElement ||
       el instanceof SVGElement ||
@@ -179,7 +172,7 @@ export class SlotNode extends TypeNode {
     }
     this.beforeMount?.();
     // fragment会创建dom；this.dom不会为空
-      // todo end
+    // todo end
     for (const child of this.children) {
       // fragment 的dom是DocumentFragment。
       child.dom && this.dom.appendChild(child.dom); // todo 如何处理？？？
@@ -197,11 +190,84 @@ export class SlotNode extends TypeNode {
 
   // todo 钩子函数
   render(): void {
-
     this.rendered = true;
   }
 
-  update() {
-    this.render();
+  /**
+   * 清理子节点
+   * 包括字节点和子节点的DOM
+   */
+  clearChildren(): void {
+    this.clearChildrenDom();
+    this.clearChildNodes();
+  }
+
+  /**
+   * 清除dom所有子节点
+   * render时使用
+   * todo 如果是DocumentFragment,渲染后其dom子节点会被移动到挂载的节点上。
+   *    本身的子节点就空了。
+   */
+  clearChildrenDom(): void {
+    this.childNodes.forEach((child) => {
+      child.removeDom();
+    });
+  }
+
+  // 清理子节点
+  clearChildNodes(): void {
+    // this.childNodes.forEach(child => child.unmount());
+    this.childNodes = [];
+  }
+
+  update(
+    el?: string | HTMLElement | SVGElement | ShadowRoot | DocumentFragment
+  ) {
+    console.warn('update . ');
+    if (this.props.disabled) {
+      return;
+    }
+    let appEl:
+      | HTMLElement
+      | SVGElement
+      | ShadowRoot
+      | DocumentFragment
+      | null
+      | undefined;
+    if (
+      el instanceof HTMLElement ||
+      el instanceof SVGElement ||
+      el instanceof ShadowRoot
+    ) {
+      appEl = el;
+    } else if (typeof el === 'string') {
+      appEl = document.querySelector<HTMLElement>(el);
+    }
+    this.clearChildrenDom();
+    // this.clearChildren(); // 清理子节点，包括DOM  todo ??? 不能加。
+    // this.recurseSetup(); // 挂载时，递归执行setup
+    // this.lifeCycles.beforeUpdate?.forEach((cb) => cb());
+    this.beforeUpdate?.();
+    // todo DocumentFragment 挂载到其他元素上，子节点要根据数组重新赋值。
+    for (const child of this.children) {
+      // fragment 的dom是DocumentFragment。
+      // child.dom && this.dom?.appendChild(child.dom); // todo 如何处理？？？
+      // todo child 是 Transition时，这里的逻辑有问题
+      // appEl = appEl || this.parent?.elementParent?.dom;
+      if (this.to) {
+        child.update(this.to);
+        // console.log('this.to is ', this.to);
+      } else if (appEl) {
+        child.update(appEl);
+      } else {
+        // throw Error('Can not find el . ');
+        if (child.className === 'Teleport') {
+          child.update();
+        } else {
+          child.update(this.elementParent?.dom);
+        }
+      }
+    }
+    this.updated?.();
   }
 }

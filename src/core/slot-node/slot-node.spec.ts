@@ -25,7 +25,7 @@ describe('SlotNode', () => {
     const name = 'testSlot';
     const slotNode = new SlotNode(name);
     const childNode = new Div();
-    slotNode.addSlot(childNode);
+    slotNode.slotChild(childNode);
     expect(slotNode.props.slot).toBe(childNode);
     expect(slotNode.children).toContain(childNode);
   });
@@ -35,7 +35,7 @@ describe('SlotNode', () => {
     const slotNode = new SlotNode(name);
     const text = 'testString';
     const div = new Div();
-    slotNode.addSlot([text, div]);
+    slotNode.slotChild([text, div]);
     expect(slotNode.params.slot).toEqual([text, div]);
     expect(slotNode.children).toHaveLength(2);
     // expect(slotNode.children).toContainInstanceOf(TextNode);
@@ -46,7 +46,7 @@ describe('SlotNode', () => {
     const name = 'testSlot';
     const slotNode = new SlotNode(name);
     const firstSlot = 'first';
-    slotNode.addSlot(firstSlot);
+    slotNode.slotChild(firstSlot);
     const secondSlot = 'second';
     slotNode.resetSlot(secondSlot);
     expect(slotNode.params.slot).toBe(secondSlot);
