@@ -1,13 +1,11 @@
 import { IStyle, Property } from '@type-dom/css-type';
 import { addUnit, camelToDash, colorFormat, Ratio } from '@type-dom/utils';
+import { Computed, effect, Signal } from '@type-dom/signals';
 import { XElement } from '../../components/x-element/x-element.class';
 import { TypeHtml } from '../type-html/type-html.abstract';
 import { TypeSvg } from '../type-svg/type-svg.abstract';
 
 export class Style {
-  // private props: ITypeConfig;
-  // private dom: HTMLElement | SVGElement | undefined;
-  // private nodeName: 'fragment' | string;
   private el: TypeHtml | TypeSvg | XElement;
   private obj: IStyle;
 
@@ -58,12 +56,26 @@ export class Style {
    *    fluentUI中使用了 mergeStyles 方法；
    * @param styleObj
    */
-  addObj(styleObj?: IStyle): void {
-    if (!styleObj) return;
-    for (const key in styleObj) {
+  addObj(styleObj?: IStyle | Signal<IStyle | undefined> | Computed): void {
+    if (!styleObj) {
+      return;
+    }
+    let rawObj: IStyle;
+    if (styleObj instanceof Signal || styleObj instanceof Computed) {
+      rawObj = styleObj.get();
+      effect(() => {
+        const newStyleObj =styleObj.get();
+        if (newStyleObj !== rawObj) {
+          this.addObj(newStyleObj);
+        }
+      })
+    } else {
+      rawObj = styleObj;
+    }
+    for (const key in rawObj) {
       if (Object.hasOwnProperty.call(styleObj, key)) {
         // todo 如何优化
-        const value = styleObj[key as keyof IStyle];
+        const value = rawObj[key as keyof IStyle];
         this.add(key as keyof IStyle, value);
       }
     }
@@ -93,6 +105,7 @@ export class Style {
    * @param key 样式属性的名称，必须是IStyle接口中定义的属性名。
    * @param value 样式属性的值，可以是字符串、数字或布尔值。
    * @throws 如果this.el.dom为null，则抛出错误，指示元素不存在。
+   * todo value 是 Signal或Computed时，需要监听变化；
    */
   private render(key: keyof IStyle, value: string | number): void {
     // 当样式属性为width或height时，确保值以px为单位
@@ -105,9 +118,9 @@ export class Style {
       value = addUnit(value);
     }
     // 检查dom元素是否存在，如果不存在则抛出错误
-    if (!this.el.dom) {
-      this.el.dom = document.createElement(this.el.nodeName);
-    }
+    // if (!this.el.dom) {
+    //   this.el.dom = document.createElement(this.el.props.nodeName || 'div');
+    // }
     const dom = this.el.dom;
     if (dom) {
       // 拦截已经配置的相同的样式值的样式设置
@@ -168,11 +181,26 @@ export class Style {
    * 没有传的样式，不变；
    * @param styleObj
    */
-  setObj(styleObj?: IStyle): void {
-    for (const key in styleObj) {
+  setObj(styleObj?: IStyle | Signal<IStyle> | Computed<IStyle>): void {
+    if (!styleObj) {
+      return;
+    }
+    let rawObj: IStyle;
+    if (styleObj instanceof Signal || styleObj instanceof Computed) {
+      rawObj = styleObj.get();
+      effect(() => {
+        const newStyleObj =styleObj.get();
+        if (newStyleObj !== rawObj) {
+          this.setObj(newStyleObj);
+        }
+      })
+    } else {
+      rawObj = styleObj;
+    }
+    for (const key in rawObj) {
       if (Object.hasOwnProperty.call(styleObj, key)) {
         // todo 如何优化
-        const value = styleObj?.[key as keyof IStyle];
+        const value = rawObj[key as keyof IStyle];
         this.set(key as keyof IStyle, value);
       }
     }
@@ -227,7 +255,7 @@ export class Style {
    * 清除原有样式，全部替换为新的样式
    * @param styleObj
    */
-  resetObj(styleObj?: IStyle): void {
+  resetObj(styleObj?: IStyle | Signal<IStyle> | Computed<IStyle>): void {
     this.el.dom?.removeAttribute('style'); // 需要单独清理一下DOM的style
     this.clearObj();
     if (styleObj === undefined) {
