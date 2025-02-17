@@ -43,14 +43,14 @@ export class Defer<T = unknown> {
 
   // 模拟 then 方法
   then<TResult1 = T, TResult2 = never>(
-    onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null,
-    onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null
+    onFulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null,
+    onRejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null
   ): Defer<TResult1 | TResult2> {
     const deferred = new Defer<TResult1 | TResult2>();
     this.promise.then(
       (value) => {
         try {
-          const result = onfulfilled ? onfulfilled(value) : value;
+          const result = onFulfilled ? onFulfilled(value) : value;
           deferred.resolve(result as TResult1 | TResult2);
         } catch (error) {
           deferred.reject(error);
@@ -58,7 +58,7 @@ export class Defer<T = unknown> {
       },
       (reason) => {
         try {
-          const result = onrejected ? onrejected(reason) : reason;
+          const result = onRejected ? onRejected(reason) : reason;
           deferred.reject(result as TResult2);
         } catch (error) {
           deferred.reject(error);
