@@ -23,14 +23,14 @@ export interface IEmits {
  * @param T - 继承自Event的事件类型。默认为 Event。
  * @returns {void} - 该函数没有返回值。
  */
-export type IEvent<T extends Event = Event, K extends TypeElement = TypeElement> = (evt?: T, element?: K) => void;
+export type IEvent<E extends Event = Event, T extends TypeElement = TypeElement> = (evt?: E, element?: T) => void;
 
 /**
  * IEvents 接口定义了事件处理的行为。这里定义的时dom元素的事件处理函数。
  *
  * 对应 GlobalEventHandlersEventMap
  */
-export interface IEvents {
+export interface IEvents<T  extends TypeElement = TypeElement> {
   abort: IEvent<UIEvent>;
   beforeinput: IEvent<InputEvent>;
   blur: IEvent<FocusEvent>;
@@ -38,7 +38,7 @@ export interface IEvents {
   canplay: IEvent;
   canplaythrough: IEvent;
   change: IEvent; // newValue = evt.target.value
-  click: IEvent<MouseEvent>;
+  click: IEvent<MouseEvent, T>;
   close: IEvent;
   compositionstart: IEvent<CompositionEvent>;
   compositionupdate: IEvent<CompositionEvent>;

@@ -2,6 +2,7 @@ import { AnyFn } from '../../interface';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { Defer } from '../defer/defer';
 import { IEmits, IEvent, IEvents } from './event-emitter.interface';
+import { ITypeConfig } from '../type-node/type-node.interface';
 
 export abstract class EventEmitter extends Defer {
   /**
@@ -11,7 +12,11 @@ export abstract class EventEmitter extends Defer {
    *
    */
   observers: Record<string, AnyFn[]>;
-  abstract nodeName: '#text' | 'fragment' | string;
+  /**
+   * 属性项
+   */
+  abstract props: ITypeConfig;
+  // abstract nodeName: '#text' | 'fragment' | string;
   abstract dom?: HTMLElement | SVGElement | DocumentFragment | Text | undefined;
 
   constructor() {
@@ -76,7 +81,7 @@ export abstract class EventEmitter extends Defer {
    * @param listener 事件监听器，一个函数
    * @returns 返回this，允许链式调用
    */
-  once(eventName: string, listener: AnyFn) {
+  once = (eventName: string, listener: AnyFn)=> {
     // 创建一个包装后的监听器，触发后会自动移除自身
     const wrappedListener = (...args: any[]) => {
       this.off(eventName, wrappedListener);
@@ -102,7 +107,7 @@ export abstract class EventEmitter extends Defer {
     if (!listener) {
       if (this.dom) { // 不是 fragment组件
         for (const observer of this.observers[event]) {
-          console.log(`observer : ${observer.name}`);
+          // console.log(`observer : ${observer.name}`);
           this.dom && this.dom.removeEventListener(event as keyof GlobalEventHandlersEventMap, observer);
         }
       }
@@ -125,20 +130,33 @@ export abstract class EventEmitter extends Defer {
    * @param event
    * @param args 传递给监听器的参数
    */
-  emit(event: string, ...args: any[]): void {
+  emit = (event: string, ...args: any[]) => {
     if (this.observers[event]) {
-      const cloned = this.observers[event];
-      cloned.forEach((observer) => {
-        observer(...args);
-      });
+      const listeners = this.observers[event]; // 监听器数组
+      // todo INPUT, CHANGE
+      // if (event === 'update:modelValue' || event === 'change' || event === 'input') {
+      //   console.warn('emit event is ', event);
+        for (const listener of listeners) {
+          // todo 要保证验证监听器在第一个。
+          const result = listener(...args);
+          if ( result === false) { // 验证器验证失败
+          //   todo 是打断监听还是清除监听器
+            break;
+          }
+        }
+      // } else {
+      //   listeners.forEach((listener) => {
+      //     listener(...args);
+      //   })
+      // }
     }
 
-    if (this.observers['*']) {
-      const cloned = this.observers['*'];
-      cloned.forEach((observer, numTimesAdded) => {
-          observer(...args);
-      });
-    }
+    // if (this.observers['*']) {
+    //   const listeners = this.observers['*'];
+    //   listeners.forEach((listener, numTimesAdded) => {
+    //     listener(...args);
+    //   });
+    // }
   }
 
   /**
@@ -157,8 +175,8 @@ export abstract class EventEmitter extends Defer {
    * 添加事件集合
    */
   addEvents(events?: Partial<IEvents>) {
-    if (this.nodeName === 'fragment' || !events) {
-      console.log('This is fragment or events is undefined . ');
+    if (this.props.nodeName === 'fragment' || !events) {
+      // console.log('This is fragment or events is undefined . ');
       return;
     }
     for (const key in events) {
@@ -180,8 +198,8 @@ export abstract class EventEmitter extends Defer {
 
   // 设置一些事件监听器，添加到dom上
   setEvents(events: Partial<IEvents>) {
-    if (this.nodeName === 'fragment') {
-      console.log('fragment cannot add events . ');
+    if (this.props.nodeName === 'fragment') {
+      // console.log('fragment cannot add events . ');
       return;
     }
     for (const key in events) {
