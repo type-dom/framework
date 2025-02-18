@@ -1,5 +1,4 @@
 import { Parser } from '../../parser/parser.class';
-import { reactive } from '../../reactivity';
 import { TypeElement } from '../../core/type-element/type-element.abstract';
 import type { IAttr } from '../../core/type-node/type-node.interface';
 import { TextNode } from '../../core/text-node/text-node.class';
@@ -17,7 +16,6 @@ import { IXElement, IXElementConfig } from './x-element.interface';
  */
 export class XElement extends TypeElement implements IXElement {
   className: 'XElement';
-  override nodeName: string; // 不能是 fragment
   // parent?: XElement; // 在解析时，onEndElement时，重新赋值。
   // override childNodes: (XElement | TextNode)[];
   style: Style;
@@ -27,7 +25,7 @@ export class XElement extends TypeElement implements IXElement {
   // override methods?: Record<string, any>;
   // config?: Record<string, any>; // config不会转为json
   override attributes: IAttr[]; // 去掉了?号；
-  override dom: HTMLElement | SVGElement;
+  override dom?: HTMLElement | SVGElement;
 
   /**
    * 在 Parser 中使用 XElement 时， 限制了不能直接使用 parent 参数。
@@ -37,13 +35,15 @@ export class XElement extends TypeElement implements IXElement {
   constructor(params: IXElementConfig = {}) {
     super();
     this.className = 'XElement';
-    this.nodeName = params?.tag || params.nodeName || 'div';
-    this.dom = document.createElement(this.nodeName);
+    this.props = this.useParams({
+      nodeName: params?.tag || params.nodeName || 'div'
+    });
+
     // this.useTag(params?.tag || params.nodeName)
-    console.log('x-element . ');
-    if (this.nodeName === 'fragment') {
-      console.error('x-element can not use fragment . ');
-    }
+    // console.log('x-element . ');
+    // if (this.props.nodeName === 'fragment') {
+    //   console.error('x-element can not use fragment . ');
+    // }
     this.attributes = params?.attributes || [];
     this.style = new Style(this);
     this.attr = new Attribute(this);
@@ -56,7 +56,7 @@ export class XElement extends TypeElement implements IXElement {
       //   item.data = reactive(params.data);
       // }
       if (params.methods) {
-        console.log('params.methods is ', params.methods);
+        // console.log('params.methods is ', params.methods);
         item.methods = params.methods;
       }
       // this.parent?.addChild(item); // this.parent is undefined
@@ -82,16 +82,13 @@ export class XElement extends TypeElement implements IXElement {
   }
 
   override setup(): void {
-    console.log('XElement setup . ');
+    // console.log('XElement setup . ');
     // todo nodejs下没有document，Parser可能会用到
-    // if (!this.dom) {
-    //   this.dom = document.createElement(this.nodeName);
-    // }
     // 加载自定义属性
     for (const attr of this.attributes) {
       if (attr.name.startsWith(':')) {
         // 绑定值
-        console.log('attr.name is ', attr.name);
+        // console.log('attr.name is ', attr.name);
         const attrName = attr.name.substring(1);
         // console.log('this.itemData is ', this.itemData);
         // if (this.itemData && attr.value !== undefined) {
@@ -119,32 +116,32 @@ export class XElement extends TypeElement implements IXElement {
   }
 
   //   绑定事件
-  override mounted() {
-    for (const attr of this.attributes) {
-      if (attr.name.startsWith('@')) {
-        console.log('attr.name is ', attr.name);
-        console.log('attr.value is ', attr.value);
-        // const attrName = attr.name.substring(1);
-        // console.log('this.itemMethods is ', this.itemMethods);
-        // if (this.itemMethods !== undefined && attr.value !== undefined) {
-        //   if (this.itemMethods[attr.value]) {
-        //     if (this.dom === undefined) {
-        //       throw Error('this.dom is undefined . ');
-        //     } else {
-        //       this.addEvents({
-        //         [attrName]: (evt: Event) => {
-        //           if (
-        //             this.itemMethods !== undefined &&
-        //             this.itemMethods[attr.value] !== undefined
-        //           ) {
-        //             this.itemMethods[attr.value](evt, this);
-        //           }
-        //         }
-        //       });
-        //     }
-        //   }
-        // }
-      }
-    }
-  }
+  // override mounted() {
+  //   for (const attr of this.attributes) {
+  //     if (attr.name.startsWith('@')) {
+  //       console.log('attr.name is ', attr.name);
+  //       console.log('attr.value is ', attr.value);
+  //       // const attrName = attr.name.substring(1);
+  //       // console.log('this.itemMethods is ', this.itemMethods);
+  //       // if (this.itemMethods !== undefined && attr.value !== undefined) {
+  //       //   if (this.itemMethods[attr.value]) {
+  //       //     if (this.dom === undefined) {
+  //       //       throw Error('this.dom is undefined . ');
+  //       //     } else {
+  //       //       this.addEvents({
+  //       //         [attrName]: (evt: Event) => {
+  //       //           if (
+  //       //             this.itemMethods !== undefined &&
+  //       //             this.itemMethods[attr.value] !== undefined
+  //       //           ) {
+  //       //             this.itemMethods[attr.value](evt, this);
+  //       //           }
+  //       //         }
+  //       //       });
+  //       //     }
+  //       //   }
+  //       // }
+  //     }
+  //   }
+  // }
 }

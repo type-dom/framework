@@ -5,7 +5,6 @@
  * @extends ITypeElement 继承自 ITypeElement 接口，获取其类型元素的基本属性和方法。
  */
 import type { ITypeElement } from '../../core/type-element/type-element.interface';
-import type { ITextNode } from '../../core/text-node/text-node.interface';
 import { IAttr, ITypeConfig } from '../../core/type-node/type-node.interface';
 
 export interface IXElement extends ITypeElement {
