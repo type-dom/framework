@@ -113,12 +113,12 @@ export function resolveTransitionProps(
   };
 
   const makeEnterHook = (isAppear: boolean) => {
-    return (el: TypeHtml, done: () => void) => {
+    return (element: TypeHtml, done: () => void) => {
       const hook = isAppear ? onAppear : onEnter;
-      const resolve = () => finishEnter(el, isAppear, done);
-      callHook(hook, [el, resolve]);
+      const resolve = () => finishEnter(element, isAppear, done);
+      callHook(hook, [element, resolve]);
       nextFrame(() => {
-        removeTransitionClass(el, isAppear ? appearFromClass : enterFromClass);
+        removeTransitionClass(element, isAppear ? appearFromClass : enterFromClass);
         // if (__COMPAT__ && legacyClassEnabled) {
         //   const legacyClass = isAppear
         //     ? legacyAppearFromClass
@@ -127,9 +127,9 @@ export function resolveTransitionProps(
         //     removeTransitionClass(el, legacyClass)
         //   }
         // }
-        addTransitionClass(el, isAppear ? appearToClass : enterToClass);
+        addTransitionClass(element, isAppear ? appearToClass : enterToClass);
         if (!hasExplicitCallback(hook)) {
-          whenTransitionEnds(el, type, enterDuration, resolve);
+          whenTransitionEnds(element, type, enterDuration, resolve);
         }
       });
     };
@@ -141,7 +141,7 @@ export function resolveTransitionProps(
       if (!el) {
         throw Error('element.dom is undefined . ');
       }
-      callHook(onBeforeEnter, [el]);
+      callHook(onBeforeEnter, [element]);
       addTransitionClass(element, enterFromClass);
       // if (__COMPAT__ && legacyClassEnabled && legacyEnterFromClass) {
       //   addTransitionClass(el, legacyEnterFromClass)
@@ -153,7 +153,7 @@ export function resolveTransitionProps(
       if (!el) {
         throw Error('element.dom is undefined . ');
       }
-      callHook(onBeforeAppear, [el]);
+      callHook(onBeforeAppear, [element]);
       addTransitionClass(element, appearFromClass);
       // if (__COMPAT__ && legacyClassEnabled && legacyAppearFromClass) {
       //   addTransitionClass(el, legacyAppearFromClass)
@@ -271,7 +271,7 @@ export function whenTransitionEnds(
   const endEvent = type + 'end'; // transitionend
   let ended = 0;
   const end = () => {
-    el.dom.removeEventListener(endEvent as keyof ElementEventMap, onEnd);
+    el.dom?.removeEventListener(endEvent as keyof ElementEventMap, onEnd);
     resolveIfNotStale();
   };
   const onEnd = (e: Event) => {
@@ -284,7 +284,7 @@ export function whenTransitionEnds(
       end();
     }
   }, timeout + 1);
-  el.dom.addEventListener(endEvent as keyof ElementEventMap, onEnd);
+  el.dom?.addEventListener(endEvent as keyof ElementEventMap, onEnd);
 }
 
 export const vtcKey = Symbol('_vtc');
@@ -332,7 +332,7 @@ export const toNumber = (val: any): any => {
 
 export function addTransitionClass(el: TypeHtml, cls: string) {
   console.log('addTransitionClass .');
-  cls.split(/\s+/).forEach((c) => c && el.dom.classList.add(c));
+  cls.split(/\s+/).forEach((c) => c && el.dom?.classList.add(c));
   (
     (el.dom as ElementWithTransition)[vtcKey] ||
     ((el.dom as ElementWithTransition)[vtcKey] = new Set())
@@ -354,7 +354,7 @@ const hasExplicitCallback = (
 };
 
 export function removeTransitionClass(el: TypeHtml, cls: string) {
-  cls.split(/\s+/).forEach((c) => c && el.dom.classList.remove(c));
+  cls.split(/\s+/).forEach((c) => c && el.dom?.classList.remove(c));
   const _vtc = (el.dom as ElementWithTransition)[vtcKey];
   if (_vtc) {
     _vtc.delete(cls);
@@ -375,7 +375,7 @@ export function getTransitionInfo(
   expectedType?: ITransitionConfig['type']
 ): CSSTransitionInfo {
   console.log('getTransitionInfo . ');
-  const styles = window.getComputedStyle(el.dom) as Pick<
+  const styles = window.getComputedStyle(el.dom!) as Pick<
     CSSStyleDeclaration,
     StylePropertiesKey
   >;
