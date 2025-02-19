@@ -34,6 +34,7 @@ export class SvgEllipse extends TypeSvg implements ISvgEllipse {
       rx: this.rx,
       ry: this.ry
     });
+    this.slotChild(params?.slot);
     this.props = this.useParams(params);
   }
 

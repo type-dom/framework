@@ -21,6 +21,7 @@ export class SvgRadialGradient extends TypeSvg implements ISvgRadialGradient {
       this.nodeName
     );
     this.childNodes = [];
+    this.slotChild(params.slot);
     this.props = this.useParams(params);
   }
 

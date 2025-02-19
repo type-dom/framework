@@ -30,6 +30,7 @@ export class SvgLine extends TypeSvg implements ISvgLine {
       x2: this.x2,
       y2: this.y2
     });
+    this.slotChild(params?.slot);
     this.props = this.useParams(params);
   }
 

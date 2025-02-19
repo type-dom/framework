@@ -32,8 +32,8 @@ export interface ISvgTextAttribute extends ITypeAttribute {
 }
 
 export interface ISvgText extends ITypeElement {
-  nodeName: 'text';
   className: 'SvgText';
+  nodeName: 'text';
   childNodes: ITextNode[];
 }
 

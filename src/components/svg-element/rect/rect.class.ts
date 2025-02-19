@@ -31,6 +31,7 @@ export class SvgRect extends TypeSvg implements ISvgRect {
       width: this.width,
       height: this.height
     });
+    this.slotChild(params.slot);
     this.props = this.useParams(params);
   }
 

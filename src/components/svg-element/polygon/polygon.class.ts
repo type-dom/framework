@@ -20,6 +20,7 @@ export class SvgPolygon extends TypeSvg implements ISvgPolygon {
     );
     this.childNodes = [];
 
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

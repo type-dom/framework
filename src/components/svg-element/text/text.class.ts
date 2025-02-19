@@ -3,18 +3,18 @@ import { TypeSvgSvg } from '../../../core/type-svg/svg/svg.abstract';
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
 import type {
   ISvgText,
-  ISvgTextAttribute,
+  // ISvgTextAttribute,
   ISvgTextConfig
 } from './text.interface';
 
 export class SvgText extends TypeSvg implements ISvgText {
+  className: 'SvgText';
   nodeName: 'text';
   dom: SVGTextElement;
-  className: 'SvgText';
-  // override attrObj: ISvgTextAttribute;
+// override attrObj: ISvgTextAttribute;
   override childNodes: TextNode[];
   override parent?: TypeSvgSvg;
-  override textNode: TextNode;
+  // override textNode: TextNode;
 
   constructor(params: ISvgTextConfig) {
     super();
@@ -28,11 +28,8 @@ export class SvgText extends TypeSvg implements ISvgText {
       x: 0,
       y: 0
     });
-    this.textNode = new TextNode();
-    this.childNodes = [this.textNode];
-    if (params.text) {
-      this.textNode.setText(params.text);
-    }
+    this.childNodes = [];
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

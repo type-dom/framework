@@ -26,6 +26,7 @@ export class SvgDefs extends TypeSvg implements ISvgDefs {
       this.nodeName
     );
     this.childNodes = []; // 初始化子节点数组
+    this.slotChild(params.slot);
     this.useParams(params); // 设置传入的配置项
   }
 }

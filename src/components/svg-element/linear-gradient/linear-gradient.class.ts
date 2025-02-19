@@ -29,6 +29,7 @@ export class SvgLinearGradient extends TypeSvg implements ISvgLinearGradient {
       y2: 0
     });
     this.childNodes = [];
+    this.slotChild(params.slot);
     this.props = this.useParams(params);
   }
 

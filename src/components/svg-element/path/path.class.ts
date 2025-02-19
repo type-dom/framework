@@ -21,6 +21,7 @@ export class SvgPath extends TypeSvg implements ISvgPath {
     this.className = 'SvgPath';
     this.attr.addObj({ d: params.attrObj?.d ?? '' });
     this.childNodes = [];
+    this.slotChild(params.slot);
     this.props = this.useParams(params);
   }
 

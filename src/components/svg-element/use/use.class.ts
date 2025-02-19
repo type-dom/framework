@@ -19,6 +19,7 @@ export class SvgUse extends TypeSvg implements ISvgUse {
       this.nodeName
     );
     this.childNodes = [];
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

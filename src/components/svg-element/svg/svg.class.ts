@@ -9,6 +9,7 @@ export class SvgSvg extends TypeSvgSvg implements ISvgSvg {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'SvgSvg';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }
