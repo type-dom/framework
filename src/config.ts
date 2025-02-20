@@ -1,5 +1,5 @@
 // import { no, noop, identity } from '../shared/util';
-import { LIFECYCLE_HOOKS } from './constants';
+// import { LIFECYCLE_HOOKS } from './constants';
 import { TypeNode as Component } from './core/type-node/type-node.abstract';
 
 /**
@@ -119,11 +119,11 @@ export const config = {
    * This will significantly reduce performance if set to false.
    */
   async: true,
-
-  /**
-   * Exposed for legacy reasons
-   */
-  _lifecycleHooks: LIFECYCLE_HOOKS
+  //
+  // /**
+  //  * Exposed for legacy reasons
+  //  */
+  // _lifecycleHooks: LIFECYCLE_HOOKS
 } as unknown as Config;
 
 export const __DEV__ = true;
