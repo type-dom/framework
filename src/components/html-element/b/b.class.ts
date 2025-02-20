@@ -8,6 +8,7 @@ export class B extends TypeB implements IB {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'B';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

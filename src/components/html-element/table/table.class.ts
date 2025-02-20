@@ -12,9 +12,7 @@ export class Table extends TypeTable implements ITable {
     super();
     this.className = 'Table';
     this.childNodes = [];
-    if (params?.slot) {
-      this.slotChild(params?.slot);
-    }
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

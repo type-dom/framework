@@ -1,21 +1,16 @@
-import { TypeHtml } from '../../../core/type-html/type-html.abstract';
-import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import type { IInput } from './input.interface';
+import { TypeInput } from '../../../core/type-html/input/input.abstract';
+import type { IInput, IInputConfig } from './input.interface';
 
-export class Input extends TypeHtml implements IInput {
-  override nodeName: 'input';
-  override dom: HTMLInputElement;
+export class Input extends TypeInput implements IInput {
   className: 'Input';
   override childNodes: [];
 
   // value: string | number | boolean | undefined;
-  constructor(params: ITypeConfig = {}) {
+  constructor(params: IInputConfig = {}) {
     super();
-    this.nodeName = 'input';
-    this.dom = document.createElement(this.nodeName);
     this.className = 'Input';
     this.childNodes = [];
-
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 
@@ -37,17 +32,26 @@ export class Input extends TypeHtml implements IInput {
    * 输入框和单选框、复选框不一样
    * 单选、复选框本身有value属性的。
    */
-  get value(): string {
-    return this.dom.value;
+  get value(): string | undefined {
+    return this.dom?.value;
   }
 
   set value(value: string | number | boolean) {
     this.attr.set('value', value);
-    this.dom.value = String(value);
+    if (this.dom) {
+      this.dom.value = String(value);
+    }
   }
 
+  // override mounted() {
+  //   const props = this.props;
+  //   if (props.modelValue) {
+  //     this.attr.set('value', String(props.modelValue));
+  //   }
+  // }
+
   focus(): void {
-    this.dom.focus();
+    this.dom?.focus();
   }
 
   // 日期类型的处理
@@ -55,7 +59,7 @@ export class Input extends TypeHtml implements IInput {
     // console.error('input setValue . ');
     // todo datetime 格式。
     if (this.type === 'date') {
-      console.log('isNaN(Number(value)) is ', isNaN(Number(value)));
+      // console.log('isNaN(Number(value)) is ', isNaN(Number(value)));
       if (isNaN(Number(value))) {
         //
       } else {
@@ -68,9 +72,9 @@ export class Input extends TypeHtml implements IInput {
           // (d.getHours()) + ':' +
           // (d.getMinutes()) + ':' +
           // (d.getSeconds());
-          console.log('value is ', value);
+          // console.log('value is ', value);
         } else {
-          console.error('时间戳长度有问题，不是13位');
+          // console.error('时间戳长度有问题，不是13位');
           throw Error('时间戳长度有问题，不是13位');
         }
       }

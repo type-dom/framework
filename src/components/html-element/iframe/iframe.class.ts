@@ -8,6 +8,7 @@ export class IFrame extends TypeIFrame implements IIFrame {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'IFrame';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

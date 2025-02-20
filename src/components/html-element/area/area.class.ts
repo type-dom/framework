@@ -8,6 +8,7 @@ export class Area extends TypeArea implements IArea {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Area';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

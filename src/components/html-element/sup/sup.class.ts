@@ -8,6 +8,7 @@ export class Sup extends TypeSup implements ISup {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Sup';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

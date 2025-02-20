@@ -8,6 +8,7 @@ export class A extends TypeA implements IA {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'A';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

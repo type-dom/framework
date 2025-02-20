@@ -8,6 +8,7 @@ export class Main extends TypeMain implements IMain {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Main';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

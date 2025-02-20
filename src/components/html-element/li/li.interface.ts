@@ -1,6 +1,5 @@
-import type { ITypeElement } from '../../../core/type-element/type-element.interface';
+import { ITypeLI } from '../../../core';
 
-export interface ILI extends ITypeElement {
-  nodeName: 'li';
+export interface ILI extends ITypeLI {
   className: 'LI';
 }

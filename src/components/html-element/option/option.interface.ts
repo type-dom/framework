@@ -1,13 +1,13 @@
-import type { ITypeHtml } from '../../../core/type-html/type-html.interface';
-import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import { TypeSelect } from '../../../index';
+import { TypeSelect } from 'libs/framework/src/core/type-html/select/select.abstract';
+import { ITypeOption, ITypeOptionConfig } from '../../../core/type-html/option/option.interface';
 
-export interface IOption extends ITypeHtml {
-  nodeName: 'option';
+
+export interface IOption extends ITypeOption {
   className: 'Option';
+  props: IOptionConfig;
   // childNodes: ITypNode[],
 }
 
-export interface IOptionConfig extends ITypeConfig {
+export interface IOptionConfig extends ITypeOptionConfig {
   parent: TypeSelect;
 }

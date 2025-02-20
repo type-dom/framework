@@ -15,6 +15,7 @@ export class Section extends TypeSection implements ISection {
     this.attr.addObj({
       name: 'section'
     });
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

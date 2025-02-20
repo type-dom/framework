@@ -8,6 +8,7 @@ export class Strong extends TypeStrong implements IStrong {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Strong';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

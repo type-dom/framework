@@ -8,6 +8,7 @@ export class Abbr extends TypeAbbr implements IAbbr {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Abbr';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

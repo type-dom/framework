@@ -8,6 +8,7 @@ export class Del extends TypeDel implements IDel {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Del';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

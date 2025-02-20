@@ -8,6 +8,7 @@ export class Embed extends TypeEmbed implements IEmbed {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Embed';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

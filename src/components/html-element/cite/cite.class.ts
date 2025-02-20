@@ -8,6 +8,7 @@ export class Cite extends TypeCite implements ICite {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Cite';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

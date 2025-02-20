@@ -8,6 +8,7 @@ export class Video extends TypeVideo implements IVideo {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Video';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

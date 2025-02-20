@@ -8,6 +8,7 @@ export class Ruby extends TypeRuby implements IRuby {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Ruby';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

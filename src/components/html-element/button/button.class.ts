@@ -8,6 +8,7 @@ export class Button extends TypeButton implements IButton {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Button';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

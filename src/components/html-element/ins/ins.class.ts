@@ -8,6 +8,7 @@ export class Ins extends TypeIns implements IIns {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Ins';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

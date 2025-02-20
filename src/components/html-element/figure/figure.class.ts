@@ -8,6 +8,7 @@ export class Figure extends TypeFigure implements IFigure {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Figure';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

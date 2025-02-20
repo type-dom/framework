@@ -8,6 +8,7 @@ export class Small extends TypeSmall implements ISmall {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Small';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

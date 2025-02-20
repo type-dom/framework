@@ -8,6 +8,7 @@ export class Progress extends TypeProgress implements IProgress {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Progress';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

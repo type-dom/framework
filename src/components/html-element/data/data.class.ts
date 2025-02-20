@@ -8,6 +8,7 @@ export class Data extends TypeData implements IData {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Data';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

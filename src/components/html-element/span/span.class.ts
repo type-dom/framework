@@ -8,6 +8,7 @@ export class Span extends TypeSpan implements ISpan {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Span';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

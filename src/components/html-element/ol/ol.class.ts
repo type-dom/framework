@@ -8,6 +8,7 @@ export class OL extends TypeOL implements IOL {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'OL';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

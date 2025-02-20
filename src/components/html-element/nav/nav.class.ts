@@ -8,6 +8,7 @@ export class Nav extends TypeNav implements INav {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Nav';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

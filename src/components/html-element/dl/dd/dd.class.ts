@@ -8,6 +8,7 @@ export class DD extends TypeDD implements IDD {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'DD';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

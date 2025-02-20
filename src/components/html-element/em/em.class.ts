@@ -8,6 +8,7 @@ export class Em extends TypeEm implements IEm {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Em';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

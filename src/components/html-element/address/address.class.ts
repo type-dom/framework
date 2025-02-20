@@ -8,6 +8,7 @@ export class Address extends TypeAddress implements IAddress {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Address';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

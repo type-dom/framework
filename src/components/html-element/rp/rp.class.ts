@@ -8,6 +8,7 @@ export class Rp extends TypeRp implements IRp {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Rp';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

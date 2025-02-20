@@ -8,6 +8,7 @@ export class Details extends TypeDetails implements IDetails {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Details';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

@@ -1,24 +1,18 @@
 import { TypeNode } from '../../../core/type-node/type-node.abstract';
 import { TextNode } from '../../../core/text-node/text-node.class';
-import { TypeHtml } from '../../../core/type-html/type-html.abstract';
 import type { IOption, IOptionConfig } from './option.interface';
+import { TypeOption } from '../../../core';
 
-export class Option extends TypeHtml implements IOption {
+export class Option extends TypeOption implements IOption {
   className: 'Option';
-  nodeName: 'option';
-  dom: HTMLOptionElement;
   override childNodes: TypeNode[];
   override props: IOptionConfig;
-  override textNode: TextNode;
 
-  constructor(params?: IOptionConfig) {
+  constructor(params = {} as IOptionConfig) {
     super();
-    this.nodeName = 'option';
-    this.dom = document.createElement(this.nodeName);
     this.className = 'Option';
     this.attr.addName('option');
-    this.textNode = new TextNode('一个选项');
-    this.childNodes = [this.textNode];
+    this.childNodes = [new TextNode('一个选项')];
     this.props = this.useParams(params);
   }
 }

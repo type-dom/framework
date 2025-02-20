@@ -5,7 +5,7 @@ export class Slot extends TypeSlot implements ISlot {
   className: 'Slot';
   override props: ISlotConfig;
 
-  constructor(params?: ISlotConfig) {
+  constructor(params = {} as ISlotConfig) {
     super();
     this.className = 'Slot';
     this.props = this.useParams(params);

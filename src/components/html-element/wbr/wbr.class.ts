@@ -8,6 +8,7 @@ export class Wbr extends TypeWbr implements IWbr {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Wbr';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

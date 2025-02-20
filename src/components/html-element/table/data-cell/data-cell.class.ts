@@ -8,10 +8,7 @@ export class TableDataCell extends TypeTableDataCell implements ITableDataCell {
   constructor(params: ITypeConfig) {
     super();
     this.className = 'TableDataCell';
-    // this.childNodes = [];
-    if (params?.slot) {
-      this.slotChild(params?.slot);
-    }
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

@@ -14,6 +14,7 @@ export class MenuItem extends TypeMenuItem implements IMenuItem {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'MenuItem';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

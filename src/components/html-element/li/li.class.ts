@@ -23,6 +23,7 @@ export class LI extends TypeLI implements ILI {
     });
     this.attr.addName('list-item');
 
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

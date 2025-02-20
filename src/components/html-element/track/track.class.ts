@@ -8,6 +8,7 @@ export class Track extends TypeTrack implements ITrack {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Track';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

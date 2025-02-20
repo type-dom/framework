@@ -8,6 +8,7 @@ export class Base extends TypeBase implements IBase {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Base';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

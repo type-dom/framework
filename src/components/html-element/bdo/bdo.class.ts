@@ -8,6 +8,7 @@ export class Bdo extends TypeBdo implements IBdo {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Bdo';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

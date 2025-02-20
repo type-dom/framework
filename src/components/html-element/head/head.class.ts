@@ -8,6 +8,7 @@ export class Head extends TypeHead implements IHead {
   constructor(params?: IHeadConfig) {
     super(params?.nodeName);
     this.className = 'Head';
+    this.slotChild(params?.slot);
     this.props = this.useParams(params);
   }
 }

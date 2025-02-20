@@ -8,6 +8,7 @@ export class Aside extends TypeAside implements IAside {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Aside';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

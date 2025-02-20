@@ -8,6 +8,7 @@ export class Legend extends TypeLegend implements ILegend {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Legend';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

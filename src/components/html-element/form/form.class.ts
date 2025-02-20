@@ -8,6 +8,7 @@ export class Form extends TypeForm implements IForm {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Form';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

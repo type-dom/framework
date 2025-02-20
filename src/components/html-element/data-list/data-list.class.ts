@@ -8,6 +8,7 @@ export class DataList extends TypeDataList implements IDataList {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'DataList';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

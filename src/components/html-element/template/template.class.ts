@@ -8,6 +8,7 @@ export class Template extends TypeTemplate implements ITemplate {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Template';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

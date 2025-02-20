@@ -8,6 +8,7 @@ export class Mark extends TypeMark implements IMark {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Mark';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

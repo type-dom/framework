@@ -8,6 +8,7 @@ export class Rt extends TypeRt implements IRt {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Rt';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

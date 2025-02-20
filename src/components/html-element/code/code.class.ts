@@ -8,6 +8,7 @@ export class Code extends TypeCode implements ICode {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Code';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

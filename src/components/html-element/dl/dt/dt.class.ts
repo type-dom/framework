@@ -8,6 +8,7 @@ export class DT extends TypeDT implements IDT {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'DT';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }

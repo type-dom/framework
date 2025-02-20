@@ -8,6 +8,7 @@ export class Pre extends TypePre implements IPre {
   constructor(params: ITypeConfig = {}) {
     super();
     this.className = 'Pre';
+    this.slotChild(params.slot);
     this.useParams(params);
   }
 }
