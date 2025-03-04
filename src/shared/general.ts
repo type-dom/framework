@@ -1,13 +1,13 @@
-import { AnyFn } from '../interface'
+import { AnyFn } from '@type-dom/utils';
 import { makeMap } from './makeMap'
 
-// export const EMPTY_OBJ: { readonly [key: string]: any } = __DEV__
-//   ? Object.freeze({})
-//   : {}
-// export const EMPTY_ARR: readonly never[] = __DEV__ ? Object.freeze([]) : []
+export const EMPTY_OBJ: { readonly [key: string]: any } = {};
+  // __DEV__
+  // ? Object.freeze({})
+  // : {}
+// export const EMPTY_ARR = [] as readonly never[]; // __DEV__ ? Object.freeze([]) : []
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-export const NOOP = (): void => {}
+export const NOOP = (): void => { /*nothing*/ }
 
 /**
  * Always return false.
