@@ -1,13 +1,14 @@
 import { IStyle } from '@type-dom/css-type';
-import { Dayjs } from 'dayjs';
-import { Computed, MaybeRef, Signal, WritableComputedOptions } from '@type-dom/signals';
-import { type IJsonDataProp, IJsonData, IPrimitive, IWritableObj } from '../../interface';
-import type { ITypeAttribute } from '../type-element/type-element.interface';
+import { Computed, MaybeRef, Ref, Signal } from '@type-dom/signals';
+import { IPrimitive } from '@type-dom/utils';
+import { type IJsonDataProp, StyleValue } from '../../interface';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { IEmits, IEvents } from '../event-emitter/event-emitter.interface';
-import { SlotNode } from '../slot-node/slot-node.class';
+import { IClass, ITypeAttribute } from '../attribute/attribute.interface';
+import { TransitionElement, TransitionHooks } from '../type-transition/type-transition.interface';
 import { TypeNode } from './type-node.abstract';
 import { ITypeBase } from './type-base.interface';
+import { NodeName } from '../enums';
 
 export interface IAttr {
   name: string;
@@ -67,8 +68,12 @@ export interface IPath {
  * 同时可以对应json格式的接口，也是json存储的数据结构（除去parent/TypeClass）
  */
 export interface ITypeNode extends ITypeBase {
-  params?: ITypeConfig | undefined; // 传入参数, ITypeConfig 中是undefined
+  className?: string;
+  uid?: number; // 自增id uid: uid++
+  params?: TypeProps | undefined; // 传入参数, TypeProps 中是undefined
   // emits?: IEmits;
+  createdIn?: 'setup'; //  constructor
+  transition?: TransitionHooks<TransitionElement>;
 }
 
 export interface IMethods {
@@ -121,10 +126,10 @@ export interface IPropSetting {
 }
 
 // 参数接口
-export interface ITypeConfig extends ITypeBase {
+export interface TypeProps extends ITypeBase {
   name?: string | number; // 节点名称, 转化为 attrObj.name;
-  tag?: keyof HTMLElementTagNameMap | 'fragment' | '#text' | string; // 转为 nodeName
-  nodeName?: keyof HTMLElementTagNameMap | 'fragment' | '#text' | string | undefined;
+  tag?: keyof HTMLElementTagNameMap | NodeName.FRAGMENT | NodeName.TEXT | string; // 转为 nodeName
+  nodeName?: keyof HTMLElementTagNameMap | NodeName.FRAGMENT | NodeName.TEXT | string;
   /**
    * nodeValue只在 TextNode中才有。
    * nodeValue存在时，就应该是 TextNode类
@@ -154,11 +159,20 @@ export interface ITypeConfig extends ITypeBase {
    *  与 ns 方法配合使用，获取当前对象的class；
    *  样式 theme 中的样式，需要通过 class 绑定；
    */
-  class?: string | Computed<string[]>;
+  class?: IClass; // <string[]>;
   /**
    * 绑定的ref对象，用于获取当前对象的dom元素；
+   * 注： 绑定外部对象引用；根据绑定的组件是基础组件还是高级组件，判断是绑定组件还是绑定组件的dom
    */
-  ref?: MaybeRef<Element | DocumentFragment | undefined>;
+  // ref?: MaybeRef<Element | DocumentFragment | TypeElement | undefined>;
+  /**
+   * 绑定的组件的引用对象，用于获取当前组件；
+   */
+  refEl?: MaybeRef<TypeElement | undefined>
+  /**
+   * 绑定的组件的引用对象，用于获取当前组件的dom元素；
+   */
+  refDom?: MaybeRef<Element | DocumentFragment | undefined>;
   /**
    * 绑定的refId对象，用于父级查找到当前对象；
    */
@@ -170,17 +184,17 @@ export interface ITypeConfig extends ITypeBase {
   /**
    * 样式对象。
    */
-  styleObj?: MaybeRef<IStyle | undefined> | undefined;
+  styleObj?: StyleValue | MaybeRef<IStyle | undefined> | Record<string, string | number | Signal<string | number> | Computed>;
   // 类实例对象；  与 ITypeNode 中的 childNodes: ITypeNode[] 与ITypeNode 中的 childNodes: ITypeNode[] 不同；
   // childNodes?: TypeNode[] | undefined; // todo 象slot一样字符串、数字类型等。
 
   // 设置子元素的属性，并根据属性创建子元素；是json对象；指定的元素类型；
-  items?: ITypeConfig[];
+  items?: TypeProps[];
   // 多个插槽 ———— 对应的 是 TypeNode | TypeNode[], 不同于一般的属性；需要组件本身单独处理的。setConfig方法中没有默认处理方法；
-  slots?: ISlotConfigs; // 指定多个不同位置的插槽，需要有插槽名称的；需要在类中添加插槽的位置；
+  slots?: ISlots; // 指定多个不同位置的插槽，需要有插槽名称的；需要在类中添加插槽的位置；
   // 默认插槽  同 slots.default  组件没有插槽时，为undefined。这时子元素只能用 childNodes 属性；
-  slot?: ISlotConfig; // 默认插槽, 可以是单个元素，也可以是多个元素，即数组；如何直接插入当前元素，则相当与 childNodes属性；
-  init?: (element: TypeElement | SlotNode) => void;
+  slot?: ISlotItem; // 默认插槽, 可以是单个元素，也可以是多个元素，即数组；如何直接插入当前元素，则相当与 childNodes属性；
+  init?: (element: TypeElement) => void;
   /**
    * 自定义的事件监听器，与 events 不同，events 是绑定在元素上的事件，而 emits 是在元素上触发的事件；
    * 与 addEmits 方法配合；
@@ -199,14 +213,14 @@ export interface ITypeConfig extends ITypeBase {
    * 标签必须闭合， 如 <input /> 这样才能闭合。
    */
   template?: string; // 模板 默认TypeClass为XElement
-  html?: string;
+  html?: MaybeRef<string>;
   fieldSetting?: IOptionSetting;
 
   /**
    * The other props of the element.
    */
   // [dataKey: `data-${string}` | `on${string}` | `td-${string}`]: unknown;
-  // data?: UnwrapNestedRefs<IObData>; // 数据  ITypeConfig 需要继承
+  // data?: UnwrapNestedRefs<IObData>; // 数据  TypeProps 需要继承
   // subscriptions?: Subscription[];
   // 绑定的方法集合
   methods?: IMethods;
@@ -241,20 +255,16 @@ export interface ITypeConfig extends ITypeBase {
   ariaHaspopup?: MaybeRef<string>;
 }
 
-export interface ISlotNodes {
-  default?: SlotNode;
-
-  [propName: string]: SlotNode | undefined;
-}
-export type ISlotRaw = string | number | TypeNode;
+export type ISlotRaw = string | number | undefined | TypeNode;
 export type ISlotRef<T extends ISlotRaw = ISlotRaw> = Signal<T> | Computed;
-export type ISlotConfig<T extends ISlotRaw = ISlotRaw> = T |  ISlotRef<T> | (T | ISlotRef<T>)[];
+export type ISlotItem<T extends ISlotRaw = ISlotRaw> = T |  ISlotRef<T> | (T | undefined | ISlotRef<T>)[]
+  | ((...args: any[]) => T | T[]);
 
-export interface ISlotConfigs {
-  [propName: 'default' | string]: ISlotConfig | undefined;
+export interface ISlots {
+  [propName: 'default' | string]: ISlotItem | undefined;
 }
 
-export interface IOptionConfig extends ITypeConfig {
+export interface OptionProps extends TypeProps {
   label: string;
   value: string;
   checked?: boolean;

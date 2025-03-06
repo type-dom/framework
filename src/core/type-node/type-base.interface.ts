@@ -1,6 +1,6 @@
 import { TypeElement } from '../type-element/type-element.abstract';
-import { SlotNode } from '../slot-node/slot-node.class';
 import type { IMethods, ISettings, ITypeNode } from './type-node.interface';
+import { MaybeRef } from '@type-dom/signals';
 
 /**
  * TypeDom 最基础的接口，所有接口都继承了这个接口。
@@ -9,7 +9,7 @@ import type { IMethods, ISettings, ITypeNode } from './type-node.interface';
  */
 export interface ITypeBase {
   // className?: string;
-  // params?: ITypeConfig | undefined; // 传入参数, ITypeConfig 中是undefined
+  // params?: TypeProps | undefined; // 传入参数, TypeProps 中是undefined
   // attributes?: IAttr[];
 
   /**
@@ -17,13 +17,13 @@ export interface ITypeBase {
    * 该节点不是当前位置的组件的子节点；要避免加入到组件的子节点中；要挂载到指定的组件的DOM,甚至直接指向 body；
    * string 类型，可以指定一个选择器；
    */
-  to?: string | HTMLElement;
+  to?: MaybeRef<string | HTMLElement>;
 
   /**
    * parent 可选
    * 且为 TypeElement
    */
-  parent?: TypeElement | SlotNode;
+  parent?: TypeElement;
   /**
    * 上下文，用于查找上下文。
    * 对应于创建该对象的类对象。

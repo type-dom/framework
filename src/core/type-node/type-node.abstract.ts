@@ -1,22 +1,28 @@
-import { IStyle } from '@type-dom/css-type';
-import { camelToDash, encodeToXmlString, isFunction } from '@type-dom/utils';
-import { AnyFn, IJsonData } from '../../interface';
+import { MaybeRef } from '@type-dom/signals';
+import { AnyFn } from '@type-dom/utils';
+import { IJsonData } from '../../interface';
 import { EventEmitter } from '../event-emitter/event-emitter.abstract';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { Style } from '../style/style.class';
 import { Attribute } from '../attribute/attribute.class';
-import { SlotNode } from '../slot-node/slot-node.class';
 import { InjectionKey } from '../apiInject';
-import { LifecycleHooks } from '../enums';
-import { setCurrentInstance } from '../instance';
+import { LifecycleHooks, NodeName } from '../enums';
 import type {
   IAttr,
   IMethods,
   ISettings,
-  ITypeConfig,
-  ITypeNode
+  ITypeNode,
+  TypeProps,
 } from './type-node.interface';
+import { useUnmount } from './useUnmount';
+import { useDump } from './useDump';
+import { useDown } from './useDown';
+import { useInject } from './useInject';
+import { ElProp } from '../type-element/type-element.interface';
+import { useAssignProps } from './useAssignProps';
+import { useRemoveDom } from './useRemoveDom';
 
+let uid = 0;
 /**
  * 虚拟DOM，TypeNode 抽象节点类, 所有节点类的抽象类；
  * abstract syntax tree 抽象语法树 抽象节点类
@@ -35,21 +41,25 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   // abstract nodeValue?: string | number | undefined;
   abstract childNodes?: TypeNode[] | undefined;
   abstract rendered: boolean;
+  isBasic?: boolean;
+  createdIn?: 'setup';
+  key?: string;
   /**
    * 存储 传入的参数。 只需要到处json时有就行。
    */
-  params: ITypeConfig;
+  params: TypeProps;
   /**
    * 属性项
    */
-  props: ITypeConfig;
-  parent?: TypeElement | SlotNode | undefined;
+  props: TypeProps;
+  parent?: TypeElement | undefined;
   /**
    * 挂载到指定的组件的DOM,可以直接指向 body
+   * todo Teleport execute mount to outer dom, so need not to property.
    */
-  to?: string | HTMLElement;
+  to?: MaybeRef<string | HTMLElement>;
   isContext?: boolean;
-  items?: ITypeConfig[];
+  items?: TypeProps[];
   // textNode?: TextNode;
   lifeCycles: Record<LifecycleHooks, AnyFn[]>;
   //   {
@@ -61,10 +71,12 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   //   beforeUnmount?: AnyFn[];
   //   unmounted?: AnyFn[];
   // };
+  uid: number;
   protected constructor() {
     super();
-    this.params = {}; // Object.freeze({}) as ITypeConfig;
-    this.props = {}; // Object.freeze({}) as ITypeConfig;
+    this.uid = uid++;
+    this.params = {}; // Object.freeze({}) as TypeProps;
+    this.props = {}; // Object.freeze({}) as TypeProps;
     this.lifeCycles = {} as Record<LifecycleHooks, AnyFn[]>;
     this.beforeCreate?.(); // 挂载前，执行一些初始化操作。其实也就是操作 config本身。
   }
@@ -75,7 +87,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
    * todo 要理顺与 render 方法的关系。 render 最终要私有化；
    * @param el
    */
-  abstract mount(el?: string | HTMLElement | SVGElement | DocumentFragment | ShadowRoot): void;
+  abstract mount(el?: ElProp): void;
 
   /**
    * 渲染出真实DOM
@@ -85,7 +97,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   /**
    * 更新，更新属性，样式，事件等。
    */
-  abstract update(el?: string | HTMLElement | SVGElement | ShadowRoot | DocumentFragment): void;
+  abstract update(el?: ElProp): void;
 
   // abstract attrObj?: ITypeAttribute | undefined; // 合并到 this.props中
   isRoot?: boolean; // 是否是根节点 只有TypeRoot才为true
@@ -168,15 +180,15 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   }
   // 向下获取真实的 element ; TypeHtml TypeSvg
   get downRealElement(): TypeNode | undefined {
-    if (this.props.nodeName === 'fragment') {
+    if (this.props.nodeName === NodeName.FRAGMENT) {
       for (const child of this.children) {
-        if (child.props.nodeName === 'fragment') {
+        if (child.props.nodeName === NodeName.FRAGMENT) {
           return child.downRealElement;
-        } else if (child.props.nodeName !== '#text') {
+        } else if (child.props.nodeName !== NodeName.TEXT) {
           return child;
         }
       }
-    } else if (this.props.nodeName !== '#text') {
+    } else if (this.props.nodeName !== NodeName.TEXT) {
       return this;
     }
     return undefined;
@@ -184,9 +196,9 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
 
   // 向上获取真实的 element ;
   get upRealElement(): TypeNode | undefined {
-    if (this.props.nodeName === 'fragment') {
+    if (this.props.nodeName === NodeName.FRAGMENT) {
       return this.parent?.upRealElement;
-    } else if (this.props.nodeName !== '#text') {
+    } else if (this.props.nodeName !== NodeName.TEXT) {
       return this;
     }
     return undefined;
@@ -196,14 +208,14 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
    * 配置设置项
    * @param params
    */
-  abstract useParams<T extends ITypeConfig>(params?: T): T;
+  abstract useParams<T extends TypeProps>(params?: T): T;
 
   // 可重置config 的接口类型
-  getProps<T extends ITypeConfig>(): T {
+  getProps<T extends TypeProps>(): T {
     return this.props as T;
   }
 
-  getProp<T extends keyof ITypeConfig>(key: T) {
+  getProp<T extends keyof TypeProps>(key: T) {
     return this.props[key];
   }
 
@@ -220,7 +232,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
     });
   }
 
-  setProp<T extends ITypeConfig>(key: keyof T, value?: any) {
+  setProp<T extends TypeProps>(key: keyof T, value?: any) {
     (this.props as T)[key] = value;
     if (value === undefined) {
       delete (this.props as T)?.[key];
@@ -228,58 +240,12 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   }
 
   /**
-   * 使用指定的标签创建一个DOM元素
-   *
-   * @param {string} tag - 可选参数，定义要创建的DOM元素的标签名，默认为 div
-   *
-   * 此方法主要负责初始化一个DOM元素，通过接收一个标签名参数来创建对应类型的DOM元素
-   * 它首先将标签名赋值给实例的nodeName属性，然后使用document.createElement()方法
-   * 根据提供的标签名创建一个DOM元素，并将该元素赋值给实例的dom属性
-   */
-  // useTag<T extends (HTMLElement | SVGElement | DocumentFragment | Text)>(tag?: '#text' | 'fragment' | string) {
-  //   // Assign the nodeName based on the presence of the tag parameter or retain the current nodeName, defaulting to 'div' if neither is available.
-  //   this.props.nodeName = tag ? tag : this.props.nodeName ? this.props.nodeName : 'div';
-  //   if (this.props.nodeName === 'fragment') {
-  //     this.dom = document.createDocumentFragment();
-  //   } else if (this.props.nodeName === '#text') {
-  //     this.dom = document.createTextNode(this.props.nodeValue?.toString() || ''); // todo content
-  //   } else {
-  //     // todo SVGElement 必须直接创建dom；不能为空。 ????
-  //     this.dom = document.createElement(this.props.nodeName.trim()) as T;
-  //   }
-  // }
-
-  /**
    * 组装属性
    * 根据提供的配置参数构建属性
    * @param config
    */
-  assignProps<T extends ITypeConfig>(config = {} as T): T {
-    if (!this.props) {
-      // console.error('this.props is undefined . ');
-      // this.props = {};
-      throw Error('this.props is undefined . ');
-    }
-    for (const key in config) {
-      // styleObj, attrObj, events 要单独处理
-      // todo 如果是fragment，要判断是否有子节点，
-      //    只有一个子节点，styleObj就加到子节点上,
-      //    如果是多个子节点，要怎么处理？？？？
-      if (key === 'styleObj') {
-        this.style?.addObj(config.styleObj);
-      } else if (key === 'attrObj') {
-        if (config.attrObj) {
-          this.attr?.addObj(config.attrObj);
-        }
-      } else if (key === 'events') {
-        this.addEvents?.(config.events);
-      } else if (key === 'emits') {
-        this.addEmits?.(config.emits);
-      }
-
-      (this.props as T)[key] = config[key];
-    }
-    return this.props as T;
+  assignProps<T extends TypeProps>(config = {} as T): T {
+    return useAssignProps(this, config);
   }
 
   // config.slots中添加slot的对象
@@ -351,31 +317,14 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   inject<T>(key: InjectionKey<T> | string,
             defaultValue?: T,
             treatDefaultAsFactory = false): T | undefined {
-    if (this.upProvides) { // 上一级 有 provides 的组件；
-      if (this.upProvides[key]) {
-        return this.upProvides[key] as T;
-      } else { // 多级 存在 provides 的情况，需要递归查找。
-        const context = this.parent?.inject(key, defaultValue, treatDefaultAsFactory);
-        if (context) {
-          return context as T;
-        } else {
-          return treatDefaultAsFactory && isFunction(defaultValue)
-            ? defaultValue.call(this) as T
-            : defaultValue;
-        }
-      }
-    } else {
-      return treatDefaultAsFactory && isFunction(defaultValue)
-          ? defaultValue.call(this) as T
-          : defaultValue;
-    }
+    return useInject(this, key, defaultValue, treatDefaultAsFactory);
   }
 
-  setParent(parent: TypeElement | SlotNode): void {
+  setParent(parent: TypeElement): void {
     this.parent = parent; // 单一原则
   }
 
-  appendParent(parent: TypeElement | SlotNode): void {
+  appendParent(parent: TypeElement): void {
     this.parent = parent;
     parent.addChild(this);
   }
@@ -392,40 +341,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
    * @param value 如：TdIcon        1       /home
    */
   down<T extends TypeNode>(expr: string, value: any): T | undefined {
-    // console.log('down expr is ', expr, ' value is ', value);
-    if (value === undefined) {
-      return undefined;
-    }
-    const path = expr.split('.');
-    for (const child of this.children) {
-      let propValue = path.reduce((acc: any, curr: string) => {
-        // 如果当前累积值为 null 或 undefined，则返回 undefined
-        if (!acc) {
-          return undefined;
-        }
-        // 返回下一层的对象或属性值
-        return acc[curr];
-      }, child);
-      if (!propValue) {
-        propValue = path.reduce((acc: any, curr: string) => {
-          // 如果当前累积值为 null 或 undefined，则返回 undefined
-          if (!acc) {
-            return undefined;
-          }
-          // 返回下一层的对象或属性值
-          return acc[curr];
-        }, child.props);
-      }
-      if (propValue === value) {
-        return child as T;
-      } else if (child.children.length > 0) {
-        const res = child.down(expr, value);
-        if (res) { // 有值才返回，否则继续遍历
-          return res as T;
-        }
-      }
-    }
-    return undefined;
+    return useDown<T>(expr, value, this as unknown as T);
   }
 
   up<T extends TypeElement>(className: string): T | undefined {
@@ -521,65 +437,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
    * @param buffer
    */
   dump(buffer: string[]): void {
-    // console.log('type-node dump . ');
-    if (this.props.nodeName === '#text') {
-      buffer.push(encodeToXmlString(this.props.nodeValue));
-      return;
-    }
-    buffer.push(`<${this.props.nodeName}`);
-    // 下面组装 属性 和 样式
-    if (this.attr?.getObj()) {
-      for (let key in this.attr?.getObj()) {
-        // 下面几个属性不需要转
-        if (
-          key !== 'viewBox' &&
-          key !== 'spreadMethod' &&
-          key !== 'gradientUnits'
-        ) {
-          key = camelToDash(key);
-        }
-        // todo
-        buffer.push(
-          ` ${key}="${encodeToXmlString(String(this.attr?.get(key)))}"`
-        );
-      }
-    }
-    if (this.style?.getObj()) {
-      let style = '';
-      for (const key in this.style?.getObj()) {
-        style += `${camelToDash(key)}: ${encodeToXmlString(
-          String(this.style?.get(key as keyof IStyle))
-        )};`;
-      }
-      if (style !== '') {
-        buffer.push(` style="${style}"`);
-      }
-    }
-    // todo this.attributes may be repeated with this.attr.obj
-    if (this.attributes) {
-      for (const attribute of this.attributes) {
-        buffer.push(
-          ` ${attribute.name}="${encodeToXmlString(
-            attribute.value?.toString()
-          )}"`
-        );
-      }
-    }
-    if (this.hasChildNodes()) {
-      buffer.push('>');
-      if (this.childNodes) {
-        for (const child of this.childNodes) {
-          child.dump(buffer);
-        }
-      }
-      buffer.push(`</${this.props.nodeName}>`);
-    } else if (this.props.nodeValue !== undefined) {
-      buffer.push(
-        `>${encodeToXmlString(this.props.nodeValue.toString())}</${this.props.nodeName}>`
-      );
-    } else {
-      buffer.push('/>');
-    }
+    useDump(buffer, this);
   }
 
   /**
@@ -591,20 +449,19 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   toJSON(): ITypeNode {
     return {
       className: this.className,
-      config: {
-        attrObj: this.attr?.getObj(),
-        styleObj: this.style?.getObj()
-      },
-      nodeName: this.props.nodeName,
-      nodeValue: this.props.nodeValue,
+      // config: {
+      //   attrObj: this.attr?.getObj(),
+      //   styleObj: this.style?.getObj()
+      // },
+      props: this.props, // todo 可能有问题
+      // nodeName: this.props.nodeName,
+      // nodeValue: this.props.nodeValue,
       attributes: this.attributes,
       items: this.items,
       // transitionConfig: this.transitionConfig,
       childNodes: this.children.map((child) => {
-        if (child.props.nodeName === '#text') {
+        if (child.props.nodeName === NodeName.TEXT) {
           return {
-            // className: 'TextNode',
-            // nodeName: '#text',
             nodeValue: child.props.nodeValue // textContent
           };
         } else {
@@ -628,49 +485,15 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
    * this.dom的值也没有变。
    */
   removeDom(): void {
+    useRemoveDom(this);
+  }
+
+  // clear this.dom.childNodes
+  clearChildDom() {
     if (this.dom) {
-      if (this.dom instanceof DocumentFragment) {
-        this.childNodes?.forEach(child => child.removeDom());
-      } else {
-        this.dom.remove();
+      while (this.dom.firstChild) {
+        this.dom.removeChild(this.dom.firstChild);
       }
-    } else {
-      console.error('this.dom has been removed . ');
-    }
-  }
-
-  /**
-   * 更新子节点的dom的挂载
-   *
-   * todo
-   */
-  resetDown() {
-
-  }
-  resetFragment(): void {
-    if (this.dom instanceof DocumentFragment) {
-      // console.error('this.dom is DocumentFragment . ');
-      // 检查子节点是否为空
-      if (this.dom.childElementCount === 0) {
-        // console.log('DocumentFragment 的子节点为空');
-        this.childNodes?.forEach(child => {
-          if (!child.dom) {
-            child.render();
-          }
-          child.resetFragment();
-          // todo fragment的子节点是不是又被清理了？？？？
-          this.dom?.appendChild(child.dom as HTMLElement | SVGElement | DocumentFragment | Text);
-        });
-      }
-      // else {
-      //   this.childNodes?.forEach(child => {
-      //     if (!child.dom) {
-      //       child.render();
-      //     }
-      //     this.dom?.appendChild(child.dom as HTMLElement | SVGElement | DocumentFragment);
-      //   });
-      //   console.log('DocumentFragment 的子节点不为空');
-      // }
     }
   }
 
@@ -684,17 +507,22 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
    */
   beforeCreate?(): void;
 
+  /**
+   * 创建DOM元素
+   *
+   * 根据提供的标签名创建一个DOM元素，并将该元素赋值给实例的dom属性
+   */
   // todo 与 transition 中对应的方法
   createDom(): void {
-    if (this.dom) {
+    if (!this.dom) {
       // console.warn('createDom this.dom has existed . ');
-    } else {
-      if (this.props.nodeName === 'fragment') {
+      const nodeName = this.props.tag || this.props.nodeName;
+      if (nodeName === NodeName.FRAGMENT) {
         this.dom = document.createDocumentFragment();
-      } else if (this.props.nodeName === '#text') {
+      } else if (nodeName === NodeName.TEXT) {
         this.dom = document.createTextNode(this.props.nodeValue?.toString() || ''); // todo content
       } else {
-        this.dom = document.createElement(this.props.nodeName || 'div');
+        this.dom = document.createElement(nodeName || 'div');
       }
     }
   }
@@ -737,48 +565,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
    * 要清理绑定的事件，  组件中绑定的事件时，有可能是 绑到 document,window的，必须清理，否则逻辑可能错误。
    */
   unmount(root?: TypeElement): void {
-    this.beforeUnmount?.();
-    if (this.dom) {
-      if (this.dom instanceof DocumentFragment) {
-        // 清空 DocumentFragment； 如果没有挂载，dom 会有子dom
-        if (this.dom.replaceChildren) {
-          this.dom.replaceChildren();
-        } else {
-          while (this.dom.firstChild) {
-            this.dom.removeChild(this.dom.firstChild);
-          }
-        }
-      } else {
-        // 删除DOM
-        this.dom.remove();
-        this.dom = undefined;
-      }
-    } else {
-      console.warn('unmount this.dom is null . ');
-    }
-    this.childNodes?.forEach(child => child.unmount());
-    this.childNodes = undefined;
-    delete this.style;
-    delete this.attr;
-    // delete this.props;
-    // Reflect.deleteProperty(this, 'props');
-    if (this.parent) {
-      this.parent.childNodes.splice(this.index, 1);
-    } else {
-      // console.error('this.parent is null . ');
-      // 没有 parent 要root 遍历删除；
-      // todo  如果项目没有设置root，则无法删除了。或者有多个root时，可能查找有问题；
-      //      this.parent 都没有了，还如何获取 this.root ?
-      const parent = this.findParent(root, this);
-      parent?.childNodes && parent.childNodes.splice(this.index, 1);
-    }
-    this.unmounted?.();
-    setCurrentInstance(null);
-    //   ToDo
-    // this = undefined;
-    // for (let key in this) {
-    //   delete this[key];
-    // }
+    useUnmount(this, root);
   }
 
   unmounted?(): void;
