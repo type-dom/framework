@@ -1,10 +1,11 @@
 // 对应 BaseTransition
-import { TypeHtml } from '../type-html/type-html.abstract';
-import { TypeSvg } from '../type-svg/type-svg.abstract';
-import { TypeElement } from '../type-element/type-element.abstract';
+import { RendererElement } from '../../interface';
 import { TypeNode } from '../type-node/type-node.abstract';
-import type { ITypeConfig } from '../type-node/type-node.interface';
-import { ITypeFragment, ITypeFragmentConfig } from '../type-fragment/type-fragment.interface';
+import {
+  ITypeFragment,
+  TypeFragmentProps,
+} from '../type-fragment/type-fragment.interface';
+import { enterCbKey, leaveCbKey } from './type-transition.use';
 
 export interface ITypeTransition extends ITypeFragment {
   className: string;
@@ -18,9 +19,8 @@ export type Hook<T = () => void> = T | T[];
  * 这个接口包括了进入（enter）、离开（leave）和出现（appear）三个阶段的各个时刻的事件。
  * 每个阶段都有before、after和cancelled（取消）四个时刻，供用户在不同的时刻插入自定义逻辑。
  */
-export interface ITypeTransitionConfig<
-  HostElement extends TypeHtml = TypeHtml
-> extends ITypeFragmentConfig {
+export interface TypeTransitionProps<HostElement = RendererElement>
+  extends TypeFragmentProps {
   mode?: 'in-out' | 'out-in' | 'default';
   appear?: boolean;
 
@@ -35,40 +35,40 @@ export interface ITypeTransitionConfig<
   // In templates these can be written as @before-enter="xxx" as prop names
   // are camelized.
   // 在进入阶段之前触发的事件
-  onBeforeEnter?: (el: HostElement) => void;
+  onBeforeEnter?: Hook<(el?: HostElement) => void>;
   // 在进入阶段完成时触发的事件
-  onEnter?: (el: HostElement, done?: () => void) => void;
+  onEnter?: Hook<(el?: HostElement, done?: () => void) => void>;
   // 在进入阶段之后触发的事件
-  onAfterEnter?: (el: HostElement) => void;
+  onAfterEnter?: Hook<(el?: HostElement) => void>;
   // 在进入阶段被取消时触发的事件
-  onEnterCancelled?: (el: HostElement) => void;
+  onEnterCancelled?: Hook<(el?: HostElement) => void>;
   // leave
   // 在离开阶段之前触发的事件
-  onBeforeLeave?: (el: HostElement) => void;
+  onBeforeLeave?: Hook<(el?: HostElement) => void>;
   // 在离开阶段完成时触发的事件
-  onLeave?: (el: HostElement, done?: () => void) => void;
+  onLeave?: Hook<(el?: HostElement, done?: () => void) => void>;
   // 在离开阶段之后触发的事件
-  onAfterLeave?: (el: HostElement) => void;
+  onAfterLeave?: Hook<(el?: HostElement) => void>;
   // 在离开阶段被取消时触发的事件
-  onLeaveCancelled?: (el: HostElement) => void; // only fired in persisted mode
+  onLeaveCancelled?: Hook<(el?: HostElement) => void>; // only fired in persisted mode
   // appear
   // 在出现阶段之前触发的事件
-  onBeforeAppear?: (el: HostElement) => void;
+  onBeforeAppear?: Hook<(el?: HostElement) => void>;
   // 在出现阶段完成时触发的事件
-  onAppear?: (el: HostElement, done?: () => void) => void;
+  onAppear?: Hook<(el?: HostElement, done?: () => void) => void>;
   // 在出现阶段之后触发的事件
-  onAfterAppear?: (el: HostElement) => void;
+  onAfterAppear?: Hook<(el?: HostElement) => void>;
   // 在出现阶段被取消时触发的事件
-  onAppearCancelled?: (el: HostElement) => void;
+  onAppearCancelled?: Hook<(el?: HostElement) => void>;
 
   //   todo
-  slot?: TypeHtml; // | TypeSvg; // 只能有一个子节点
+  // slot?: TypeHtml | number | string; // | TypeSvg; // 只能有一个子节点
 
-  childNodes?: TypeElement[];
+  // childNodes?: TypeElement[];
 }
 
-export interface TransitionHooks<HostElement = TypeElement> {
-  mode: ITypeTransitionConfig['mode'];
+export interface TransitionHooks<HostElement = RendererElement> {
+  mode: TypeTransitionProps['mode'];
   persisted: boolean;
 
   beforeEnter(el: HostElement): void;
@@ -98,19 +98,16 @@ export type TransitionHookCaller = <T extends any[] = [el: any]>(
 
 export type PendingCallback = (cancelled?: boolean) => void;
 
-export interface ITransitionState {
+export interface TransitionState {
   isMounted: boolean;
   isLeaving: boolean;
   isUnmounting: boolean;
   // Track pending leave callbacks for children of the same key.
   // This is used to force remove leaving a child when a new copy is entering.
-  // leavingVNodes: Map<any, Record<string, TypeNode>>;
+  leavingVNodes: Map<any, Record<string, TypeNode>>;
 }
 
-const leaveCbKey = Symbol('_leaveCb');
-const enterCbKey = Symbol('_enterCb');
-
-export interface ITransitionElement {
+export interface TransitionElement extends HTMLElement {
   // in persisted mode (e.g. v-show), the same element is toggled, so the
   // pending enter/leave callbacks may need to be cancelled if the state is toggled
   // before it finishes.
