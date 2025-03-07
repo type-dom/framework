@@ -21,7 +21,7 @@
  * @param cssStyles
  */
 import { IStyle } from '@type-dom/css-type';
-import { vHash } from '../index';
+import { currentInstance, vHash } from '../index';
 import { camelToDash } from '@type-dom/utils';
 
 const styleElement = createStyleElement();
@@ -45,7 +45,7 @@ function createStyleElement() {
 }
 
 export function createStyle(cssStyles: string) {
-  console.log('createStyle . cssStyles is ', cssStyles);
+  // console.log('createStyle . cssStyles is ', cssStyles);
   // styleSheet?.insertRule('body { background-color: blue; }', styleSheet.cssRules.length)
   // styleSheet?.insertRule(cssStyles, styleSheet.cssRules.length);
 
@@ -58,16 +58,21 @@ export function createStyle(cssStyles: string) {
   }
 }
 
-export function createClass(className: string, styleObj: IStyle) {
-  console.log('createClass . className: ', className, ' styleObj: ', styleObj);
+// 有作用域的样式 data-v- *****
+export function createClass(className: string, styleObj: IStyle & Record<string, string | number>) {
+  // console.log('createClass . className: ', className, ' styleObj: ', styleObj);
+  const clsArr = className.split(' ');
   let selector = '';
-  if (className.includes(':')) { // 有伪类时
-    const [name, pseudoClass] = className.split(':');
-    console.log('pseudoClass is ', pseudoClass);
-    selector = `.${name}-${vHash}:${pseudoClass}`;
-  } else {
-    selector = `.${className}-${vHash}`;
-  }
+  clsArr.forEach(className => {
+    if (className.includes(':')) { // 有伪类时 :hover :focus
+      const [name, pseudoClass] = className.split(':');
+      // console.log('pseudoClass is ', pseudoClass);
+      selector = `.${name}[data-v-${vHash}]:${pseudoClass}`;
+    } else {
+      selector += `.${className}[data-v-${vHash}] `;
+    }
+  })
+
   const cssText = buildCssRule(selector, styleObj);
   createStyle(cssText);
 }
