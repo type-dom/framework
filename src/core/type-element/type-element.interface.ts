@@ -1,28 +1,7 @@
 /**
  * 虚拟dom的数据结构字面量接口。
  */
-import { Computed, MaybeRef, Signal } from '@type-dom/signals';
-import type { ITypeConfig, ITypeNode } from '../type-node/type-node.interface';
-import { IPrimitive } from '../../interface';
-
-export interface ITypeAttribute {
-  id?: string | Signal<string | undefined>;
-  class?: string | string[] | Computed<string[]>;
-  name?: string;
-  type?: string | Computed;
-  fill?: string; // rgb(0,0,255) blue
-  strokeWidth?: number | string;
-  stroke?: string; // rgb(0,0,0) pink
-  x?: number;
-  y?: number;
-  rx?: number;
-  ry?: number;
-  width?: number | string;
-  height?: number | string; // px
-  d?: string;
-
-  [key: string]: IPrimitive | object | Signal<IPrimitive> | Computed<IPrimitive>;
-}
+import type { TypeProps, ITypeNode } from '../type-node/type-node.interface';
 
 /**
  * 虚拟 DOM 节点的 *字面量* 表示。
@@ -30,8 +9,8 @@ export interface ITypeAttribute {
 export interface ITypeElement extends ITypeNode {
   className: string; // todo enum ??
   // nodeValue?: undefined;
-  params: ITypeConfig;
-  childNodes: Array<ITypeNode>; // contents todo 也是可以为空的啊 ？？？
+  params: TypeProps;
+  childNodes: Array<ITypeNode | undefined>; // contents todo 也是可以为空的啊 ？？？
 }
 
 export interface IBoundBox {
@@ -40,6 +19,9 @@ export interface IBoundBox {
   width: string | number;
   height: string | number;
 }
+
+export type TdDom = HTMLElement | SVGElement | ShadowRoot | DocumentFragment | Document;
+export type ElProp =  string | TdDom | null | undefined;
 
 // export interface IElementItem extends ITypeNode {
 //   TypeClass:
