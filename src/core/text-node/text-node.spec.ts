@@ -2,6 +2,7 @@
 import { Span } from '../../components/html-element/span/span.class';
 import { TextNode } from './text-node.class';
 import { signal, Signal } from '@type-dom/signals';
+import { NodeName } from '../enums';
 
 describe('TextNode', () => {
   let textNode: TextNode;
@@ -20,7 +21,7 @@ describe('TextNode', () => {
   it('should be created with correct properties', () => {
     expect(textNode).toBeDefined();
     expect(textNode.className).toBe('TextNode');
-    expect(textNode.nodeName).toBe('#text');
+    expect(textNode.nodeName).toBe(NodeName.TEXT);
     expect(textNode.nodeValue).toBe('test');
     expect(textNode.dom).toBeUndefined();
     expect(textNode.rendered).toBe(false);

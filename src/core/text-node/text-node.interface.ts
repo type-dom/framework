@@ -1,4 +1,4 @@
-import type { ITypeConfig, ITypeNode } from '../type-node/type-node.interface';
+import type { TypeProps, ITypeNode } from '../type-node/type-node.interface';
 
 /**
  * @author xjf
@@ -16,9 +16,9 @@ import type { ITypeConfig, ITypeNode } from '../type-node/type-node.interface';
  */
 export interface ITextNode extends ITypeNode {
   className?: 'TextNode';
-  params?: ITypeConfig;
+  params?: TypeProps;
   // props: {
-  //   nodeName: '#text';
+  //   nodeName: NodeName.TEXT;
   //   nodeValue: string | number;
   // }
 }

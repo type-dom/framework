@@ -1,11 +1,13 @@
-import { Computed, effect, Signal } from '@type-dom/signals';
-import { Dayjs } from 'dayjs';
+import { Computed, isRef, Signal, toRaw, watch } from '@type-dom/signals';
 import { isMustache } from '@type-dom/utils';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { mustacheNode } from '../util';
-import type { ITypeConfig } from '../type-node/type-node.interface';
+import { LifecycleHooks, NodeName } from '../enums';
+import type { TypeProps } from '../type-node/type-node.interface';
 import type { ITextNode } from './text-node.interface';
+import { ElProp } from '../type-element/type-element.interface';
+import { useTextRender } from './useRender';
 
 /**
  * 文本节点类
@@ -19,7 +21,7 @@ export class TextNode extends TypeNode implements ITextNode {
   /**
    * 节点名称，值为 '#text'
    */
-  nodeName: '#text';
+  nodeName: NodeName.TEXT;
   /**
    * 节点值，类型为字符串
    */
@@ -49,43 +51,27 @@ export class TextNode extends TypeNode implements ITextNode {
    * @param parent 父级节点
    */
   constructor(
-    text: boolean | string | number | Dayjs | Signal | Computed = '\u200c',
+    text: string | number | Signal<string | number> | Computed<string | number> = '\u200c',
     parent?: TypeElement
   ) {
     super();
     this.rendered = false;
     this.className = 'TextNode';
-    // this.params = { nodeValue: text };
-    // this.props.text = text;
-    this.nodeName = '#text';
-    // if (text instanceof XProxy) {
-    //   this.nodeValue = text.value;
-    //   text.addDep((newValue: string) => {
-    //     // console.error('TextNode addDep newValue is ', newValue);
-    //     this.setText(newValue);
-    //   });
-    // } else
-    if (text instanceof Signal) {
-      // console.warn('TextNode useSignal text is ', text);
-      this.nodeValue = text.get();
-      effect(() => {
-        const newVal = text.get();
-        if (newVal !== this.nodeValue) {
-          // console.warn('TextNode useSignal text is ', text);
-          this.nodeValue = text.get();
-          this.setText(this.nodeValue);
-        }
-      })
-    } else if (text instanceof Computed) {
-      this.nodeValue = text.get();
-      effect(() => {
-        // console.warn('TextNode useComputed text is ', text);
-        const newVal = text.get();
-        if (newVal !== this.nodeValue) {
-          this.nodeValue = text.get();
-          this.setText(this.nodeValue);
-        }
-      })
+    this.nodeName = NodeName.TEXT;
+    if (parent) {
+      this.parent = parent;
+    }
+    if (isRef(text)) {
+      // console.warn('TextNode isRef text is ', text);
+      this.nodeValue = toRaw(text).toString();
+      setTimeout(() => { // todo 只有这样才生效 ？？？？？
+        // slotChildren 在constructor中调用
+        watch(() => toRaw(text), (newVal, oldVal) => {
+          // console.warn('TextNode watch text is ', this.nodeValue);
+          this.nodeValue = newVal?.toString();
+          this.setText(newVal);
+        })
+      }, 0)
     } else {
       this.nodeValue = String(text);
       if (isMustache(String(text))) {
@@ -96,9 +82,6 @@ export class TextNode extends TypeNode implements ITextNode {
         //   });
         // }
       }
-    }
-    if (parent) {
-      this.parent = parent;
     }
   }
 
@@ -124,7 +107,7 @@ export class TextNode extends TypeNode implements ITextNode {
     return this.nodeValue.length;
   }
 
-  useParams<T extends ITypeConfig>(params = {} as T): T {
+  useParams<T extends TypeProps>(params = {} as T): T {
     this.params = params;
     this.assignProps(params);
     return this.props as T;
@@ -135,21 +118,9 @@ export class TextNode extends TypeNode implements ITextNode {
    *
    * @param text 文本内容
    */
-  setText(text: boolean | string | number | Signal | Computed): void {
-    if (text instanceof Signal || text instanceof Computed) {
-      this.nodeValue = String(text.get());
-      effect(() => {
-        const newValue = String(text.get());
-        if (newValue !== this.nodeValue) {
-          // console.log('newValue is ', newValue);
-          this.nodeValue = newValue;
-          this.mount();
-        }
-      })
-    } else {
-      this.nodeValue = String(text);
-      this.mount();
-    }
+  setText(text: boolean | string | number): void {
+    this.nodeValue = String(text);
+    this.mount();
   }
 
   /**
@@ -200,7 +171,7 @@ export class TextNode extends TypeNode implements ITextNode {
     // this.childNodes = [newContent];
     this.setText(newContent);
     // todo error 光标移到头部。 ??触发selectionchange??
-    this.mount(); //
+    // this.mount(); //
     // this.parent?.mount();
   }
 
@@ -245,21 +216,17 @@ export class TextNode extends TypeNode implements ITextNode {
     // this.parent?.mount();
   }
 
-  mount(el?: HTMLElement | SVGElement | DocumentFragment | ShadowRoot | string) {
+  mount(el?: ElProp) {
+    this.dom?.remove();
     this.created?.();
     this.render();
     this.beforeMount?.();
     if (this.dom) {
-      let appEl: HTMLElement | SVGElement | DocumentFragment | ShadowRoot | null | undefined;
-      if (
-        el instanceof HTMLElement
-        || el instanceof SVGElement
-        || el instanceof ShadowRoot
-        || el instanceof DocumentFragment
-      ) {
-        appEl = el;
-      } else if (typeof el === 'string') {
+      let appEl: Exclude<ElProp, string>;
+      if (typeof el === 'string') {
         appEl = document.querySelector<HTMLElement>(el);
+      } else if (el) {
+        appEl = el;
       } else {
         appEl = this.parent?.elementParent?.dom;
       }
@@ -271,44 +238,29 @@ export class TextNode extends TypeNode implements ITextNode {
 
   // todo 钩子函数
   render(): void {
-    // 渲染出来的值，在 模板语法中需要转换的。
-    let text = this.nodeValue;
-    if (isMustache(this.nodeValue)) {
-      // if (this.nodeValue === '基础用法 {{ title }}') {
-      //   console.log('this is ', this);
-      // }
-      // todo 监听 itemData change
-      // if (this.itemData) {
-      //   text = mustache(this.nodeValue, this.itemData);
-      // }
-      const context = this.getContext();
-      if (context) {
-        text = mustacheNode(this.nodeValue, context);
-      }
-    }
-    if (this.dom === undefined) {
-      this.dom = document.createTextNode(text.toString());
-    } else {
-      this.dom.textContent = text ?? ''; // '\u200b'; // &zwnj; \u200c &zwsp;
-    }
-    this.rendered = true;
+    useTextRender(this);
   }
 
-  update(el?: string | HTMLElement | SVGElement | ShadowRoot | DocumentFragment): void {
-    let appEl: HTMLElement | SVGElement | ShadowRoot | DocumentFragment | null | undefined;
-    if (
-      el instanceof HTMLElement ||
-      el instanceof SVGElement ||
-      el instanceof ShadowRoot
-    ) {
-      appEl = el;
-    } else if (typeof el === 'string') {
+  update(el?: ElProp): void {
+    let appEl: Exclude<ElProp, string>;
+    if (typeof el === 'string') {
       appEl = document.querySelector<HTMLElement>(el);
+    } else {
+      appEl = el;
     }
     this.render();
     if (appEl && this.dom) {
       appEl.appendChild(this.dom);
     }
     this.updated?.();
+  }
+
+  override unmount(root?: TypeElement) {
+    // TypeElement 需要单独清理事件
+    this.lifeCycles[LifecycleHooks.BEFORE_UNMOUNT]?.forEach((fn) => fn());
+    this.clearEvents();
+    super.unmount(root);
+    this.nodeValue = '';
+    this.lifeCycles[LifecycleHooks.UNMOUNTED]?.forEach((fn) => fn());
   }
 }
