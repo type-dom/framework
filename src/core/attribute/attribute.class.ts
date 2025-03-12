@@ -1,12 +1,23 @@
-import { camelToDash, isArray, isString } from '@type-dom/utils';
+import {
+  addClass,
+  camelToDash,
+  isArray,
+  isString, isBoolean, isUndefined, removeClass, isFalse, isNumber,
+  IPrimitive
+} from '@type-dom/utils';
+import {
+  MaybeRef,
+  Ref,
+  unref,
+  isRef,
+  effect, computed, toRaw
+} from '@type-dom/signals';
 import { XElement } from '../../components/x-element/x-element.class';
-import { vHash } from '../type-element/type-element.abstract';
-import { ITypeAttribute } from '../type-element/type-element.interface';
+import { isObject } from '../../use/utils';
+
 import { TypeHtml } from '../type-html/type-html.abstract';
 import { TypeSvg } from '../type-svg/type-svg.abstract';
-import { Computed, isRef, MaybeRef, Signal, unref, watch } from '@type-dom/signals';
-import { isObject } from '../../use/utils';
-import { IPrimitive } from '../../interface';
+import type { IClass, ITypeAttribute } from './attribute.interface';
 
 export class Attribute {
   private el: TypeHtml | TypeSvg | XElement;
@@ -36,15 +47,13 @@ export class Attribute {
     }
   }
 
-  addObj<T extends ITypeAttribute>(attrObj?: MaybeRef<T>): void {
-    if (attrObj === undefined) {
-      return;
-    }
-    const obj = unref(attrObj);
-    for (const key in obj) {
-      if (Object.hasOwnProperty.call(obj, key)) {
-        const value = obj[key] as string | number;
-        this.add(key, value);
+  addObj<T extends ITypeAttribute>(attrObj?: T): void {
+    if (attrObj) {
+      for (const key in attrObj) {
+        if (Object.hasOwnProperty.call(attrObj, key)) {
+          const value = attrObj[key];
+          this.add(key, value);
+        }
       }
     }
   }
@@ -101,19 +110,17 @@ export class Attribute {
   }
 
   // 添加属性
-  add(key: string, value?: string | number | boolean | Computed<string[]>): void {
-    // if (key === 'class') {
-    //   this.addClass(value as string | Computed<string[]>);
-    // } else {
-    this.getObj()[key] = value;
-    // }
+  add(key: string, value?: MaybeRef<IPrimitive | object | IPrimitive[]> | IClass): void {
+    if (key === 'class') { // class特殊处理
+      this.addClass(value as IClass);
+    } else {
+      this.getObj()[key] = value;
+    }
   }
 
   // 渲染属性
   //  todo 如何新的属性值和原来的属性值一样，要拦截掉。
-  private render(key: string, value?: string | number | boolean
-    | Signal<IPrimitive>
-    | Computed<string | (string | Record<string, any>)[]>): void {
+  private render(key: string, value?: MaybeRef<IPrimitive> | IClass): void {
     // dom渲染时， 驼峰转中划线连接
     if (
       key !== 'viewBox' &&
@@ -122,113 +129,62 @@ export class Attribute {
     ) {
       key = camelToDash(key);
     }
-    // if (!this.el.dom) {
-    //   this.el.dom = document.createElement(this.el.props.nodeName || 'div');
-    // }
-    const dom = this.el.dom;
+    if (key === 'class') {
+      this.renderClass(value as IClass);
+      return;
+    }
+    let dom = this.el.dom;
+    if (!dom) {
+      this.el.createDom(); // this.el不可能是 DocumentFragment;
+      dom = this.el.dom;
+    }
     if (dom) {
-      if (value instanceof Computed) {
-        // console.warn('value instanceof Computed . ');
-        if (key === 'class') {
-          const cls = value.get();
-          if (isArray(cls)) {
-            // todo 判断子元素是字符串还是对象。如果是对象，要拆解对象
-            const kls: string[] = [];
-            for (const item of cls) {
-              if (isObject(item)) {
-                for (const key in item) {
-                  if (Object.hasOwnProperty.call(item, key)) {
-                    const value = (item as any)[key];
-                    if (value) {
-                      kls.push(key);
-                    }
-                  }
-                }
-              } else if (typeof item === 'string' && item) {
-                kls.push(item);
-              }
-            }
-            this.render('class', kls.join(' '));
-          }
-          watch(value, (newValue) => {
-            // console.warn('watch attribute class , newValue is ', newValue);
-            if (isArray(newValue)) {
-              // const classStr = newValue.filter(item => item !== '').join(' ');
-              // dom.setAttribute('class', classStr);
-              const kls: string[] = [];
-              for (const item of newValue) {
-                if (isObject(item)) {
-                  for (const key in item) {
-                    if (Object.hasOwnProperty.call(item, key)) {
-                      const value = (item as any)[key];
-                      if (value) {
-                        kls.push(key);
-                      }
-                    }
-                  }
-                } else if (typeof item === 'string' && item) {
-                  kls.push(item);
-                }
-              }
-              this.render('class', kls.join(' '));
-            } else {
-              // console.warn('computed value is not array');
-              dom.setAttribute('class', newValue);
-            }
-          });
-        } else { // 非 class 属性
-          const raw = value.get();
-          if (value.get() === dom.getAttribute(key)) {
+      // 非 class 属性
+      const oldRaw = toRaw(value);
+      effect(() => {
+        // console.warn('value is ref . ');
+        const raw = toRaw(value);
+        if (String(raw) === dom.getAttribute(key)) {
+          return;
+        } else if (isString(raw)) {
+          // (dom as any)[key] = raw; // SVGElement 中有问题；
+          dom.setAttribute(key, raw);
+        } else if (raw === true) {
+          // if (key === 'disabled') {
+          //   console.warn('key is disabled . ')
+          // }
+          // console.warn('key is ' + key + ' . ')
+          // console.warn('raw is true . ')
+          if (dom.getAttribute(key)) {
             return;
-          } else if (isString(raw)) {
-            dom.setAttribute(key, raw);
-            watch(value, (newValue) => {
-              // console.warn('watch attribute , newValue is ', newValue);
-              if (isString(newValue)) {
-                dom.setAttribute(key, newValue);
-              } else {
-                console.warn('computed value is not string');
-              }
-            });
-          } else {
-            //   todo raw 是字面量时，只有 class 属性才会有
           }
-        }
-        return;
-      } else if (value instanceof Signal) {
-        // console.warn('attribute value instanceof Signal . ');
-        if (value.get() === dom.getAttribute(key)) {
-          return;
+          (dom as any)[key] = true;
+          // dom.setAttribute(key, '');
+        } else if (raw === false) {
+          if (!dom.getAttribute(key)) {
+            return;
+          }
+          dom.removeAttribute(key);
+        } else if (raw === undefined || raw === null) {
+          // console.log('value is ', value);
+          if (!dom.getAttribute(key)) {
+            return;
+          }
+          dom.removeAttribute(key);
+        } else if (isNumber(raw)) {
+          const val = raw.toString();
+          // (dom as any)[key] = val; // SVGElement 中有问题；
+          dom.setAttribute(key, val);
         } else {
-          dom.setAttribute(key, value.get()?.toString());
-          watch(value, (newValue) => {
-            // console.warn('watch attribute , newValue is ', newValue);
-            dom.setAttribute(key, newValue?.toString() || '');
-          });
+          // console.warn('raw is not normal, is ', raw);
+          const val = raw!.toString();
+          if (dom.getAttribute(key) === val) {
+            return;
+          }
+          (dom as any)[key] = val;
+          // dom.setAttribute(key, val);  // setAttribute方法存在问题
         }
-      } else if (value === true) {
-        if (dom.getAttribute(key) === '') {
-          return;
-        }
-        dom.setAttribute(key, '');
-      } else if (value === false) {
-        if (!dom.getAttribute(key)) {
-          return;
-        }
-        dom.removeAttribute(key);
-      } else if (value === undefined) {
-        // console.log('value is ', value);
-        if (!dom.getAttribute(key)) {
-          return;
-        }
-        dom.removeAttribute(key);
-      } else {
-        const val = value.toString();
-        if (dom.getAttribute(key) === val) {
-          return;
-        }
-        dom.setAttribute(key, val);
-      }
+      })
     } else {
       throw Error('dom is undefined');
     }
@@ -270,48 +226,140 @@ export class Attribute {
     this.renderClass(className);
   }
 
-  addClass(className: string | Computed): void {
+  // todo
+  //    add empty string , or undefine , will remove existed class ?
+  addClass(classValue: IClass): void {
     // 要先判断className是否已经存在
-    if (className instanceof Computed) {
-      this.add('class', className);
-    } else {
-      const oldClass = this.getObj().class;
-      if (typeof oldClass === 'string') {
+    let oldClass = this.obj.class;
+    if (isUndefined(classValue) || isBoolean(classValue)) {
+      return;
+    }
+    if (isUndefined(oldClass)) {
+      this.obj.class = classValue;
+    } else if (isString(oldClass)) {
+      if (isString(classValue)) {
         // console.warn('addClass string . className is ', className);
         // 如果已有的样式中已经包含了了该样式，则不再添加。
-        if (oldClass.indexOf(className) !== -1) {
+        if (oldClass.indexOf(classValue) !== -1) {
           return;
         }
-        this.getObj().class += ' ' + className;
+        oldClass += ' ' + classValue;
+        this.obj.class = oldClass;
+      } else if (isArray(classValue)) {
+        if (classValue.indexOf(oldClass) === -1) {
+          classValue.unshift(oldClass);
+        }
+        this.obj.class = classValue;
+      } else if (isRef(classValue)) {
+        // classValue.set([classValue.get() as string, oldClass as string])
+        const compute = computed(() => [oldClass, classValue.get()]);
+        this.obj.class = compute;
+      } else if (isObject(classValue)) { // Record<string, MaybeRef<boolean | unknown>>
+        if (!Object.prototype.hasOwnProperty.call(classValue, oldClass)) {
+          classValue[oldClass] = true;
+        } else {
+          if (isRef(classValue[oldClass])) {
+            (classValue[oldClass] as Ref).set(true);
+          } else {
+            classValue[oldClass] = true;
+          }
+        }
+        this.obj.class = classValue;
       } else {
-        // console.warn('addClass other . className is ', className);
-        this.add('class', className);
+        console.log('classValue is ', classValue);
       }
+    } else if (isArray(oldClass)) {
+      if (isString(classValue)) {
+        if (oldClass.indexOf(classValue) === -1) {
+          oldClass.push(classValue);
+        }
+      } else if (isArray(classValue)) {
+        classValue.forEach((item) => {
+          // todo 完善逻辑判断
+          if ((oldClass as Array<any>).indexOf(item) === -1) {
+            (oldClass as Array<any>).push(item);
+          }
+        })
+      } else if (isRef(classValue)) {
+        // todo
+        oldClass.push(classValue);
+      } else if (isObject(classValue)) {
+        oldClass.push(classValue);
+      } else {
+        console.log('classValue is ', classValue);
+      }
+    } else if (isRef(oldClass)) {
+      // todo 是否影响 响应式监听
+      //    是否会有重复的 className
+      this.obj.class = computed(() => [oldClass, classValue]);
+    } else if (isObject(oldClass)) {
+      this.obj.class = computed(() => [oldClass, classValue]);
+    } else {
+      console.log('oldClass is ', oldClass);
     }
   }
 
-  renderClass(className: string | Computed) {
-    this.render('class', className);
-    // if (className instanceof Computed) {
-    //   const cls = className.get();
-    //   if (isArray(cls)) {
-    //     this.render('class', cls.join(' '));
-    //   }
-    //   // watch(className, (newValue) => {
-    //   //   // console.warn('watch className, newValue is ', newValue);
-    //   //   if (isArray(newValue)) {
-    //   //     const classStr = newValue.filter(item => item !== '').join(' ');
-    //   //     this.render('class', classStr);
-    //   //   } else {
-    //   //   }
-    //   // });
-    // } else {
-    //   this.render('class', className);
-    // }
+  renderClass(classValue: IClass) {
+    effect(() => {
+      const kls = flattenClass(classValue);
+      // console.error('kls is ', kls);
+      // console.warn('watch attribute class , newValue is ', newValue);
+      const dom = this.el.dom;
+      if (!dom) {
+        this.el.createDom();
+      }
+      // const classList = dom?.classList;
+      // console.log('classList is ', classList);
+      // todo 已有的样式应该如何处理 ？？？？
+      addClass(dom, kls);
+    });
   }
 
-  // removeClass(className: string): void {
-  //   this.getObj().class && this.getObj().class?.replace(className, '');
-  //   this.el.dom?.classList.remove(className);
-  // }
+  removeClass(className: string): void {
+    // this.getObj().class && this.getObj().class?.replace(className, '');
+    // this.el.dom?.classList.remove(className);
+    const dom = this.el.dom;
+    if (dom) {
+      removeClass(dom, className);
+    }
+
+  }
+}
+
+function flattenClass(obj: IClass, result: string[] = []): string[] {
+  if (Array.isArray(obj)) {
+    obj.forEach(item => flattenClass(item, result));
+  } else if (isRef(obj)) {
+    // console.error('flattenClass obj is ', obj);
+    flattenClass(toRaw(obj), result);
+  } else if (typeof obj === 'object' && obj !== null) {
+    for (const key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        const value = toRaw(obj[key]);
+        if (isString(value)) {
+          value && result.push(key);
+        } else if (isArray(value)) {
+          value.forEach(item => flattenClass(item, result));
+        } else if (value) {
+          // 如果需要将布尔值或 undefined 转换为字符串，可以在这里处理
+          // result.push(String(value));
+          if (value) {
+            key && result.push(key);
+          }
+        } else {
+          console.warn('class value is null or {} ,  is ', value);
+        }
+      }
+    }
+  } else {
+    const value = toRaw(obj);
+    if (isString(value)) {
+      value && result.push(value);
+    } else if (typeof value === 'boolean' || value === undefined) {
+      // 如果需要将布尔值或 undefined 转换为字符串，可以在这里处理
+      // result.push(String(value));
+      console.warn('class raw value is boolean or undefined , value is ',value)
+    }
+  }
+  return result;
 }
