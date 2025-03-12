@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeSummary extends ITypeHtml {
-  props: ITypeSummaryConfig;
+  props: TypeSummaryProps;
 }
 
-export interface ITypeSummaryConfig extends ITypeHtmlConfig {
+export interface TypeSummaryProps extends HtmlProps {
   nodeName: 'summary';
 }

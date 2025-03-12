@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeMap, ITypeMapConfig } from './map.interface';
+import { ITypeMap, TypeMapProps } from './map.interface';
 
 export abstract class TypeMap extends TypeHtml implements ITypeMap {
-  props: ITypeMapConfig;
+  props: TypeMapProps;
   dom?: HTMLMapElement;
 
   protected constructor() {

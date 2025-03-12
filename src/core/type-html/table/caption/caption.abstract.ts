@@ -1,8 +1,8 @@
 import { TypeHtml } from '../../type-html.abstract';
-import { ITypeTableCaption, ITypeTableCaptionConfig } from './caption.interface';
+import { ITypeTableCaption, TypeTableCaptionProps } from './caption.interface';
 
 export abstract class TypeTableCaption extends TypeHtml implements ITypeTableCaption {
-  props: ITypeTableCaptionConfig;
+  props: TypeTableCaptionProps;
   dom?: HTMLTableCaptionElement;
 
   protected constructor() {

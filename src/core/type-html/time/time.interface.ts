@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeTime extends ITypeHtml {
-  props: ITypeTimeConfig;
+  props: TypeTimeProps;
 }
 
-export interface ITypeTimeConfig extends ITypeHtmlConfig {
+export interface TypeTimeProps extends HtmlProps {
   nodeName?: 'time';
 }

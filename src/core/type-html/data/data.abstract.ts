@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeData, ITypeDataConfig } from './data.interface';
+import { ITypeData, TypeDataProps } from './data.interface';
 
 export abstract class TypeData extends TypeHtml implements ITypeData {
-  props: ITypeDataConfig;
+  props: TypeDataProps;
   dom?: HTMLDataElement;
 
   protected constructor() {

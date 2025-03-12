@@ -14,13 +14,11 @@ export abstract class TypeRoot extends TypeHtml implements ITypeRoot {
   dom?: HTMLElement;
   override isRoot: true;
 
-  // el?: HTMLElement;
   protected constructor(nodeName?: string) {
     super();
     this.isRoot = true; // 根节点
     this.assignProps({
       nodeName: nodeName || 'div'
     })
-    // this.dom = document.createElement(this.nodeName);
   }
 }

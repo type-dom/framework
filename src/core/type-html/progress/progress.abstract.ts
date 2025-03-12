@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeProgress, ITypeProgressConfig } from './progress.interface';
+import { ITypeProgress, TypeProgressProps } from './progress.interface';
 
 export abstract class TypeProgress extends TypeHtml implements ITypeProgress {
-  props: ITypeProgressConfig;
+  props: TypeProgressProps;
   dom?: HTMLProgressElement;
 
   protected constructor() {

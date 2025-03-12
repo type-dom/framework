@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeSummary, ITypeSummaryConfig } from './summary.interface';
+import { ITypeSummary, TypeSummaryProps } from './summary.interface';
 
 export abstract class TypeSummary extends TypeHtml implements ITypeSummary {
-  props: ITypeSummaryConfig;
+  props: TypeSummaryProps;
   dom?: HTMLElement;
 
   protected constructor() {

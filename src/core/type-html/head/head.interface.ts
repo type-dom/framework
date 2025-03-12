@@ -1,12 +1,12 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeHead extends ITypeHtml {
-  props: ITypeHeadConfig;
+  props: TypeHeadProps;
 }
 
 /**
  * <h1-h6> 标题信息
  */
-export interface ITypeHeadConfig extends ITypeHtmlConfig {
+export interface TypeHeadProps extends HtmlProps {
   nodeName?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 }

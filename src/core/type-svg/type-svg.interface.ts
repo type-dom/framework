@@ -1,8 +1,6 @@
+import { ITypeAttribute } from '../attribute/attribute.interface';
 import type { ITextNode } from '../text-node/text-node.interface';
-import type {
-  ITypeAttribute,
-  ITypeElement
-} from '../type-element/type-element.interface';
+import type { ITypeElement } from '../type-element/type-element.interface';
 
 export interface ITypeSvg extends ITypeElement {
   attrObj?: ITypeSvgAttribute;

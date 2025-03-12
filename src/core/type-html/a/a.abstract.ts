@@ -1,9 +1,9 @@
 import { TypeHtml } from '../type-html.abstract';
-import type { ITypeA, ITypeAConfig } from './a.interface';
+import type { ITypeA, TypeAProps } from './a.interface';
 
 export abstract class TypeA extends TypeHtml implements ITypeA {
   dom?: HTMLAnchorElement;
-  override props: ITypeAConfig;
+  override props: TypeAProps;
 
   protected constructor() {
     super();

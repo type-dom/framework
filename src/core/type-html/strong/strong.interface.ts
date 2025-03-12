@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeStrong extends ITypeHtml {
-  props: ITypeStrongConfig;
+  props: TypeStrongProps;
 }
 
-export interface ITypeStrongConfig extends ITypeHtmlConfig {
+export interface TypeStrongProps extends HtmlProps {
   nodeName?: 'strong';
 }

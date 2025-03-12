@@ -4,11 +4,11 @@
  *
  * @extends ITypeElement 继承自ITypeElement接口，扩展html特定的属性和方法。
  */
-import { ITypeConfig, ITypeNode } from '../../core/type-node/type-node.interface';
+import { TypeProps, ITypeNode } from '../../core/type-node/type-node.interface';
 import { ITypeElement } from '../../core/type-element/type-element.interface';
 
 export interface ITypeHtml extends ITypeElement {
-  props: ITypeHtmlConfig;
+  props: HtmlProps;
   /**
    * 存储子节点的数组，每个子节点都是ITypeNode类型。
    * 用于描述html元素下的子元素集合。
@@ -16,6 +16,6 @@ export interface ITypeHtml extends ITypeElement {
   childNodes: Array<ITypeNode>;
 }
 
-export interface ITypeHtmlConfig extends ITypeConfig {
+export interface HtmlProps extends TypeProps {
   nodeName?: keyof HTMLElementTagNameMap | 'menuitem' | string;
 }

@@ -1,8 +1,8 @@
 import { TypeHtml } from '../../type-html.abstract';
-import { ITypeTableColGroup, ITypeTableColGroupConfig } from './col-group.interface';
+import { ITypeTableColGroup, TypeTableColGroupProps } from './col-group.interface';
 
 export abstract class TypeTableColGroup extends TypeHtml implements ITypeTableColGroup {
-  props: ITypeTableColGroupConfig;
+  props: TypeTableColGroupProps;
   dom?: HTMLTableColElement;
 
   protected constructor() {

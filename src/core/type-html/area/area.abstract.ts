@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import type { ITypeArea, ITypeAreaConfig } from './area.interface';
+import type { ITypeArea, TypeAreaProps } from './area.interface';
 
 export abstract class TypeArea extends TypeHtml implements ITypeArea {
-  props: ITypeAreaConfig;
+  props: TypeAreaProps;
   dom?: HTMLAreaElement;
 
   protected constructor() {

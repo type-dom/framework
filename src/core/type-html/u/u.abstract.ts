@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeU, ITypeUConfig } from './u.interface';
+import { ITypeU, TypeUProps } from './u.interface';
 
 export abstract class TypeU extends TypeHtml implements ITypeU {
-  props: ITypeUConfig;
+  props: TypeUProps;
   dom?: HTMLElement;
 
   protected constructor() {

@@ -1,5 +1,5 @@
 export { TypeTable } from './table.abstract';
-export type { ITypeTable } from './table.interface';
+export type * from './table.interface';
 export { TypeTableBody } from './body/body.abstract';
 export type { ITypeTableBody } from './body/body.interface';
 export { TypeTableCaption } from './caption/caption.abstract';

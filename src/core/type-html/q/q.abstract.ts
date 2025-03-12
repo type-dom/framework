@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeQ, ITypeQConfig } from './q.interface';
+import { ITypeQ, TypeQProps } from './q.interface';
 
 export abstract class TypeQ extends TypeHtml implements ITypeQ {
-  props: ITypeQConfig;
+  props: TypeQProps;
   dom?: HTMLQuoteElement;
 
   protected constructor() {

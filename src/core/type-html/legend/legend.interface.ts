@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeLegend extends ITypeHtml {
-  props: ITypeLegendConfig;
+  props: TypeLegendProps;
 }
 
-export interface ITypeLegendConfig extends ITypeHtmlConfig {
+export interface TypeLegendProps extends HtmlProps {
   nodeName?: 'legend';
 }

@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeSource, ITypeSourceConfig } from './source.interface';
+import { ITypeSource, TypeSourceProps } from './source.interface';
 
 export abstract class TypeSource extends TypeHtml implements ITypeSource {
-  props: ITypeSourceConfig;
+  props: TypeSourceProps;
   dom?: HTMLSourceElement;
 
   protected constructor() {

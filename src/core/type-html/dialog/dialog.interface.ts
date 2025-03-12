@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeDialog extends ITypeHtml {
-  props: ITypeDialogConfig;
+  props: TypeDialogProps;
 }
 
-export interface ITypeDialogConfig extends ITypeHtmlConfig {
+export interface TypeDialogProps extends HtmlProps {
   nodeName?: 'dialog';
 }

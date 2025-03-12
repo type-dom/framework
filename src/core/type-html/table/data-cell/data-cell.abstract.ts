@@ -1,8 +1,8 @@
 import { TypeHtml } from '../../type-html.abstract';
-import { ITypeTableDataCell, ITypeTableDataCellConfig } from './data-cell.interface';
+import { ITypeTableDataCell, TypeTableDataCellProps } from './data-cell.interface';
 
 export abstract class TypeTableDataCell extends TypeHtml implements ITypeTableDataCell {
-  props: ITypeTableDataCellConfig;
+  props: TypeTableDataCellProps;
   dom?: HTMLTableCellElement;
 
   protected constructor() {

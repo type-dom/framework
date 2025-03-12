@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeAside, ITypeAsideConfig } from './aside.interface';
+import { ITypeAside, TypeAsideProps } from './aside.interface';
 
 export abstract class TypeAside extends TypeHtml implements ITypeAside {
-  props: ITypeAsideConfig;
+  props: TypeAsideProps;
   dom?: HTMLElement;
 
   protected constructor() {

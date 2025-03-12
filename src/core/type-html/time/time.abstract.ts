@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeTime, ITypeTimeConfig } from './time.interface';
+import { ITypeTime, TypeTimeProps } from './time.interface';
 
 export abstract class TypeTime extends TypeHtml implements ITypeTime {
-  props: ITypeTimeConfig;
+  props: TypeTimeProps;
   dom?: HTMLTimeElement;
 
   protected constructor() {

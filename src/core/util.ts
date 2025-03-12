@@ -1,10 +1,10 @@
-import { deepClone, isArray } from '@type-dom/utils';
-import { Computed, Signal } from '@type-dom/signals';
+import { deepClone, isArray, isFunction } from '@type-dom/utils';
+import { Computed, isRef, Signal, toRaw } from '@type-dom/signals';
 import { IJsonData, IJsonDataProp } from '../interface';
 import { TypeNode } from './type-node/type-node.abstract';
 import { ITypeElement } from './type-element/type-element.interface';
 import { ITextNode } from './text-node/text-node.interface';
-import { ISlotConfig, ISlotRaw, ISlotRef, ITypeNode } from './type-node/type-node.interface';
+import { ISlotItem, ISlotRaw, ISlotRef, ITypeNode } from './type-node/type-node.interface';
 import { TypeHtml } from './type-html/type-html.abstract';
 import { TypeSvg } from './type-svg/type-svg.abstract';
 
@@ -29,7 +29,6 @@ export function toJSON(element: TypeHtml | TypeSvg): ITypeElement {
         return toJSON(child);
       } else {
         return {
-          // nodeName: '#text',
           props: {
             nodeValue: child.props.nodeValue // textContent
           }
@@ -155,7 +154,7 @@ export function defineNodeProperty(
   });
 }
 
-export function arraySlot<T extends ISlotRaw = ISlotRaw>(slot?: ISlotConfig): (T | ISlotRef<T>)[] {
+export function arraySlot<T extends ISlotRaw = ISlotRaw>(slot?: ISlotItem<T>): (T | ISlotRef<T>)[] {
   if (slot === undefined) {
     return [];
   }
@@ -164,4 +163,35 @@ export function arraySlot<T extends ISlotRaw = ISlotRaw>(slot?: ISlotConfig): (T
   } else {
     return [slot] as (T | ISlotRef<T>)[];
   }
+}
+
+
+function rawSlot<T extends ISlotRaw>(item: ISlotItem<T>): ISlotRaw[] {
+  const result: ISlotRaw[] = [];
+
+  function processItem(item?: ISlotItem<T>): void {
+    if (isFunction(item)) {
+      const rawItem = item() as T;
+      if (isArray(rawItem)) {
+        rawItem.forEach(subItem => processItem(subItem));
+      } else if (isRef(rawItem)) {
+        result.push(toRaw(rawItem));
+      } else {
+        if (rawItem !== undefined) {
+          result.push(rawItem);
+        }
+      }
+    } else if (Array.isArray(item)) {
+      item.forEach(subItem => processItem(subItem));
+    } else if (isRef(item)) {
+      result.push(toRaw(item));
+    } else {
+      if (item !== undefined) {
+        result.push(item as ISlotRaw);
+      }
+    }
+  }
+
+  processItem(item);
+  return result;
 }

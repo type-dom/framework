@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeSamp, ITypeSampConfig } from './samp.interface';
+import { ITypeSamp, TypeSampProps } from './samp.interface';
 
 export abstract class TypeSamp extends TypeHtml implements ITypeSamp {
-  props: ITypeSampConfig;
+  props: TypeSampProps;
   dom?: HTMLElement;
 
   protected constructor() {

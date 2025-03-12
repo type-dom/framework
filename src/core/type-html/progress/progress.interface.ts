@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeProgress extends ITypeHtml {
-  props: ITypeProgressConfig;
+  props: TypeProgressProps;
 }
 
-export interface ITypeProgressConfig extends ITypeHtmlConfig {
+export interface TypeProgressProps extends HtmlProps {
   nodeName: 'progress';
 }

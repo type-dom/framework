@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeRuby, ITypeRubyConfig } from './ruby.interface';
+import { ITypeRuby, TypeRubyProps } from './ruby.interface';
 
 export abstract class TypeRuby extends TypeHtml implements ITypeRuby {
-  props: ITypeRubyConfig;
+  props: TypeRubyProps;
   dom?: HTMLElement;
 
   protected constructor() {

@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeCanvas, ITypeCanvasConfig } from './canvas.interface';
+import { ITypeCanvas, TypeCanvasProps } from './canvas.interface';
 
 export abstract class TypeCanvas extends TypeHtml implements ITypeCanvas {
-  props: ITypeCanvasConfig;
+  props: TypeCanvasProps;
   dom?: HTMLCanvasElement;
 
   protected constructor() {

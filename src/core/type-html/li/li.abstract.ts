@@ -1,11 +1,11 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeLI, ITypeLIConfig } from './li.interface';
+import { ITypeLI, TypeLIProps } from './li.interface';
 
 /**
  * 列表项 list item
  */
 export abstract class TypeLI extends TypeHtml implements ITypeLI {
-  props: ITypeLIConfig;
+  props: TypeLIProps;
   dom?: HTMLLIElement;
 
   protected constructor() {

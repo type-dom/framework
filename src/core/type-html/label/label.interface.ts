@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeLabel extends ITypeHtml {
-  props: ITypeLabelConfig;
+  props: TypeLabelProps;
 }
 
-export interface ITypeLabelConfig extends ITypeHtmlConfig {
+export interface TypeLabelProps extends HtmlProps {
   nodeName?: 'label';
 }

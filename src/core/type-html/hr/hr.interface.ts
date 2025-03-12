@@ -1,12 +1,12 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 /**
  * Horizontal Rule
  */
 export interface ITypeHr extends ITypeHtml {
-  props: ITypeHrConfig;
+  props: TypeHrProps;
 }
 
-export interface ITypeHrConfig extends ITypeHtmlConfig {
+export interface TypeHrProps extends HtmlProps {
   nodeName?: 'hr';
 }

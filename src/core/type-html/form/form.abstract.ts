@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeForm, ITypeFormConfig } from './form.interface';
+import { ITypeForm, TypeFormProps } from './form.interface';
 
 export abstract class TypeForm extends TypeHtml implements ITypeForm {
-  props: ITypeFormConfig;
+  props: TypeFormProps;
   dom?: HTMLFormElement;
 
   protected constructor() {

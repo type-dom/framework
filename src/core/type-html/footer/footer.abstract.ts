@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeFooter, ITypeFooterConfig } from './footer.interface';
+import { ITypeFooter, TypeFooterProps } from './footer.interface';
 
 export abstract class TypeFooter extends TypeHtml implements ITypeFooter {
-  props: ITypeFooterConfig;
+  props: TypeFooterProps;
   dom?: HTMLElement;
 
   protected constructor() {

@@ -1,10 +1,11 @@
 import { ITypeElement } from '../type-element/type-element.interface';
-import { ITypeConfig } from '../type-node/type-node.interface';
+import { TypeProps } from '../type-node/type-node.interface';
+import { NodeName } from '../enums';
 
 export interface ITypeFragment extends ITypeElement {
-  props: ITypeFragmentConfig;
+  props: TypeFragmentProps;
 }
 
-export interface ITypeFragmentConfig extends ITypeConfig {
-  nodeName?: 'fragment';
+export interface TypeFragmentProps extends TypeProps {
+  nodeName?: NodeName.FRAGMENT;
 }

@@ -14,3 +14,10 @@ export enum LifecycleHooks {
   ERROR_CAPTURED = 'ec',
   SERVER_PREFETCH = 'sp',
 }
+
+export enum NodeName {
+  FRAGMENT = 'fragment', // DocumentFragment
+  TEXT = '#text', // TextNode
+  // COMMENT = 'comment',
+  // ELEMENT = 'element',
+}

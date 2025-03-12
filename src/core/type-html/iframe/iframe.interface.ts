@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeIFrame extends ITypeHtml {
-  props: ITypeIFrameConfig;
+  props: TypeIFrameProps;
 }
 
-export interface ITypeIFrameConfig extends ITypeHtmlConfig {
+export interface TypeIFrameProps extends HtmlProps {
   nodeName?: 'iframe';
 }

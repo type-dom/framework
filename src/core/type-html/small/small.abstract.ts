@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeSmall, ITypeSmallConfig } from './small.interface';
+import { ITypeSmall, TypeSmallProps } from './small.interface';
 
 export abstract class TypeSmall extends TypeHtml implements ITypeSmall {
-  props: ITypeSmallConfig;
+  props: TypeSmallProps;
   dom?: HTMLElement;
 
   protected constructor() {

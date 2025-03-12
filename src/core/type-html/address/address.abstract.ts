@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import type { ITypeAddress, ITypeAddressConfig } from './address.interface';
+import type { ITypeAddress, TypeAddressProps } from './address.interface';
 
 export abstract class TypeAddress extends TypeHtml implements ITypeAddress {
-  props: ITypeAddressConfig;
+  props: TypeAddressProps;
   dom?: HTMLElement;
 
   protected constructor() {

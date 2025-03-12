@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeDiv extends ITypeHtml {
-  props: ITypeDivConfig;
+  props: TypeDivProps;
 }
 
-export interface ITypeDivConfig extends ITypeHtmlConfig {
+export interface TypeDivProps extends HtmlProps {
   nodeName?: 'div';
 }

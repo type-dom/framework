@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeBdi, ITypeBdiConfig } from './bdi.interface';
+import { ITypeBdi, TypeBdiProps } from './bdi.interface';
 
 export abstract class TypeBdi extends TypeHtml implements ITypeBdi {
-  props: ITypeBdiConfig;
+  props: TypeBdiProps;
   dom?: HTMLElement;
 
   protected constructor() {

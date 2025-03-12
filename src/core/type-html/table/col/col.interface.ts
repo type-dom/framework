@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../../type-html.interface';
 
 export interface ITypeTableCol extends ITypeHtml {
-  props: ITypeTableColConfig;
+  props: TypeTableColProps;
 }
 
-export interface ITypeTableColConfig extends ITypeHtmlConfig {
+export interface TypeTableColProps extends HtmlProps {
   nodeName?: 'col';
 }

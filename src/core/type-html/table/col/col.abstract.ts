@@ -1,8 +1,8 @@
 import { TypeHtml } from '../../type-html.abstract';
-import { ITypeTableCol, ITypeTableColConfig } from './col.interface';
+import { ITypeTableCol, TypeTableColProps } from './col.interface';
 
 export abstract class TypeTableCol extends TypeHtml implements ITypeTableCol {
-  props: ITypeTableColConfig;
+  props: TypeTableColProps;
   dom?: HTMLTableColElement;
 
   protected constructor() {

@@ -1,6 +1,5 @@
 // 泛型接口
 import { IJsonData, IJsonDataProp } from '../../interface';
-// import { Observer } from '../../../../signals/observer/observer';
 
 export interface IXProxy<T extends IJsonData> extends IJsonData {
   // _target: T;

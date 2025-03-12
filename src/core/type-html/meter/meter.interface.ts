@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeMeter extends ITypeHtml {
-  props: ITypeMeterConfig;
+  props: TypeMeterProps;
 }
 
-export interface ITypeMeterConfig extends ITypeHtmlConfig {
+export interface TypeMeterProps extends HtmlProps {
   nodeName?: 'meter';
 }

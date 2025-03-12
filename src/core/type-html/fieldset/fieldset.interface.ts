@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeFieldset extends ITypeHtml {
-  props: ITypeFieldsetConfig;
+  props: TypeFieldsetProps;
 }
 
-export interface ITypeFieldsetConfig extends ITypeHtmlConfig {
+export interface TypeFieldsetProps extends HtmlProps {
   nodeName: 'fieldset';
 }

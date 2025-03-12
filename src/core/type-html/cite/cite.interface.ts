@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeCite extends ITypeHtml {
-  props: ITypeCiteConfig;
+  props: TypeCiteProps;
 }
 
-export interface ITypeCiteConfig extends ITypeHtmlConfig {
+export interface TypeCiteProps extends HtmlProps {
   nodeName?: 'cite';
 }

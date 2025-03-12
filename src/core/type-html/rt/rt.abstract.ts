@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeRt, ITypeRtConfig } from './rt.interface';
+import { ITypeRt, TypeRtProps } from './rt.interface';
 
 export abstract class TypeRt extends TypeHtml implements ITypeRt {
-  props: ITypeRtConfig
+  props: TypeRtProps
   dom?: HTMLElement;
 
   protected constructor() {

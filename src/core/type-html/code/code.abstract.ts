@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeCode, ITypeCodeConfig } from './code.interface';
+import { ITypeCode, TypeCodeProps } from './code.interface';
 
 export abstract class TypeCode extends TypeHtml implements ITypeCode {
-  props: ITypeCodeConfig;
+  props: TypeCodeProps;
   dom?: HTMLElement;
 
   protected constructor() {

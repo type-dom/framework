@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypePicture, ITypePictureConfig } from './picture.interface';
+import { ITypePicture, TypePictureProps } from './picture.interface';
 
 export abstract class TypePicture extends TypeHtml implements ITypePicture {
-  props: ITypePictureConfig;
+  props: TypePictureProps;
   dom?: HTMLPictureElement;
 
   protected constructor() {

@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeArticle, ITypeArticleConfig } from './article.interface';
+import { ITypeArticle, TypeArticleProps } from './article.interface';
 
 export abstract class TypeArticle extends TypeHtml implements ITypeArticle {
-  props: ITypeArticleConfig;
+  props: TypeArticleProps;
   dom?: HTMLElement;
 
   protected constructor() {

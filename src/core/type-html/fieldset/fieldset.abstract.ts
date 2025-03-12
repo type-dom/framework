@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeFieldset, ITypeFieldsetConfig } from './fieldset.interface';
+import { ITypeFieldset, TypeFieldsetProps } from './fieldset.interface';
 
 export abstract class TypeFieldset extends TypeHtml implements ITypeFieldset {
-  props: ITypeFieldsetConfig;
+  props: TypeFieldsetProps;
   dom?: HTMLFieldSetElement;
 
   protected constructor() {

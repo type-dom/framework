@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeDiv, ITypeDivConfig } from './div.interface';
+import { ITypeDiv, TypeDivProps } from './div.interface';
 
 export abstract class TypeDiv extends TypeHtml implements ITypeDiv {
-  props: ITypeDivConfig;
+  props: TypeDivProps;
   dom?: HTMLDivElement;
 
   protected constructor() {

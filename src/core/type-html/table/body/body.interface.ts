@@ -1,11 +1,11 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../../type-html.interface';
 import type { ITypeTableRow } from '../row/row.interface';
 
 export interface ITypeTableBody extends ITypeHtml {
-  props: ITypeTableBodyConfig;
+  props: TypeTableBodyProps;
   childNodes: ITypeTableRow[];
 }
 
-export interface ITypeTableBodyConfig extends ITypeHtmlConfig {
+export interface TypeTableBodyProps extends HtmlProps {
   nodeName?: 'tbody';
 }

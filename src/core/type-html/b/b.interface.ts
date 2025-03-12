@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeB extends ITypeHtml {
-  props: ITypeBConfig;
+  props: TypeBProps;
 }
 
-export interface ITypeBConfig extends ITypeHtmlConfig {
+export interface TypeBProps extends HtmlProps {
   nodeName?: 'b';
 }

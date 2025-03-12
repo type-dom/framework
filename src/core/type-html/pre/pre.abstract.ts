@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypePre, ITypePreConfig } from './pre.interface';
+import { ITypePre, TypePreProps } from './pre.interface';
 
 export abstract class TypePre extends TypeHtml implements ITypePre {
-  props: ITypePreConfig;
+  props: TypePreProps;
   dom?: HTMLPreElement;
 
   protected constructor() {

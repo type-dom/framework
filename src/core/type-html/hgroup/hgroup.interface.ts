@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeHGroup extends ITypeHtml {
-  props: ITypeHGroupConfig;
+  props: TypeHGroupProps;
 }
 
-export interface ITypeHGroupConfig extends ITypeHtmlConfig {
+export interface TypeHGroupProps extends HtmlProps {
   nodeName?: 'hgroup';
 }

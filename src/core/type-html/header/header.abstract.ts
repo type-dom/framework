@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeHeader, ITypeHeaderConfig } from './header.interface';
+import { ITypeHeader, TypeHeaderProps } from './header.interface';
 
 export abstract class TypeHeader extends TypeHtml implements ITypeHeader {
-  props: ITypeHeaderConfig;
+  props: TypeHeaderProps;
   dom?: HTMLElement;
 
   protected constructor() {

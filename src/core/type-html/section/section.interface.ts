@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeSection extends ITypeHtml {
-  props: ITypeSectionConfig;
+  props: TypeSectionProps;
 }
 
-export interface ITypeSectionConfig extends ITypeHtmlConfig {
+export interface TypeSectionProps extends HtmlProps {
   nodeName?: 'section';
 }

@@ -1,11 +1,8 @@
-import { AnyFn } from '../interface';
+import { AnyFn } from '@type-dom/utils';
+import { DebuggerEvent } from '../debug';
 import { LifecycleHooks } from './enums';
 import { currentInstance, setCurrentInstance } from './instance';
 import { TypeNode } from './type-node/type-node.abstract';
-import { DebuggerEvent } from '../debug';
-import { warn } from '../util/debug';
-import { toHandlerKey } from '../shared/general';
-import { ErrorTypeStrings } from './errorHandling';
 
 export function injectHook(
   type: LifecycleHooks,

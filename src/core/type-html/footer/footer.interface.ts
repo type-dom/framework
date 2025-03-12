@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeFooter extends ITypeHtml {
-  props: ITypeFooterConfig;
+  props: TypeFooterProps;
 }
 
-export interface ITypeFooterConfig extends ITypeHtmlConfig {
+export interface TypeFooterProps extends HtmlProps {
   nodeName?: 'footer';
 }

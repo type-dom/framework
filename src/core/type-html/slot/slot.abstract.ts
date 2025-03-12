@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeSlot, ITypeSlotConfig } from './slot.interface';
+import { ITypeSlot, TypeSlotProps } from './slot.interface';
 
 export abstract class TypeSlot extends TypeHtml implements ITypeSlot {
-  props: ITypeSlotConfig;
+  props: TypeSlotProps;
   dom?: HTMLSlotElement;
 
   protected constructor() {

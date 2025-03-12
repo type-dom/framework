@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeInput extends ITypeHtml {
-  props: ITypeInputConfig;
+  props: TypeInputProps;
 }
 
-export interface ITypeInputConfig extends ITypeHtmlConfig {
+export interface TypeInputProps extends HtmlProps {
   nodeName?: 'input';
 }

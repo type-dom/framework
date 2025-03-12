@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import type { ITypeBdo, ITypeBdoConfig } from './bdo.interface';
+import type { ITypeBdo, TypeBdoProps } from './bdo.interface';
 
 export abstract class TypeBdo extends TypeHtml implements ITypeBdo {
-  props: ITypeBdoConfig;
+  props: TypeBdoProps;
   dom?: HTMLElement;
 
   protected constructor() {

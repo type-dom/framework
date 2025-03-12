@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeKbd, ITypeKbdConfig } from './kbd.interface';
+import { ITypeKbd, TypeKbdProps } from './kbd.interface';
 
 export abstract class TypeKbd extends TypeHtml implements ITypeKbd {
-  props: ITypeKbdConfig;
+  props: TypeKbdProps;
   dom?: HTMLElement;
 
   protected constructor() {

@@ -1,12 +1,14 @@
 import { IStyle } from '@type-dom/css-type';
-import { ITypeConfig } from '../type-node/type-node.interface';
+import { Computed, Signal } from '@type-dom/signals';
+import { StyleValue } from '../../interface';
+import { TypeProps } from '../type-node/type-node.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
-import { ITypeAttribute } from '../type-element/type-element.interface';
-import { ITypeFragment, ITypeFragmentConfig } from './type-fragment.interface';
-import { Computed, MaybeRef, Signal } from '@type-dom/signals';
+import { ITypeAttribute } from '../attribute/attribute.interface';
+import { NodeName } from '../enums';
+import { ITypeFragment, TypeFragmentProps } from './type-fragment.interface';
 
 export abstract class TypeFragment extends TypeElement implements ITypeFragment {
-  override props: ITypeFragmentConfig;
+  override props: TypeFragmentProps;
   override dom?: DocumentFragment;
   // abstract content: TypeElement;
   style: undefined;
@@ -15,11 +17,11 @@ export abstract class TypeFragment extends TypeElement implements ITypeFragment 
   constructor() {
     super();
     this.props = this.useParams({
-      nodeName: 'fragment',
+      nodeName: NodeName.FRAGMENT,
     })
   }
 
-  addStyleObj(styleObj?: IStyle | Signal<IStyle | undefined> | Computed<IStyle | undefined>) {
+  addStyleObj(styleObj?: StyleValue | Signal<IStyle | undefined> | Computed<IStyle | undefined>) {
     this.childNodes.forEach(child => {
       if (child instanceof TypeFragment) {
         child.addStyleObj(styleObj);
@@ -29,7 +31,7 @@ export abstract class TypeFragment extends TypeElement implements ITypeFragment 
     });
   }
 
-  setStyleObj(styleObj?: IStyle | Signal<IStyle> | Computed<IStyle>) {
+  setStyleObj(styleObj?: StyleValue | Signal<IStyle> | Computed<IStyle>) {
     this.childNodes.forEach(child => {
       if (child instanceof TypeFragment) {
         child.setStyleObj(styleObj);
@@ -39,7 +41,7 @@ export abstract class TypeFragment extends TypeElement implements ITypeFragment 
     });
   }
 
-  addAttrObj(attrObj?: MaybeRef<ITypeAttribute>) {
+  addAttrObj(attrObj?: ITypeAttribute) {
     this.childNodes.forEach(child => {
       if (child instanceof TypeFragment) {
         child.addAttrObj(attrObj);
@@ -59,9 +61,9 @@ export abstract class TypeFragment extends TypeElement implements ITypeFragment 
     });
   }
 
-  override useParams<C extends ITypeConfig>(params = {} as C): C {
-    this.useSlots(params); // todo 会改变 slot的parent指向
-    super.useParams<C>(params);
+  // 向下传递 styleObj attrObj;
+  override useParams<Props extends TypeProps>(params = {} as Props): Props {
+    super.useParams<Props>(params);
     this.childNodes.forEach(child => {
       if (child instanceof TypeFragment) {
         child.addStyleObj(params.styleObj);
@@ -71,6 +73,6 @@ export abstract class TypeFragment extends TypeElement implements ITypeFragment 
         child.attr?.addObj(params.attrObj);
       }
     });
-    return this.props as C;
+    return this.props as Props;
   }
 }

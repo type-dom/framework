@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeEmbed, ITypeEmbedConfig } from './embed.interface';
+import { ITypeEmbed, TypeEmbedProps } from './embed.interface';
 
 export abstract class TypeEmbed extends TypeHtml implements ITypeEmbed {
-  props: ITypeEmbedConfig;
+  props: TypeEmbedProps;
   dom?: HTMLEmbedElement;
 
   protected constructor() {

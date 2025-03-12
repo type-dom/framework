@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeSup extends ITypeHtml {
-  props: ITypeSupConfig;
+  props: TypeSupProps;
 }
 
-export interface ITypeSupConfig extends ITypeHtmlConfig {
+export interface TypeSupProps extends HtmlProps {
   nodeName?: 'sup';
 }

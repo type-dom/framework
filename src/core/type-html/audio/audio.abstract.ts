@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeAudio, ITypeAudioConfig } from './audio.interface';
+import { ITypeAudio, TypeAudioProps } from './audio.interface';
 
 export abstract class TypeAudio extends TypeHtml implements ITypeAudio {
-  props: ITypeAudioConfig;
+  props: TypeAudioProps;
   dom?: HTMLAudioElement;
 
   protected constructor() {

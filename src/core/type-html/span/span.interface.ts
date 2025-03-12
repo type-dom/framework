@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeSpan extends ITypeHtml {
-  props: ITypeSpanConfig;
+  props: TypeSpanProps;
 }
 
-export interface ITypeSpanConfig extends ITypeHtmlConfig {
+export interface TypeSpanProps extends HtmlProps {
   nodeName?: 'span';
 }

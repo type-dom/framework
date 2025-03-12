@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeDataList, ITypeDataListConfig } from './data-list.interface';
+import { ITypeDataList, TypeDataListProps } from './data-list.interface';
 
 export abstract class TypeDataList extends TypeHtml implements ITypeDataList {
-  props: ITypeDataListConfig;
+  props: TypeDataListProps;
   dom?: HTMLDataListElement;
 
   protected constructor() {

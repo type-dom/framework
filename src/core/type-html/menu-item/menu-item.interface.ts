@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeMenuItem extends ITypeHtml {
-  props: ITypeMenuItemConfig;
+  props: TypeMenuItemProps;
 }
 
-export interface ITypeMenuItemConfig extends ITypeHtmlConfig {
+export interface TypeMenuItemProps extends HtmlProps {
   nodeName: 'menuitem';
 }

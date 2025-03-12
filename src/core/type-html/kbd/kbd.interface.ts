@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeKbd extends ITypeHtml {
-  props: ITypeKbdConfig;
+  props: TypeKbdProps;
 }
 
-export interface ITypeKbdConfig extends ITypeHtmlConfig {
+export interface TypeKbdProps extends HtmlProps {
   nodeName?: 'kbd';
 }

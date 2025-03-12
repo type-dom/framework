@@ -1,9 +1,9 @@
 import { TypeHtml } from '../type-html.abstract';
 import { TypeLI } from '../li/li.abstract';
-import type { ITypeUL, ITypeULConfig } from './ul.interface';
+import type { ITypeUL, TypeULProps } from './ul.interface';
 
 export abstract class TypeUL extends TypeHtml implements ITypeUL {
-  props: ITypeULConfig;
+  props: TypeULProps;
   dom?: HTMLUListElement;
   override childNodes: TypeLI[];
 

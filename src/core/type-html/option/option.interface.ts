@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeOption extends ITypeHtml {
-  props: ITypeOptionConfig;
+  props: TypeOptionProps;
 }
 
-export interface ITypeOptionConfig extends ITypeHtmlConfig {
+export interface TypeOptionProps extends HtmlProps {
   nodeName?: 'option';
 }

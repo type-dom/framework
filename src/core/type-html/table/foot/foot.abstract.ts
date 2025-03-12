@@ -1,9 +1,9 @@
 import { TypeHtml } from '../../type-html.abstract';
 import { TypeTableRow } from '../row/row.abstract';
-import { ITypeTableFoot, ITypeTableFootConfig } from './foot.interface';
+import { ITypeTableFoot, TypeTableFootProps } from './foot.interface';
 
 export abstract class TypeTableFoot extends TypeHtml implements ITypeTableFoot {
-  props: ITypeTableFootConfig;
+  props: TypeTableFootProps;
   dom?: HTMLElement;
   override childNodes: TypeTableRow[];
 

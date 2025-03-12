@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeEm, ITypeEmConfig } from './em.interface';
+import { ITypeEm, TypeEmProps } from './em.interface';
 
 export abstract class TypeEm extends TypeHtml implements ITypeEm {
-  props: ITypeEmConfig;
+  props: TypeEmProps;
   dom?: HTMLElement;
 
   protected constructor() {

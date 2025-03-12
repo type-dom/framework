@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeS, ITypeSConfig } from './s.interface';
+import { ITypeS, TypeSProps } from './s.interface';
 
 export abstract class TypeS extends TypeHtml implements ITypeS {
-  props: ITypeSConfig;
+  props: TypeSProps;
   dom?: HTMLElement;
 
   protected constructor() {

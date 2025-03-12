@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeNav extends ITypeHtml {
-  props: ITypeNavConfig;
+  props: TypeNavProps;
 }
 
-export interface ITypeNavConfig extends ITypeHtmlConfig {
+export interface TypeNavProps extends HtmlProps {
   nodeName?: 'nav';
 }

@@ -1,11 +1,11 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 import type { ITypeLI } from '../li/li.interface';
 
 export interface ITypeUL extends ITypeHtml {
-  props: ITypeULConfig;
+  props: TypeULProps;
   childNodes: ITypeLI[];
 }
 
-export interface ITypeULConfig extends ITypeHtmlConfig {
+export interface TypeULProps extends HtmlProps {
   nodeName?: 'ul';
 }

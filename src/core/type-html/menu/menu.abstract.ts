@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeMenu, ITypeMenuConfig } from './menu.interface';
+import { ITypeMenu, TypeMenuProps } from './menu.interface';
 
 export abstract class TypeMenu extends TypeHtml implements ITypeMenu {
-  props: ITypeMenuConfig;
+  props: TypeMenuProps;
   dom?: HTMLMenuElement;
 
   protected constructor() {

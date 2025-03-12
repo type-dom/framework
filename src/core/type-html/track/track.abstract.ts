@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeTrack, ITypeTrackConfig } from './track.interface';
+import { ITypeTrack, TypeTrackProps } from './track.interface';
 
 export abstract class TypeTrack extends TypeHtml implements ITypeTrack {
-  props: ITypeTrackConfig;
+  props: TypeTrackProps;
   dom?: HTMLTrackElement;
 
   protected constructor() {

@@ -1,4 +1,4 @@
-import { AnyFn } from '../../interface';
+import { AnyFn } from '@type-dom/utils';
 import { TypeElement } from '../type-element/type-element.abstract';
 
 // export interface IEventEmitter {
@@ -12,7 +12,7 @@ export interface IEmits {
   mouseleave?: (evt: MouseEvent) => void;
   focus?: (evt: FocusEvent) => void;
   blur?: (evt: FocusEvent) => void;
-  close?: () => void;
+  close?: (...args: any[]) => void;
 
   [key: string]: AnyFn | undefined;
 }
@@ -23,7 +23,7 @@ export interface IEmits {
  * @param T - 继承自Event的事件类型。默认为 Event。
  * @returns {void} - 该函数没有返回值。
  */
-export type IEvent<E extends Event = Event, T extends TypeElement = TypeElement> = (evt?: E, element?: T) => void;
+export type IEvent<E extends (Event | string) = Event, T extends TypeElement = TypeElement> = (evt?: E, element?: T) => void;
 
 /**
  * IEvents 接口定义了事件处理的行为。这里定义的时dom元素的事件处理函数。
@@ -64,7 +64,7 @@ export interface IEvents<T  extends TypeElement = TypeElement> {
   focusout: IEvent<FocusEvent>;
   formdata: IEvent<FormDataEvent>;
   gotpointercapture: IEvent<PointerEvent>;
-  input: IEvent<InputEvent>;
+  input: IEvent;
   // inputenter: (evt?: InputEvent, element?: TypeElement) => void;
   invalid: IEvent;
   keydown: IEvent<KeyboardEvent>;
@@ -111,5 +111,6 @@ export interface IEvents<T  extends TypeElement = TypeElement> {
   touchstart: IEvent<TouchEvent>;
   // touchevent: IEvent;
   wheel: IEvent<WheelEvent>;
+  [key: string]: IEvent<any, any>;
 }
 

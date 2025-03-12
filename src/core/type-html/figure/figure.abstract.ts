@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeFigure, ITypeFigureConfig } from './figure.interface';
+import { ITypeFigure, TypeFigureProps } from './figure.interface';
 
 export abstract class TypeFigure extends TypeHtml implements ITypeFigure {
-  props: ITypeFigureConfig;
+  props: TypeFigureProps;
   dom?: HTMLElement;
 
   protected constructor() {

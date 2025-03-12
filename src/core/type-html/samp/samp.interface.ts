@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeSamp extends ITypeHtml {
-  props: ITypeSampConfig;
+  props: TypeSampProps;
 }
 
-export interface ITypeSampConfig extends ITypeHtmlConfig {
+export interface TypeSampProps extends HtmlProps {
   nodeName?: 'samp';
 }

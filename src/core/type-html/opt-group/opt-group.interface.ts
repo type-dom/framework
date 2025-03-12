@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeOptGroup extends ITypeHtml {
-  props: ITypeOptGroupConfig;
+  props: TypeOptGroupProps;
 }
 
-export interface ITypeOptGroupConfig extends ITypeHtmlConfig {
+export interface TypeOptGroupProps extends HtmlProps {
   nodeName: 'optgroup';
 }

@@ -1,5 +1,5 @@
-export { TypeHtml } from './type-html.abstract';
-export type * from './type-html.interface';
+// export { TypeHtml } from './type-html.abstract';
+// export type * from './type-html.interface';
 
 export { TypeA } from './a/a.abstract';
 export type * from './a/a.interface';

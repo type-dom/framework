@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeHr, ITypeHrConfig } from './hr.interface';
+import { ITypeHr, TypeHrProps } from './hr.interface';
 
 export abstract class TypeHr extends TypeHtml implements ITypeHr {
-  props: ITypeHrConfig;
+  props: TypeHrProps;
   dom?: HTMLElement;
 
   protected constructor() {

@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeTable, ITypeTableConfig } from './table.interface';
+import { ITypeTable, TypeTableProps } from './table.interface';
 
 export abstract class TypeTable extends TypeHtml implements ITypeTable {
-  props: ITypeTableConfig;
+  props: TypeTableProps;
   dom?: HTMLTableElement;
 
   protected constructor() {

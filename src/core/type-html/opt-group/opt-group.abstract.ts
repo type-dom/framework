@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeOptGroup, ITypeOptGroupConfig } from './opt-group.interface';
+import { ITypeOptGroup, TypeOptGroupProps } from './opt-group.interface';
 
 export abstract class TypeOptGroup extends TypeHtml implements ITypeOptGroup {
-  props: ITypeOptGroupConfig;
+  props: TypeOptGroupProps;
   dom?: HTMLOptGroupElement;
 
   protected constructor() {

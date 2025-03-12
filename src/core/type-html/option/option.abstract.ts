@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeOption, ITypeOptionConfig } from './option.interface';
+import { ITypeOption, TypeOptionProps } from './option.interface';
 
 export abstract class TypeOption extends TypeHtml implements ITypeOption {
-  props: ITypeOptionConfig;
+  props: TypeOptionProps;
   dom?: HTMLOptionElement;
 
   protected constructor() {

@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeSmall extends ITypeHtml {
-  props: ITypeSmallConfig;
+  props: TypeSmallProps;
 }
 
-export interface ITypeSmallConfig extends ITypeHtmlConfig {
+export interface TypeSmallProps extends HtmlProps {
   nodeName?: 'small';
 }

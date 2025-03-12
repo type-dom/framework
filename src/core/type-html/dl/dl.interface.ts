@@ -1,10 +1,10 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeDL extends ITypeHtml {
-  props: ITypeDLConfig;
+  props: TypeDLProps;
   // childNodes: ITypeLI[]
 }
 
-export interface ITypeDLConfig extends ITypeHtmlConfig {
+export interface TypeDLProps extends HtmlProps {
   nodeName?: 'dl';
 }

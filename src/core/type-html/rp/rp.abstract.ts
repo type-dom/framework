@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeRp, ITypeRpConfig } from './rp.interface';
+import { ITypeRp, TypeRpProps } from './rp.interface';
 
 export abstract class TypeRp extends TypeHtml implements ITypeRp {
-  props: ITypeRpConfig;
+  props: TypeRpProps;
   dom?: HTMLElement;
 
   protected constructor() {

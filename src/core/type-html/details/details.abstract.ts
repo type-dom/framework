@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeDetails, ITypeDetailsConfig } from './details.interface';
+import { ITypeDetails, TypeDetailsProps } from './details.interface';
 
 export abstract class TypeDetails extends TypeHtml implements ITypeDetails {
-  props: ITypeDetailsConfig;
+  props: TypeDetailsProps;
   dom?: HTMLDetailsElement;
 
   protected constructor() {

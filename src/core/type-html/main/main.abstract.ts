@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeMain, ITypeMainConfig } from './main.interface';
+import { ITypeMain, TypeMainProps } from './main.interface';
 
 export abstract class TypeMain extends TypeHtml implements ITypeMain {
-  props: ITypeMainConfig;
+  props: TypeMainProps;
   dom?: HTMLElement;
 
   protected constructor() {

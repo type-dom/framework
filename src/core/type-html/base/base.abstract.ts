@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeBase, ITypeBaseConfig } from './base.interface';
+import { ITypeBase, TypeBaseProps } from './base.interface';
 
 export abstract class TypeBase extends TypeHtml implements ITypeBase {
-  props: ITypeBaseConfig;
+  props: TypeBaseProps;
   dom?: HTMLElement;
 
   protected constructor() {

@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeWbr, ITypeWbrConfig } from './wbr.interface';
+import { ITypeWbr, TypeWbrProps } from './wbr.interface';
 
 export abstract class TypeWbr extends TypeHtml implements ITypeWbr {
-  props: ITypeWbrConfig;
+  props: TypeWbrProps;
   dom?: HTMLElement;
 
   protected constructor() {

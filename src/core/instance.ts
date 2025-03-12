@@ -2,8 +2,8 @@ import { TypeNode } from './type-node/type-node.abstract';
 
 export let currentInstance: TypeNode | null = null;
 
-export const getCurrentInstance: <T extends TypeNode>() => T | null = <T extends TypeNode>() =>
-  currentInstance as T | null; // || currentRenderingInstance
+export const getCurrentInstance: <T extends TypeNode>() => T | undefined = <T extends TypeNode>() =>
+  currentInstance as T | undefined; // || currentRenderingInstance
 
 const internalSetCurrentInstance: (
   instance: TypeNode | null

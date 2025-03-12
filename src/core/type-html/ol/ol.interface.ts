@@ -1,5 +1,5 @@
-import { ITypeAttribute } from '../../../core/type-element/type-element.interface';
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import { ITypeAttribute } from '../../attribute/attribute.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 import type { ITypeLI } from '../li/li.interface';
 import type { ITypeUL } from '../ul/ul.interface';
 
@@ -9,10 +9,10 @@ export interface ITypeOlAttr extends ITypeAttribute {
 }
 
 export interface ITypeOL extends ITypeHtml {
-  props: ITypeOLConfig;
+  props: TypeOLProps;
   childNodes: (ITypeUL | ITypeLI)[];
 }
 
-export interface ITypeOLConfig extends ITypeHtmlConfig {
+export interface TypeOLProps extends HtmlProps {
   nodeName?: 'ol';
 }

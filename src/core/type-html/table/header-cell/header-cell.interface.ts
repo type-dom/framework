@@ -1,11 +1,11 @@
 import type { ITextNode } from '../../../../core/text-node/text-node.interface';
-import type { ITypeHtml, ITypeHtmlConfig } from '../../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../../type-html.interface';
 
 export interface ITypeTableHeaderCell extends ITypeHtml {
-  props: ITypeTableHeaderCellConfig;
+  props: TypeTableHeaderCellProps;
   childNodes: ITextNode[];
 }
 
-export interface ITypeTableHeaderCellConfig extends ITypeHtmlConfig {
+export interface TypeTableHeaderCellProps extends HtmlProps {
   nodeName?: 'th';
 }

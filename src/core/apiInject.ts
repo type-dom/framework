@@ -1,7 +1,6 @@
-import { isFunction } from '@type-dom/utils';
-import { warn } from '../util/debug'
+import { warn } from '../utils/debug'
 import { currentInstance } from './instance'
-import { Signal } from '@type-dom/signals';
+import { useInject } from './type-node/useInject';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface InjectionConstraint<T> {/*empty*/}
@@ -57,7 +56,7 @@ export function inject(
 
   // also support looking up from app-level provides w/ `app.runWithContext()`
   if (instance /* || currentApp */) {
-    return instance.inject(key, defaultValue, treatDefaultAsFactory);
+    return useInject(instance, key, defaultValue, treatDefaultAsFactory);
     // #2400
     // to support `app.use` plugins,
     // fallback to appContext's `provides` if the instance is at root

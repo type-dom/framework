@@ -1,8 +1,8 @@
-import { warn } from '../util/debug';
+import { warn } from '../utils/debug';
 import { getCurrentInstance } from './instance';
-import { ISlotConfigs } from './type-node/type-node.interface';
-import { TypeNode } from '@type-dom/framework';
-
+import { ISlots } from './type-node/type-node.interface';
+import { TypeNode } from './type-node/type-node.abstract';
+import { ITypeAttribute } from './attribute/attribute.interface';
 
 // dev only
 const warnRuntimeUsage = (method: string) =>
@@ -353,13 +353,13 @@ const warnRuntimeUsage = (method: string) =>
 //   return null as any
 // }
 
-export function useSlots(): ISlotConfigs | undefined {
-  return getContext().props.slots
+export function useSlots<T extends ISlots>(): T | undefined {
+  return getContext().props.slots as T
 }
 
-// export function useAttrs(): SetupContext['attrs'] {
-//   return getContext().attrs
-// }
+export function useAttrs():  ITypeAttribute | undefined {
+  return getContext().props.attrObj;
+}
 
 function getContext(): TypeNode {
   return getCurrentInstance()!;

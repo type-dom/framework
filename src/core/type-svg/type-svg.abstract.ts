@@ -1,5 +1,5 @@
 import { TextNode } from '../text-node/text-node.class';
-import type { ITypeConfig } from '../type-node/type-node.interface';
+import type { TypeProps } from '../type-node/type-node.interface';
 import { Style } from '../style/style.class';
 import { Attribute } from '../attribute/attribute.class';
 import { TypeElement } from '../type-element/type-element.abstract';
@@ -28,10 +28,10 @@ export abstract class TypeSvg<T extends SVGElement = SVGElement> extends TypeEle
     this.childNodes = []; // 初始化子节点数组为空
   }
 
-  override useParams<T extends ITypeConfig>(params = {} as T): T {
+  override useParams<T extends TypeProps>(params = {} as T): T {
     // 插槽默认替换子节点；
     if (params.slot) {
-      this.slotChild(params.slot);
+      this.slotChildren(params.slot);
     }
     super.useParams(params);
     return this.props as T;

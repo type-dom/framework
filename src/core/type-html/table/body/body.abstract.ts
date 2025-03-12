@@ -1,9 +1,9 @@
 import { TypeHtml } from '../../type-html.abstract';
 import { TypeTableRow } from '../row/row.abstract';
-import { ITypeTableBody, ITypeTableBodyConfig } from './body.interface';
+import { ITypeTableBody, TypeTableBodyProps } from './body.interface';
 
 export abstract class TypeTableBody extends TypeHtml implements ITypeTableBody {
-  props: ITypeTableBodyConfig;
+  props: TypeTableBodyProps;
   dom?: HTMLTableSectionElement;
   override childNodes: TypeTableRow[];
 

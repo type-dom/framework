@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeDfn, ITypeDfnConfig } from './dfn.interface';
+import { ITypeDfn, TypeDfnProps } from './dfn.interface';
 
 export abstract class TypeDfn extends TypeHtml implements ITypeDfn {
-  props: ITypeDfnConfig;
+  props: TypeDfnProps;
   dom?: HTMLElement;
 
   protected constructor() {

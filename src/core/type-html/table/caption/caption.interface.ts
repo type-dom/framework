@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../../type-html.interface';
 
 export interface ITypeTableCaption extends ITypeHtml {
-  props: ITypeTableCaptionConfig;
+  props: TypeTableCaptionProps;
 }
 
-export interface ITypeTableCaptionConfig extends ITypeHtmlConfig {
+export interface TypeTableCaptionProps extends HtmlProps {
   nodeName?: 'caption';
 }

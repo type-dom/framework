@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeCanvas extends ITypeHtml {
-  props: ITypeCanvasConfig;
+  props: TypeCanvasProps;
 }
 
-export interface ITypeCanvasConfig extends ITypeHtmlConfig {
+export interface TypeCanvasProps extends HtmlProps {
   nodeName?: 'canvas';
 }

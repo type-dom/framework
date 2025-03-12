@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeSlot extends ITypeHtml {
-  props: ITypeSlotConfig;
+  props: TypeSlotProps;
 }
 
-export interface ITypeSlotConfig extends ITypeHtmlConfig {
+export interface TypeSlotProps extends HtmlProps {
   nodeName?: 'slot';
 }

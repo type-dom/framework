@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeTextarea extends ITypeHtml {
-  props: ITypeTextareaConfig;
+  props: TypeTextareaProps;
 }
 
-export interface ITypeTextareaConfig extends ITypeHtmlConfig {
+export interface TypeTextareaProps extends HtmlProps {
   nodeName: 'textarea';
 }

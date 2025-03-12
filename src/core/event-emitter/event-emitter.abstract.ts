@@ -1,10 +1,10 @@
-import { AnyFn } from '../../interface';
+import { AnyFn } from '@type-dom/utils';
 import { TypeElement } from '../type-element/type-element.abstract';
-import { Defer } from '../defer/defer';
+import { TypeProps } from '../type-node/type-node.interface';
+import { NodeName } from '../enums';
 import { IEmits, IEvent, IEvents } from './event-emitter.interface';
-import { ITypeConfig } from '../type-node/type-node.interface';
 
-export abstract class EventEmitter extends Defer {
+export abstract class EventEmitter {
   /**
    * 存储事件名称与事件监听器数组的映射
    * key 事件名 value: callback[]  回调数组
@@ -15,12 +15,11 @@ export abstract class EventEmitter extends Defer {
   /**
    * 属性项
    */
-  abstract props: ITypeConfig;
-  // abstract nodeName: '#text' | 'fragment' | string;
-  abstract dom?: HTMLElement | SVGElement | DocumentFragment | Text | undefined;
+  abstract props: TypeProps;
+  // abstract nodeName: NodeName.TEXT | NodeName.FRAGMENT | string;
+  abstract dom?: HTMLElement | SVGElement | DocumentFragment | Text | null | undefined;
 
   constructor() {
-    super();
     // This is an Object containing Maps:
     //
     // { [event: string]: Map<listener: function, numTimesAdded: number> }
@@ -58,6 +57,9 @@ export abstract class EventEmitter extends Defer {
    */
   on(events: string, listener?: AnyFn) {
     // 确保监听器是一个函数
+    if (!listener) {
+      return;
+    }
     if (typeof listener !== 'function') {
       throw new Error('Listener must be a function');
     }
@@ -72,7 +74,6 @@ export abstract class EventEmitter extends Defer {
       // todo 是否要过滤相同的监听器 ？？？
       this.observers[event].push(listener);
     });
-    return this;
   }
 
   /**
@@ -175,7 +176,7 @@ export abstract class EventEmitter extends Defer {
    * 添加事件集合
    */
   addEvents(events?: Partial<IEvents>) {
-    if (this.props.nodeName === 'fragment' || !events) {
+    if (this.props.nodeName === NodeName.FRAGMENT || !events) {
       // console.log('This is fragment or events is undefined . ');
       return;
     }
@@ -198,7 +199,7 @@ export abstract class EventEmitter extends Defer {
 
   // 设置一些事件监听器，添加到dom上
   setEvents(events: Partial<IEvents>) {
-    if (this.props.nodeName === 'fragment') {
+    if (this.props.nodeName === NodeName.FRAGMENT) {
       // console.log('fragment cannot add events . ');
       return;
     }
@@ -211,6 +212,9 @@ export abstract class EventEmitter extends Defer {
   }
 
   // 添加一个事件监听器，并添加到dom上
+  // todo
+// 绑定触摸开始事件，并设置 passive 选项, 优化， 如何传第三个参数监听；
+//   element.addEventListener('touchstart', handleTouchStart, { passive: true });
   setEvent<T extends Event>(key: string, handleEvent: IEvent<T>) {
     const eventHandler = (evt: Event) => {
       handleEvent(evt as T, this as unknown as TypeElement);
@@ -226,4 +230,28 @@ export abstract class EventEmitter extends Defer {
       this.off(key);
     }
   }
+
+  /**
+   * 初始化事件钩子
+   * setConfig 时，dom可能还没有创建；
+   * 这里是不区分是 addEmits or addEvents方式添加的监听器的；那么为什么还要区分 addEmits or addEvents？
+   * todo 如果是自定义事件是怎么监听的？还是不促发？
+   * todo 与 setEvents是否重复
+   */
+  listenEvents(): void {
+    // this.clearEvents(); // todo 为啥要移除
+    if (!this.dom) {
+      return;
+    }
+    if (this.observers) {
+      // dom 监听事件要挂载到真实dom上。
+      for (const key in this.observers) {
+        const cloned =this.observers[key];
+        cloned.forEach((observer) => {
+          this.dom && this.dom.addEventListener(key as keyof GlobalEventHandlersEventMap, observer);
+        });
+      }
+    }
+  }
+
 }

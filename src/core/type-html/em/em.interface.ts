@@ -1,9 +1,9 @@
-import type { ITypeHtml, ITypeHtmlConfig } from '../type-html.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeEm extends ITypeHtml {
-  props: ITypeEmConfig;
+  props: TypeEmProps;
 }
 
-export interface ITypeEmConfig extends ITypeHtmlConfig {
+export interface TypeEmProps extends HtmlProps {
   nodeName?: 'em';
 }

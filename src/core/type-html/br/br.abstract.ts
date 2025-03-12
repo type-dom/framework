@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeBr, ITypeBrConfig } from './br.interface';
+import { ITypeBr, TypeBrProps } from './br.interface';
 
 export abstract class TypeBr extends TypeHtml implements ITypeBr {
-  props: ITypeBrConfig;
+  props: TypeBrProps;
   dom?: HTMLBRElement;
 
   protected constructor() {

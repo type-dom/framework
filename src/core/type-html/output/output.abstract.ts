@@ -1,8 +1,8 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeOutput, ITypeOutputConfig } from './output.interface';
+import { ITypeOutput, TypeOutputProps } from './output.interface';
 
 export abstract class TypeOutput extends TypeHtml implements ITypeOutput {
-  props: ITypeOutputConfig;
+  props: TypeOutputProps;
   dom?: HTMLOutputElement;
 
   protected constructor() {

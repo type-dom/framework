@@ -1,8 +1,8 @@
-import { deepClone, isPrimitive } from '@type-dom/utils';
-import { AnyFn, IJsonData, IJsonDataProp } from '../../interface';
+import { AnyFn, deepClone, isPrimitive } from '@type-dom/utils';
+import { IJsonData, IJsonDataProp } from '../../interface';
 import { IXProxy, IXProxyHandler } from './x-proxy.interface';
 
-// 临时处理，待优化 todo
+//   现在使用 signals, 仅留作参考
 export class XProxy<T extends IJsonData> implements IXProxy<T> {
   _target: T;
   _handler?: IXProxyHandler<T>;
