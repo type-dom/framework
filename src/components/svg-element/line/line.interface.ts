@@ -1,7 +1,7 @@
 import { IStyle, Property } from '@type-dom/css-type';
-import type { ITypeAttribute } from '../../../core/type-element/type-element.interface';
 import type { ITypeSvg } from '../../../core/type-svg/type-svg.interface';
-import { ITypeConfig } from '../../../core/type-node/type-node.interface';
+import { TypeProps } from '../../../core/type-node/type-node.interface';
+import { ITypeAttribute } from '../../../core/attribute/attribute.interface';
 
 /**
  * x1 属性在 x 轴定义线条的开始
@@ -32,7 +32,7 @@ export interface ISvgLine extends ITypeSvg {
   childNodes: [];
 }
 
-export interface ISvgLineConfig extends ITypeConfig {
+export interface SvgLineProps extends TypeProps {
   styleObj?: ISvgLineStyle;
   attrObj?: ISvgLineAttribute;
 }

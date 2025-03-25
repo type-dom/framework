@@ -15,5 +15,5 @@
 ### 4.SimpleComponent 组件
 
     基于原生Html DOM 元素的组件，封装了原生Html DOM 元素的属性、事件、样式等。
-    简单组件都直接调用 slotChild方法，将 params.slot添加为子节点。
+    简单组件都直接调用 slotChildren方法，将 params.slot添加为子节点。
 

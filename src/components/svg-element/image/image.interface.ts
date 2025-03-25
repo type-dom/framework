@@ -1,7 +1,7 @@
 import { IStyle } from '@type-dom/css-type';
 import type { ITypeSvg } from '../../../core/type-svg/type-svg.interface';
-import { ITypeAttribute } from '../../../index';
-import { ITypeConfig } from '../../../core/type-node/type-node.interface';
+import { TypeProps } from '../../../core/type-node/type-node.interface';
+import { ITypeAttribute } from '../../../core/attribute/attribute.interface';
 
 /**
  * width
@@ -26,7 +26,7 @@ export interface ISvgImage extends ITypeSvg {
   childNodes: [];
 }
 
-export interface ISvgImageConfig extends ITypeConfig {
+export interface SvgImageProps extends TypeProps {
   attrObj?: ISvgImageAttribute;
   styleObj?: ISvgImageStyle;
 }

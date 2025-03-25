@@ -1,7 +1,7 @@
 import { IStyle, Property } from '@type-dom/css-type';
-import type { ITypeAttribute } from '../../../core/type-element/type-element.interface';
 import type { ITypeSvg } from '../../../core/type-svg/type-svg.interface';
-import { ITypeConfig } from '../../../core/type-node/type-node.interface';
+import { TypeProps } from '../../../core/type-node/type-node.interface';
+import { ITypeAttribute } from '../../../core/attribute/attribute.interface';
 
 export interface ISvgPathStyle extends IStyle {
   fill?: Property.Fill; // white;
@@ -38,7 +38,7 @@ export interface ISvgPath extends ITypeSvg {
   childNodes: [];
 }
 
-export interface ISvgPathConfig extends ITypeConfig {
+export interface SvgPathProps extends TypeProps {
   styleObj?: ISvgPathStyle;
   attrObj?: ISvgPathAttribute;
 }

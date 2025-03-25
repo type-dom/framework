@@ -1,14 +1,16 @@
-import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
+import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeMark } from '../../../core/type-html/mark/mark.abstract';
 import type { IMark } from './mark.interface';
 
 export class Mark extends TypeMark implements IMark {
   className: 'Mark';
 
-  constructor(params: ITypeConfig = {}) {
+  override isBasic = true;
+
+  constructor(params: TypeProps = {}) {
     super();
     this.className = 'Mark';
-    this.slotChild(params.slot);
+    this.slotChildren(params.slot);
     this.useParams(params);
   }
 }

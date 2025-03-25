@@ -1,7 +1,7 @@
 import { IStyle, Property } from '@type-dom/css-type';
-import type { ITypeAttribute } from '../../../core/type-element/type-element.interface';
+import { ITypeAttribute } from '../../../core/attribute/attribute.interface';
 import type { ITypeSvg } from '../../../core/type-svg/type-svg.interface';
-import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
+import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeSvg } from '../../../index';
 
 /**
@@ -34,7 +34,7 @@ export interface ISvgEllipse extends ITypeSvg {
   childNodes: [];
 }
 
-export interface ISvgEllipseConfig extends ITypeConfig {
+export interface SvgEllipseProps extends TypeProps {
   parent: TypeSvg;
   styleObj?: ISvgEllipseStyle;
   attrObj?: ISvgEllipseAttribute;

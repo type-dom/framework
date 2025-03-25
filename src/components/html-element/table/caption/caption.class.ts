@@ -5,6 +5,8 @@ import type { ITableCaption } from './caption.interface';
 export class TableCaption extends TypeTableCaption implements ITableCaption {
   className: 'TableCaption';
 
+  override isBasic = true;
+
   constructor(public override parent: Table) {
     super();
     this.className = 'TableCaption';

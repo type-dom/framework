@@ -1,14 +1,16 @@
-import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
+import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeMap } from '../../../core/type-html/map/map.abstract';
 import type { IMap } from './map.interface';
 
 export class Map extends TypeMap implements IMap {
   className: 'Map';
 
-  constructor(params: ITypeConfig = {}) {
+  override isBasic = true;
+
+  constructor(params: TypeProps = {}) {
     super();
     this.className = 'Map';
-    this.slotChild(params.slot);
+    this.slotChildren(params.slot);
     this.useParams(params);
   }
 }

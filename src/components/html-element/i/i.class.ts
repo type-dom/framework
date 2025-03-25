@@ -1,14 +1,16 @@
 import { TypeI } from '../../../core/type-html/i/i.abstract';
-import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
+import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import type { II } from './i.interface';
 
 export class I extends TypeI implements II {
   className: 'I';
 
-  constructor(params: ITypeConfig = {}) {
+  override isBasic = true;
+
+  constructor(params: TypeProps = {}) {
     super();
     this.className = 'I';
-    this.slotChild(params.slot);
+    this.slotChildren(params.slot);
     this.useParams(params);
   }
 }

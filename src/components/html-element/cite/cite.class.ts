@@ -1,14 +1,16 @@
-import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
+import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeCite } from '../../../core/type-html/cite/cite.abstract';
 import type { ICite } from './cite.interface';
 
 export class Cite extends TypeCite implements ICite {
   className: 'Cite';
 
-  constructor(params: ITypeConfig = {}) {
+  override isBasic = true;
+
+  constructor(params: TypeProps = {}) {
     super();
     this.className = 'Cite';
-    this.slotChild(params.slot);
+    this.slotChildren(params.slot);
     this.useParams(params);
   }
 }

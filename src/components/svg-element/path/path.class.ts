@@ -1,17 +1,19 @@
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
 import { TypeSvgSvg } from '../../../core/type-svg/svg/svg.abstract';
-import { ISvgPath, ISvgPathAttribute, ISvgPathConfig } from './path.interface';
+import { ISvgPath, SvgPathProps } from './path.interface';
 
 export class SvgPath extends TypeSvg implements ISvgPath {
   nodeName: 'path';
   dom: SVGPathElement;
   className: 'SvgPath';
-  override props: ISvgPathConfig;
+  override props: SvgPathProps;
   override parent?: TypeSvgSvg;
   // override attrObj: ISvgPathAttribute;
   override childNodes: [];
 
-  constructor(params: ISvgPathConfig = {}) {
+  override isBasic = true;
+
+  constructor(params: SvgPathProps = {}) {
     super();
     this.nodeName = 'path';
     this.dom = document.createElementNS(
@@ -21,7 +23,7 @@ export class SvgPath extends TypeSvg implements ISvgPath {
     this.className = 'SvgPath';
     this.attr.addObj({ d: params.attrObj?.d ?? '' });
     this.childNodes = [];
-    this.slotChild(params.slot);
+    this.slotChildren(params.slot);
     this.props = this.useParams(params);
   }
 
@@ -53,7 +55,7 @@ export class SvgPath extends TypeSvg implements ISvgPath {
    */
   setFill(color: string) {
     this.attr.addObj({
-      fill: color
+      fill: color,
     });
   }
 }

@@ -8,6 +8,8 @@ export class TableHead extends TypeTableHead implements ITableHead {
   className: 'TableHead';
   override childNodes: TableHeaderCell[];
 
+  override isBasic = true;
+
   constructor(public override parent: Table) {
     super();
     this.className = 'TableHead';

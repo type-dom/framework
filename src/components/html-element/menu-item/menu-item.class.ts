@@ -1,4 +1,4 @@
-import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
+import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeMenuItem } from '../../../core/type-html/menu-item/menu-item.abstract';
 import type { IMenuItem } from './menu-item.interface';
 
@@ -11,10 +11,12 @@ import type { IMenuItem } from './menu-item.interface';
 export class MenuItem extends TypeMenuItem implements IMenuItem {
   className: 'MenuItem';
 
-  constructor(params: ITypeConfig = {}) {
+  override isBasic = true;
+
+  constructor(params: TypeProps = {}) {
     super();
     this.className = 'MenuItem';
-    this.slotChild(params.slot);
+    this.slotChildren(params.slot);
     this.useParams(params);
   }
 }

@@ -1,11 +1,13 @@
 import { TypeBr } from '../../../core/type-html/br/br.abstract';
-import { IBr, IBrConfig } from './br.interface';
+import { IBr, IBrProps } from './br.interface';
 
 export class Br extends TypeBr implements IBr {
   className: 'Br';
-  override props: IBrConfig;
+  override props: IBrProps;
 
-  constructor(params?: IBrConfig) {
+  override isBasic = true;
+
+  constructor(params?: IBrProps) {
     super();
     this.className = 'Br';
     this.props = this.useParams(params);

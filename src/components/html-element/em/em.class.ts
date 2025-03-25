@@ -1,14 +1,16 @@
-import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
+import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeEm } from '../../../core/type-html/em/em.abstract';
 import type { IEm } from './em.interface';
 
 export class Em extends TypeEm implements IEm {
   className: 'Em';
 
-  constructor(params: ITypeConfig = {}) {
+  override isBasic = true;
+
+  constructor(params: TypeProps = {}) {
     super();
     this.className = 'Em';
-    this.slotChild(params.slot);
+    this.slotChildren(params.slot);
     this.useParams(params);
   }
 }

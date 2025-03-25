@@ -1,14 +1,16 @@
 import { TypeHead } from '../../../core/type-html/head/head.abstract';
-import type { IHead, IHeadConfig } from './head.interface';
+import type { IHead, HeadProps } from './head.interface';
 
 export class Head extends TypeHead implements IHead {
   className: 'Head';
-  override props: IHeadConfig;
+  override props: HeadProps;
 
-  constructor(params?: IHeadConfig) {
+  override isBasic = true;
+
+  constructor(params?: HeadProps) {
     super(params?.nodeName);
     this.className = 'Head';
-    this.slotChild(params?.slot);
+    this.slotChildren(params?.slot);
     this.props = this.useParams(params);
   }
 }

@@ -1,12 +1,11 @@
-import { TypeElement } from '../../core/type-element/type-element.abstract';
-import { ITypeConfig, ITypeNode } from '../../core/type-node/type-node.interface';
-
+import { MaybeRef } from '@type-dom/signals';
+import { TypeProps, ITypeNode } from '../../core/type-node/type-node.interface';
 
 export interface ITeleport extends ITypeNode {
   className: 'Teleport';
 }
 
-export interface ITeleportConfig extends ITypeConfig {
-  to?: string | HTMLElement;
+export interface TeleportProps extends TypeProps {
+  to?: MaybeRef<string | HTMLElement>;
   disabled?: boolean;
 }

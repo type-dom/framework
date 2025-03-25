@@ -1,14 +1,16 @@
-import { ITypeConfig } from '../../../../core/type-node/type-node.interface';
+import { TypeProps } from '../../../../core/type-node/type-node.interface';
 import { TypeDD } from '../../../../core/type-html/dl/dd/dd.abstract';
 import type { IDD } from './dd.interface';
 
 export class DD extends TypeDD implements IDD {
   className: 'DD';
 
-  constructor(params: ITypeConfig = {}) {
+  override isBasic = true;
+
+  constructor(params: TypeProps = {}) {
     super();
     this.className = 'DD';
-    this.slotChild(params.slot);
+    this.slotChildren(params.slot);
     this.useParams(params);
   }
 }

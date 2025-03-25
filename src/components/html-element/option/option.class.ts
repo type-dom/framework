@@ -1,14 +1,16 @@
 import { TypeNode } from '../../../core/type-node/type-node.abstract';
 import { TextNode } from '../../../core/text-node/text-node.class';
-import type { IOption, IOptionConfig } from './option.interface';
+import type { IOption, OptionProps } from './option.interface';
 import { TypeOption } from '../../../core';
 
 export class Option extends TypeOption implements IOption {
   className: 'Option';
   override childNodes: TypeNode[];
-  override props: IOptionConfig;
+  override props: OptionProps;
 
-  constructor(params = {} as IOptionConfig) {
+  override isBasic = true;
+
+  constructor(params = {} as OptionProps) {
     super();
     this.className = 'Option';
     this.attr.addName('option');

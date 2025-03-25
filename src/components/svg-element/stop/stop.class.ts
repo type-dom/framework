@@ -2,7 +2,7 @@ import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
 import { SvgRadialGradient } from '../radial-gradient/radial-gradient.class';
 import { SvgLinearGradient } from '../linear-gradient/linear-gradient.class';
 import type { ISvgStop, ISvgStopAttribute } from './stop.interface';
-import { ITypeConfig } from '../../../core/type-node/type-node.interface';
+import { TypeProps } from '../../../core/type-node/type-node.interface';
 
 export class SvgStop extends TypeSvg implements ISvgStop {
   nodeName: 'stop';
@@ -12,7 +12,9 @@ export class SvgStop extends TypeSvg implements ISvgStop {
   // override attrObj: ISvgStopAttribute;
   override childNodes: [];
 
-  constructor(params: ITypeConfig) {
+  override isBasic = true;
+
+  constructor(params: TypeProps) {
     super();
     this.nodeName = 'stop';
     this.className = 'SvgStop';
@@ -23,16 +25,16 @@ export class SvgStop extends TypeSvg implements ISvgStop {
     this.childNodes = [];
     this.attr.addObj({
       offset: '0%',
-      stopColor: '#000'
+      stopColor: '#000',
     });
-    this.slotChild(params.slot);
+    this.slotChildren(params.slot);
     this.useParams(params);
   }
 
   reset(offset: number, stopColor: string): void {
     this.attr.setObj({
       offset,
-      stopColor
+      stopColor,
     });
   }
 }

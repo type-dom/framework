@@ -1,6 +1,6 @@
-import { ITypeConfig } from '../../../core/type-node/type-node.interface';
+import { TypeProps } from '../../../core/type-node/type-node.interface';
 import type { ITypeSvg } from '../../../core/type-svg/type-svg.interface';
-import type { ITypeAttribute } from '../../../core/type-element/type-element.interface';
+import { ITypeAttribute } from '../../../core/attribute/attribute.interface';
 import type { ISvgStop } from '../stop/stop.interface';
 import { SvgDefs } from '../defs/defs.class';
 
@@ -19,7 +19,7 @@ export interface ISvgLinearGradient extends ITypeSvg {
   childNodes: ISvgStop[];
 }
 
-export interface ISvgLinearGradientConfig extends ITypeConfig {
+export interface SvgLinearGradientProps extends TypeProps {
   parent?: SvgDefs;
   attrObj?: ISvgLinearGradientAttribute;
 }

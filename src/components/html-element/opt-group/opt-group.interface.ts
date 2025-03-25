@@ -1,12 +1,15 @@
 import { TypeSelect } from '../../../core/type-html/select/select.abstract';
-import { ITypeOptGroup, ITypeOptGroupConfig } from '../../../core/type-html/opt-group/opt-group.interface';
+import {
+  ITypeOptGroup,
+  TypeOptGroupProps,
+} from '../../../core/type-html/opt-group/opt-group.interface';
 
 export interface IOptGroup extends ITypeOptGroup {
   className: 'OptGroup';
-  props: IOptGroupConfig;
+  props: OptGroupProps;
   // childNodes: ITypNode[],
 }
 
-export interface IOptGroupConfig extends ITypeOptGroupConfig {
+export interface OptGroupProps extends TypeOptGroupProps {
   parent: TypeSelect;
 }

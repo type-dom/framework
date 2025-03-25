@@ -1,5 +1,5 @@
+import { ITypeAttribute } from '../../../core/attribute/attribute.interface';
 import type { ITypeSvg } from '../../../core/type-svg/type-svg.interface';
-import type { ITypeAttribute } from '../../../core/type-element/type-element.interface';
 
 /**
  */

@@ -1,10 +1,13 @@
-import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
-import type { ITypeHead, ITypeHeadConfig } from '../../../core/type-html/head/head.interface';
+import type { TypeProps } from '../../../core/type-node/type-node.interface';
+import type {
+  ITypeHead,
+  TypeHeadProps,
+} from '../../../core/type-html/head/head.interface';
 
 export interface IHead extends ITypeHead {
   className: 'Head';
 }
 
-export interface IHeadConfig extends ITypeHeadConfig {
+export interface HeadProps extends TypeHeadProps {
   nodeName: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 }

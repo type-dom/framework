@@ -1,14 +1,11 @@
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
-import type {
-  ISvgEllipse,
-  ISvgEllipseConfig
-} from './ellipse.interface';
+import type { ISvgEllipse, SvgEllipseProps } from './ellipse.interface';
 
 export class SvgEllipse extends TypeSvg implements ISvgEllipse {
   nodeName: 'ellipse';
   className: 'SvgEllipse';
   dom: SVGEllipseElement;
-  override props: ISvgEllipseConfig;
+  override props: SvgEllipseProps;
   // override attrObj: ISvgEllipseAttribute;
   override childNodes: [];
   cx = 0;
@@ -16,7 +13,9 @@ export class SvgEllipse extends TypeSvg implements ISvgEllipse {
   rx = 0;
   ry = 0;
 
-  constructor(params?: ISvgEllipseConfig) {
+  override isBasic = true;
+
+  constructor(params?: SvgEllipseProps) {
     super();
     this.nodeName = 'ellipse';
     this.className = 'SvgEllipse';
@@ -32,9 +31,9 @@ export class SvgEllipse extends TypeSvg implements ISvgEllipse {
       cx: this.cx,
       cy: this.cy,
       rx: this.rx,
-      ry: this.ry
+      ry: this.ry,
     });
-    this.slotChild(params?.slot);
+    this.slotChildren(params?.slot);
     this.props = this.useParams(params);
   }
 
@@ -47,7 +46,7 @@ export class SvgEllipse extends TypeSvg implements ISvgEllipse {
       cx,
       cy,
       rx,
-      ry
+      ry,
     });
     return this;
   }

@@ -4,7 +4,9 @@ import type { IAttr } from '../../core/type-node/type-node.interface';
 import { TextNode } from '../../core/text-node/text-node.class';
 import { Style } from '../../core/style/style.class';
 import { Attribute } from '../../core/attribute/attribute.class';
-import { IXElement, IXElementConfig } from './x-element.interface';
+import { IXElement, XElementProps } from './x-element.interface';
+import { isString } from '@type-dom/utils';
+import { isVNode } from '../../utils';
 
 /**
  * XElement是一个通用元素基础组件，是其它类组件的子节点,Html/Svg
@@ -32,22 +34,19 @@ export class XElement extends TypeElement implements IXElement {
    * 加载自定义标签时也会用到；
    * @param params
    */
-  constructor(params: IXElementConfig = {}) {
+  constructor(params: XElementProps = {}) {
     super();
     this.className = 'XElement';
-    this.props = this.useParams({
-      nodeName: params?.tag || params.nodeName || 'div'
+    this.assignProps({
+      nodeName: params.tag || params.nodeName || 'div'
     });
 
     // this.useTag(params?.tag || params.nodeName)
     // console.log('x-element . ');
-    // if (this.props.nodeName === 'fragment') {
-    //   console.error('x-element can not use fragment . ');
-    // }
     this.attributes = params?.attributes || [];
     this.style = new Style(this);
     this.attr = new Attribute(this);
-    if (params?.template !== undefined) {
+    if (isString(params?.template)) {
       const parser = new Parser();
       const item = parser.parseFromString(params.template) as XElement;
       //   todo 绑定和指令等
@@ -61,6 +60,8 @@ export class XElement extends TypeElement implements IXElement {
       }
       // this.parent?.addChild(item); // this.parent is undefined
       this.addChild(item);
+    } else if (isVNode(params.template)) {
+      this.slotChildren(params.template);
     }
     // todo 报错 template 和 childNodes 同时存在时
     // this.childNodes =
@@ -83,6 +84,8 @@ export class XElement extends TypeElement implements IXElement {
 
   override setup(): void {
     // console.log('XElement setup . ');
+    const props = this.props;
+    this.slotChildren(props.slot || props.slots?.default);
     // todo nodejs下没有document，Parser可能会用到
     // 加载自定义属性
     for (const attr of this.attributes) {
@@ -113,6 +116,7 @@ export class XElement extends TypeElement implements IXElement {
         });
       }
     }
+
   }
 
   //   绑定事件

@@ -1,11 +1,11 @@
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
-import { ISvgLine, ISvgLineAttribute, ISvgLineConfig } from './line.interface';
+import { ISvgLine, ISvgLineAttribute, SvgLineProps } from './line.interface';
 
 export class SvgLine extends TypeSvg implements ISvgLine {
   nodeName: 'line';
   className: 'SvgLine';
   dom: SVGLineElement;
-  override props: ISvgLineConfig;
+  override props: SvgLineProps;
   // override attrObj: ISvgLineAttribute;
   override childNodes: [];
   x1 = 0;
@@ -13,7 +13,9 @@ export class SvgLine extends TypeSvg implements ISvgLine {
   y1 = 0;
   y2 = 0;
 
-  constructor(params?: ISvgLineConfig) {
+  override isBasic = true;
+
+  constructor(params?: SvgLineProps) {
     super();
     this.nodeName = 'line';
     this.className = 'SvgLine';
@@ -28,9 +30,9 @@ export class SvgLine extends TypeSvg implements ISvgLine {
       x1: this.x1,
       y1: this.y1,
       x2: this.x2,
-      y2: this.y2
+      y2: this.y2,
     });
-    this.slotChild(params?.slot);
+    this.slotChildren(params?.slot);
     this.props = this.useParams(params);
   }
 
@@ -43,7 +45,7 @@ export class SvgLine extends TypeSvg implements ISvgLine {
       x1,
       y1,
       x2,
-      y2
+      y2,
     });
     return this;
   }

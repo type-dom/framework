@@ -5,13 +5,13 @@
  * @extends ITypeElement 继承自 ITypeElement 接口，获取其类型元素的基本属性和方法。
  */
 import type { ITypeElement } from '../../core/type-element/type-element.interface';
-import { IAttr, ITypeConfig } from '../../core/type-node/type-node.interface';
+import { IAttr, TypeProps } from '../../core/type-node/type-node.interface';
 
 export interface IXElement extends ITypeElement {
   className: 'XElement'; // 定义元素的类名为 'XElement'。
   // childNodes: (IXElement | ITextNode)[]; // childNodes 属性是一个由 IXElement 或 ITextNode 组成的数组，表示元素的子节点集合。
 }
 
-export interface IXElementConfig extends ITypeConfig {
+export interface XElementProps extends TypeProps {
   attributes?: IAttr[];
 }

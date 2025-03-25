@@ -1,14 +1,16 @@
 import { TypeElement } from '../../../core/type-element/type-element.abstract';
 import { TypeLI } from '../../../core/type-html/li/li.abstract';
 import { TextNode } from '../../../core/text-node/text-node.class';
-import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
+import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import type { ILI } from './li.interface';
 
 export class LI extends TypeLI implements ILI {
   className: 'LI';
   override childNodes: (TypeElement | TextNode)[];
 
-  constructor(params: ITypeConfig = {}) {
+  override isBasic = true;
+
+  constructor(params: TypeProps = {}) {
     super();
     this.className = 'LI';
     this.childNodes = [];
@@ -19,11 +21,11 @@ export class LI extends TypeLI implements ILI {
       padding: '6px 14px',
       borderRadius: '4px 4px 0px 0px',
       borderBottom: 'none',
-      boxSizing: 'border-box'
+      boxSizing: 'border-box',
     });
     this.attr.addName('list-item');
 
-    this.slotChild(params.slot);
+    this.slotChildren(params.slot);
     this.useParams(params);
   }
 }

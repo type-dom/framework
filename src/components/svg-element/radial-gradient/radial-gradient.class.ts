@@ -2,17 +2,19 @@ import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
 import { SvgStop } from '../stop/stop.class';
 import type {
   ISvgRadialGradient,
-  ISvgRadialGradientConfig
+  SvgRadialGradientProps,
 } from './radial-gradient.interface';
 
 export class SvgRadialGradient extends TypeSvg implements ISvgRadialGradient {
   nodeName: 'radialGradient';
   className: 'SvgRadialGradient';
   dom: SVGRadialGradientElement;
-  override props: ISvgRadialGradientConfig;
+  override props: SvgRadialGradientProps;
   override childNodes: SvgStop[];
 
-  constructor(params: ISvgRadialGradientConfig = {}) {
+  override isBasic = true;
+
+  constructor(params: SvgRadialGradientProps = {}) {
     super();
     this.nodeName = 'radialGradient';
     this.className = 'SvgRadialGradient';
@@ -21,13 +23,13 @@ export class SvgRadialGradient extends TypeSvg implements ISvgRadialGradient {
       this.nodeName
     );
     this.childNodes = [];
-    this.slotChild(params.slot);
+    this.slotChildren(params.slot);
     this.props = this.useParams(params);
   }
 
   reset(id: string): void {
     this.attr.setObj({
-      id
+      id,
     });
   }
 }

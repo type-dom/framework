@@ -1,16 +1,17 @@
 import { isArray, isObject, isString } from '@type-dom/utils';
 import {
-  Hook,
-  // ITypeTransitionConfig
+  Hook, TypeTransitionProps
+  // TypeTransitionProps
 } from '../../core/type-transition/type-transition.interface';
 import { TypeHtml } from '../../core/type-html/type-html.abstract';
 import {
   ANIMATION,
   CSSTransitionInfo,
-  ITransitionConfig,
+  TransitionProps,
   StylePropertiesKey,
-  TransitionUtil
+  TransitionUtil, ElementWithTransition, vtcKey
 } from './transition.interface';
+import { TypeNode } from '../../core';
 
 const DOMTransitionPropsValidators = {
   name: String,
@@ -32,10 +33,10 @@ const DOMTransitionPropsValidators = {
 };
 
 export function resolveTransitionProps(
-  rawProps: ITransitionConfig
-): ITransitionConfig {
-  console.warn('resolveTransitionProps . ');
-  const baseProps = {} as ITransitionConfig;
+  rawProps: TransitionProps
+): TypeTransitionProps<Element> {
+  // console.warn('resolveTransitionProps . ');
+  const baseProps = {} as TypeTransitionProps<Element>;
   for (const key in rawProps) {
     if (!(key in DOMTransitionPropsValidators)) {
       (baseProps as any)[key] = (rawProps as any)[key];
@@ -95,14 +96,14 @@ export function resolveTransitionProps(
     onAppearCancelled = onEnterCancelled
   } = baseProps;
 
-  const finishEnter = (el: TypeHtml, isAppear: boolean, done?: () => void) => {
+  const finishEnter = (el: Element, isAppear: boolean, done?: () => void) => {
     removeTransitionClass(el, isAppear ? appearToClass : enterToClass);
     removeTransitionClass(el, isAppear ? appearActiveClass : enterActiveClass);
     done && done();
   };
 
   const finishLeave = (
-    el: TypeHtml & { _isLeaving?: boolean },
+    el: Element & { _isLeaving?: boolean },
     done?: () => void
   ) => {
     el._isLeaving = false;
@@ -113,7 +114,8 @@ export function resolveTransitionProps(
   };
 
   const makeEnterHook = (isAppear: boolean) => {
-    return (element: TypeHtml, done: () => void) => {
+    return (element: HTMLElement, done: () => void) => {
+      // console.warn('makeEnterHook . ');
       const hook = isAppear ? onAppear : onEnter;
       const resolve = () => finishEnter(element, isAppear, done);
       callHook(hook, [element, resolve]);
@@ -136,89 +138,66 @@ export function resolveTransitionProps(
   };
 
   return Object.assign(baseProps, {
-    onBeforeEnter(element: TypeHtml) {
-      const el = element.dom;
-      if (!el) {
-        throw Error('element.dom is undefined . ');
-      }
-      callHook(onBeforeEnter, [element]);
-      addTransitionClass(element, enterFromClass);
+    onBeforeEnter(el: Element) {
+      // console.warn('onBeforeEnter . element is ', el);
+      callHook(onBeforeEnter, [el]);
+      addTransitionClass(el, enterFromClass);
       // if (__COMPAT__ && legacyClassEnabled && legacyEnterFromClass) {
       //   addTransitionClass(el, legacyEnterFromClass)
       // }
-      addTransitionClass(element, enterActiveClass);
+      addTransitionClass(el, enterActiveClass);
     },
-    onBeforeAppear(element: TypeHtml) {
-      const el = element.dom;
-      if (!el) {
-        throw Error('element.dom is undefined . ');
-      }
-      callHook(onBeforeAppear, [element]);
-      addTransitionClass(element, appearFromClass);
+    onBeforeAppear(el: Element) {
+      callHook(onBeforeAppear, [el]);
+      addTransitionClass(el, appearFromClass);
       // if (__COMPAT__ && legacyClassEnabled && legacyAppearFromClass) {
       //   addTransitionClass(el, legacyAppearFromClass)
       // }
-      addTransitionClass(element, appearActiveClass);
+      addTransitionClass(el, appearActiveClass);
     },
     onEnter: makeEnterHook(false),
     onAppear: makeEnterHook(true),
-    onLeave(element: TypeHtml & { _isLeaving?: boolean }, done: () => void) {
-      // const el = element.dom;
-      // if (!el) {
-      //   throw Error('element.dom is undefined . ');
-      // }
-      element._isLeaving = true;
-      const resolve = () => finishLeave(element, done);
-      addTransitionClass(element, leaveFromClass);
+    onLeave(el: Element & { _isLeaving?: boolean }, done: () => void) {
+      el._isLeaving = true;
+      const resolve = () => finishLeave(el, done);
+      addTransitionClass(el, leaveFromClass);
       // if (__COMPAT__ && legacyClassEnabled && legacyLeaveFromClass) {
       //   addTransitionClass(el, legacyLeaveFromClass)
       // }
       // add *-leave-active class before reflow so in the case of a cancelled enter transition
       // the css will not get the final state (#10677)
-      addTransitionClass(element, leaveActiveClass);
+      addTransitionClass(el, leaveActiveClass);
       // force reflow so *-leave-from classes immediately take effect (#2593)
       forceReflow();
       nextFrame(() => {
-        if (!element._isLeaving) {
+        if (!el._isLeaving) {
           // cancelled
           return;
         }
-        removeTransitionClass(element, leaveFromClass);
+        removeTransitionClass(el, leaveFromClass);
         // if (__COMPAT__ && legacyClassEnabled && legacyLeaveFromClass) {
         //   removeTransitionClass(el, legacyLeaveFromClass)
         // }
-        addTransitionClass(element, leaveToClass);
+        addTransitionClass(el, leaveToClass);
         if (!hasExplicitCallback(onLeave)) {
-          whenTransitionEnds(element as TypeHtml, type, leaveDuration, resolve);
+          whenTransitionEnds(el, type, leaveDuration, resolve);
         }
       });
-      callHook(onLeave, [element, resolve]);
+      callHook(onLeave, [el, resolve]);
     },
-    onEnterCancelled(element: TypeHtml) {
-      // const el = element.dom;
-      // if (!el) {
-      //   throw Error('element.dom is undefined . ');
-      // }
-      finishEnter(element, false);
-      callHook(onEnterCancelled, [element]);
+    onEnterCancelled(el: Element) {
+      finishEnter(el, false);
+      callHook(onEnterCancelled, [el]);
     },
-    onAppearCancelled(element: TypeHtml) {
-      // const el = element.dom;
-      // if (!el) {
-      //   throw Error('element.dom is undefined . ');
-      // }
-      finishEnter(element, true);
-      callHook(onAppearCancelled, [element]);
+    onAppearCancelled(el: Element) {
+      finishEnter(el, true);
+      callHook(onAppearCancelled, [el]);
     },
-    onLeaveCancelled(element: TypeHtml) {
-      // const el = element.dom;
-      // if (!el) {
-      //   throw Error('element.dom is undefined . ');
-      // }
-      finishLeave(element);
-      callHook(onLeaveCancelled, [element]);
+    onLeaveCancelled(el: Element) {
+      finishLeave(el);
+      callHook(onLeaveCancelled, [el]);
     }
-  }) as ITransitionConfig;
+  }) as TypeTransitionProps<Element>;
 }
 
 /**
@@ -239,11 +218,12 @@ const callHook = (
 let endId = 0;
 
 export function whenTransitionEnds(
-  el: TypeHtml & { _endId?: number },
-  expectedType: ITransitionConfig['type'] | undefined,
+  el: Element & { _endId?: number },
+  expectedType: TransitionProps['type'] | undefined,
   explicitTimeout: number | null,
   resolve: () => void
 ) {
+  // console.warn('whenTransitionEnds . el is ', el, ' expectedType is ', expectedType);
   const id = (el._endId = ++endId);
   const resolveIfNotStale = () => {
     if (id === el._endId) {
@@ -256,14 +236,7 @@ export function whenTransitionEnds(
   }
 
   const { type, timeout, propCount } = getTransitionInfo(el, expectedType);
-  console.log(
-    'type is ',
-    type,
-    'timeout is ',
-    timeout,
-    'propCount is ',
-    propCount
-  );
+  // console.log('getTransitionInfo, type is ', type, 'timeout is ', timeout, 'propCount is ', propCount);
   if (!type) {
     return resolve();
   }
@@ -271,11 +244,11 @@ export function whenTransitionEnds(
   const endEvent = type + 'end'; // transitionend
   let ended = 0;
   const end = () => {
-    el.dom?.removeEventListener(endEvent as keyof ElementEventMap, onEnd);
+    el.removeEventListener(endEvent as keyof ElementEventMap, onEnd);
     resolveIfNotStale();
   };
   const onEnd = (e: Event) => {
-    if (e.target === el.dom && ++ended >= propCount) {
+    if (e.target === el && ++ended >= propCount) {
       end();
     }
   };
@@ -284,28 +257,18 @@ export function whenTransitionEnds(
       end();
     }
   }, timeout + 1);
-  el.dom?.addEventListener(endEvent as keyof ElementEventMap, onEnd);
-}
-
-export const vtcKey = Symbol('_vtc');
-
-export interface ElementWithTransition extends HTMLElement {
-  // _vtc = Vue Transition Classes.
-  // Store the temporarily-added transition classes on the element
-  // so that we can avoid overwriting them if the element's class is patched
-  // during the transition.
-  [vtcKey]?: Set<string>;
+  el.addEventListener(endEvent as keyof ElementEventMap, onEnd);
 }
 
 function normalizeDuration(
-  duration: ITransitionConfig['duration']
+  duration: TransitionProps['duration']
 ): [number, number] | null {
   if (duration == null) {
     return null;
   } else if (isObject(duration)) {
     return [
-      NumberOf((duration as any).enter),
-      NumberOf((duration as any).leave)
+      NumberOf(duration.enter),
+      NumberOf(duration.leave)
     ];
   } else {
     const n = NumberOf(duration);
@@ -330,12 +293,15 @@ export const toNumber = (val: any): any => {
   return isNaN(n) ? val : n;
 };
 
-export function addTransitionClass(el: TypeHtml, cls: string) {
-  console.log('addTransitionClass .');
-  cls.split(/\s+/).forEach((c) => c && el.dom?.classList.add(c));
+export function addTransitionClass(el: Element, cls: string) {
+  // console.log('addTransitionClass . el is ', el);
+  // if (el instanceof TypeNode) {
+  //   el = el.dom
+  // }
+  cls.split(/\s+/).forEach((c) => c && el.classList.add(c));
   (
-    (el.dom as ElementWithTransition)[vtcKey] ||
-    ((el.dom as ElementWithTransition)[vtcKey] = new Set())
+    (el as ElementWithTransition)[vtcKey] ||
+    ((el as ElementWithTransition)[vtcKey] = new Set())
   ).add(cls);
 }
 
@@ -353,13 +319,14 @@ const hasExplicitCallback = (
     : false;
 };
 
-export function removeTransitionClass(el: TypeHtml, cls: string) {
-  cls.split(/\s+/).forEach((c) => c && el.dom?.classList.remove(c));
-  const _vtc = (el.dom as ElementWithTransition)[vtcKey];
+export function removeTransitionClass(el: Element, cls: string) {
+  // console.warn('removeTransitionClass . el is ', el);
+  cls.split(/\s+/).forEach((c) => c && el.classList.remove(c));
+  const _vtc = (el as ElementWithTransition)[vtcKey];
   if (_vtc) {
     _vtc.delete(cls);
     if (!_vtc!.size) {
-      (el.dom as ElementWithTransition)[vtcKey] = undefined;
+      (el as ElementWithTransition)[vtcKey] = undefined;
     }
   }
 }
@@ -371,11 +338,11 @@ export function nextFrame(cb: () => void) {
 }
 
 export function getTransitionInfo(
-  el: TypeHtml,
-  expectedType?: ITransitionConfig['type']
+  el: Element,
+  expectedType?: TransitionProps['type']
 ): CSSTransitionInfo {
-  console.log('getTransitionInfo . ');
-  const styles = window.getComputedStyle(el.dom!) as Pick<
+  // console.log('getTransitionInfo . ');
+  const styles = window.getComputedStyle(el) as Pick<
     CSSStyleDeclaration,
     StylePropertiesKey
   >;

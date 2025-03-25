@@ -5,6 +5,8 @@ import type { ITableColGroup } from './col-group.interface';
 export class TableColGroup extends TypeTableColGroup implements ITableColGroup {
   className: 'TableColGroup';
 
+  override isBasic = true;
+
   constructor(public override parent: Table) {
     super();
     this.className = 'TableColGroup';

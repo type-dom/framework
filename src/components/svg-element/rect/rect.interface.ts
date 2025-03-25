@@ -1,7 +1,7 @@
 import { IStyle, Property } from '@type-dom/css-type';
-import type { ITypeAttribute } from '../../../core/type-element/type-element.interface';
 import type { ITypeSvg } from '../../../core/type-svg/type-svg.interface';
-import { ITypeConfig } from '../../../core/type-node/type-node.interface';
+import { TypeProps } from '../../../core/type-node/type-node.interface';
+import { ITypeAttribute } from '../../../core/attribute/attribute.interface';
 
 /**
  * width 和 height 属性可定义矩形的高度和宽度
@@ -40,7 +40,7 @@ export interface ISvgRect extends ITypeSvg {
   childNodes: [];
 }
 
-export interface ISvgRectConfig extends ITypeConfig {
+export interface SvgRectProps extends TypeProps {
   attrObj?: ISvgRectAttribute;
   styleObj?: ISvgRectStyle;
 }

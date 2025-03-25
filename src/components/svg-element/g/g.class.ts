@@ -1,5 +1,5 @@
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
-import { ITypeConfig } from '../../../core/type-node/type-node.interface';
+import { TypeProps } from '../../../core/type-node/type-node.interface';
 import { ISvgG } from './g.interface';
 
 export class SvgG extends TypeSvg implements ISvgG {
@@ -8,7 +8,9 @@ export class SvgG extends TypeSvg implements ISvgG {
   dom: SVGGElement;
   override childNodes: TypeSvg[];
 
-  constructor(params: ITypeConfig = {}) {
+  override isBasic = true;
+
+  constructor(params: TypeProps = {}) {
     super();
     this.nodeName = 'g';
     this.className = 'SvgG';
@@ -17,7 +19,7 @@ export class SvgG extends TypeSvg implements ISvgG {
       this.nodeName
     );
     this.childNodes = [];
-    this.slotChild(params.slot);
+    this.slotChildren(params.slot);
     this.useParams(params);
   }
 }

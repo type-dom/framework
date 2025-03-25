@@ -1,5 +1,6 @@
 import type { ITypeSvg } from '../../../core/type-svg/type-svg.interface';
-import type { ITypeAttribute } from '../../../core/type-element/type-element.interface';
+import { ITypeAttribute } from '../../../core/attribute/attribute.interface';
+
 
 // import { IXmlAttributes } from 'ofd-file/src/abstracts/xml-element/xml-element.interface';
 export interface ISvgClipPath extends ITypeSvg {

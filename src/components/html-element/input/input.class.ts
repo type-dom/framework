@@ -1,16 +1,18 @@
 import { TypeInput } from '../../../core/type-html/input/input.abstract';
-import type { IInput, IInputConfig } from './input.interface';
+import type { IInput, InputProps } from './input.interface';
 
 export class Input extends TypeInput implements IInput {
   className: 'Input';
   override childNodes: [];
 
   // value: string | number | boolean | undefined;
-  constructor(params: IInputConfig = {}) {
+  override isBasic = true;
+
+  constructor(params: InputProps = {}) {
     super();
     this.className = 'Input';
     this.childNodes = [];
-    this.slotChild(params.slot);
+    this.slotChildren(params.slot);
     this.useParams(params);
   }
 

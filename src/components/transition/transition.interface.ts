@@ -1,4 +1,4 @@
-import { ITypeTransition, ITypeTransitionConfig } from '../../core/type-transition/type-transition.interface';
+import { ITypeTransition, TypeTransitionProps } from '../../core/type-transition/type-transition.interface';
 import { TypeElement } from '../../core/type-element/type-element.abstract';
 import { TypeHtml } from '../../core/type-html/type-html.abstract';
 import { TypeSvg } from '../../core/type-svg/type-svg.abstract';
@@ -18,7 +18,7 @@ export const ANIMATION = 'animation';
 
 export type AnimationTypes = typeof TransitionUtil | typeof ANIMATION;
 
-export interface ITransitionConfig extends ITypeTransitionConfig<TypeHtml> {
+export interface TransitionProps extends TypeTransitionProps {
   name?: string;
   type?: AnimationTypes;
   css?: boolean;
@@ -34,7 +34,7 @@ export interface ITransitionConfig extends ITypeTransitionConfig<TypeHtml> {
   leaveActiveClass?: string;
   leaveToClass?: string;
 
-  parent?: TypeElement;
+  // parent?: TypeElement;
 }
 
 export interface CSSTransitionInfo {
@@ -48,3 +48,13 @@ export type AnimationProperties = 'Delay' | 'Duration';
 export type StylePropertiesKey =
   | `${AnimationTypes}${AnimationProperties}`
   | `${typeof TransitionUtil}Property`;
+
+export const vtcKey: unique symbol = Symbol('_vtc')
+
+export interface ElementWithTransition extends HTMLElement {
+  // _vtc = Vue Transition Classes.
+  // Store the temporarily-added transition classes on the element
+  // so that we can avoid overwriting them if the element's class is patched
+  // during the transition.
+  [vtcKey]?: Set<string>
+}

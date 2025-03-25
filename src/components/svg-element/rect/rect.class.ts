@@ -1,11 +1,11 @@
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
-import { ISvgRect, ISvgRectAttribute, ISvgRectConfig } from './rect.interface';
+import { ISvgRect, ISvgRectAttribute, SvgRectProps } from './rect.interface';
 
 export class SvgRect extends TypeSvg implements ISvgRect {
   nodeName: 'rect';
   className: 'SvgRect';
   dom: SVGRectElement;
-  override props: ISvgRectConfig;
+  override props: SvgRectProps;
   // override attrObj: ISvgRectAttribute;
   override childNodes: [];
   x = 0;
@@ -13,7 +13,9 @@ export class SvgRect extends TypeSvg implements ISvgRect {
   width = 60;
   height = 60;
 
-  constructor(params: ISvgRectConfig = {}) {
+  override isBasic = true;
+
+  constructor(params: SvgRectProps = {}) {
     super();
     this.nodeName = 'rect';
     this.className = 'SvgRect';
@@ -29,9 +31,9 @@ export class SvgRect extends TypeSvg implements ISvgRect {
       x: this.x,
       y: this.y,
       width: this.width,
-      height: this.height
+      height: this.height,
     });
-    this.slotChild(params.slot);
+    this.slotChildren(params.slot);
     this.props = this.useParams(params);
   }
 
@@ -45,7 +47,7 @@ export class SvgRect extends TypeSvg implements ISvgRect {
       x,
       y,
       width,
-      height
+      height,
     });
   }
 }

@@ -1,10 +1,10 @@
-import { ITypeFragment, ITypeFragmentConfig } from '../../core/type-fragment/type-fragment.interface';
+import { ITypeFragment, TypeFragmentProps } from '../../core/type-fragment/type-fragment.interface';
 
 export interface IFragment extends ITypeFragment {
   className: 'Fragment';
 }
 
-export interface IFragmentConfig extends ITypeFragmentConfig {
+export interface FragmentProps extends TypeFragmentProps {
   /*nothing*/
   name?: string;
 }

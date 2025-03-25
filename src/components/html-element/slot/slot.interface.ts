@@ -1,9 +1,12 @@
-import type { ITypeSlot, ITypeSlotConfig } from '../../../core/type-html/slot/slot.interface';
+import type {
+  ITypeSlot,
+  TypeSlotProps,
+} from '../../../core/type-html/slot/slot.interface';
 
 export interface ISlot extends ITypeSlot {
   className: 'Slot';
 }
 
-export interface ISlotConfig extends ITypeSlotConfig {
+export interface SlotProps extends TypeSlotProps {
   slotName: string;
 }

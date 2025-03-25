@@ -1,14 +1,16 @@
-import { ITypeConfig } from '../../../../core/type-node/type-node.interface';
+import { TypeProps } from '../../../../core/type-node/type-node.interface';
 import { TypeDT } from '../../../../core/type-html/dl/dt/dt.abstract';
 import type { IDT } from './dt.interface';
 
 export class DT extends TypeDT implements IDT {
   className: 'DT';
 
-  constructor(params: ITypeConfig = {}) {
+  override isBasic = true;
+
+  constructor(params: TypeProps = {}) {
     super();
     this.className = 'DT';
-    this.slotChild(params.slot);
+    this.slotChildren(params.slot);
     this.useParams(params);
   }
 }

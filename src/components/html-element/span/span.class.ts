@@ -1,14 +1,16 @@
 import { TypeSpan } from '../../../core/type-html/span/span.abstract';
-import type { ITypeConfig } from '../../../core/type-node/type-node.interface';
+import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import type { ISpan } from './span.interface';
 
 export class Span extends TypeSpan implements ISpan {
   className: 'Span';
 
-  constructor(params: ITypeConfig = {}) {
+  override isBasic = true;
+
+  constructor(params: TypeProps = {}) {
     super();
     this.className = 'Span';
-    this.slotChild(params.slot);
+    this.slotChildren(params.slot);
     this.useParams(params);
   }
 }

@@ -1,6 +1,6 @@
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
 import { TypeSvgSvg } from '../../../core/type-svg/svg/svg.abstract';
-import { ITypeConfig } from '../../../core/type-node/type-node.interface';
+import { TypeProps } from '../../../core/type-node/type-node.interface';
 import type { ISvgCircle } from './circle.interface';
 
 export class SvgCircle extends TypeSvg implements ISvgCircle {
@@ -9,8 +9,9 @@ export class SvgCircle extends TypeSvg implements ISvgCircle {
   dom: SVGCircleElement;
   override parent?: TypeSvgSvg;
   override childNodes: [];
+  override isBasic = true;
 
-  constructor(params: ITypeConfig = {}) {
+  constructor(params: TypeProps = {}) {
     super();
     this.nodeName = 'circle';
     this.className = 'SvgCircle';
@@ -19,7 +20,7 @@ export class SvgCircle extends TypeSvg implements ISvgCircle {
       this.nodeName
     );
     this.childNodes = [];
-    this.slotChild(params.slot);
+    this.slotChildren(params.slot);
     this.useParams(params);
   }
 }

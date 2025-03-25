@@ -1,14 +1,16 @@
 import { TypeNode } from '../../../core/type-node/type-node.abstract';
 import { TextNode } from '../../../core/text-node/text-node.class';
 import { TypeOptGroup } from '../../../core/type-html/opt-group/opt-group.abstract';
-import type { IOptGroup, IOptGroupConfig } from './opt-group.interface';
+import type { IOptGroup, OptGroupProps } from './opt-group.interface';
 
 export class OptGroup extends TypeOptGroup implements IOptGroup {
   className: 'OptGroup';
   override childNodes: TypeNode[];
-  override props: IOptGroupConfig;
+  override props: OptGroupProps;
 
-  constructor(params = {} as IOptGroupConfig) {
+  override isBasic = true;
+
+  constructor(params = {} as OptGroupProps) {
     super();
     this.className = 'OptGroup';
     this.attr.addName('option');

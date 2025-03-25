@@ -1,25 +1,19 @@
+import { MaybeRef } from '@type-dom/signals';
 import { TypeFragment } from '../../core/type-fragment/type-fragment.abstract';
-import { ITeleport, ITeleportConfig } from './teleport.interface';
+import { ITeleport, TeleportProps } from './teleport.interface';
 
 export class Teleport extends TypeFragment implements ITeleport {
   className: 'Teleport';
-  // override nodeName: 'fragment';
-  // override dom: DocumentFragment;
-  // style: undefined;
-  // attr: undefined;
   // __isTeleport = true;
-  // override slot?: TypeElement | TypeElement[];
-  override to?: string | HTMLElement;
+  override to?: MaybeRef<string | HTMLElement>;
   disabled?: boolean;
 
-  constructor(params: ITeleportConfig = {}) {
+  constructor(params: TeleportProps = {}) {
     super();
     this.className = 'Teleport';
-    // this.nodeName = 'fragment';
-    // this.dom = document.createDocumentFragment();
     this.to = params.to;
     this.disabled = params?.disabled;
-    this.slotChild(params.slot);
+    this.slotChildren(params.slot);
     this.useParams(params);
   }
 

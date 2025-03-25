@@ -1,6 +1,6 @@
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
 import { TypeSvgSvg } from '../../../core/type-svg/svg/svg.abstract';
-import { ITypeConfig } from '../../../core/type-node/type-node.interface';
+import { TypeProps } from '../../../core/type-node/type-node.interface';
 import type { ISvgPolygon } from './polygon.interface';
 
 export class SvgPolygon extends TypeSvg implements ISvgPolygon {
@@ -10,7 +10,9 @@ export class SvgPolygon extends TypeSvg implements ISvgPolygon {
   override parent?: TypeSvgSvg;
   override childNodes: [];
 
-  constructor(params: ITypeConfig = {}) {
+  override isBasic = true;
+
+  constructor(params: TypeProps = {}) {
     super();
     this.nodeName = 'polygon';
     this.className = 'SvgPolygon';
@@ -20,7 +22,7 @@ export class SvgPolygon extends TypeSvg implements ISvgPolygon {
     );
     this.childNodes = [];
 
-    this.slotChild(params.slot);
+    this.slotChildren(params.slot);
     this.useParams(params);
   }
 }
