@@ -1,14 +1,5 @@
 import { WatchOptions } from '@type-dom/signals';
-
-/**
- * Void function
- */
-export type Fn = () => void
-
-/**
- * Any function
- */
-export type AnyFn = (...args: any[]) => any
+import { AnyFn, Fn } from '@type-dom/utils';
 
 /**
  * A ref that allow to set null or undefined

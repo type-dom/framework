@@ -1,6 +1,6 @@
 import { MaybeRef, MaybeRefOrGetter } from '@type-dom/signals';
 import { TypeNode } from '../../core/type-node/type-node.abstract';
-import { toValue } from '../toValue';
+import { toValue } from '../shared/toValue/toValue';
 
 export type TdInstance = TypeNode;
 export type MaybeElementRef<T extends MaybeElement = MaybeElement> = MaybeRef<T>
@@ -14,8 +14,7 @@ export type UnRefElementReturn<T extends MaybeElement = MaybeElement> = T extend
  *
  * @param elRef
  */
-export function unrefElement<T extends MaybeElement>(elRef: MaybeComputedElementRef<T>): T {
+export function unrefElement<T extends MaybeElement>(elRef: MaybeComputedElementRef<T>): UnRefElementReturn<T> {
   const plain = toValue(elRef);
-  return (plain as TdInstance)?.dom as T ?? plain as T;
-  // return (elRef as TdInstance)?.dom as T;
+  return ((plain as TdInstance)?.dom ?? plain )as UnRefElementReturn<T>;
 }

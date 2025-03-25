@@ -4,9 +4,9 @@
 
 import { useEventListener } from '.'
 import { Fn } from '../../interface'
-import { nextTick } from '../../util/next-tick'
 import { noop } from '@type-dom/utils';
 import { effectScope } from '@type-dom/signals';
+import { nextTick } from '../../core/scheduler';
 
 
 describe('useEventListener', () => {

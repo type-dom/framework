@@ -12,7 +12,7 @@ import { usePreferredDark } from '../usePreferredDark'
 import { useStorage } from '../useStorage'
 import { computed, Computed, MaybeRefOrGetter, Signal, toRef, watch } from '@type-dom/signals';
 import { getSSRHandler, StorageLike } from '../ssr-handlers';
-import { tryOnMounted } from '../tryOnMounted';
+import { tryOnMounted } from '../shared/tryOnMounted';
 
 export type BasicColorMode = 'light' | 'dark'
 export type BasicColorSchema = BasicColorMode | 'auto'

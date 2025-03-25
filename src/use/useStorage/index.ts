@@ -1,4 +1,6 @@
 // import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
+
+import { MaybeRefOrGetter, signal } from '@type-dom/signals';
 import type { ConfigurableWindow } from '../_configurable'
 // import type { StorageLike } from '../ssr-handlers'
 // import { pausableWatch, toValue, tryOnMounted } from '@vueuse/shared'
@@ -6,14 +8,13 @@ import type { ConfigurableWindow } from '../_configurable'
 import { defaultWindow } from '../_configurable'
 // import { getSSRHandler } from '../ssr-handlers'
 import { useEventListener } from '../useEventListener'
-import { guessSerializerType } from './guess'
 import { Awaitable, ConfigurableEventFilter, ConfigurableFlush } from '../utils';
-import { MaybeRefOrGetter, signal } from '@type-dom/signals';
-import { nextTick } from '../../util/next-tick';
-import { toValue } from '../toValue';
+import { nextTick } from '../../core/scheduler';
+import { toValue } from '../shared/toValue/toValue';
 import { getSSRHandler, StorageLike } from '../ssr-handlers';
-import { tryOnMounted } from '../tryOnMounted';
-import { pausableWatch } from '../watchPausable';
+import { tryOnMounted } from '../shared/tryOnMounted';
+import { pausableWatch } from '../shared/watchPausable';
+import { guessSerializerType } from './guess'
 
 export interface Serializer<T> {
   read: (raw: string) => T

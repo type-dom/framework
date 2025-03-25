@@ -5,8 +5,8 @@ import type { ConfigurableWindow } from '../_configurable';
 // import { toValue, tryOnScopeDispose } from '@vueuse/shared'
 // import { ref, watchEffect } from 'vue'
 import { defaultWindow } from '../_configurable';
-import { toValue } from '../toValue';
-import { tryOnScopeDispose } from '../tryOnScopeDispose';
+import { toValue } from '../shared/toValue/toValue';
+import { tryOnScopeDispose } from '../shared/tryOnScopeDispose';
 import { useSupported } from '../useSupported';
 import { effect, MaybeRefOrGetter, signal, watch } from '@type-dom/signals';
 

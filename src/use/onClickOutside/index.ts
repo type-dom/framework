@@ -1,17 +1,17 @@
-import { isIOS, noop } from '@type-dom/utils';
-import { Fn } from '../../interface';
+import { Fn, isIOS, noop } from '@type-dom/utils';
+import { MaybeRefOrGetter } from '@type-dom/signals';
 import { TypeNode } from '../../core/type-node/type-node.abstract';
 import { TypeElement } from '../../core/type-element/type-element.abstract';
 import { useEventListener } from '../useEventListener/index';
 import { ConfigurableWindow, defaultWindow } from '../_configurable';
-
-
+import { MaybeElementRef, unrefElement } from '../unrefElement';
+import { toValue } from '../shared';
 
 export interface OnClickOutsideOptions extends ConfigurableWindow {
   /**
    * List of elements that should not trigger the event.
    */
-  ignore?: (string | TypeNode)[];// MaybeRefOrGetter<(MaybeElementRef | string)[]>
+  ignore?: MaybeRefOrGetter<(MaybeElementRef | string)[]>
   /**
    * Use capturing phase for internal event listener.
    * @default true
@@ -37,7 +37,7 @@ let _iOSWorkaround = false
  * @param options
  */
 export function onClickOutside<T extends OnClickOutsideOptions>(
-  target: TypeNode,
+  target: MaybeElementRef,
   handler: OnClickOutsideHandler<{ detectIframe: T['detectIframe'] }>,
   options: T = {} as T,
 ) {
@@ -59,12 +59,12 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
   let shouldListen = true
 
   const shouldIgnore = (event: PointerEvent) => {
-    return ignore?.some((target) => {
+    return toValue(ignore)?.some((target) => {
       if (typeof target === 'string') {
         return Array.from(window.document.querySelectorAll(target))
           .some(el => el === event.target || event.composedPath().includes(el))
       } else {
-        const el = target.dom;
+        const el =  unrefElement(target)
         return el && (event.target === el || event.composedPath().includes(el))
       }
     })
@@ -74,33 +74,32 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
    * Determines if the given target has multiple root elements.
    * Referenced from: https://github.com/vuejs/test-utils/blob/ccb460be55f9f6be05ab708500a41ec8adf6f4bc/src/vue-wrapper.ts#L21
    */
-  function hasMultipleRoots(target: TypeNode): boolean {
-    const vm = target;
+  function hasMultipleRoots(target: MaybeElementRef): boolean {
+    const vm = toValue(target) as TypeNode;
     // return vm && vm.$.subTree.shapeFlag === 16
     return vm && !!vm.childNodes;
   }
 
-  function checkMultipleRoots(target: TypeNode, event: PointerEvent): boolean {
-    const vm = target;
+  function checkMultipleRoots(target: MaybeElementRef, event: PointerEvent): boolean {
+    const vm = toValue(target) as TypeNode;
     // const children = vm.$.subTree && vm.$.subTree.children
     const children = vm.children;
 
     if (children == null || !Array.isArray(children))
       return false
 
-    // @ts-expect-error should be VNode
-    return children.some((child: VNode) => child.el === event.target || event.composedPath().includes(child.el))
+    return children.some((child) => child.dom === event.target || event.composedPath().includes(child.dom!))
   }
 
   const listener = (event: PointerEvent) => {
-    const el = target.dom;
+    const el =  unrefElement(target)
 
     if (event.target == null)
       return
 
     // todo 作用是什么？？？
-    // if (!(el instanceof Element) && hasMultipleRoots(target) && checkMultipleRoots(target, event))
-    //   return
+    if (!(el instanceof Element) && hasMultipleRoots(target) && checkMultipleRoots(target, event))
+      return
 
     if (!el || el === event.target || event.composedPath().includes(el))
       return
@@ -131,12 +130,12 @@ export function onClickOutside<T extends OnClickOutsideOptions>(
       }
     }, { passive: true, capture }),
     useEventListener(window, 'pointerdown', (e) => {
-      const el = target.dom;
+      const el = unrefElement(target);
       shouldListen = !shouldIgnore(e) && !!(el && !e.composedPath().includes(el))
     }, { passive: true }),
     detectIframe && useEventListener(window, 'blur', (event) => {
       setTimeout(() => {
-        const el = target.dom;
+        const el = unrefElement(target)
         if (
           window.document.activeElement?.tagName === 'IFRAME'
           && !el?.contains(window.document.activeElement)

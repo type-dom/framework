@@ -1,11 +1,12 @@
 import { MaybeRefOrGetter, watch } from '@type-dom/signals';
+import { AnyFn, Fn } from '@type-dom/utils';
 
 import type { MaybeElementRef } from '../unrefElement'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
-import { AnyFn, Arrayable, Fn, isObject, noop } from '../utils';
-import { tryOnScopeDispose } from '../tryOnScopeDispose';
-import { toValue } from '../toValue';
+import { Arrayable, isObject, noop } from '../utils';
+import { tryOnScopeDispose } from '../shared/tryOnScopeDispose';
+import { toValue } from '../shared/toValue/toValue';
 
 interface InferEventTarget<Events> {
   addEventListener: (event: Events, fn?: any, options?: any) => any
@@ -181,7 +182,7 @@ export function useEventListener(...args: any[]) {
   )
 
   const stop = () => {
-    stopWatch()
+    stopWatch?.()
     cleanup()
   }
 

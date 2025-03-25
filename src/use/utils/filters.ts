@@ -1,8 +1,9 @@
-import type { AnyFn, ArgumentsType, Awaited, Pausable, Promisify } from './types'
-
-import { toValue } from '../toValue'
-import { noop } from './is'
+import { AnyFn } from '@type-dom/utils';
+import { MaybeRefOrGetter } from '@type-dom/signals';
 import { createProxy } from '../../core/x-proxy/x-proxy.class'
+import { toValue } from '../shared/toValue/toValue'
+import { noop } from './is'
+import type { ArgumentsType, Awaited, Pausable, Promisify } from './types'
 
 export type FunctionArgs<Args extends any[] = any[], Return = void> = (...args: Args) => Return
 
@@ -143,7 +144,7 @@ export interface ThrottleFilterOptions {
  * @param [leading]
  * @param [rejectOnCancel]
  */
-export function throttleFilter(ms: number, trailing?: boolean, leading?: boolean, rejectOnCancel?: boolean): EventFilter
+export function throttleFilter(ms: MaybeRefOrGetter<number>, trailing?: boolean, leading?: boolean, rejectOnCancel?: boolean): EventFilter
 export function throttleFilter(options: ThrottleFilterOptions): EventFilter
 export function throttleFilter(...args: any[]) {
   let lastExec = 0

@@ -1,7 +1,7 @@
-import type { BasicColorSchema, UseColorModeOptions } from '../useColorMode'
-// import { computed } from 'vue'
-import { useColorMode } from '../useColorMode'
 import { computed } from '@type-dom/signals';
+import type { BasicColorSchema, UseColorModeOptions } from '../useColorMode';
+// import { computed } from 'vue'
+import { useColorMode } from '../useColorMode';
 
 export interface UseDarkOptions extends Omit<UseColorModeOptions<BasicColorSchema>, 'modes' | 'onChanged'> {
   /**
@@ -57,7 +57,7 @@ export function useDark(options: UseDarkOptions = {}) {
 
   const isDark = computed<boolean>({
     get() {
-      return mode.get() === 'dark'
+      return mode.get?.() === 'dark'
     },
     set(v) {
       const modeVal = v ? 'dark' : 'light'

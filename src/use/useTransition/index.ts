@@ -1,7 +1,7 @@
-import { Computed, computed, signal, watch, Signal } from '@type-dom/signals';
-import { toValue } from '../toValue';
+import { Computed, computed, signal, watch, Signal, MaybeRef, MaybeRefOrGetter, Ref } from '@type-dom/signals';
+import { toValue } from '../shared/toValue/toValue';
 import { identity as linear, promiseTimeout } from '../utils';
-import { tryOnScopeDispose } from '../tryOnScopeDispose';
+import { tryOnScopeDispose } from '../shared/tryOnScopeDispose';
 
 /**
  * Cubic bezier points
@@ -26,24 +26,24 @@ export interface TransitionOptions {
   /**
    * Transition duration in milliseconds
    */
-  duration?: number | Signal<number>;
+  duration?: MaybeRef<number>;
 
   /**
    * Easing function or cubic bezier points for calculating transition values
    */
-  transition?: EasingFunction | CubicBezierPoints | Signal<CubicBezierPoints>;
+  transition?: MaybeRef<EasingFunction | CubicBezierPoints>;
 }
 
 export interface UseTransitionOptions extends TransitionOptions {
   /**
    * Milliseconds to wait before starting transition
    */
-  delay?: number;
+  delay?: MaybeRef<number>;
 
   /**
    * Disables the transition
    */
-  disabled?: boolean | Signal<boolean>;
+  disabled?: MaybeRef<boolean>;
 
   /**
    * Callback to execute after transition finishes
@@ -139,14 +139,14 @@ function toVec(t: number | number[] | undefined) {
  * @param options
  */
 export function executeTransition<T extends number | number[]>(
-  source: Signal<T>,
-  from: T,
-  to: T,
+  source: Ref<T>,
+  from: MaybeRefOrGetter<T>,
+  to: MaybeRefOrGetter<T>,
   options: TransitionOptions = {}
 ): PromiseLike<void> {
-  // console.log('executeTransition .');
-  const fromVal = from;
-  const toVal = to;
+  console.log('executeTransition .');
+  const fromVal = toValue(from) as number | number[];
+  const toVal = toValue(to) as number | number[];
   const v1 = toVec(fromVal);
   const v2 = toVec(toVal);
   const duration = (toValue(options.duration) ?? 1000) as number;
@@ -164,7 +164,7 @@ export function executeTransition<T extends number | number[]>(
     : createEasingFunction(toValue(trans) as CubicBezierPoints);
 
   return new Promise<void>((resolve) => {
-    source.set(fromVal);
+    source.set(fromVal as T);
 
     const tick = () => {
       if (options.abort?.()) {
@@ -179,12 +179,12 @@ export function executeTransition<T extends number | number[]>(
       if (Array.isArray(source.get())) {
         source.set(arr.map((n, i) => lerp(v1[i] ?? 0, v2[i] ?? 0, alpha)) as T);
       } else if (typeof source.get() === 'number') {
-        source.set(arr[0] as T);
+        source.set(Math.floor(arr[0]) as T);
       }
       if (now < endAt) {
         requestAnimationFrame(tick);
       } else {
-        source.set(toVal);
+        source.set(toVal as T);
         resolve();
       }
     };
@@ -210,13 +210,13 @@ export function executeTransition<T extends number | number[]>(
  * @param options
  */
 export function useTransition(
-  source: Signal<number> | Signal<number>[], // MaybeRefOrGetter<number | number[]>, // | MaybeRefOrGetter<number>[],
+  source: MaybeRefOrGetter<number | number[]> | MaybeRefOrGetter<number>[],
   options: UseTransitionOptions = {}
 ): Computed<number | number[]> {
   let currentId = 0;
 
   const sourceVal = (): number | number[] => {
-    const v = toValue(source);
+    const v = toValue(source as MaybeRefOrGetter<number | number[]>);
     return typeof v === 'number'
       ? v
       : v?.map(toValue) as number[]
@@ -238,7 +238,7 @@ export function useTransition(
       const id = ++currentId;
 
       if (options.delay) {
-        await promiseTimeout(options.delay);
+        await promiseTimeout(toValue(options.delay as any));
       }
 
       if (id !== currentId) {
@@ -258,7 +258,7 @@ export function useTransition(
 
   });
   watch(() => toValue(options.disabled),(disabled) => {
-    if (options.disabled) {
+    if (disabled) {
       currentId++;
       outputRef.set(sourceVal());
     }
@@ -266,8 +266,8 @@ export function useTransition(
 
   tryOnScopeDispose(() => {
     currentId++;
-    stop(); // 确保在组件销毁时停止 effect
+    // stop(); // 确保在组件销毁时停止 effect
   });
   // return signal(options.disabled ? sourceVal() : outputRef.get());
-  return computed(() => options.disabled ? sourceVal() : outputRef.get());
+  return computed(() => toValue(options.disabled) ? sourceVal() : outputRef.get());
 }

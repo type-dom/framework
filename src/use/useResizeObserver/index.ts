@@ -1,11 +1,11 @@
 import { computed, MaybeRefOrGetter, watch } from '@type-dom/signals';
-import { toValue } from '@type-dom/framework';
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useSupported } from '../useSupported'
-import { tryOnScopeDispose } from '../tryOnScopeDispose';
+import { tryOnScopeDispose } from '../shared/tryOnScopeDispose';
+import { toValue } from '../shared/toValue/index';
 
 export interface ResizeObserverSize {
   readonly inlineSize: number
@@ -64,7 +64,7 @@ export function useResizeObserver(
   }
 
   const targets = computed(() => {
-    const _targets = toValue(target as any)
+    const _targets = toValue(target)
     return Array.isArray(_targets)
       ? _targets.map(el => unrefElement(el))
       : [unrefElement(_targets)]
@@ -87,7 +87,7 @@ export function useResizeObserver(
 
   const stop = () => {
     cleanup()
-    stopWatch()
+    stopWatch?.()
   }
 
   tryOnScopeDispose(stop)
