@@ -1,6 +1,10 @@
-import { ITypeFragmentConfig } from '../../core/type-fragment/type-fragment.interface';
+import { ITypeFragment, TypeFragmentProps } from '../../core/type-fragment/type-fragment.interface';
 
-export interface IRouterViewConfig extends ITypeFragmentConfig {
+export interface IRouterView extends ITypeFragment {
+  className: 'RouterView';
+}
+
+export interface RouterViewProps extends TypeFragmentProps {
   height?: string;
   childNodes?: never;
 }

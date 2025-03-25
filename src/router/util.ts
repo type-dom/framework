@@ -128,9 +128,17 @@ export async function loadRoute(route: IRoute) {
     }
     await loadUpRoute(route);
     if (route.upRoutes.length > 0) {
-      route.upRoutes[0].routerView?.elementParent?.mount();
+      // if (route.upRoutes[0].routerView?.elementParent?.rendered) { // todo check
+      //   route.upRoutes[0].routerView?.elementParent.update()
+      // } else {
+        route.upRoutes[0].routerView?.elementParent?.mount();
+      // }
     } else {
-      route.routerView?.elementParent?.mount();
+      // if (route.routerView?.elementParent?.rendered) {
+      //   route.routerView?.elementParent.update()
+      // } else {
+        route.routerView?.elementParent?.mount();
+      // }
     }
   }
 }

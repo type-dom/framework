@@ -1,8 +1,8 @@
+import { TypeElement } from '../../core/type-element/type-element.abstract';
 import { TypeFragment } from '../../core/type-fragment/type-fragment.abstract';
-import { TypeElement } from '../../core';
 import { IRoute } from '../route.interface';
 import { getClassFromModule } from '../util';
-import { IRouterViewConfig } from './router-view.interface';
+import { RouterViewProps, IRouterView } from './router-view.interface';
 
 /**
  * 路由视图组件
@@ -12,17 +12,18 @@ import { IRouterViewConfig } from './router-view.interface';
  * @example
  *
  */
-export class RouterView extends TypeFragment {
-  className = 'RouterView';
-  override props: IRouterViewConfig;
+export class RouterView extends TypeFragment implements IRouterView {
+  className: 'RouterView';
+  override props: RouterViewProps;
   // childNodes: TypeNode[];
   loaded: boolean; // 判断是不是已经被渲染过了；
   // component?: TypeElement;
   // override slot?: TypeElement; // 唯一子元素
   component?: TypeElement;
 
-  constructor(params = {} as IRouterViewConfig) {
+  constructor(params = {} as RouterViewProps) {
     super();
+    this.className = 'RouterView';
     this.props = this.useParams(params);
     this.loaded = false;
   }
@@ -62,10 +63,17 @@ export class RouterView extends TypeFragment {
           childRoute.routerView = this.component?.routerView;
         });
       }
-      this.clearChildren();
+      // this.unmount();
+      // this.childNodes.forEach((child) => child.unmount());
+      this.clearChildren(); // todo unmount 子元素
+      // this.component.unmount();
       this.addChild(this.component);
-      // console.log('this is ', this);
-      this.elementParent?.mount();
+      console.log('this is ', this);
+      // if (this.elementParent?.rendered) { // todo check right ?
+      //   this.elementParent.update()
+      // } else {
+        this.elementParent?.mount();
+      // }
     });
   }
 }
