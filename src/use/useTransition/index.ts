@@ -1,5 +1,5 @@
-import { Computed, computed, signal, watch, Signal, MaybeRef, MaybeRefOrGetter, Ref } from '@type-dom/signals';
-import { toValue } from '../shared/toValue/toValue';
+import { Computed, computed, signal, watch, MaybeRef, MaybeRefOrGetter, Ref } from '@type-dom/signals';
+import { toValue } from '../shared/toValue/index';
 import { identity as linear, promiseTimeout } from '../utils';
 import { tryOnScopeDispose } from '../shared/tryOnScopeDispose';
 
@@ -144,7 +144,7 @@ export function executeTransition<T extends number | number[]>(
   to: MaybeRefOrGetter<T>,
   options: TransitionOptions = {}
 ): PromiseLike<void> {
-  console.log('executeTransition .');
+  // console.log('executeTransition .');
   const fromVal = toValue(from) as number | number[];
   const toVal = toValue(to) as number | number[];
   const v1 = toVec(fromVal);

@@ -223,16 +223,16 @@ export function useColorMode<T extends string = BasicColorMode>(
 
   watch(state, onChanged, { flush: 'post', immediate: true })
 
-  tryOnMounted(() => onChanged(state.get()))
+  tryOnMounted(() => onChanged(state.get()!))
 
-  const auto = computed({
-    get() {
+  const auto = computed(
+    () => {
       return emitAuto ? store.value : state.get()
     },
-    set(v) {
+    (v) => {
       store.value = v
     },
-  })
+  )
 
   return Object.assign({}, auto.get(), { store, system, state }) as UseColorModeReturn<T>
 }

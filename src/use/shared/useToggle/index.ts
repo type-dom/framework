@@ -1,8 +1,8 @@
 // import type { Ref } from 'vue'
 // import type { MaybeRef, MaybeRefOrGetter } from '../utils'
 // import { isRef, ref } from 'vue'
-import { toValue } from '../toValue/toValue'
-import { isRef, MaybeRef, MaybeRefOrGetter, signal, Signal } from '@type-dom/signals';
+import { toValue } from '../toValue/index'
+import { isSignal, isComputed, MaybeRef, MaybeRefOrGetter, signal, Signal } from '@type-dom/signals';
 
 export interface UseToggleOptions<Truthy, Falsy> {
   truthyValue?: MaybeRefOrGetter<Truthy>
@@ -27,7 +27,7 @@ export function useToggle(
     falsyValue = false,
   } = options
 
-  const valueIsRef = isRef(initialValue)
+  const valueIsRef = isSignal(initialValue) || isComputed(initialValue);
   const _value = signal(initialValue) as Signal<boolean>
 
   function toggle(value?: boolean) {

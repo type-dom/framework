@@ -91,7 +91,7 @@ const ARRIVED_STATE_THRESHOLD_PIXELS = 1
  * @param options
  */
 export function useScroll(
-  element: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null | undefined>,
+  element: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null>,
   options: UseScrollOptions = {},
 ) {
   const {
@@ -119,23 +119,21 @@ export function useScroll(
 
   // Use a computed for x and y because we want to write the value to the refs
   // during a `scrollTo()` without firing additional `scrollTo()`s in the process.
-  const x = computed({
-    get() {
+  const x = computed(
+    () => {
       return internalX.get()
     },
-    set(x) {
+    (x) => {
       scrollTo(x, undefined)
     },
-  })
+  )
 
-  const y = computed({
-    get() {
-      return internalY.get()
-    },
-    set(y) {
+  const y = computed(
+    () => internalY.get(),
+    (y) => {
       scrollTo(undefined, y)
-    },
-  })
+    }
+  )
 
   function scrollTo(_x: number | undefined, _y: number | undefined) {
     if (!window)

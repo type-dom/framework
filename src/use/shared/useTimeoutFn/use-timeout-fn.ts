@@ -6,7 +6,6 @@
 
 import { AnyFn, isClient } from '@type-dom/utils';
 import { Stoppable } from '../../../interface';
-import { toValue } from '../toValue/toValue';
 import { tryOnScopeDispose } from '../tryOnScopeDispose';
 
 export interface UseTimeoutFnOptions {

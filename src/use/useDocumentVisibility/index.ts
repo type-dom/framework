@@ -13,7 +13,7 @@ import { useEventListener } from '../useEventListener'
 export function useDocumentVisibility(options: ConfigurableDocument = {}): Ref<DocumentVisibilityState> {
   const { document = defaultDocument } = options
   if (!document)
-    return signal('visible')
+    return signal('visible') as Ref<DocumentVisibilityState>
 
   const visibility = signal(document.visibilityState)
 

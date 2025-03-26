@@ -5,7 +5,7 @@ import type { ConfigurableWindow } from '../_configurable';
 // import { toValue, tryOnScopeDispose } from '@vueuse/shared'
 // import { ref, watchEffect } from 'vue'
 import { defaultWindow } from '../_configurable';
-import { toValue } from '../shared/toValue/toValue';
+import { toValue } from '../shared/toValue/index';
 import { tryOnScopeDispose } from '../shared/tryOnScopeDispose';
 import { useSupported } from '../useSupported';
 import { effect, MaybeRefOrGetter, signal, watch } from '@type-dom/signals';
@@ -58,7 +58,7 @@ export function useMediaQuery(query: MaybeRefOrGetter<string>, options: Configur
   });
 
   tryOnScopeDispose(() => {
-    stopWatch.run();
+    stopWatch();
     // stopWatch();
     cleanup();
     mediaQuery = undefined;

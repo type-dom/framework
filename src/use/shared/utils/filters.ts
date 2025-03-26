@@ -1,4 +1,4 @@
-import { isRef, MaybeRefOrGetter, readonly, signal } from '@type-dom/signals';
+import { isSignal, isComputed, MaybeRefOrGetter, readonly, signal } from '@type-dom/signals';
 import { AnyFn } from '@type-dom/utils';
 // import { isRef, readonly, ref } from 'vue'
 import { toValue } from '../toValue'
@@ -32,7 +32,7 @@ export interface DebounceFilterOptions {
    * The maximum time allowed to be delayed before it's invoked.
    * In milliseconds.
    */
-  maxWait?: MaybeRefOrGetter<number>
+  maxWait?: MaybeRefOrGetter<number | undefined>
 
   /**
    * Whether to reject the last call if it's been cancel.
@@ -156,7 +156,7 @@ export function throttleFilter(...args: any[]) {
   let trailing: boolean
   let leading: boolean
   let rejectOnCancel: boolean
-  if (!isRef(args[0]) && typeof args[0] === 'object')
+  if (!isSignal(args[0] && !isComputed(args[0])) && typeof args[0] === 'object')
     ({ delay: ms, trailing = true, leading = true, rejectOnCancel = false } = args[0])
   else
     [ms, trailing = true, leading = true, rejectOnCancel = false] = args

@@ -5,9 +5,9 @@
 // import { isClient } from '../utils'
 
 import { AnyFn } from '@type-dom/utils';
-import { MaybeRefOrGetter, readonly, signal } from '@type-dom/signals';
+import { MaybeRefOrGetter, signal } from '@type-dom/signals';
 import { Stoppable } from '../../utils';
-import { toValue } from '../toValue/';
+import { toValue } from '../toValue/index';
 import { isClient } from '../utils';
 import { tryOnScopeDispose } from '../tryOnScopeDispose';
 

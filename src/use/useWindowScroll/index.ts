@@ -14,7 +14,7 @@ export interface UseWindowScrollOptions extends ConfigurableWindow, UseScrollOpt
  */
 export function useWindowScroll(options: UseWindowScrollOptions = {}) {
   const { window = defaultWindow, ...rest } = options
-  return useScroll(window, rest)
+  return useScroll(window!, rest)
 }
 
 export type UseWindowScrollReturn = ReturnType<typeof useWindowScroll>

@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { isRef, ref } from 'vue'
+// import { isRef, ref } from 'vue'
+import { isRef, signal } from '@type-dom/signals';
+import { toValue } from '../toValue/index'
 import { useToggle } from './index'
-import { toValue } from '../toValue/toValue'
 
 describe('useToggle', () => {
   it('should be defined', () => {
@@ -55,7 +56,7 @@ describe('useToggle', () => {
   })
 
   it('ref initialValue', () => {
-    const isDark = ref(true)
+    const isDark = signal(true)
     const toggle = useToggle(isDark)
 
     expect(typeof toggle).toBe('function')
@@ -74,7 +75,7 @@ describe('useToggle', () => {
   })
 
   it('should toggle with truthy & falsy', () => {
-    const status = ref('ON')
+    const status = signal('ON')
     const toggle = useToggle(status, {
       truthyValue: 'ON',
       falsyValue: 'OFF',

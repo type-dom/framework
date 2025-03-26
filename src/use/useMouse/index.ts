@@ -1,4 +1,4 @@
-// import type { ConfigurableEventFilter, MaybeRefOrGetter } from '@vueuse/shared'
+// import type { ConfigurableEventFilter } from '@vueuse/shared'
 import type { ConfigurableWindow } from '../_configurable'
 import type { Position } from '../types'
 // import { ref } from 'vue'

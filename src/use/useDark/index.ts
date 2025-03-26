@@ -55,18 +55,17 @@ export function useDark(options: UseDarkOptions = {}) {
 
   const system = computed(() => mode.system.get())
 
-  const isDark = computed<boolean>({
-    get() {
+  const isDark = computed<boolean>(
+    () => {
       return mode.get?.() === 'dark'
     },
-    set(v) {
+    (v)=> {
       const modeVal = v ? 'dark' : 'light'
       if (system.get() === modeVal)
         mode.set('auto')
       else
         mode.set(modeVal)
-    },
-  })
-
+    }
+  )
   return isDark
 }

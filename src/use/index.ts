@@ -16,6 +16,7 @@ export { useStorage } from './useStorage';
 export { useSupported } from './useSupported';
 export { useThrottleFn } from './useThrottleFn';
 export { useTransition } from './useTransition/index';
+export { useVModel } from './useVModel';
 export { useWindowFocus } from './useWindowFocus';
 export { useWindowScroll } from './useWindowScroll';
 export { useWindowSize } from './useWindowSize';

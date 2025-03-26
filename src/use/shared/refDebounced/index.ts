@@ -16,7 +16,7 @@ export function refDebounced<T>(value: Ref<T>, ms: MaybeRefOrGetter<number> = 20
   const debounced = signal(value.get() as T) as Ref<T>
 
   const updater = useDebounceFn(() => {
-    debounced.set(value.get());
+    debounced.set(value.get()!);
   }, ms, options)
 
   watch(value, () => updater())

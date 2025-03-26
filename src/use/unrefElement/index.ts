@@ -1,13 +1,13 @@
 import { MaybeRef, MaybeRefOrGetter } from '@type-dom/signals';
 import { TypeNode } from '../../core/type-node/type-node.abstract';
-import { toValue } from '../shared/toValue/toValue';
+import { toValue } from '../shared/toValue/index';
 
-export type TdInstance = TypeNode;
+// export type TdInstance = TypeNode;
 export type MaybeElementRef<T extends MaybeElement = MaybeElement> = MaybeRef<T>
 export type MaybeComputedElementRef<T extends MaybeElement = MaybeElement> = MaybeRefOrGetter<T>
-export type MaybeElement = HTMLElement | SVGElement | TdInstance | undefined | null
+export type MaybeElement = HTMLElement | SVGElement | TypeNode | null | undefined
 
-export type UnRefElementReturn<T extends MaybeElement = MaybeElement> = T extends TdInstance ? Exclude<MaybeElement, TdInstance> : T | undefined
+export type UnRefElementReturn<T extends MaybeElement = MaybeElement> = T extends TypeNode ? Exclude<MaybeElement, TypeNode> : T | undefined
 
 /**
  * Get the dom element of a ref of element or Vue component instance
@@ -16,5 +16,5 @@ export type UnRefElementReturn<T extends MaybeElement = MaybeElement> = T extend
  */
 export function unrefElement<T extends MaybeElement>(elRef: MaybeComputedElementRef<T>): UnRefElementReturn<T> {
   const plain = toValue(elRef);
-  return ((plain as TdInstance)?.dom ?? plain )as UnRefElementReturn<T>;
+  return ((plain as TypeNode)?.dom ?? plain )as UnRefElementReturn<T>;
 }

@@ -26,8 +26,8 @@ export function useCounter(initialValue: MaybeRef<number> = 0, options: UseCount
     min = Number.NEGATIVE_INFINITY
   } = options;
 
-  const inc = (delta = 1) => count.set(Math.max(Math.min(max, count.get() + delta), min));
-  const dec = (delta = 1) => count.set(Math.min(Math.max(min, count.get() - delta), max));
+  const inc = (delta = 1) => count.set(Math.max(Math.min(max, count.get()! + delta), min));
+  const dec = (delta = 1) => count.set(Math.min(Math.max(min, count.get()! - delta), max));
   const get = () => count.get();
   const set = (val: number) => (count.set(Math.max(min, Math.min(max, val))));
   const reset = (val = _initialValue) => {

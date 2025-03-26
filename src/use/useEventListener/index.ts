@@ -1,12 +1,16 @@
-import { MaybeRefOrGetter, watch } from '@type-dom/signals';
-import { AnyFn, Fn } from '@type-dom/utils';
+// import type { Arrayable, Fn } from '@vueuse/shared'
+// import type { MaybeRef, MaybeRefOrGetter } from 'vue'
+// import { isObject, toArray, tryOnScopeDispose, watchImmediate } from '@vueuse/shared'
+// eslint-disable-next-line no-restricted-imports -- We specifically need to use unref here to distinguish between callbacks
+// import { computed, toValue, unref } from 'vue'
+import { computed, MaybeRef, MaybeRefOrGetter, unref, watch } from '@type-dom/signals';
+import { AnyFn, Arrayable, Fn, isObject } from '@type-dom/utils';
 
-import type { MaybeElementRef } from '../unrefElement'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
-import { Arrayable, isObject, noop } from '../utils';
+import { toValue } from '../shared/toValue/index';
 import { tryOnScopeDispose } from '../shared/tryOnScopeDispose';
-import { toValue } from '../shared/toValue/toValue';
+import { toArray } from '../utils/general';
 
 interface InferEventTarget<Events> {
   addEventListener: (event: Events, fn?: any, options?: any) => any
@@ -30,9 +34,10 @@ export interface GeneralEventListener<E = Event> {
  * @param listener
  * @param options
  */
+// @ts-expect-error - TypeScript gets confused with this and can't infer the correct overload with Parameters<...>
 export function useEventListener<E extends keyof WindowEventMap>(
-  event: Arrayable<E>,
-  listener: Arrayable<(this: Window, ev: WindowEventMap[E]) => any>,
+  event: MaybeRefOrGetter<Arrayable<E>>,
+  listener: MaybeRef<Arrayable<(this: Window, ev: WindowEventMap[E]) => any>>,
   options?: MaybeRefOrGetter<boolean | AddEventListenerOptions>
 ): Fn
 
@@ -49,8 +54,8 @@ export function useEventListener<E extends keyof WindowEventMap>(
  */
 export function useEventListener<E extends keyof WindowEventMap>(
   target: Window,
-  event: Arrayable<E>,
-  listener: Arrayable<(this: Window, ev: WindowEventMap[E]) => any>,
+  event: MaybeRefOrGetter<Arrayable<E>>,
+  listener: MaybeRef<Arrayable<(this: Window, ev: WindowEventMap[E]) => any>>,
   options?: MaybeRefOrGetter<boolean | AddEventListenerOptions>
 ): Fn
 
@@ -67,8 +72,8 @@ export function useEventListener<E extends keyof WindowEventMap>(
  */
 export function useEventListener<E extends keyof DocumentEventMap>(
   target: DocumentOrShadowRoot,
-  event: Arrayable<E>,
-  listener: Arrayable<(this: Document, ev: DocumentEventMap[E]) => any>,
+  event: MaybeRefOrGetter<Arrayable<E>>,
+  listener: MaybeRef<Arrayable<(this: Document, ev: DocumentEventMap[E]) => any>>,
   options?: MaybeRefOrGetter<boolean | AddEventListenerOptions>
 ): Fn
 
@@ -84,10 +89,10 @@ export function useEventListener<E extends keyof DocumentEventMap>(
  * @param options
  */
 export function useEventListener<E extends keyof HTMLElementEventMap>(
-  target: MaybeRefOrGetter<HTMLElement | null | undefined>,
-  event: Arrayable<E>,
-  listener: (this: HTMLElement, ev: HTMLElementEventMap[E]) => any,
-  options?: boolean | AddEventListenerOptions
+  target: MaybeRefOrGetter<Arrayable<HTMLElement> | null | undefined>,
+  event: MaybeRefOrGetter<Arrayable<E>>,
+  listener: MaybeRef<(this: HTMLElement, ev: HTMLElementEventMap[E]) => any>,
+  options?: MaybeRefOrGetter<boolean | AddEventListenerOptions>
 ): () => void
 
 /**
@@ -102,9 +107,9 @@ export function useEventListener<E extends keyof HTMLElementEventMap>(
  * @param options
  */
 export function useEventListener<Names extends string, EventType = Event>(
-  target: MaybeRefOrGetter<InferEventTarget<Names> | null | undefined>,
-  event: Arrayable<Names>,
-  listener: Arrayable<GeneralEventListener<EventType>>,
+  target: MaybeRefOrGetter<Arrayable<InferEventTarget<Names>> | null | undefined>,
+  event: MaybeRefOrGetter<Arrayable<Names>>,
+  listener: MaybeRef<Arrayable<GeneralEventListener<EventType>>>,
   options?: MaybeRefOrGetter<boolean | AddEventListenerOptions>
 ): Fn
 
@@ -120,65 +125,66 @@ export function useEventListener<Names extends string, EventType = Event>(
  * @param options
  */
 export function useEventListener<EventType = Event>(
-  target: MaybeRefOrGetter<EventTarget | null | undefined>,
-  event: Arrayable<string>,
-  listener: Arrayable<GeneralEventListener<EventType>>,
+  target: MaybeRefOrGetter<Arrayable<EventTarget> | null | undefined>,
+  event: MaybeRefOrGetter<Arrayable<string>>,
+  listener: MaybeRef<Arrayable<GeneralEventListener<EventType>>>,
   options?: MaybeRefOrGetter<boolean | AddEventListenerOptions>
 ): Fn
 
-export function useEventListener(...args: any[]) {
-  // console.warn('useEventListener . ');
-  let target: MaybeRefOrGetter<EventTarget> | undefined
-  let events: Arrayable<string>
-  let listeners: Arrayable<AnyFn>
-  let options: MaybeRefOrGetter<boolean | AddEventListenerOptions> | undefined
-
-  if (typeof args[0] === 'string' || Array.isArray(args[0])) {
-    [events, listeners, options] = args
-    target = defaultWindow
-  }
-  else {
-    [target, events, listeners, options] = args
-  }
-
-  if (!target) {
-    return noop
-  }
-
-  if (!Array.isArray(events)) {
-    events = [events]
-  }
-  if (!Array.isArray(listeners)) {
-    listeners = [listeners]
-  }
-
+export function useEventListener(...args: Parameters<typeof useEventListener>) {
+  // console.warn('useEventListener . args is ', args);
   const cleanups: AnyFn[] = []
   const cleanup = () => {
     cleanups.forEach(fn => fn())
     cleanups.length = 0
   }
 
-  const register = (el: any, event: string, listener: any, options: any) => {
+  const register = (
+    el: EventTarget,
+    event: string,
+    listener: any,
+    options: boolean | AddEventListenerOptions | undefined,
+  ) => {
+    // console.warn('event is ', event);
+    // console.warn('listener is ', listener);
+    // console.warn('options is ', options);
     el.addEventListener(event, listener, options)
     return () => el.removeEventListener(event, listener, options)
   }
 
+  const firstParamTargets = computed(() => {
+    const test = toArray(toValue(args[0])).filter(e => e != null)
+    return test.every(e => typeof e !== 'string') ? test : undefined
+  })
+
   const stopWatch = watch(
-    () => [unrefElement(target as unknown as MaybeElementRef), toValue(options)],
-    ([el, options]) => {
+    () => [
+      firstParamTargets.get()?.map(e => unrefElement(e as never)) ?? [defaultWindow].filter(e => e != null),
+      toArray(toValue(firstParamTargets.get() ? args[1] : args[0]) as string[]),
+      toArray(unref(firstParamTargets.get() ? args[2] : args[1]) as AnyFn[]),
+      // @ts-expect-error - TypeScript gets the correct types, but somehow still complains
+      toValue(firstParamTargets.get() ? args[3] : args[2]) as boolean | AddEventListenerOptions | undefined,
+    ] as const,
+    ([raw_targets, raw_events, raw_listeners, raw_options]) => {
       cleanup()
-      if (!el)
+
+      if (!raw_targets?.length || !raw_events?.length || !raw_listeners?.length)
         return
 
       // create a clone of options, to avoid it being changed reactively on removal
-      const optionsClone = isObject(options) ? { ...options } : options
+      const optionsClone = isObject(raw_options) ? { ...raw_options } : raw_options
       cleanups.push(
-        ...(events as string[]).flatMap((event) => {
-          return (listeners as AnyFn[]).map(listener => register(el, event, listener, optionsClone))
-        }),
+        ...raw_targets.flatMap(el =>
+          raw_events.flatMap(event =>
+            raw_listeners.map(listener => register(el, event!, listener, optionsClone)),
+          ),
+        ),
       )
     },
-    { immediate: true, flush: 'post' },
+    {
+      immediate: true,
+      flush: 'post'
+    },
   )
 
   const stop = () => {
@@ -186,7 +192,7 @@ export function useEventListener(...args: any[]) {
     cleanup()
   }
 
-  tryOnScopeDispose(stop)
+  tryOnScopeDispose(cleanup)
 
   return stop
 }

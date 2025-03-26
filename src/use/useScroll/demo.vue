@@ -11,22 +11,22 @@ const { left: toLeft, right: toRight, top: toTop, bottom: toBottom } = toRefs(di
 
 // Format the numbers with toFixed() to make them
 // nicer to display
-const displayX = computed({
-  get() {
+const displayX = computed(
+  () => {
     return x.value.toFixed(1)
   },
-  set(val) {
+  (val) => {
     x.value = Number.parseFloat(val)
   },
-})
-const displayY = computed({
-  get() {
+)
+const displayY = computed(
+  () => {
     return y.value.toFixed(1)
   },
-  set(val) {
+  (val) => {
     y.value = Number.parseFloat(val)
   },
-})
+)
 </script>
 
 <template>

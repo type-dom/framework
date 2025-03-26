@@ -42,21 +42,21 @@ export interface UseDraggableOptions {
    *
    * @default window
    */
-  draggingElement?: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null | undefined>
+  draggingElement?: MaybeRefOrGetter<HTMLElement | SVGElement | Window | Document | null>
 
   /**
    * Element for calculating bounds (If not set, it will use the event's target).
    *
    * @default undefined
    */
-  containerElement?: MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined>
+  containerElement?: MaybeRefOrGetter<HTMLElement | SVGElement | null>
 
   /**
    * Handle that triggers the drag event
    *
    * @default target
    */
-  handle?: MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined>
+  handle?: MaybeRefOrGetter<HTMLElement | SVGElement | null>
 
   /**
    * Pointer types that listen to.
@@ -124,7 +124,7 @@ export interface UseDraggableOptions {
  * @param options
  */
 export function useDraggable(
-  target: MaybeRefOrGetter<HTMLElement | SVGElement | null | undefined>,
+  target: MaybeRefOrGetter<HTMLElement | SVGElement | null>,
   options: UseDraggableOptions = {},
 ) {
   const {
@@ -147,7 +147,7 @@ export function useDraggable(
     toValue(initialValue) ?? { x: 0, y: 0 },
   )
 
-  const pressedDelta = signal<Position>()
+  const pressedDelta = signal<Position | undefined>()
 
   const filterEvent = (e: PointerEvent) => {
     if (pointerTypes)

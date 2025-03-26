@@ -1,7 +1,6 @@
 import { AnyFn } from '@type-dom/utils';
-import { MaybeRefOrGetter } from '@type-dom/signals';
-import { createProxy } from '../../core/x-proxy/x-proxy.class'
-import { toValue } from '../shared/toValue/toValue'
+import { MaybeRefOrGetter, signal } from '@type-dom/signals';
+import { toValue } from '../shared/toValue/index'
 import { noop } from './is'
 import type { ArgumentsType, Awaited, Pausable, Promisify } from './types'
 
@@ -216,17 +215,17 @@ export function throttleFilter(...args: any[]) {
  *
  */
 export function pausableFilter(extendFilter: EventFilter = bypassFilter): Pausable & { eventFilter: EventFilter } {
-  const isActive = createProxy(true)
+  const isActive = signal(true)
 
   function pause() {
-    isActive.value = false
+    isActive.set(false);
   }
   function resume() {
-    isActive.value = true
+    isActive.set(true)
   }
 
   const eventFilter: EventFilter = (...args) => {
-    if (isActive.value)
+    if (isActive.get())
       extendFilter(...args)
   }
 

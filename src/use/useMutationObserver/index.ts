@@ -23,7 +23,7 @@ export interface UseMutationObserverOptions extends MutationObserverInit, Config
  * @param options
  */
 export function useMutationObserver(
-  target: MaybeComputedElementRef | MaybeComputedElementRef[] | MaybeRefOrGetter<MaybeElement[]>,
+  target: MaybeComputedElementRef | MaybeComputedElementRef[] | MaybeRefOrGetter<MaybeElement[] | undefined>,
   callback: MutationCallback,
   options: UseMutationObserverOptions = {},
 ) {
@@ -51,7 +51,7 @@ export function useMutationObserver(
     (targets) => {
       cleanup()
 
-      if (isSupported.get() && targets.size) {
+      if (isSupported.get() && targets?.size) {
         observer = new MutationObserver(callback)
         targets.forEach(el => observer!.observe(el, mutationOptions))
       }
