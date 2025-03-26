@@ -16,7 +16,7 @@ export function useSlotChildren(element: TypeElement, slot?: ISlotItem) {
   }
   if (isRef(slot)) {
     effect(() => {
-      // console.error('slotChildren effect . '); // TdCountDown repeat loop .
+      // console.error('slotChildren effect . slot.get() is ', slot); // TdCountDown repeat loop .
       const newRaw = toRaw(slot);
       if (!element.dom) {
         element.createDom();
@@ -26,7 +26,7 @@ export function useSlotChildren(element: TypeElement, slot?: ISlotItem) {
         // element is not according to original propose.
         //   element then replace all children when reactivity;
         element.clearChildren();
-        element.slotChild(newRaw);
+        element.slotChild(newRaw); // todo
         element.childNodes.forEach(child => {
           // console.warn('child then mount, it is ', child);
           // let up;

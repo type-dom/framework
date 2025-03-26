@@ -1,8 +1,9 @@
 import { effect, isRef, toRaw } from '@type-dom/signals';
 import { IStyle } from '@type-dom/css-type';
 import { AnyFn, isArray, isFunction } from '@type-dom/utils';
+// import { IRouterView } from '@type-dom/router';
 import { IJsonDataProp } from '../../interface';
-import { RouterView } from '../../router/router-view/router-view.class';
+// import { RouterView } from '../../router/router-view/router-view.class';
 // import { IRouterView } from '../../router/router-view/router-view.interface';
 import type {
   ISlotItem,
@@ -44,7 +45,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   // 包括 fragment
   // abstract nodeName: NodeName.FRAGMENT | string; // 必然有； 且不为 #text
   childNodes: TypeNode[];
-  routerView?: RouterView;
+  routerView?: any;
   transition?: TransitionHooks<TransitionElement> | undefined;
   rendered: boolean;
   componentId: number;
@@ -139,7 +140,10 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     useSlotChildren(this, slot);
   }
 
-  slotChild(slot: ISlotRaw | ISlotRaw[] | ((arg?: any) => ISlotRaw | ISlotRaw[]), type: 'add' | 'unshift' = 'add') {
+  slotChild(slot?: ISlotRaw | ISlotRaw[] | ((arg?: any) => ISlotRaw | ISlotRaw[]), type: 'add' | 'unshift' = 'add') {
+    if (slot === undefined) {
+      return;
+    }
     useSlotChild(this, slot);
   }
 
@@ -351,9 +355,9 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    *  替换指定的子元素
    */
   replaceChild(newNode: TypeNode, oldNode?: TypeNode): void {
-    console.warn('replaceChild newNode is ', newNode, '  oldNode is ', oldNode);
+    // console.warn('replaceChild newNode is ', newNode, '  oldNode is ', oldNode);
     if (oldNode === undefined) {
-      console.error('oldNode is undefined . ');
+      // console.error('oldNode is undefined . ');
       this.appendChild(newNode);
     } else {
       const index = this.childNodes.indexOf(oldNode);
@@ -408,11 +412,9 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   }
 
   /**
-   * 不要在setup中添加子节点；
-   * 因为 mount会多次调用，导致子节点重复添加。
-   * @param params
+   *
    */
-  setup?(params?: TypeProps): void;
+  setup?(): void;
 
   /**
    * 挂载到真实DOM；
@@ -429,7 +431,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
 
   // todo
   update(el?: ElProp): void  {
-    console.warn('then update this.className is ' + this.className);
+    // console.warn('then update this.className is ' + this.className);
     useUpdate(this, el);
   }
 

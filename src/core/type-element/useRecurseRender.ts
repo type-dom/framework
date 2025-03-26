@@ -38,6 +38,7 @@ export function useRecurseRender(element: TypeElement) {
     // 无法合并到上面的代码中
     // 处理vIf属性，决定是否将子节点添加到DOM树中。
     if (Object.hasOwnProperty.call(child.props, 'vIf')) {
+      // if (toRaw(child.props.vIf) !== false) { // TdMessageBox 弹不出来
       if (toRaw(child.props.vIf)) {
         upDom?.appendChild(child.dom!);
       } else {

@@ -9,6 +9,7 @@ export function useVModel(element: TypeElement) {
         ['update:modelValue']: (newValue) => {
           // console.warn('element.className is ', element.className + ', update:modelValue emit , newVal is ', newValue);
           element.props.vModel?.set(newValue)
+          // console.warn('element.props.vModel?.get() is ', element.props.vModel?.get());
         },
         // change: (newValue) => {
         //   console.warn('change emit , newValue is ', newValue);

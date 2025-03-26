@@ -9,7 +9,9 @@ export function useVShow(element: TypeElement) {
   if (Object.prototype.hasOwnProperty.call(element.props, 'vShow')) {
     // console.warn('element.props has vShow');
     if (isRef(condition)) {
-      // console.warn('this.props.vShow is ref');
+      // if (element.className === 'TdScrollbar') {
+      //   console.warn('this.props.vShow is ', condition);
+      // }
       // 添加 监听
       watch(condition, (newValue, oldValue) => {
         // console.warn('newValue', newValue);
@@ -34,7 +36,7 @@ function useRawVShow(condition: boolean | unknown, element: TypeElement, oldValu
   if (condition) {
     display = element.style?.get('display') ?? display;
     if (element.transition) {
-      console.warn('element.transition is existed . ');
+      // console.warn('element.transition is existed . ');
       // 注： 现在这样必须 vShow绑定真实dom才有意义，fragment 的vShow没有意义。
       element.transition.beforeEnter(element.dom as TransitionElement);
       element.transition.enter(element.dom! as TransitionElement);
@@ -56,7 +58,7 @@ function useRawVShow(condition: boolean | unknown, element: TypeElement, oldValu
     }
   } else {
     if (element.transition && oldValue) {
-      console.warn('element.transition is existed . ');
+      // console.warn('element.transition is existed . ');
       element.transition.leave(element.dom! as TransitionElement, () => {
         element.style?.setObj({
           display: 'none',

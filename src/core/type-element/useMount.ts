@@ -72,11 +72,15 @@ export function useMount<T extends TypeElement>(element: T, el?: ElProp) {
   }
   if (appEl && element.dom) {
     if (Object.hasOwnProperty.call(element.props, 'vIf')) {
+      // console.error('element.props.vIf is ', element.props.vIf);
       if (unref(element.props.vIf)) {
         appEl.appendChild(element.dom);
-      } else {
-        element.removeDom();
+      } else if (unref(element.props.vIf) === false) {
+        // 如果this.dom已经被在其它地方加载了，会在这里被移除的。
+        // 所以同一对象被VIf多处使用时，会被移除。
+        // element.removeDom(); // todo mount时可以不处理吗？ 默认应该时没有被挂载的，有问题的还是一个对象多处判断。
       }
+      // vIf 设置为 undefined，不做处理。// todo 可能有问题。
     } else {
       appEl.appendChild(element.dom);
     }

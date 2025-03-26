@@ -4,7 +4,7 @@ import { TypeElement } from './type-element.abstract';
 import { ElProp } from './type-element.interface';
 
 export function useUpdate(element: TypeElement, el?: ElProp): void {
-  console.warn('then update element.className is ' + element.className);
+  // console.warn('then update element.className is ' + element.className);
   if (element.props.disabled) {
     return;
   }
