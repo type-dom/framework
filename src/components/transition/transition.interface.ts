@@ -18,7 +18,7 @@ export const ANIMATION = 'animation';
 
 export type AnimationTypes = typeof TransitionUtil | typeof ANIMATION;
 
-export interface TransitionProps extends TypeTransitionProps {
+export interface TransitionProps extends TypeTransitionProps<Element> {
   name?: string;
   type?: AnimationTypes;
   css?: boolean;
@@ -33,8 +33,6 @@ export interface TransitionProps extends TypeTransitionProps {
   leaveFromClass?: string;
   leaveActiveClass?: string;
   leaveToClass?: string;
-
-  // parent?: TypeElement;
 }
 
 export interface CSSTransitionInfo {

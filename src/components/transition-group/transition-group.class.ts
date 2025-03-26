@@ -1,6 +1,7 @@
 import { toRaw } from '@type-dom/signals';
 import { getCurrentInstance } from '../../core/instance';
 import { TypeFragment } from '../../core/type-fragment/type-fragment.abstract';
+import { TypeElement } from '../../core/type-element/type-element.abstract';
 import { TypeNode } from '../../core/type-node/type-node.abstract';
 import { onUpdated } from '../../core/apiLifecycle';
 import { useSlots } from '../../core/apiSetupHelpers';
@@ -25,15 +26,19 @@ import {
   recordPosition,
 } from './transition-group.util';
 import { TransitionGroupProps } from './transition-group.interface';
+import { Style } from '../../core/style/style.class';
+import { Attribute, TypeHtml } from '../../core';
 
-export class TransitionGroup extends TypeFragment {
+export class TransitionGroup extends TypeHtml {
   className: 'TransitionGroup';
+  dom?: HTMLElement;
   override props: TransitionGroupProps;
 
   constructor(params: TransitionGroupProps = {}) {
     super();
     this.className = 'TransitionGroup';
-
+    this.style = new Style(this);
+    this.attr = new Attribute(this);
     this.props = this.useParams(params);
   }
 
@@ -42,8 +47,8 @@ export class TransitionGroup extends TypeFragment {
     const slots = useSlots();
     const instance = getCurrentInstance()!;
     const state = useTransitionState();
-    let prevChildren: TypeNode[];
-    let children: TypeNode[];
+    const prevChildren: TypeNode[] = [];
+    let children: TypeNode[] = [];
 
     this.slotChildren(props.slot || slots?.default);
     onUpdated(() => {
@@ -94,6 +99,7 @@ export class TransitionGroup extends TypeFragment {
     // return () => {
     const rawProps = toRaw(props);
     const cssTransitionProps = resolveTransitionProps(rawProps);
+    // const tag = rawProps.tag || 'fragment';
 
     // if (
     //   // __COMPAT__ &&
@@ -106,8 +112,7 @@ export class TransitionGroup extends TypeFragment {
     //   tag = 'span'
     // }
 
-    prevChildren = [];
-    // @ts-ignore
+    // prevChildren = [];
     if (children) {
       for (let i = 0; i < children.length; i++) {
         const child = children[i];
@@ -142,5 +147,11 @@ export class TransitionGroup extends TypeFragment {
     //
     //   return createVNode(tag, null, children)
     // }
+    // const tag = rawProps.tag || 'div';
+    // // this.assignProps({
+    // //   nodeName: tag,
+    // //   // slot: children,
+    // // })
+    // this.slotChildren(children);
   }
 }

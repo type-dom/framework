@@ -20,6 +20,8 @@ export type { ISvgLinearGradient } from './linear-gradient/linear-gradient.inter
 export { SvgPath } from './path/path.class';
 export type { ISvgPath } from './path/path.interface';
 export { SvgRadialGradient } from './radial-gradient/radial-gradient.class';
+export { SvgMask } from './mask/mask.class';
+export type { ISvgMask } from './mask/mask.interface';
 export type { ISvgRadialGradient } from './radial-gradient/radial-gradient.interface';
 export { SvgRect } from './rect/rect.class';
 export type { ISvgRect } from './rect/rect.interface';

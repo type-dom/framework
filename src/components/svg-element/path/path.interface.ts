@@ -1,4 +1,5 @@
 import { IStyle, Property } from '@type-dom/css-type';
+import { MaybeRef } from '@type-dom/signals';
 import type { ITypeSvg } from '../../../core/type-svg/type-svg.interface';
 import { TypeProps } from '../../../core/type-node/type-node.interface';
 import { ITypeAttribute } from '../../../core/attribute/attribute.interface';
@@ -39,6 +40,6 @@ export interface ISvgPath extends ITypeSvg {
 }
 
 export interface SvgPathProps extends TypeProps {
-  styleObj?: ISvgPathStyle;
+  styleObj?: MaybeRef<ISvgPathStyle>;
   attrObj?: ISvgPathAttribute;
 }

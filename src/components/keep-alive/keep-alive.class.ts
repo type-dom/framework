@@ -1,16 +1,59 @@
+// import {
+//   type ComponentInternalInstance,
+//   type ComponentOptions,
+//   type ConcreteComponent,
+//   type SetupContext,
+//   currentInstance,
+//   getComponentName,
+//   getCurrentInstance,
+// } from '../component'
+// import {
+//   Comment,
+//   type VNode,
+//   type VNodeProps,
+//   cloneVNode,
+//   invokeVNodeHook,
+//   isSameVNodeType,
+//   isVNode,
+// } from '../vnode'
+// import { warn } from '../warning'
+// import {
+//   injectHook,
+//   onBeforeUnmount,
+//   onMounted,
+//   onUnmounted,
+//   onUpdated,
+// } from '../apiLifecycle'
+// import {
+//   ShapeFlags,
+//   invokeArrayFns,
+//   isArray,
+//   isRegExp,
+//   isString,
+//   remove,
+// } from '@vue/shared'
+// import { watch } from '../apiWatch'
+// import {
+//   type ElementNamespace,
+//   MoveType,
+//   type RendererElement,
+//   type RendererInternals,
+//   type RendererNode,
+//   invalidateMount,
+//   queuePostRenderEffect,
+// } from '../renderer'
+// import { setTransitionHooks } from './BaseTransition'
+// import type { ComponentRenderContext } from '../componentPublicInstance'
+// import { devtoolsComponentAdded } from '../devtools'
+// import { isAsyncWrapper } from '../apiAsyncComponent'
+// import { isSuspense } from './Suspense'
+// import { LifecycleHooks } from '../enums'
 
-import { getCurrentInstance } from '../../core/instance';
 import { TypeFragment } from '../../core/type-fragment/type-fragment.abstract';
-import { TypeNode } from '../../core/type-node/type-node.abstract';
 import {
   IKeepAlive,
   KeepAliveProps,
-  Cache,
-  Keys, CacheKey
 } from './keep-alive.interface';
-import { isSameVNodeType } from '../../core/type-node/type-node.util';
-import { watch } from '@type-dom/signals';
-
 
 export class KeepAlive extends TypeFragment implements IKeepAlive {
   className: 'KeepAlive';
@@ -18,6 +61,7 @@ export class KeepAlive extends TypeFragment implements IKeepAlive {
   constructor(params: KeepAliveProps) {
     super();
     this.className = 'KeepAlive';
+    this.props = this.useParams(params);
   }
 
   override setup() {

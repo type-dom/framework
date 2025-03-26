@@ -30,8 +30,8 @@ export interface ISvgRectAttribute extends ITypeAttribute {
   y?: number;
   rx?: number;
   ry?: number;
-  width: number;
-  height: number; // px
+  width: number | string;
+  height: number | string; // px
 }
 
 export interface ISvgRect extends ITypeSvg {

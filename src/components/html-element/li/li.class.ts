@@ -6,24 +6,24 @@ import type { ILI } from './li.interface';
 
 export class LI extends TypeLI implements ILI {
   className: 'LI';
-  override childNodes: (TypeElement | TextNode)[];
+  // override childNodes: (TypeElement | TextNode)[];
 
   override isBasic = true;
 
   constructor(params: TypeProps = {}) {
     super();
     this.className = 'LI';
-    this.childNodes = [];
-    this.style.addObj({
-      // todo: 应该在具体组件中配置样式
-      width: '100px',
-      textAlign: 'center',
-      padding: '6px 14px',
-      borderRadius: '4px 4px 0px 0px',
-      borderBottom: 'none',
-      boxSizing: 'border-box',
-    });
-    this.attr.addName('list-item');
+    // this.childNodes = [];
+    // this.style.addObj({
+    //   // todo: 应该在具体组件中配置样式
+    //   width: '100px',
+    //   textAlign: 'center',
+    //   padding: '6px 14px',
+    //   borderRadius: '4px 4px 0px 0px',
+    //   borderBottom: 'none',
+    //   boxSizing: 'border-box',
+    // });
+    // this.attr.addName('list-item');
 
     this.slotChildren(params.slot);
     this.useParams(params);

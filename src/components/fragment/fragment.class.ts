@@ -7,7 +7,9 @@ export class Fragment extends TypeFragment implements IFragment {
   constructor(params: FragmentProps = {}) {
     super();
     this.className = 'Fragment';
-    this.slotChildren(params.slot);
     this.useParams(params);
+  }
+  override setup() {
+    this.slotChildren(this.props.slot); // 保证 child 为 setup 状态，避免 useMount 时被清理；
   }
 }

@@ -1,6 +1,6 @@
 import { TransitionProps } from '../transition/transition.interface';
 
-export interface TransitionGroupProps extends TransitionProps {
-  tag?: string,
-  moveClass?: string,
+export type TransitionGroupProps = Omit<TransitionProps, 'mode'> & {
+  tag?: string
+  moveClass?: string
 }
