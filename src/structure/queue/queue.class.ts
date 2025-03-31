@@ -1,4 +1,4 @@
-import { AnyFn } from '../../interface';
+import { AnyFn } from '@type-dom/utils';
 import { EventsMap, Options, QueueWorker, EventListenerOrEventListenerObject } from './queue.interface';
 import { QueueEvent } from './queue-event';
 
