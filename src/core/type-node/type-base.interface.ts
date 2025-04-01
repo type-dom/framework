@@ -1,6 +1,6 @@
-import { TypeElement } from '../type-element/type-element.abstract';
-import type { IMethods, ISettings, ITypeNode } from './type-node.interface';
 import { MaybeRef } from '@type-dom/signals';
+import { TypeElement } from '../type-element/type-element.abstract';
+import type { ISettings } from './type-node.interface';
 
 /**
  * TypeDom 最基础的接口，所有接口都继承了这个接口。

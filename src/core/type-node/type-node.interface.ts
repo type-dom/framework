@@ -1,10 +1,10 @@
-import { IStyle } from '@type-dom/css-type';
+import dayjs from 'dayjs';
 import { Computed, MaybeRef, Ref, Signal } from '@type-dom/signals';
 import { IPrimitive } from '@type-dom/utils';
 import { type IJsonDataProp, StyleValue } from '../../interface';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { IEmits, IEvents } from '../event-emitter/event-emitter.interface';
-import { IClass, ITypeAttribute } from '../attribute/attribute.interface';
+import { ClassValue, ITypeAttribute } from '../attribute/attribute.interface';
 import { TransitionElement, TransitionHooks } from '../type-transition/type-transition.interface';
 import { TypeNode } from './type-node.abstract';
 import { ITypeBase } from './type-base.interface';
@@ -139,14 +139,15 @@ export interface TypeProps extends ITypeBase {
   /**
    * 是否禁用，默认为 false，如果为 true。
    */
-  disabled?: MaybeRef<boolean>;
+  disabled?: MaybeRef<boolean | undefined>;
 
   modelValue?: IPrimitive | object | (IPrimitive | object)[];
   // 双向绑定的就应该是 Signal<IPrimitive | object> 类型；与 modelValue 联合使用
-  vModel?:  Signal | Computed; // Signal<IPrimitive | IPrimitive[]> | Computed<WritableComputedOptions>;
+  vModel?:  Ref<IPrimitive | object | (IPrimitive | object)[]>;
   /**
-   * 是否创建dom，默认为 true，如果为 false，则不创建dom，不挂载到dom树中。
+   * 是否创建dom，默认为 true，如果为 false，则不挂载到dom树中。
    * 监听到值变化时，触发更新，重新处理 dom 树。
+   * 注：undefined时，到底是否加载dom？？？？
    */
   vIf?: MaybeRef<boolean | unknown>;
   /**
@@ -159,7 +160,7 @@ export interface TypeProps extends ITypeBase {
    *  与 ns 方法配合使用，获取当前对象的class；
    *  样式 theme 中的样式，需要通过 class 绑定；
    */
-  class?: IClass; // <string[]>;
+  class?: ClassValue; // <string[]>;
   /**
    * 绑定的ref对象，用于获取当前对象的dom元素；
    * 注： 绑定外部对象引用；根据绑定的组件是基础组件还是高级组件，判断是绑定组件还是绑定组件的dom
@@ -184,7 +185,7 @@ export interface TypeProps extends ITypeBase {
   /**
    * 样式对象。
    */
-  styleObj?: StyleValue | MaybeRef<IStyle | undefined> | Record<string, string | number | Signal<string | number> | Computed>;
+  styleObj?: StyleValue;
   // 类实例对象；  与 ITypeNode 中的 childNodes: ITypeNode[] 与ITypeNode 中的 childNodes: ITypeNode[] 不同；
   // childNodes?: TypeNode[] | undefined; // todo 象slot一样字符串、数字类型等。
 
@@ -255,9 +256,9 @@ export interface TypeProps extends ITypeBase {
   ariaHaspopup?: MaybeRef<string>;
 }
 
-export type ISlotRaw = string | number | undefined | TypeNode;
-export type ISlotRef<T extends ISlotRaw = ISlotRaw> = Signal<T> | Computed;
-export type ISlotItem<T extends ISlotRaw = ISlotRaw> = T |  ISlotRef<T> | (T | undefined | ISlotRef<T>)[]
+export type ISlotRaw = string | number | boolean | undefined | dayjs.Dayjs | TypeNode;
+export type ISlotRef<T extends ISlotRaw = ISlotRaw> = Signal<T> | Computed<T>;
+export type ISlotItem<T extends ISlotRaw = ISlotRaw> = MaybeRef<T | T[]> | MaybeRef<T>[]
   | ((...args: any[]) => T | T[]);
 
 export interface ISlots {

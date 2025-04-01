@@ -72,6 +72,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   //   unmounted?: AnyFn[];
   // };
   uid: number;
+  isDeactivated: any;
   protected constructor() {
     super();
     this.uid = uid++;
@@ -228,7 +229,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
       },
       set(newValue) {
         value = newValue;
-      }
+      },
     });
   }
 
@@ -301,8 +302,10 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   // }
 
   // 提供
-  provide = <T, K = InjectionKey<T> | string | number>
-    (key: K, value: K extends InjectionKey<infer V> ? V : T) => {
+  provide = <T, K = InjectionKey<T> | string | number>(
+    key: K,
+    value: K extends InjectionKey<infer V> ? V : T
+  ) => {
     this.provides = this.provides || {};
     this.provides[key as string] = value;
   };
@@ -314,9 +317,11 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
    * @param key
    * @param defaultValue
    */
-  inject<T>(key: InjectionKey<T> | string,
-            defaultValue?: T,
-            treatDefaultAsFactory = false): T | undefined {
+  inject<T>(
+    key: InjectionKey<T> | string,
+    defaultValue?: T,
+    treatDefaultAsFactory = false
+  ): T | undefined {
     return useInject(this, key, defaultValue, treatDefaultAsFactory);
   }
 
@@ -358,7 +363,10 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
    * @param parent
    * @param node
    */
-  findParent(parent: TypeNode | undefined, node: TypeNode): TypeNode | undefined {
+  findParent(
+    parent: TypeNode | undefined,
+    node: TypeNode
+  ): TypeNode | undefined {
     if (node.parent) {
       return node.parent;
     } else {
@@ -386,7 +394,10 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
    * @param child
    */
   findChildIndex(child: TypeNode): number {
-    return this.childNodes?.findIndex((item) => item === child) || -1;
+    if (!this.childNodes) {
+      return -1;
+    }
+    return this.childNodes.findIndex((item) => item === child);
   }
 
   /**
@@ -462,12 +473,12 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
       childNodes: this.children.map((child) => {
         if (child.props.nodeName === NodeName.TEXT) {
           return {
-            nodeValue: child.props.nodeValue // textContent
+            nodeValue: child.props.nodeValue, // textContent
           };
         } else {
           return child.toJSON();
         }
-      })
+      }),
     } as ITypeNode;
   }
 
@@ -520,7 +531,9 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
       if (nodeName === NodeName.FRAGMENT) {
         this.dom = document.createDocumentFragment();
       } else if (nodeName === NodeName.TEXT) {
-        this.dom = document.createTextNode(this.props.nodeValue?.toString() || ''); // todo content
+        this.dom = document.createTextNode(
+          this.props.nodeValue?.toString() || ''
+        ); // todo content
       } else {
         this.dom = document.createElement(nodeName || 'div');
       }
@@ -569,5 +582,4 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   }
 
   unmounted?(): void;
-
 }
