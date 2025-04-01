@@ -52,7 +52,7 @@
     "typescript-coverage-report": "^0.8.0"
   },
   "dependencies": {
-    "@type-dom/signal": "*",
+    "@type-dom/signals": "*",
     "@type-dom/css-type": "*",
     "@type-dom/utils": "*"
   },

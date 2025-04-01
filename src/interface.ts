@@ -1,14 +1,6 @@
-import { Computed, Signal } from '@type-dom/signals';
-
-export type IPrimitive =
-  | null
-  | undefined
-  | string
-  | number
-  | boolean
-  | symbol
-  | bigint;
-type IBrowserNativeObject = Date | FileList | File | Blob | RegExp;
+import { Fn, IPrimitive } from '@type-dom/utils';
+import { IStyle } from '@type-dom/css-type';
+import { Computed, MaybeRef, Signal } from '@type-dom/signals';
 
 export type IWritableObj = {
   get(): unknown,
@@ -45,16 +37,6 @@ export interface IObData {
 
 export type IObDataProp = IPrimitive | IObData | IObData[];
 
-/**
- * Void function
- */
-export type Fn = () => void
-
-/**
- * Any function
- */
-export type AnyFn = (...args: any[]) => any
-
 export interface Stoppable<StartFnArgs extends any[] = any[]> {
   /**
    * A ref indicate whether a stoppable instance is executing
@@ -73,3 +55,37 @@ export interface Stoppable<StartFnArgs extends any[] = any[]> {
 }
 
 export type Arrayable<T> = T[] | T
+
+// export const Fragment = Symbol.for('v-fgt') as any as {
+//   __isFragment: true
+//   // new (): {
+//   //   $props: VNodeProps
+//   // }
+// }
+// export const Text: unique symbol = Symbol.for('v-txt')
+// export const Comment: unique symbol = Symbol.for('v-cmt')
+// export const Static: unique symbol = Symbol.for('v-stc')
+
+// Renderer Node can technically be any object in the context of core renderer
+// logic - they are never directly operated on and always passed to the node op
+// functions provided via options, so the internal constraint is really just
+// a generic object.
+export interface RendererNode {
+  [key: string | symbol]: any
+}
+
+export type RendererElement = RendererNode
+
+// Vue's style normalization supports nested arrays
+// export type StyleValue = string | undefined | IStyle | Array<StyleValue | undefined>
+
+/**
+ * Record<string, MaybeRef<string | number>>
+ *   例如：
+ * {
+ *    '--el-switch-on-color': '#13ce66',
+ *    '--el-switch-off-color': '#ff4949',
+ *  }
+ */
+export type RawStyle =  IStyle | Record<string, MaybeRef<string | number | undefined>>
+export type StyleValue = MaybeRef<RawStyle> | Signal<StyleValue | undefined> | Computed<StyleValue | undefined> | (StyleValue | undefined)[];
