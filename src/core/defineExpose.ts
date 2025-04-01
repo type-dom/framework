@@ -8,6 +8,7 @@ export function defineExpose<T>(exposed: T): void {
       for (const key in exposed) {
         Object.defineProperty(currentInstance, key, {
           value: exposed[key as keyof T],
+          configurable: true,
         })
       }
     }

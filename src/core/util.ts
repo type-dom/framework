@@ -1,4 +1,4 @@
-import { deepClone, isArray, isFunction } from '@type-dom/utils';
+import { deepClone, ensureArray, isArray, isFunction } from '@type-dom/utils';
 import { Computed, isRef, Signal, toRaw } from '@type-dom/signals';
 import { IJsonData, IJsonDataProp } from '../interface';
 import { TypeNode } from './type-node/type-node.abstract';
@@ -46,7 +46,7 @@ export function toJSON(element: TypeHtml | TypeSvg): ITypeElement {
  * @returns 替换后的字符串
  */
 export function mustacheNode(template: string, node: ITypeNode) {
-  console.log('mustacheNode . ');
+  // console.log('mustacheNode . ');
   const pattern = /\{\{([\w\s\\.]+)\}\}/g;
   let result = template;
   let match;
@@ -145,7 +145,7 @@ export function defineNodeProperty(
         //   todo 将当前对象加载到 XProxy 中。
       }
       if (node[key] instanceof Signal || newValue instanceof Computed) {
-        console.error('节点属性的值是XProxy类型。');
+        // console.error('节点属性的值是XProxy类型。');
         (node as any)[key] = newValue;
       } else {
         (node as any)[key] = newValue;
@@ -166,16 +166,16 @@ export function arraySlot<T extends ISlotRaw = ISlotRaw>(slot?: ISlotItem<T>): (
 }
 
 
-function rawSlot<T extends ISlotRaw>(item: ISlotItem<T>): ISlotRaw[] {
+export function rawSlot<T extends ISlotRaw>(item: ISlotItem<T>): ISlotRaw[] {
   const result: ISlotRaw[] = [];
 
   function processItem(item?: ISlotItem<T>): void {
     if (isFunction(item)) {
-      const rawItem = item() as T;
+      const rawItem = item();
       if (isArray(rawItem)) {
         rawItem.forEach(subItem => processItem(subItem));
       } else if (isRef(rawItem)) {
-        result.push(toRaw(rawItem));
+        result.push(toRaw(rawItem) as ISlotRaw);
       } else {
         if (rawItem !== undefined) {
           result.push(rawItem);
@@ -184,7 +184,7 @@ function rawSlot<T extends ISlotRaw>(item: ISlotItem<T>): ISlotRaw[] {
     } else if (Array.isArray(item)) {
       item.forEach(subItem => processItem(subItem));
     } else if (isRef(item)) {
-      result.push(toRaw(item));
+      result.push(...ensureArray(toRaw(item)));
     } else {
       if (item !== undefined) {
         result.push(item as ISlotRaw);

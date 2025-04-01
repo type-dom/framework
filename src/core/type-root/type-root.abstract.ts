@@ -1,4 +1,5 @@
 import { TypeHtml } from '../type-html/type-html.abstract';
+import { HtmlProps } from '../type-html/type-html.interface';
 import type { ITypeRoot } from './type-root.interface';
 
 /**
@@ -13,11 +14,12 @@ import type { ITypeRoot } from './type-root.interface';
 export abstract class TypeRoot extends TypeHtml implements ITypeRoot {
   dom?: HTMLElement;
   override isRoot: true;
+  override props: HtmlProps;
 
   protected constructor(nodeName?: string) {
     super();
     this.isRoot = true; // 根节点
-    this.assignProps({
+    this.props = this.useParams({
       nodeName: nodeName || 'div'
     })
   }

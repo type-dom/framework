@@ -10,16 +10,16 @@ import {
   setStyle,
   Ratio, isUndefined
 } from '@type-dom/utils';
-import { effect, toRaw, isRef, Computed, Signal, MaybeRef, Ref } from '@type-dom/signals';
+import { effect, toRaw, isRef, MaybeRef, Ref } from '@type-dom/signals';
 import { XElement } from '../../components/x-element/x-element.class';
-import { StyleValue } from '../../interface';
+import { RawStyle, StyleValue } from '../../interface';
 import { TypeHtml } from '../type-html/type-html.abstract';
 import { TypeSvg } from '../type-svg/type-svg.abstract';
 import { cssStrToObj } from './cssStrToObj'; // todo 直接用 '.' 会循环依赖
 
 export class Style {
   private el: TypeHtml | TypeSvg | XElement;
-  private obj: IStyle | Record<string, MaybeRef>;
+  private obj: RawStyle;
 
   constructor(el: TypeHtml | TypeSvg | XElement) {
     this.el = el;
@@ -68,7 +68,7 @@ export class Style {
    *    fluentUI中使用了 mergeStyles 方法；
    * @param styleObj
    */
-  addObj(styleObj?: StyleValue | Ref<IStyle | IStyle[] | undefined> | Computed<StyleValue[]> | Computed<IStyle | IStyle[] | undefined> | Record<string, Ref<string | undefined>>): void {
+  addObj(styleObj?: StyleValue): void {
     if (!styleObj) {
       return;
     }
@@ -78,7 +78,7 @@ export class Style {
       effect(() => {
         // console.warn('styleObj effect . ');
         // console.warn('element is ', this.el);
-        const newStyleObj = rawStyles(styleObj);
+        const newStyleObj = getRawStyles(styleObj);
         if (isUndefined(newStyleObj)) {
           this.clearObj();
         } else {
@@ -90,7 +90,7 @@ export class Style {
 
       })
     } else {
-      rawObj = doStyleValue(styleObj);
+      rawObj = doStyleValue(styleObj as StyleValue | Record<string, Ref<string | undefined>>);
       // console.error('rawObj is ', rawObj);
     }
     for (const key in rawObj) {
@@ -102,7 +102,7 @@ export class Style {
     }
   }
 
-  add(key: keyof IStyle, value: MaybeRef<string | number | boolean | undefined>): void {
+  add(key: keyof IStyle, value: MaybeRef<string | number | undefined>): void {
     if (!this.obj) {
       // console.error('style this.obj is undefined .');
       return;
@@ -239,15 +239,15 @@ export class Style {
    * 没有传的样式，不变；
    * @param styleObj
    */
-  setObj(styleObj?: StyleValue | Ref<IStyle | undefined>): void {
+  setObj(styleObj?: StyleValue): void {
     if (!styleObj) {
       return;
     }
     let rawObj: IStyle | undefined;
     if (isRef(styleObj)) {
-      rawObj = styleObj.get();
+      rawObj = styleObj.get() as IStyle;
       effect(() => {
-        const newStyleObj = rawStyles(styleObj);
+        const newStyleObj = getRawStyles(styleObj);
         // console.error('style newStyleObj is ', newStyleObj);
         if (newStyleObj !== rawObj) {
           this.setObj(newStyleObj);
@@ -314,7 +314,7 @@ export class Style {
    * 清除原有样式，全部替换为新的样式
    * @param styleObj
    */
-  resetObj(styleObj?: IStyle | Signal<IStyle> | Computed<IStyle>): void {
+  resetObj(styleObj?: StyleValue): void {
     this.el.dom?.removeAttribute('style'); // 需要单独清理一下DOM的style
     this.clearObj();
     if (styleObj === undefined) {
@@ -367,11 +367,7 @@ export class Style {
 }
 
 // 应该在style类的render中使用
-function rawStyles(style:
-                    MaybeRef<IStyle | number | undefined
-                      | Record<keyof IStyle, MaybeRef<string | number | undefined>>
-                      | (MaybeRef<IStyle> | Record<keyof IStyle, MaybeRef<string | number | undefined>>)[]>,
- res: IStyle = {}) {
+function getRawStyles(style: StyleValue, res: IStyle = {}) {
   // const raw = {} as IStyle;
   // Helper function to convert a Record<keyof IStyle, MaybeRef<string | number>> to IStyle
   function convertRecordToIStyle(record: Record<keyof IStyle, MaybeRef<string | number>>): IStyle {
@@ -388,16 +384,16 @@ function rawStyles(style:
   if (Array.isArray(style)) {
     style.forEach(item => {
       if (isArray(item)) {
-        rawStyles(item, res);
+        getRawStyles(item, res);
       } else if (isRef(item)) {
-         Object.assign(res, toRaw(item));
+         Object.assign(res, toRaw(item as StyleValue));
       } else {
          Object.assign(res, convertRecordToIStyle(item as Record<keyof IStyle, MaybeRef<string | number>>));
       }
     });
     return res;
   } else if (isRef(style)) {
-    return rawStyles(toRaw(style));
+    return getRawStyles(toRaw(style));
   } else {
     return convertRecordToIStyle(style as Record<keyof IStyle, MaybeRef<string | number>>);
   }

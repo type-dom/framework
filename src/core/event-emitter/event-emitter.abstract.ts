@@ -9,15 +9,18 @@ export abstract class EventEmitter {
    * 存储事件名称与事件监听器数组的映射
    * key 事件名 value: callback[]  回调数组
    * 注：  Map是es6新特性，所以这里用它来代替数组可能会有兼容问题。
-   *
+   * todo emits 和 events应该是分开的，而不是混合在一起的。一个是自定义事件，一个一个是监听事件。
    */
-  observers: Record<string, AnyFn[]>;
+  // observers: Record<string, AnyFn[]>;
+  private eventObservers:  Record<string, AnyFn[]>;
+  private emitObservers:  Record<string, AnyFn[]>;
   /**
    * 属性项
    */
   abstract props: TypeProps;
   // abstract nodeName: NodeName.TEXT | NodeName.FRAGMENT | string;
   abstract dom?: HTMLElement | SVGElement | DocumentFragment | Text | null | undefined;
+
 
   constructor() {
     // This is an Object containing Maps:
@@ -28,11 +31,13 @@ export abstract class EventEmitter {
     //
     // We keep track of numTimesAdded (the number of times it was added) because if you attach the same listener twice,
     // we should actually call it twice for each emitted event.
-    this.observers = {};
+    // this.observers = {};
+    this.eventObservers = {};
+    this.emitObservers = {};
   }
 
-  getObserver(key: string) {
-    return this.observers[key];
+  getEventObserver(key: string) {
+    return this.eventObservers[key];
   }
 
   /**
@@ -43,7 +48,7 @@ export abstract class EventEmitter {
   addEmits(emits?: IEmits) {
     // 遍历事件映射，为每个事件名称添加监听器
     emits && Object.entries(emits).forEach(([eventName, listener]) => {
-      this.on(eventName, listener);
+      this.on(eventName, listener, 'emit');
     });
   }
 
@@ -52,10 +57,11 @@ export abstract class EventEmitter {
    * 添加事件监听器
    * @throws 如果监听器不是函数，抛出错误
    * @returns 返回this，允许链式调用
-   * @param events  单个事件或多个事件
+   * @param events  单个事件或多个事件, 以空格分割的事件名称
    * @param listener
+   * @param type
    */
-  on(events: string, listener?: AnyFn) {
+  on(events: string, listener?: AnyFn, type: 'emit' | 'event' = 'event') {
     // 确保监听器是一个函数
     if (!listener) {
       return;
@@ -65,14 +71,25 @@ export abstract class EventEmitter {
     }
     events.split(' ').forEach((event) => {
       // 如果事件名称不存在于映射中，则创建新Map
-      if (!this.observers[event]) {
-        this.observers[event] = [];
+      if (type === 'event') {
+        if (!this.eventObservers[event]) {
+          this.eventObservers[event] = [];
+        }
+        // const numListeners = this.observers[event].get(listener!) || 0;
+        // // 将监听器添加到对应事件的Map中
+        // this.observers[event].set(listener!, numListeners + 1);
+        // todo 是否要过滤相同的监听器 ？？？
+        this.eventObservers[event].push(listener);
+      } else if (type === 'emit') {
+        if (!this.emitObservers[event]) {
+          this.emitObservers[event] = [];
+        }
+        // const numListeners = this.observers[event].get(listener!) || 0;
+        // // 将监听器添加到对应事件的Map中
+        // this.observers[event].set(listener!, numListeners + 1);
+        // todo 是否要过滤相同的监听器 ？？？
+        this.emitObservers[event].push(listener);
       }
-      // const numListeners = this.observers[event].get(listener!) || 0;
-      // // 将监听器添加到对应事件的Map中
-      // this.observers[event].set(listener!, numListeners + 1);
-      // todo 是否要过滤相同的监听器 ？？？
-      this.observers[event].push(listener);
     });
   }
 
@@ -101,27 +118,27 @@ export abstract class EventEmitter {
    * @param listener 要移除的事件监听器
    * @returns 返回this，允许链式调用
    */
-  off(event: string, listener?: AnyFn) {
-    if (!this.observers[event]) {
+  off(event: string, listener?: AnyFn, type: 'emit' | 'event' = 'event') {
+    if (!this.eventObservers[event]) {
       return;
     }
     if (!listener) {
       if (this.dom) { // 不是 fragment组件
-        for (const observer of this.observers[event]) {
+        for (const observer of this.eventObservers[event]) {
           // console.log(`observer : ${observer.name}`);
           this.dom && this.dom.removeEventListener(event as keyof GlobalEventHandlersEventMap, observer);
         }
       }
-      delete this.observers[event];
+      delete this.eventObservers[event];
       return;
     }
     // todo 移除订阅者
     if (this.dom) { // 不是 fragment组件
       this.dom.removeEventListener(event as keyof GlobalEventHandlersEventMap, listener);
     }
-    const index = this.observers[event].indexOf(listener);
+    const index = this.eventObservers[event].indexOf(listener);
     if (index !== -1) {
-      this.observers[event].splice(index, 1);
+      this.eventObservers[event].splice(index, 1);
     }
   }
 
@@ -132,8 +149,8 @@ export abstract class EventEmitter {
    * @param args 传递给监听器的参数
    */
   emit = (event: string, ...args: any[]) => {
-    if (this.observers[event]) {
-      const listeners = this.observers[event]; // 监听器数组
+    if (this.emitObservers[event]) {
+      const listeners = this.emitObservers[event]; // 监听器数组
       // todo INPUT, CHANGE
       // if (event === 'update:modelValue' || event === 'change' || event === 'input') {
       //   console.warn('emit event is ', event);
@@ -168,7 +185,7 @@ export abstract class EventEmitter {
   hasListeners(eventName: string) {
     // 检查事件名称是否存在监听器数组，并且数组长度大于0
     return Boolean(
-      this.observers[eventName] && this.observers[eventName].length > 0
+      this.eventObservers[eventName] && this.eventObservers[eventName].length > 0
     );
   }
 
@@ -225,7 +242,7 @@ export abstract class EventEmitter {
 
   // 清除移除所有事件监听器
   clearEvents(): void {
-    for (const key in this.observers) {
+    for (const key in this.emitObservers) {
       // 移除该事件的所有监听器； 移除了 emit方法就没有触发的回调了。
       this.off(key);
     }
@@ -243,10 +260,10 @@ export abstract class EventEmitter {
     if (!this.dom) {
       return;
     }
-    if (this.observers) {
+    if (this.eventObservers) {
       // dom 监听事件要挂载到真实dom上。
-      for (const key in this.observers) {
-        const cloned =this.observers[key];
+      for (const key in this.eventObservers) {
+        const cloned =this.eventObservers[key];
         cloned.forEach((observer) => {
           this.dom && this.dom.addEventListener(key as keyof GlobalEventHandlersEventMap, observer);
         });

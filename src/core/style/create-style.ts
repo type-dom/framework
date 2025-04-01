@@ -38,9 +38,9 @@ function createStyleElement() {
 // 将创建好的<style>标签添加到<head>中，使其生效
   document.head.appendChild(styleElement);
   // sheet.insertRule('body { background-color: blue; }', 0); // 参数1是CSS规则，参数2是插入的位置索引
-  if (!styleElement.sheet?.insertRule) {
-    console.error('styleSheet.insertRule is not a function');
-  }
+  // if (!styleElement.sheet?.insertRule) {
+  //   console.error('styleSheet.insertRule is not a function');
+  // }
   return styleElement;
 }
 

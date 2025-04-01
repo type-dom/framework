@@ -1,32 +1,35 @@
-import { MaybeRef, Ref } from '@type-dom/signals';
+import { Computed, MaybeRef, Ref, Signal } from '@type-dom/signals';
 import { IPrimitive } from '@type-dom/utils';
 import { Arrayable } from '../../interface';
 
-// export type IBaseClass =  MaybeRef<string> | MaybeRef<string>[];
-// export type IClass = IBaseClass | IBaseClass[] | Record<string, IBaseClass | IBaseClass[]>;
+/**
+ * class: active
+ * class: { active: isActive, 'text-danger': hasError }
+ * class: [activeClass, errorClass]
+ * class: [{ active: isActive }, errorClass]
+ */
 
-export type IRawClass =
-  | string
+export type RawClass =
+  | undefined
   | boolean
-  // | string[]
-  | Record<string, boolean | unknown>
-  | (string | boolean | (string | boolean)[] | Record<string, boolean | unknown>)[];
+  | string
+  | Record<string, MaybeRef<boolean | string | unknown>>;
 
-export type ITypeClassName = Arrayable<Record<string, boolean> | string>;
-export type IClass =
-  | MaybeRef<string | boolean | undefined>
-  // | MaybeRef<string | boolean | undefined>[]
-  | Record<string, MaybeRef<boolean | unknown>>
-  | (MaybeRef<string | boolean | undefined> | MaybeRef<string | boolean | undefined>[] | Record<string, MaybeRef<boolean | unknown>>)[];
+export type ClassValue = RawClass | Signal<ClassValue> | Computed<ClassValue> | ClassValue[];
+
+// export type IClass =
+//   | MaybeRef<string | undefined | Record<string, MaybeRef<boolean | unknown>>>
+//   // | MaybeRef<string | boolean | undefined>[]
+//   | (MaybeRef<string | undefined | Record<string, MaybeRef<boolean | unknown>>> | MaybeRef<(string | undefined)[]>)[];
 
 export interface ITypeAttribute {
-  id?: string | Ref<string>;
-  class?: IClass;
+  id?: MaybeRef<string | undefined>;
+  class?: ClassValue;
   name?: MaybeRef<string>;
   type?: MaybeRef<string>;
   fill?: string; // rgb(0,0,255) blue
   strokeWidth?: number | string;
-  stroke?: string; // rgb(0,0,0) pink
+  stroke?: MaybeRef<string>; // rgb(0,0,0) pink
   x?: number;
   y?: number;
   rx?: number;
@@ -35,5 +38,5 @@ export interface ITypeAttribute {
   height?: number | string; // px
   d?: string;
 
-  [key: string]: MaybeRef<IPrimitive | object | IPrimitive[]> | IClass;
+  [key: string]: MaybeRef<IPrimitive | IPrimitive[] | object>;
 }

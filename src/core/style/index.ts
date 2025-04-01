@@ -8,7 +8,7 @@ export function setStyles(el?: HTMLElement, styles?: IStyle) {
     return;
   }
   for (const key in styles) {
-    if (styles.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(styles, key)) {
       el.style.setProperty(key, styles[key as keyof IStyle] as string);
     }
   }

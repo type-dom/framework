@@ -1,5 +1,3 @@
-import { IStyle } from '@type-dom/css-type';
-import { Computed, Signal } from '@type-dom/signals';
 import { StyleValue } from '../../interface';
 import { TypeProps } from '../type-node/type-node.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
@@ -21,7 +19,7 @@ export abstract class TypeFragment extends TypeElement implements ITypeFragment 
     })
   }
 
-  addStyleObj(styleObj?: StyleValue | Signal<IStyle | undefined> | Computed<IStyle | undefined>) {
+  addStyleObj(styleObj?: StyleValue) {
     this.childNodes.forEach(child => {
       if (child instanceof TypeFragment) {
         child.addStyleObj(styleObj);
@@ -31,7 +29,7 @@ export abstract class TypeFragment extends TypeElement implements ITypeFragment 
     });
   }
 
-  setStyleObj(styleObj?: StyleValue | Signal<IStyle> | Computed<IStyle>) {
+  setStyleObj(styleObj?: StyleValue) {
     this.childNodes.forEach(child => {
       if (child instanceof TypeFragment) {
         child.setStyleObj(styleObj);
