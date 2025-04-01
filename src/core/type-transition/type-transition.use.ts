@@ -110,7 +110,7 @@ export function resolveTransitionHooks(
   instance: TypeNode,
   postClone?: (hooks: TransitionHooks) => void
 ): TransitionHooks {
-  console.warn('resolveTransitionHooks. vnode is ', vnode);
+  // console.warn('resolveTransitionHooks. vnode is ', vnode);
   const {
     appear,
     mode,
@@ -219,7 +219,7 @@ export function resolveTransitionHooks(
 
     leave(el, remove) {
       if (!el) {
-        console.error('el is undefined');
+        // console.error('el is undefined');
         return;
       }
       const key = String(vnode.uid);

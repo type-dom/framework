@@ -59,7 +59,7 @@ export abstract class TypeTransition
     const instance = getCurrentInstance()!;
     const state = useTransitionState();
 
-    this.slotChildren(props.slot ?? slots?.default);
+    this.slotChildren(props.slot ?? slots?.['default']);
     const children =
       (props.slot ?? slots?.default) &&
       getTransitionRawChildren(this.childNodes, true); // 获取真实dom子节点，过滤Fragment等节点
@@ -130,7 +130,7 @@ export abstract class TypeTransition
       setTransitionHooks(oldInnerChild, leavingHooks);
       // switching between different views
       if (mode === 'out-in' && innerChild.props.nodeName !== '#comment') {
-        console.warn('mode is out-in ');
+        // console.warn('mode is out-in ');
         state.isLeaving = true;
         // return placeholder node and queue update when leave finishes
         leavingHooks.afterLeave = () => {
@@ -149,7 +149,7 @@ export abstract class TypeTransition
         mode === 'in-out' &&
         innerChild.props.nodeName !== '#comment'
       ) {
-        console.warn('mode is in-out ');
+        // console.warn('mode is in-out ');
         leavingHooks.delayLeave = (
           el: TransitionElement,
           earlyRemove,

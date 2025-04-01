@@ -60,11 +60,6 @@ export interface TypeTransitionProps<HostElement = RendererElement>
   onAfterAppear?: Hook<(el?: HostElement) => void>;
   // 在出现阶段被取消时触发的事件
   onAppearCancelled?: Hook<(el?: HostElement) => void>;
-
-  //   todo
-  // slot?: TypeHtml | number | string; // | TypeSvg; // 只能有一个子节点
-
-  // childNodes?: TypeElement[];
 }
 
 export interface TransitionHooks<HostElement = RendererElement> {
