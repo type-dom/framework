@@ -52,6 +52,7 @@ export interface UseElementBoundingOptions {
  *
  * @see https://vueuse.org/useElementBounding
  * @param target
+ * @param options
  */
 export function useElementBounding(
   target: MaybeComputedElementRef,
