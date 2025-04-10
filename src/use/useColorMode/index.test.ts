@@ -1,7 +1,7 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick, ref } from 'vue'
 import { useColorMode } from '.'
-import { nextTwoTick } from '../../.test'
+import { nextTwoTick } from '../../.tests'
 import { usePreferredDark } from '../usePreferredDark'
 
 describe('useColorMode', () => {
