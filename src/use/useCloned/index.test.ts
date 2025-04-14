@@ -77,14 +77,14 @@ describe('useCloned', () => {
 
     await nextTick()
 
-    // test immediate: false
+    // tests immediate: false
     expect(cloned.value).toEqual({})
 
     data.value.test = 'not valid'
 
     await nextTick()
 
-    // test deep: false
+    // tests deep: false
     expect(cloned.value).toEqual({})
 
     data.value = { test: 'valid' }
