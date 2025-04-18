@@ -14,10 +14,10 @@ describe('logMethod', () => {
     const instance = new TestClass();
     const result = instance.testMethod('test', 123);
 
-    expect(result).toBe('Result: test 123');
+    expect(result).toBe('Result: tests 123');
     expect(consoleLogSpy).toHaveBeenCalledTimes(2);
     expect(consoleLogSpy).toHaveBeenCalledWith(
-      'Calling method testMethod with arguments ["test",123]'
+      'Calling method testMethod with arguments ["tests",123]'
     );
     expect(consoleLogSpy).toHaveBeenCalledWith('Finished calling method testMethod');
 
