@@ -35,25 +35,25 @@ describe('TextNode', () => {
 
   it('should correctly append text', () => {
     textNode.appendText(' append');
-    expect(textNode.nodeValue).toBe('test append');
+    expect(textNode.nodeValue).toBe('tests append');
   });
 
   it('should correctly slice text', () => {
-    textNode.setText('test text');
+    textNode.setText('tests text');
     const slicedText = textNode.sliceText(0, 5);
-    expect(slicedText).toBe('test ');
+    expect(slicedText).toBe('tests ');
   });
 
   it('should correctly insert text', () => {
-    textNode.setText('test text');
+    textNode.setText('tests text');
     textNode.insertText('new', 5, 10);
-    expect(textNode.nodeValue).toBe('test new text');
+    expect(textNode.nodeValue).toBe('tests new text');
   });
 
   it('should correctly delete text', () => {
-    textNode.setText('test text');
+    textNode.setText('tests text');
     textNode.deleteText(5, 10);
-    expect(textNode.nodeValue).toBe('test text');
+    expect(textNode.nodeValue).toBe('tests text');
   });
 
   it('should correctly mount', () => {
