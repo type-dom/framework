@@ -27,7 +27,7 @@ if (inBrowser) {
         supportsPassive = true;
       }
     } as object); // https://github.com/facebook/flow/issues/285
-    window.addEventListener('tests-passive', null as any, opts);
+    window.addEventListener('test-dts-passive', null as any, opts);
   } catch (e: any) {
     /* empty */
   }
