@@ -1,4 +1,4 @@
-import { WatchOptions } from '@type-dom/signals';
+import { Ref, WatchOptions } from '@type-dom/signals';
 import { AnyFn, Fn } from '@type-dom/utils';
 
 /**
@@ -78,7 +78,7 @@ export interface Stoppable<StartFnArgs extends any[] = any[]> {
   /**
    * A ref indicate whether a stoppable instance is executing
    */
-  // isPending: Readonly<Ref<boolean>>
+  isPending: Readonly<Ref<boolean>>
 
   /**
    * Stop the effect from executing
