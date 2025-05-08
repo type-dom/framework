@@ -254,7 +254,7 @@ export class AppRoot extends TypeRoot {
     this.addChild(layout);
     // 使用路由
     // 路由器初始化，并挂载到当前页
-    router.init(this);
+    router.install(this);
   }
 }
 
