@@ -1,7 +1,8 @@
 import { describe, expect, it, vi } from 'vitest'
-import { computed, ref, watch } from 'vue'
+// import { computed, ref, watch } from 'vue'
 import { computedEager } from '.'
-import { nextTwoTick } from '../../.tests'
+import { computed, signal, watch } from '@type-dom/signals';
+import { nextTwoTick } from '../../.test';
 
 describe('computedEager', () => {
   it('should be defined', () => {
@@ -9,50 +10,50 @@ describe('computedEager', () => {
   })
 
   it('should work', async () => {
-    const foo = ref(0)
+    const foo = signal(0)
 
     const plusOneComputed = computed(() => {
-      return foo.value + 1
+      return foo.get() + 1
     })
     const plusOneEagerComputed = computedEager(() => {
-      return foo.value + 1
+      return foo.get() + 1
     })
 
     const plusOneComputedSpy = vi.fn()
     const plusOneComputedRefSpy = vi.fn()
-    watch(() => plusOneComputed.value, plusOneComputedSpy)
-    watch(() => plusOneEagerComputed.value, plusOneComputedRefSpy)
+    watch(() => plusOneComputed.get(), plusOneComputedSpy)
+    watch(() => plusOneEagerComputed.get(), plusOneComputedRefSpy)
 
-    expect(plusOneComputed.value).toBe(1)
-    expect(plusOneEagerComputed.value).toBe(1)
+    expect(plusOneComputed.get()).toBe(1)
+    expect(plusOneEagerComputed.get()).toBe(1)
     expect(plusOneComputedSpy).toBeCalledTimes(0)
     expect(plusOneComputedRefSpy).toBeCalledTimes(0)
 
-    foo.value++
+    foo.set(foo.get() + 1)
     await nextTwoTick()
 
-    expect(plusOneComputed.value).toBe(2)
-    expect(plusOneEagerComputed.value).toBe(2)
+    expect(plusOneComputed.get()).toBe(2)
+    expect(plusOneEagerComputed.get()).toBe(2)
     expect(plusOneComputedSpy).toBeCalledTimes(1)
     expect(plusOneComputedRefSpy).toBeCalledTimes(1)
 
-    foo.value--
+    foo.set(foo.get() - 1);
     await nextTwoTick()
 
-    expect(plusOneComputed.value).toBe(1)
-    expect(plusOneEagerComputed.value).toBe(1)
+    expect(plusOneComputed.get()).toBe(1)
+    expect(plusOneEagerComputed.get()).toBe(1)
     expect(plusOneComputedSpy).toBeCalledTimes(2)
     expect(plusOneComputedRefSpy).toBeCalledTimes(2)
   })
 
   it('should not trigger collect change if result is not changed', async () => {
-    const foo = ref(1)
+    const foo = signal(1)
 
     const isOddComputed = computed(() => {
-      return foo.value % 2 === 0
+      return foo.get() % 2 === 0
     })
     const isOddEagerComputed = computedEager(() => {
-      return foo.value % 2 === 0
+      return foo.get() % 2 === 0
     })
 
     const isOddComputedSpy = vi.fn()
@@ -62,35 +63,35 @@ describe('computedEager', () => {
 
     watch(() => {
       isOddComputedCollectSpy()
-      return isOddComputed.value
+      return isOddComputed.get()
     }, isOddComputedSpy)
     watch(() => {
       isOddComputedRefCollectSpy()
-      return isOddEagerComputed.value
+      return isOddEagerComputed.get()
     }, isOddComputedRefSpy)
 
-    expect(isOddComputed.value).toBe(false)
-    expect(isOddEagerComputed.value).toBe(false)
+    expect(isOddComputed.get()).toBe(false)
+    expect(isOddEagerComputed.get()).toBe(false)
     expect(isOddComputedSpy).toBeCalledTimes(0)
     expect(isOddComputedRefSpy).toBeCalledTimes(0)
     expect(isOddComputedCollectSpy).toBeCalledTimes(1)
     expect(isOddComputedRefCollectSpy).toBeCalledTimes(1)
 
-    foo.value++
+    foo.set(foo.get() + 1)
     await nextTwoTick()
 
-    expect(isOddComputed.value).toBe(true)
-    expect(isOddEagerComputed.value).toBe(true)
+    expect(isOddComputed.get()).toBe(true)
+    expect(isOddEagerComputed.get()).toBe(true)
     expect(isOddComputedSpy).toBeCalledTimes(1)
     expect(isOddComputedRefSpy).toBeCalledTimes(1)
     expect(isOddComputedCollectSpy).toBeCalledTimes(2)
     expect(isOddComputedRefCollectSpy).toBeCalledTimes(2)
 
-    foo.value += 2
+    foo.set(foo.get() + 2)
     await nextTwoTick()
 
-    expect(isOddComputed.value).toBe(true)
-    expect(isOddEagerComputed.value).toBe(true)
+    expect(isOddComputed.get()).toBe(true)
+    expect(isOddEagerComputed.get()).toBe(true)
     expect(isOddComputedSpy).toBeCalledTimes(1)
     expect(isOddComputedRefSpy).toBeCalledTimes(1)
     // Since Vue 3.4, computed will not trigger collect change if result is not changed

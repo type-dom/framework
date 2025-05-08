@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
-import { nextTick } from 'vue'
+// import { nextTick } from 'vue'
 import { useVModel } from '.'
+import { nextTick } from '../../core/scheduler';
 
 describe('useVModel', () => {
   const defaultKey = 'modelValue'
@@ -11,17 +12,17 @@ describe('useVModel', () => {
 
   it('should work with default value', () => {
     const data = useVModel(defaultProps())
-    expect(data.value).toBe(defaultValue)
+    expect(data.get()).toBe(defaultValue)
   })
 
   it('should work with null', () => {
     const data = useVModel({ [defaultKey]: null })
-    expect(data.value).toBe(null)
+    expect(data.get()).toBe(null)
   })
 
   it('should work with boolean', () => {
     const data = useVModel({ [defaultKey]: false })
-    expect(data.value).toBe(false)
+    expect(data.get()).toBe(false)
   })
 
   it('should work with arguments', () => {
@@ -31,14 +32,14 @@ describe('useVModel', () => {
     }
 
     const data = useVModel(props, 'data')
-    expect(data.value).toBe('data')
+    expect(data.get()).toBe('data')
   })
 
   it('should emit on value change', async () => {
     const emitMock = vi.fn()
 
     const data = useVModel(defaultProps(), undefined, emitMock)
-    data.value = 'changed'
+    data.set('changed')
 
     expect(emitMock).toHaveBeenCalledWith('update:modelValue', 'changed')
   })
@@ -47,7 +48,7 @@ describe('useVModel', () => {
     const emitMock = vi.fn()
 
     const data = useVModel(defaultProps(), undefined, emitMock, { eventName: 'onChange' })
-    data.value = 'changed'
+    data.set('changed')
 
     expect(emitMock).toHaveBeenCalledWith('onChange', 'changed')
   })
@@ -61,7 +62,7 @@ describe('useVModel', () => {
     }
 
     const data = useVModel(props, 'age', emitMock, { passive: true })
-    data.value = 20
+    data.set(20)
 
     await nextTick()
 
@@ -79,7 +80,7 @@ describe('useVModel', () => {
     }
 
     const data = useVModel(props, 'data', emitMock, { passive: true, deep: true })
-    data.value.age = 20
+    data.get().age = 20
 
     await nextTick()
 
@@ -97,7 +98,7 @@ describe('useVModel', () => {
     }
 
     const data = useVModel(props, 'data', emitMock, { passive: true, deep: true })
-    data.value.hobbies.push('basketball')
+    data.get().hobbies.push('basketball')
 
     await nextTick()
 
@@ -123,12 +124,12 @@ describe('useVModel', () => {
     const dataD = useVModel(props, 'd', emitMock, { defaultValue: 'default-data' })
     const dataE = useVModel(props, 'e', emitMock, { defaultValue: 'default-data' })
 
-    expect(data.value).toBe('default-data')
-    expect(dataA.value).toBe(0)
-    expect(dataB.value).toBe('')
-    expect(dataC.value).toBe(false)
-    expect(dataD.value).toBe(null)
-    expect(dataE.value).toBe('default-data')
+    expect(data.get()).toBe('default-data')
+    expect(dataA.get()).toBe(0)
+    expect(dataB.get()).toBe('')
+    expect(dataC.get()).toBe(false)
+    expect(dataD.get()).toBe(null)
+    expect(dataE.get()).toBe('default-data')
   })
 
   it('should work with user define defaultValue with passive', () => {
@@ -149,12 +150,12 @@ describe('useVModel', () => {
     const dataD = useVModel(props, 'd', emitMock, { defaultValue: 'default-data', passive: true })
     const dataE = useVModel(props, 'e', emitMock, { defaultValue: 'default-data', passive: true })
 
-    expect(data.value).toBe('default-data')
-    expect(dataA.value).toBe(0)
-    expect(dataB.value).toBe('')
-    expect(dataC.value).toBe(false)
-    expect(dataD.value).toBe(null)
-    expect(dataE.value).toBe('default-data')
+    expect(data.get()).toBe('default-data')
+    expect(dataA.get()).toBe(0)
+    expect(dataB.get()).toBe('')
+    expect(dataC.get()).toBe(false)
+    expect(dataD.get()).toBe(null)
+    expect(dataE.get()).toBe('default-data')
   })
 
   it('should work with classes', async () => {
@@ -163,14 +164,14 @@ describe('useVModel', () => {
     class SomeClass {
       num1 = 1
 
-      someMethod() {}
+      someMethod() {/*nothing*/}
     }
 
     const props = { cl: new SomeClass() }
 
     const ref = useVModel(props, 'cl', emitMock, { passive: true, deep: true })
 
-    ref.value.num1 = 10
+    ref.get().num1 = 10
 
     await nextTick()
 
@@ -193,15 +194,15 @@ describe('useVModel', () => {
     const data = useVModel(props, 'person', emitMock, { passive: true, clone: true })
     const dataDeep = useVModel(props, 'person', emitMock, { passive: true, clone: true, deep: true })
 
-    data.value.age = 20
+    data.get().age = 20
 
     await nextTick()
-    expect(props.person).not.toBe(data.value)
+    expect(props.person).not.toBe(data.get())
     expect(props.person).toEqual(expect.objectContaining({ age: 18 }))
 
-    dataDeep.value.child.age = 3
+    dataDeep.get().child.age = 3
 
-    expect(props.person).not.toBe(dataDeep.value)
+    expect(props.person).not.toBe(dataDeep.get())
     expect(props.person).toEqual(expect.objectContaining({
       child: { age: 2 },
     }))
@@ -220,12 +221,12 @@ describe('useVModel', () => {
 
     const data = useVModel(props, 'person', emitMock, { passive: true, clone, deep: true })
 
-    data.value.age = 20
-    data.value.child.age = 3
+    data.get().age = 20
+    data.get().child.age = 3
 
     await nextTick()
     expect(clone).toHaveBeenCalled()
-    expect(props.person).not.toBe(data.value)
+    expect(props.person).not.toBe(data.get())
     expect(props.person).toEqual({
       age: 18,
       child: { age: 2 },
@@ -242,9 +243,9 @@ describe('useVModel', () => {
       return true
     }
     const data = useVModel(defaultProps(), undefined, emitMock, { shouldEmit: beforeEmit })
-    data.value = 'changed'
+    data.set('changed')
 
-    expect(emitMock).toHaveBeenCalledWith('update:modelValue', 'changed')
+      expect(emitMock).toHaveBeenCalledWith('update:modelValue', 'changed')
     expect(beforeEmitMock).toHaveBeenCalled()
     await nextTick()
     expect(res).toBe('changed')
@@ -260,7 +261,7 @@ describe('useVModel', () => {
       return false
     }
     const data = useVModel(defaultProps(), undefined, emitMock, { shouldEmit: beforeEmit })
-    data.value = 'changed'
+    data.set('changed')
 
     expect(emitMock).not.toHaveBeenCalled()
     expect(beforeEmitMock).toHaveBeenCalled()

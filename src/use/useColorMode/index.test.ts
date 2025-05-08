@@ -1,22 +1,25 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import { nextTick, ref } from 'vue'
+// import { nextTick, ref } from 'vue'
 import { useColorMode } from '.'
-import { nextTwoTick } from '../../.tests'
+// import { nextTwoTick } from '../../.test-dts'
 import { usePreferredDark } from '../usePreferredDark'
+import { signal } from '@type-dom/signals';
+import { nextTwoTick } from '../.test';
+import { nextTick } from '../../core/scheduler';
 
 describe('useColorMode', () => {
   const storageKey = 'vueuse-color-scheme'
   const htmlEl = document.querySelector('html')
 
   vi.mock('../usePreferredDark', () => {
-    const mockPreferredDark = ref(false)
+    const mockPreferredDark = signal(false)
     return {
       usePreferredDark: () => mockPreferredDark,
     }
   })
 
   beforeEach(() => {
-    usePreferredDark().value = false
+    usePreferredDark().set(false)
     localStorage.clear()
     htmlEl!.className = ''
   })
@@ -28,67 +31,67 @@ describe('useColorMode', () => {
 
   it('should translate auto mode when prefer dark', async () => {
     const mode = useColorMode()
-    mode.value = 'auto'
-    usePreferredDark().value = true
+    mode.set('auto')
+    usePreferredDark().set(true)
     await nextTwoTick()
-    expect(mode.value).toBe('dark')
+    expect(mode.get()).toBe('dark')
     expect(localStorage.getItem(storageKey)).toBe('auto')
     expect(htmlEl?.className).toMatch(/dark/)
   })
 
   it('should translate auto mode', () => {
     const mode = useColorMode()
-    mode.value = 'auto'
-    expect(mode.value).toBe('light')
+    mode.set('auto')
+    expect(mode.get()).toBe('light')
     expect(localStorage.getItem(storageKey)).toBe('auto')
     expect(htmlEl?.className).toMatch(/light/)
   })
 
   it('should translate custom mode', async () => {
-    const mode = useColorMode<'custom' | 'unknown'>({ modes: { custom: 'custom' } })
-    mode.value = 'custom'
+    const mode = useColorMode<'custom' | 'unknown'>({ modes: { custom: 'custom' }})
+    mode.set('custom')
 
     await nextTwoTick()
-    expect(mode.value).toBe('custom')
+    expect(mode.get()).toBe('custom')
     expect(localStorage.getItem(storageKey)).toBe('custom')
     expect(htmlEl?.className).toMatch(/custom/)
 
-    mode.value = 'unknown'
+    mode.set('unknown')
 
     await nextTwoTick()
-    expect(mode.value).toBe('unknown')
+    expect(mode.get()).toBe('unknown')
     expect(localStorage.getItem(storageKey)).toBe('unknown')
     expect(htmlEl?.className).toBe('')
   })
 
   it('should include auto mode', () => {
     const mode = useColorMode({ emitAuto: true })
-    mode.value = 'auto'
-    expect(mode.value).toBe('auto')
+    mode.set('auto')
+    expect(mode.get()).toBe('auto')
     expect(localStorage.getItem(storageKey)).toBe('auto')
     expect(htmlEl?.className).toMatch(/light/)
   })
 
   it('should not persist mode into localStorage', () => {
     const mode = useColorMode({ storageKey: null })
-    mode.value = 'auto'
-    expect(mode.value).toBe('light')
+    mode.set('auto')
+    expect(mode.get()).toBe('light')
     expect(localStorage.getItem(storageKey)).toBeNull()
     expect(htmlEl?.className).toMatch(/light/)
   })
 
   it('should set html attribute to be mode', () => {
     const mode = useColorMode({ attribute: 'data-color-mode' })
-    mode.value = 'auto'
-    expect(mode.value).toBe('light')
+    mode.set('auto')
+    expect(mode.get()).toBe('light')
     expect(localStorage.getItem(storageKey)).toBe('auto')
     expect(htmlEl?.getAttribute('data-color-mode')).toBe('light')
   })
 
   it('should not affect html when selector invalid', () => {
     const mode = useColorMode({ selector: 'unknown' })
-    mode.value = 'auto'
-    expect(mode.value).toBe('light')
+    mode.set('auto')
+    expect(mode.get()).toBe('light')
     expect(localStorage.getItem(storageKey)).toBe('auto')
     expect(htmlEl?.className).toBe('')
   })
@@ -100,8 +103,8 @@ describe('useColorMode', () => {
       defaultOnChanged(mode)
     }
     const mode = useColorMode({ onChanged })
-    mode.value = 'auto'
-    expect(mode.value).toBe('light')
+    mode.set('auto')
+    expect(mode.get()).toBe('light')
     expect(nextMode).toBe('light')
     expect(localStorage.getItem(storageKey)).toBe('auto')
     expect(htmlEl?.className).toMatch(/light/)
@@ -109,19 +112,19 @@ describe('useColorMode', () => {
 
   it('should only change html class when preferred dark changed', async () => {
     const mode = useColorMode({ emitAuto: true })
-    usePreferredDark().value = true
+    usePreferredDark().set(true)
 
     await nextTwoTick()
-    expect(mode.value).toBe('auto')
+    expect(mode.get()).toBe('auto')
     expect(localStorage.getItem(storageKey)).toBe('auto')
     expect(htmlEl?.className).toMatch(/dark/)
   })
 
   it('should be able access the store & system preference', () => {
     const mode = useColorMode()
-    expect(mode.store.value).toBe('auto')
-    expect(mode.system.value).toBe('light')
-    expect(mode.state.value).toBe('light')
+    expect(mode.store.get()).toBe('auto')
+    expect(mode.system.get()).toBe('light')
+    expect(mode.state.get()).toBe('light')
   })
 
   it('should call classList.add/classList.remove only if mode changed', async () => {
@@ -134,14 +137,14 @@ describe('useColorMode', () => {
     const addClass = vi.spyOn(target.classList, 'add')
     const removeClass = vi.spyOn(target.classList, 'remove')
 
-    mode.value = 'light'
+    mode.set('light')
 
     await nextTick()
 
     expect(addClass).not.toHaveBeenCalled()
     expect(removeClass).not.toHaveBeenCalled()
 
-    mode.value = 'dark'
+    mode.set('dark')
 
     await nextTick()
 
@@ -158,13 +161,13 @@ describe('useColorMode', () => {
 
     const setAttr = vi.spyOn(target, 'setAttribute')
 
-    mode.value = 'light'
+    mode.set('light')
 
     await nextTick()
 
     expect(setAttr).not.toHaveBeenCalled()
 
-    mode.value = 'dark'
+    mode.set('dark')
 
     await nextTick()
 

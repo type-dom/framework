@@ -1,6 +1,7 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import { nextTick } from 'vue'
+// import { nextTick } from 'vue'
 import { useWindowSize } from '.'
+import { nextTick } from '../../core/scheduler';
 
 describe('useWindowSize', () => {
   const addEventListenerSpy = vi.spyOn(window, 'addEventListener')
@@ -32,22 +33,22 @@ describe('useWindowSize', () => {
   it('should work', () => {
     const { width, height } = useWindowSize({ initialWidth: 100, initialHeight: 200 })
 
-    expect(width.value).toBe(window.innerWidth)
-    expect(height.value).toBe(window.innerHeight)
+    expect(width.get()).toBe(window.innerWidth)
+    expect(height.get()).toBe(window.innerHeight)
   })
 
   it('should exclude scrollbar', () => {
     const { width, height } = useWindowSize({ initialWidth: 100, initialHeight: 200, includeScrollbar: false })
 
-    expect(width.value).toBe(window.document.documentElement.clientWidth)
-    expect(height.value).toBe(window.document.documentElement.clientHeight)
+    expect(width.get()).toBe(window.document.documentElement.clientWidth)
+    expect(height.get()).toBe(window.document.documentElement.clientHeight)
   })
 
   it('should use outer size', () => {
     const { width, height } = useWindowSize({ initialWidth: 100, initialHeight: 200, type: 'outer' })
 
-    expect(width.value).toBe(window.outerWidth)
-    expect(height.value).toBe(window.outerHeight)
+    expect(width.get()).toBe(window.outerWidth)
+    expect(height.get()).toBe(window.outerHeight)
   })
 
   it('sets handler for window "resize" event', async () => {

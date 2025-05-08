@@ -1,25 +1,24 @@
-
-// import type { MockInstance } from 'vitest'
-
-
-import { useEventListener } from '.'
-import { Fn } from '../../interface'
-import { noop } from '@type-dom/utils';
-import { effectScope } from '@type-dom/signals';
+// import type { Fn } from '@vueuse/shared'
+import type { MockInstance } from 'vitest'
+// import type { Ref } from 'vue'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+// import { computed, ref as deepRef, effectScope, nextTick, shallowRef } from 'vue'
+import { useEventListener } from './index';
+import { Fn } from '@type-dom/utils'
+import { computed, effectScope, Ref, signal } from '@type-dom/signals';
 import { nextTick } from '../../core/scheduler';
-
 
 describe('useEventListener', () => {
   const options = { capture: true }
   let stop: Fn
   let target: HTMLDivElement
-  let removeSpy: jest.SpyInstance;
-  let addSpy: jest.SpyInstance
+  let removeSpy: MockInstance
+  let addSpy: MockInstance
 
   beforeEach(() => {
     target = document.createElement('div')
-    removeSpy = jest.spyOn(target, 'removeEventListener')
-    addSpy = jest.spyOn(target, 'addEventListener')
+    removeSpy = vi.spyOn(target, 'removeEventListener')
+    addSpy = vi.spyOn(target, 'addEventListener')
   })
 
   it('should be defined', () => {
@@ -27,7 +26,7 @@ describe('useEventListener', () => {
   })
 
   describe('given both none array', () => {
-    const listener = jest.fn()
+    const listener = vi.fn()
     const event = 'click'
 
     beforeEach(() => {
@@ -56,7 +55,7 @@ describe('useEventListener', () => {
   })
 
   describe('given array of events but single listener', () => {
-    const listener = jest.fn()
+    const listener = vi.fn()
     const events = ['click', 'scroll', 'blur', 'resize']
 
     beforeEach(() => {
@@ -87,7 +86,7 @@ describe('useEventListener', () => {
   })
 
   describe('given single event but array of listeners', () => {
-    const listeners = [jest.fn(), jest.fn(), jest.fn()]
+    const listeners = [vi.fn(), vi.fn(), vi.fn()]
     const event = 'click'
 
     beforeEach(() => {
@@ -118,7 +117,7 @@ describe('useEventListener', () => {
   })
 
   describe('given both array of events and listeners', () => {
-    const listeners = [jest.fn(), jest.fn(), jest.fn()]
+    const listeners = [vi.fn(), vi.fn(), vi.fn()]
     const events = ['click', 'scroll', 'blur', 'resize', 'custom-event']
 
     beforeEach(() => {
@@ -153,24 +152,23 @@ describe('useEventListener', () => {
   })
 
   describe('multiple events', () => {
-    let target: HTMLDivElement | null
+    let target: Ref<HTMLDivElement | null>
     let listener: () => any
 
     beforeEach(() => {
-      target = document.createElement('div')
-      listener = jest.fn()
+      target = signal(document.createElement('div'))
+      listener = vi.fn()
     })
 
     it('should not listen when target is invalid', async () => {
       useEventListener(target, 'click', listener)
-      const el = target
-      target = null
+      const el = target.get()
+      target.set(null)
       await nextTick()
       el?.dispatchEvent(new MouseEvent('click'))
       await nextTick()
 
       expect(listener).toHaveBeenCalledTimes(0)
-      expect(useEventListener(null, 'click', listener)).toBe(noop)
     })
 
     function getTargetName(useTarget: boolean) {
@@ -182,7 +180,7 @@ describe('useEventListener', () => {
     }
 
     function trigger(useTarget: boolean) {
-      (useTarget ? target : window)!.dispatchEvent(new MouseEvent('click'))
+      (useTarget ? target.get() : window)!.dispatchEvent(new MouseEvent('click'))
     }
 
     function testTarget(useTarget: boolean) {
@@ -211,13 +209,12 @@ describe('useEventListener', () => {
       })
 
       it(`should ${getTargetName(useTarget)} auto stop listening event`, async () => {
-        const scope = effectScope()
-        await scope.run(async () => {
-        // @ts-expect-error mock different args
+        const scope = effectScope(async () => {
+          // @ts-expect-error mock different args
           useEventListener(...getArgs(useTarget))
         })
 
-        await scope.stop()
+        scope()
 
         trigger(useTarget)
 
@@ -231,22 +228,135 @@ describe('useEventListener', () => {
     testTarget(true)
   })
 
+  describe('useEventListener - multiple targets', () => {
+    it('should accept an array ref of DOM elements', async () => {
+      const listener = vi.fn()
+      const el1 = document.createElement('button')
+      const el2 = document.createElement('button')
+      const arrayRef = computed(() => [el1, el2])
+
+      useEventListener(arrayRef, 'click', listener)
+      await nextTick()
+
+      el1.dispatchEvent(new Event('click'))
+      el2.dispatchEvent(new Event('click'))
+      expect(listener).toHaveBeenCalledTimes(2)
+    })
+
+    it('should accept a getter returning multiple targets', async () => {
+      const listener = vi.fn()
+      const el1 = document.createElement('div')
+      const el2 = document.createElement('div')
+      const active = signal(true)
+
+      useEventListener(() => active.get() ? [el1, el2] : [], 'mousedown', listener)
+      await nextTick()
+
+      el1.dispatchEvent(new Event('mousedown'))
+      el2.dispatchEvent(new Event('mousedown'))
+      expect(listener).toHaveBeenCalledTimes(2)
+
+      // disable
+      active.set(false)
+      await nextTick()
+      el1.dispatchEvent(new Event('mousedown'))
+      el2.dispatchEvent(new Event('mousedown'))
+      // events should no longer trigger
+      expect(listener).toHaveBeenCalledTimes(2)
+    })
+
+    it('should accept an array of DOM elements + multiple events', async () => {
+      const listener = vi.fn()
+      const el1 = document.createElement('button')
+      const el2 = document.createElement('button')
+      const arrayRef = computed(() => [el1, el2])
+
+      useEventListener(arrayRef, ['click', 'hover'], listener)
+      await nextTick()
+
+      el1.dispatchEvent(new Event('click'))
+      el2.dispatchEvent(new Event('click'))
+      el1.dispatchEvent(new Event('hover'))
+      el2.dispatchEvent(new Event('hover'))
+      expect(listener).toHaveBeenCalledTimes(4)
+    })
+
+    it('should accept a getter returning multiple targets + multiple events', async () => {
+      const listener = vi.fn()
+      const el1 = document.createElement('div')
+      const el2 = document.createElement('div')
+      const active = signal(true)
+
+      useEventListener(() => active.get() ? [el1, el2] : [], ['mousedown', 'click'], listener)
+      await nextTick()
+
+      el1.dispatchEvent(new Event('mousedown'))
+      el2.dispatchEvent(new Event('mousedown'))
+      el1.dispatchEvent(new Event('click'))
+      el2.dispatchEvent(new Event('click'))
+      expect(listener).toHaveBeenCalledTimes(4)
+
+      // disable
+      active.set(false)
+      await nextTick()
+      el1.dispatchEvent(new Event('mousedown'))
+      el2.dispatchEvent(new Event('mousedown'))
+      el1.dispatchEvent(new Event('click'))
+      el2.dispatchEvent(new Event('click'))
+      // events should no longer trigger
+      expect(listener).toHaveBeenCalledTimes(4)
+    })
+
+    it('should react to target + event + function changes properly', async () => {
+      const listener1 = vi.fn()
+      const listener2 = vi.fn()
+      const el1 = document.createElement('div')
+      const el2 = document.createElement('div')
+      const els = signal([el1])
+      const events = signal(['click'])
+      const listeners = signal([listener1])
+
+      useEventListener(els, events, listeners)
+      el1.dispatchEvent(new Event('click'))
+      els.set([el2])
+        await nextTick()
+      el1.dispatchEvent(new Event('click'))
+      el2.dispatchEvent(new Event('click'))
+      events.set(['mousedown'])
+      await nextTick()
+      el1.dispatchEvent(new Event('click'))
+      el2.dispatchEvent(new Event('click'))
+      el2.dispatchEvent(new Event('mousedown'))
+      els.set([el1, el2])
+      events.set(['click', 'mousedown'])
+      listeners.set([listener1, listener2])
+      await nextTick()
+      el1.dispatchEvent(new Event('click'))
+      el2.dispatchEvent(new Event('click'))
+      el1.dispatchEvent(new Event('mousedown'))
+      el2.dispatchEvent(new Event('mousedown'))
+
+      expect(listener1).toHaveBeenCalledTimes(7)
+      expect(listener2).toHaveBeenCalledTimes(4)
+    })
+  })
+
   it('should auto re-register', async () => {
-    let target: Window | Element = window;
-    const listener = jest.fn()
-    let options = false
-    useEventListener(target, 'click', listener, options)
+    const target = signal()
+    const listener = vi.fn()
+    const options = signal<any>(false)
+    useEventListener(target as any, 'click', listener, options)
 
     const el = document.createElement('div')
-    const addSpy = jest.spyOn(el, 'addEventListener')
-    const removeSpy = jest.spyOn(el, 'removeEventListener')
-    target = el;
+    const addSpy = vi.spyOn(el, 'addEventListener')
+    const removeSpy = vi.spyOn(el, 'removeEventListener')
+    target.set(el)
     await nextTick()
     expect(addSpy).toHaveBeenCalledTimes(1)
     expect(addSpy).toHaveBeenLastCalledWith('click', listener, false)
     expect(removeSpy).toHaveBeenCalledTimes(0)
 
-    options = true
+    options.set(true)
     await nextTick()
     expect(addSpy).toHaveBeenCalledTimes(2)
     expect(addSpy).toHaveBeenLastCalledWith('click', listener, true)

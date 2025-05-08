@@ -5,7 +5,7 @@ import { toValue } from '../shared/toValue/index';
 // export type TdInstance = TypeNode;
 export type MaybeElementRef<T extends MaybeElement = MaybeElement> = MaybeRef<T>
 export type MaybeComputedElementRef<T extends MaybeElement = MaybeElement> = MaybeRefOrGetter<T>
-export type MaybeElement = HTMLElement | SVGElement | TypeNode | null | undefined
+export type MaybeElement = HTMLElement | SVGElement | Text | TypeNode | null | undefined
 
 export type UnRefElementReturn<T extends MaybeElement = MaybeElement> = T extends TypeNode ? Exclude<MaybeElement, TypeNode> : T | undefined
 

@@ -72,7 +72,7 @@ export function useTimeoutFn<CallbackFn extends AnyFn>(
   tryOnScopeDispose(stop)
 
   return {
-    // isPending: readonly(isPending), // todo
+    isPending, //: readonly(isPending), // todo
     start,
     stop,
   }

@@ -1,5 +1,5 @@
 // import { promiseTimeout } from '@vueuse/shared'
-// import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 // import { ref } from 'vue'
 import { Computed, signal as ref } from '@type-dom/signals';
 import { promiseTimeout } from '../utils';
@@ -99,7 +99,7 @@ describe('useTransition', () => {
   it('transitions between refs', async () => {
     const source1 = ref(0)
     const source2 = ref(0)
-    const transition = useTransition([source1, source2], { duration: 100 })
+    const transition = useTransition([source1, source2], { duration: 100 }) as Computed<number[]>
 
     expect(transition.get()).toEqual([0, 0])
 
@@ -122,13 +122,13 @@ describe('useTransition', () => {
     const easeOutBack = useTransition(source, {
       duration: 100,
       transition: [0, 2, 0, 1],
-    })
+    }) as Computed<number>
 
     // https://cubic-bezier.com/#1,0,1,-1
     const easeInBack = useTransition(source, {
       duration: 100,
       transition: [1, 0, 1, -1],
-    })
+    }) as Computed<number>
 
     source.set(1)
 
@@ -143,11 +143,11 @@ describe('useTransition', () => {
 
   it('supports custom easing functions', async () => {
     const source = ref(0)
-    const linear = jest.fn(n => n)
+    const linear = vi.fn(n => n)
     const transition = useTransition(source, {
       duration: 100,
       transition: linear,
-    })
+    }) as Computed<number>
 
     expect(linear).not.toBeCalled()
 
@@ -163,11 +163,11 @@ describe('useTransition', () => {
 
   it('supports non-linear custom easing functions', async () => {
     const source = ref(0)
-    const easeInQuad = jest.fn(n => n * n)
-    const transition: Computed<number> = useTransition(source, {
+    const easeInQuad = vi.fn(n => n * n)
+    const transition = useTransition(source, {
       duration: 100,
       transition: easeInQuad,
-    })
+    }) as Computed<number>
 
     expect(easeInQuad).not.toBeCalled()
 
@@ -187,7 +187,7 @@ describe('useTransition', () => {
     const transition = useTransition(source, {
       delay: 100,
       duration: 100,
-    })
+    }) as Computed<number>
 
     source.set(1)
 
@@ -200,8 +200,8 @@ describe('useTransition', () => {
 
   it('supports dynamic transitions', async () => {
     const source = ref(0)
-    const first = jest.fn(n => n)
-    const second = jest.fn(n => n)
+    const first = vi.fn(n => n)
+    const second = vi.fn(n => n)
     const easingFn = ref(first)
 
     useTransition(source, {
@@ -232,7 +232,7 @@ describe('useTransition', () => {
   it('supports dynamic durations', async () => {
     const source = ref(0)
     const duration = ref(100)
-    const transition = useTransition(source, { duration })
+    const transition = useTransition(source, { duration }) as Computed<number>
 
     source.set(1)
 
@@ -254,8 +254,8 @@ describe('useTransition', () => {
 
   it('fires onStarted and onFinished callbacks', async () => {
     const source = ref(0)
-    const onStarted = jest.fn()
-    const onFinished = jest.fn()
+    const onStarted = vi.fn()
+    const onFinished = vi.fn()
 
     useTransition(source, {
       duration: 100,
@@ -282,8 +282,8 @@ describe('useTransition', () => {
 
   it('clears pending transitions before starting a new one', async () => {
     const source = ref(0)
-    const onStarted = jest.fn()
-    const onFinished = jest.fn()
+    const onStarted = vi.fn()
+    const onFinished = vi.fn()
 
     useTransition(source, {
       delay: 100,
@@ -303,7 +303,7 @@ describe('useTransition', () => {
   })
 
   it('can be disabled for sychronous changes', async () => {
-    const onStarted = jest.fn()
+    const onStarted = vi.fn()
     const disabled = ref(false)
     const source = ref(0)
 

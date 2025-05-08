@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from 'vitest'
-import { computed, nextTick, ref } from 'vue'
+// import { computed, nextTick, ref } from 'vue'
 import { useMutationObserver } from '.'
+import { nextTick } from '../../core/scheduler';
+import { computed, signal } from '@type-dom/signals';
 
 describe('useMutationObserver', () => {
   it('should be defined', () => {
@@ -66,8 +68,6 @@ describe('useMutationObserver', () => {
   it('should work with characterData', async () => {
     const target = document.createTextNode('123')
     const cb = vi.fn()
-    // eslint-disable-next-line ts/ban-ts-comment
-    // @ts-expect-error
     useMutationObserver(target, cb, {
       characterData: true,
     })
@@ -126,8 +126,6 @@ describe('useMutationObserver', () => {
   it('should work with characterDataOldValue', async () => {
     const target = document.createTextNode('123')
     const cb = vi.fn()
-    // eslint-disable-next-line ts/ban-ts-comment
-    // @ts-expect-error
     useMutationObserver(target, cb, {
       characterData: true,
       characterDataOldValue: true,
@@ -188,32 +186,32 @@ describe('useMutationObserver', () => {
   })
 
   it('should work with multiple targets', async () => {
-    const headerElement = ref<HTMLDivElement | null>(
+    const headerElement = signal<HTMLDivElement | null>(
       document.createElement('div'),
     )
-    const footerElement = ref<HTMLDivElement | null>(
+    const footerElement = signal<HTMLDivElement | null>(
       document.createElement('div'),
     )
-    const targets = computed(() => [headerElement.value, footerElement.value])
+    const targets = computed(() => [headerElement.get(), footerElement.get()])
     const cb = vi.fn()
 
     const { takeRecords } = useMutationObserver(targets, cb, {
       attributes: true,
     })
 
-    headerElement.value?.setAttribute('id', 'header')
-    footerElement.value?.setAttribute('id', 'footer')
+    headerElement.get()?.setAttribute('id', 'header')
+    footerElement.get()?.setAttribute('id', 'footer')
     let records = takeRecords()
     await nextTick()
     expect(records).toHaveLength(2)
-    expect(records![0].target).toBe(headerElement.value)
-    expect(records![1].target).toBe(footerElement.value)
+    expect(records![0].target).toBe(headerElement.get())
+    expect(records![1].target).toBe(footerElement.get())
 
-    headerElement.value = null
-    footerElement.value?.removeAttribute('id')
+    headerElement.set(null)
+    footerElement.get()?.removeAttribute('id')
     records = takeRecords()
     await nextTick()
     expect(records).toHaveLength(1)
-    expect(records![0].target).toBe(footerElement.value)
+    expect(records![0].target).toBe(footerElement.get())
   })
 })

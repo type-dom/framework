@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { reactive } from 'vue'
+// import { reactive } from 'vue'
 import { useScroll } from '.'
+import { signal } from '@type-dom/signals';
 
 describe('useScroll', () => {
   it('should be defined', () => {
@@ -9,12 +10,12 @@ describe('useScroll', () => {
 
   it('should have default x and y', async () => {
     const { x, y } = useScroll(window)
-    expect(x.value).toBe(0)
-    expect(y.value).toBe(0)
+    expect(x.get()).toBe(0)
+    expect(y.get()).toBe(0)
   })
 
   it('should have right default values', () => {
-    const values = reactive(useScroll(window))
+    const values = signal(useScroll(window))
     expect(values).toMatchInlineSnapshot(`
       {
         "arrivedState": {

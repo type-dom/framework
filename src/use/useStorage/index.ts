@@ -142,7 +142,7 @@ export interface UseStorageOptions<T> extends ConfigurableEventFilter, Configura
  */
 export function useStorage<T extends (string | number | boolean | object | null)>(
   key: string,
-  defaults: MaybeRefOrGetter<T>,
+  defaults: MaybeRefOrGetter<T> | undefined,
   storage: StorageLike | undefined,
   options: UseStorageOptions<T> = {},
 ): any {

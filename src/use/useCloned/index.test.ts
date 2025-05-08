@@ -1,6 +1,9 @@
-import { useCloned } from '@vueuse/core'
+// import { useCloned } from '@vueuse/core'
 import { describe, expect, it } from 'vitest'
-import { nextTick, ref } from 'vue'
+import { useCloned } from '.';
+import { signal } from '@type-dom/signals';
+import { nextTick } from '../../core/scheduler';
+// import { nextTick, ref } from 'vue'
 
 describe('useCloned', () => {
   it('works with simple objects', () => {
@@ -8,105 +11,105 @@ describe('useCloned', () => {
 
     const { cloned, sync } = useCloned(data)
 
-    expect(cloned.value).toEqual(data)
+    expect(cloned.get()).toEqual(data)
 
-    cloned.value = { test: 'failed' }
+    cloned.set({ test: 'failed' })
 
-    sync()
+      sync()
 
-    expect(cloned.value).toEqual(data)
+    expect(cloned.get()).toEqual(data)
   })
 
   it('works with refs', async () => {
-    const data = ref({ test: 'test' })
+    const data = signal({ test: 'test' })
 
     const { cloned } = useCloned(data)
 
-    data.value.test = 'success'
+    data.get().test = 'success'
 
     await nextTick()
 
-    expect(cloned.value).toEqual(data.value)
+    expect(cloned.get()).toEqual(data.get())
   })
 
   it('works with getter function', async () => {
-    const data = ref({ test: 'test' })
+    const data = signal({ test: 'test' })
 
-    const { cloned } = useCloned(() => data.value)
+    const { cloned } = useCloned(() => data.get())
 
-    data.value.test = 'success'
+    data.get().test = 'success'
 
     await nextTick()
 
-    expect(cloned.value).toEqual(data.value)
+    expect(cloned.get()).toEqual(data.get())
   })
 
   it('works with refs and manual sync', async () => {
-    const data = ref({ test: 'test' })
+    const data = signal({ test: 'test' })
 
     const { cloned, sync } = useCloned(data, { manual: true })
 
-    data.value.test = 'success'
+    data.get().test = 'success'
 
-    expect(cloned.value).not.toEqual(data.value)
+    expect(cloned.get()).not.toEqual(data.get())
 
     sync()
 
-    expect(cloned.value).toEqual(data.value)
+    expect(cloned.get()).toEqual(data.get())
   })
 
   it('works with custom clone function', async () => {
-    const data = ref<Record<string, any>>({ test: 'test' })
+    const data = signal<Record<string, any>>({ test: 'test' })
 
     const { cloned } = useCloned(data, {
       clone: source => ({ ...source, proxyTest: true }),
     })
 
-    data.value.test = 'partial'
+    data.get().test = 'partial'
 
     await nextTick()
 
-    expect(cloned.value.test).toBe('partial')
-    expect(cloned.value.proxyTest).toBe(true)
+    expect(cloned.get().test).toBe('partial')
+    expect(cloned.get().proxyTest).toBe(true)
   })
 
   it('works with watch options', async () => {
-    const data = ref({ test: 'test' })
+    const data = signal({ test: 'test' })
 
     const { cloned } = useCloned(data, { immediate: false, deep: false })
 
     await nextTick()
 
-    // tests immediate: false
-    expect(cloned.value).toEqual({})
+    // test-dts immediate: false
+    expect(cloned.get()).toEqual({})
 
-    data.value.test = 'not valid'
-
-    await nextTick()
-
-    // tests deep: false
-    expect(cloned.value).toEqual({})
-
-    data.value = { test: 'valid' }
+    data.get().test = 'not valid'
 
     await nextTick()
 
-    expect(cloned.value).toEqual(data.value)
+    // test-dts deep: false
+    expect(cloned.get()).toEqual({})
+
+    data.set({ test: 'valid' })
+
+      await nextTick()
+
+    expect(cloned.get()).toEqual(data.get())
   })
 
   it('works with use isModified', async () => {
-    const data = ref({ test: 'test' })
+    const data = signal({ test: 'test' })
 
     const { cloned, isModified, sync } = useCloned(data)
 
-    expect(isModified.value).toEqual(false)
+    expect(isModified.get()).toEqual(false)
 
-    cloned.value.test = 'vitest'
+    cloned.get().test = 'vitest'
 
-    expect(isModified.value).toEqual(true)
+    expect(isModified.get()).toEqual(true)
 
     sync()
 
-    expect(isModified.value).toEqual(false)
+    expect(isModified.get()).toEqual(false)
   })
 })

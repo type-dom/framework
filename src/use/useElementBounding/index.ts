@@ -78,7 +78,7 @@ export function useElementBounding(
 
   function recalculate() {
     // console.error('recalculate . ');
-    const el = unrefElement(target);
+    const el = unrefElement(target) as HTMLElement;
     // console.error('el is ', el);
     if (!el) {
       if (reset) {

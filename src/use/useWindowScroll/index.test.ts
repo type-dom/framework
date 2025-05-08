@@ -1,6 +1,8 @@
-import { useScroll } from '@vueuse/core'
+// import { useScroll } from '@vueuse/core'
+import { useScroll } from '../../../src';
+import { signal } from '@type-dom/signals';
 import { describe, expect, it } from 'vitest'
-import { reactive } from 'vue'
+// import { reactive } from 'vue'
 import { useWindowScroll } from '.'
 
 describe('useWindowScroll', () => {
@@ -10,12 +12,12 @@ describe('useWindowScroll', () => {
 
   it('should have default x and y', () => {
     const { x, y } = useWindowScroll()
-    expect(x.value).toBe(0)
-    expect(y.value).toBe(0)
+    expect(x.get()).toBe(0)
+    expect(y.get()).toBe(0)
   })
 
   it('should have right default values', () => {
-    const values = reactive(useScroll(window))
+    const values = signal(useScroll(window))
     expect(values).toMatchInlineSnapshot(`
       {
         "arrivedState": {

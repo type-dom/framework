@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { ref } from 'vue'
+// import { ref } from 'vue'
 import { assert, clamp, createFilterWrapper, createSingletonPromise, debounceFilter, hasOwn, increaseWithUnit, isClient, isDef, isIOS, isObject, noop, now, objectOmit, objectPick, promiseTimeout, rand, throttleFilter, timestamp } from '.'
+import { signal } from '@type-dom/signals';
 
 describe('utils', () => {
   it('increaseWithUnit', () => {
@@ -31,14 +32,14 @@ describe('utils', () => {
 
 describe('promise', () => {
   it('should promiseTimeout work', async () => {
-    const num = ref(0)
+    const num = signal(0)
     setTimeout(() => {
-      num.value = 1
+      num.set(1)
     }, 100)
 
     await promiseTimeout(100)
 
-    expect(num.value).toBe(1)
+    expect(num.get()).toBe(1)
   })
 
   it('should promiseTimeout throw timeout', async () => {
@@ -121,11 +122,11 @@ describe('filters', () => {
 
   it('should debounce with ref', () => {
     const debouncedFilterSpy = vi.fn()
-    const debounceTime = ref(0)
+    const debounceTime = signal(0)
     const filter = createFilterWrapper(debounceFilter(debounceTime), debouncedFilterSpy)
 
     filter()
-    debounceTime.value = 500
+    debounceTime.set(500)
     filter()
     setTimeout(filter, 200)
 
@@ -166,11 +167,11 @@ describe('filters', () => {
 
   it('should throttle with ref', () => {
     const debouncedFilterSpy = vi.fn()
-    const throttle = ref(0)
+    const throttle = signal(0)
     const filter = createFilterWrapper(throttleFilter(throttle), debouncedFilterSpy)
 
     filter()
-    throttle.value = 1000
+    throttle.set(1000)
 
     setTimeout(filter, 300)
     setTimeout(filter, 600)
@@ -313,7 +314,7 @@ describe('is', () => {
   it('hasOwn', () => {
     class Parent {a = 1}
     class Child extends Parent {}
-    function F() {}
+    function F() {/*nothing*/}
     F.prototype.a = 1
     const obj1 = { a: 1 } as any
     const obj2 = new Child() as any
@@ -370,11 +371,11 @@ describe('optionsFilters', () => {
 
   it('optionsThrottleFilter should throttle with ref', () => {
     const debouncedFilterSpy = vi.fn()
-    const throttle = ref(0)
+    const throttle = signal(0)
     const filter = createFilterWrapper(throttleFilter(throttle), debouncedFilterSpy)
 
     filter()
-    throttle.value = 1000
+    throttle.set(1000)
 
     setTimeout(filter, 300)
     setTimeout(filter, 600)

@@ -1,4 +1,4 @@
-import { computed, MaybeRefOrGetter, watch } from '@type-dom/signals';
+import { Computed, computed, MaybeRefOrGetter, watch } from '@type-dom/signals';
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
 import { defaultWindow } from '../_configurable'
@@ -68,7 +68,7 @@ export function useResizeObserver(
     return Array.isArray(_targets)
       ? _targets.map(el => unrefElement(el))
       : [unrefElement(_targets)]
-  })
+  }) as Computed<HTMLElement[]>
 
   const stopWatch = watch(
     targets,
