@@ -1,4 +1,6 @@
-export function logClass(target: Function) {
+import { AnyFn } from '@type-dom/utils';
+
+export function logClass(target: AnyFn) {
   console.log(`Class ${target.name} is being created`);
 }
 //
