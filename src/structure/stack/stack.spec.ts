@@ -74,7 +74,7 @@ describe('Stack', () => {
   it('should print the stack', () => {
     stack.push(1);
     stack.push(2);
-    const spy = jest.spyOn(console, 'log');
+    const spy = vi.spyOn(console, 'log');
     stack.print();
     expect(spy).toHaveBeenCalledWith([1, 2]);
     spy.mockRestore();

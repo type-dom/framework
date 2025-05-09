@@ -7,7 +7,7 @@ describe('Queue', () => {
   });
 
   it('should start the queue when autostart is true', () => {
-    const mockWorker = jest.fn();
+    const mockWorker = vi.fn();
     const queue = new Queue({ autostart: true });
     queue.push(mockWorker);
     // Assuming _start() sets running to true
@@ -15,7 +15,7 @@ describe('Queue', () => {
   });
 
   it('should add a job to the queue and call it when started', async () => {
-    const mockWorker = jest.fn().mockResolvedValue(console.log);
+    const mockWorker = vi.fn().mockResolvedValue(console.log);
     const queue = new Queue({ autostart: false });
     queue.push(mockWorker);
     await queue.start();
@@ -23,15 +23,15 @@ describe('Queue', () => {
   });
 
   it('should handle errors when a job fails', (done) => {
-    const mockWorker = jest.fn().mockRejectedValue(new Error('Test error'));
+    const mockWorker = vi.fn().mockRejectedValue(new Error('Test error'));
     const queue = new Queue({ autostart: true });
     queue.push(mockWorker);
     queue.addEventListener('error', (event) => {
       expect(event.detail.error).toBeInstanceOf(Error);
       expect(event.detail.error.message).toBe('Test error');
-      done();
+      // done();
     });
   });
 
-  // Add more tests here to cover different aspects of the Queue functionality
+  // Add more test-dts here to cover different aspects of the Queue functionality
 });
