@@ -8,9 +8,10 @@ import { TypeProps } from './type-node.interface';
 
 export function useAssignProps<T extends TypeProps>(element: TypeNode, config = {} as T): T {
   if (!element.props) {
+    // todo override props is undefined
     // console.error('element.props is undefined . ');
-    // element.props = {};
-    throw Error('element.props is undefined . ');
+    element.props = element.baseProps;
+    // console.error('element.props is undefined . ');
   }
   for (const key in config) {
     // styleObj, attrObj, events 要单独处理

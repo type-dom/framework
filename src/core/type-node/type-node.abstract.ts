@@ -52,6 +52,8 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
    * 属性项
    */
   props: TypeProps;
+  baseProps: TypeProps;
+
   parent?: TypeElement | undefined;
   /**
    * 挂载到指定的组件的DOM,可以直接指向 body
@@ -77,7 +79,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
     super();
     this.uid = uid++;
     this.params = {}; // Object.freeze({}) as TypeProps;
-    this.props = {}; // Object.freeze({}) as TypeProps;
+    this.props = this.baseProps = {}; // Object.freeze({}) as TypeProps;
     this.lifeCycles = {} as Record<LifecycleHooks, AnyFn[]>;
     this.beforeCreate?.(); // 挂载前，执行一些初始化操作。其实也就是操作 config本身。
   }
@@ -249,7 +251,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
     return useAssignProps(this, config);
   }
 
-  // config.slots中添加slot的对象
+  // props.slots中添加slot的对象
   addPropSlot(name: string, slot: string | TypeNode | (string | TypeNode)[]) {
     if (!this.props?.slots) {
       // console.error('styleObj is not initialized.');

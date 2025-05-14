@@ -231,7 +231,7 @@ export interface TypeProps extends ITypeBase {
   // sourceWrapper?:  string | XProxy<IJsonData>;
   // showcase?:  TypeElement[];
   // width?: number | string;
-  // route?: IRoute,
+  // route?: RouteRecordRaw,
   // router?: Router;
   // visibilityHeight?: string | number;
   // arrowOffset?: string | number;
