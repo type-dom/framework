@@ -1,6 +1,5 @@
 export type * from './interface';
 export * from './parser';
-export * from './router';
 // export * from './observer/index';
 // export * from './reactivity/index';
 export * from './utils/index';
