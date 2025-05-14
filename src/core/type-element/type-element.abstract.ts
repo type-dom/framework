@@ -1,10 +1,6 @@
-import { effect, isRef, toRaw } from '@type-dom/signals';
 import { IStyle } from '@type-dom/css-type';
-import { AnyFn, isArray, isFunction } from '@type-dom/utils';
-// import { IRouterView } from '@type-dom/router';
+import { AnyFn  } from '@type-dom/utils';
 import { IJsonDataProp } from '../../interface';
-// import { RouterView } from '../../router/router-view/router-view.class';
-// import { IRouterView } from '../../router/router-view/router-view.interface';
 import type {
   ISlotItem,
   ISlotRaw,
