@@ -17,9 +17,9 @@ export let formatComponentName: (vm: Component, includeFile?: false) => string;
 
 if (__DEV__) {
   const hasConsole = typeof console !== 'undefined';
-  const classifyRE = /(?:^|[-_])(\w)/g;
-  const classify = (str: string) =>
-    str.replace(classifyRE, (c) => c.toUpperCase()).replace(/[-_]/g, '');
+  // const classifyRE = /(?:^|[-_])(\w)/g;
+  // const classify = (str: string) =>
+  //   str.replace(classifyRE, (c) => c.toUpperCase()).replace(/[-_]/g, '');
 
   warn = (msg, vm = currentInstance) => {
     const trace = vm ? generateComponentTrace(vm) : '';
@@ -62,15 +62,15 @@ if (__DEV__) {
   //   )
   // }
 
-  const repeat = (str: string, n: number) => {
-    let res = '';
-    while (n) {
-      if (n % 2 === 1) res += str;
-      if (n > 1) str += str;
-      n >>= 1;
-    }
-    return res;
-  };
+  // const repeat = (str: string, n: number) => {
+  //   let res = '';
+  //   while (n) {
+  //     if (n % 2 === 1) res += str;
+  //     if (n > 1) str += str;
+  //     n >>= 1;
+  //   }
+  //   return res;
+  // };
 
   // generateComponentTrace = (vm: Component | undefined) => {
   //   if ((vm as any)._isVue && vm!.$parent) {

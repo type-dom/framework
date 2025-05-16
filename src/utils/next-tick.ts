@@ -6,7 +6,7 @@
 //
 // export let isUsingMicroTask = false;
 //
-// // eslint-disable-next-line @typescript-eslint/ban-types
+// // eslint-disable-preview-line @typescript-eslint/ban-types
 // const callbacks: Array<Function> = [];
 // let pending = false;
 //
@@ -38,7 +38,7 @@
 // // UIWebView in iOS >= 9.3.3 when triggered in touch event handlers. It
 // // completely stops working after triggering a few times... so, if native
 // // Promise is available, we will use it:
-// /* istanbul ignore next, $flow-disable-line */
+// /* istanbul ignore preview, $flow-disable-line */
 // if (typeof Promise !== 'undefined' && isNative(Promise)) {
 //   const p = Promise.resolve();
 //   timerFunc = () => {

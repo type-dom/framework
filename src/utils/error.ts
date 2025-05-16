@@ -32,7 +32,7 @@ export function handleError(err: Error, vm: any, info: string) {
 }
 
 export function invokeWithErrorHandling(
-  // eslint-disable-next-line @typescript-eslint/ban-types
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   handler: Function,
   context: any,
   args: null | any[],
@@ -69,7 +69,7 @@ function globalHandleError(err: Error, vm: TypeNode | null, info: string) {
   logError(err, vm, info);
 }
 
-function logError(err: Error, vm: TypeNode | null, info: string) {
+function logError(err: Error, _vm: TypeNode | null, _info: string) {
   /* istanbul ignore else */
   if (inBrowser && typeof console !== 'undefined') {
     console.error(err);

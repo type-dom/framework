@@ -23,7 +23,7 @@ import { TypeFragment } from '../core/type-fragment/type-fragment.abstract';
 import { TextNode } from '../core/text-node/text-node.class';
 import { isArray } from '@type-dom/utils';
 
-const SCOPE = 'utils/vue/vnode'
+// const SCOPE = 'utils/vue/vnode'
 
 // export enum PatchFlags {
 //   TEXT = 1,

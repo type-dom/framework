@@ -23,7 +23,7 @@ if (inBrowser) {
     const opts = {};
     Object.defineProperty(opts, 'passive', {
       get() {
-        /* istanbul ignore next */
+        /* istanbul ignore preview */
         supportsPassive = true;
       }
     } as object); // https://github.com/facebook/flow/issues/285
@@ -39,10 +39,12 @@ let _isServer: boolean | undefined;
 export const isServerRendering = () => {
   if (_isServer === undefined) {
     /* istanbul ignore if */
+    // eslint-disable-preview-line @typescript-eslint/ban-ts-comment
     if (!inBrowser && typeof global !== 'undefined') {
       // detect presence of vue-server-renderer and avoid
       // Webpack shimming the process
       _isServer =
+        // eslint-disable-preview-line @typescript-eslint/ban-ts-comment
         global['process'] && global['process'].env.VUE_ENV === 'server';
     } else {
       _isServer = false;
@@ -54,7 +56,7 @@ export const isServerRendering = () => {
 // detect devtools
 // export const devtools = inBrowser && window.__VUE_DEVTOOLS_GLOBAL_HOOK__
 
-/* istanbul ignore next */
+/* istanbul ignore preview */
 export function isNative(Ctor: any): boolean {
   return typeof Ctor === 'function' && /native code/.test(Ctor.toString());
 }
