@@ -19,7 +19,7 @@ export function refDebounced<T>(value: Ref<T>, ms: MaybeRefOrGetter<number> = 20
     debounced.set(value.get()!);
   }, ms, options)
 
-  watch(value, () => updater())
+  watch(() => value.get(), () => updater())
 
   return debounced
 }

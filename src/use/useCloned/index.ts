@@ -2,7 +2,7 @@
 // import type { Ref, WatchOptions } from 'vue'
 // import { isRef, ref, toValue, watch } from 'vue'
 
-import { isRef, MaybeRefOrGetter, Ref, signal, watch, WatchOptions, WatchSource } from '@type-dom/signals';
+import { isRef, MaybeRefOrGetter, Ref, signal, watch, WatchOptions } from '@type-dom/signals';
 import { toValue } from '../shared/toValue/index';
 
 export interface UseClonedOptions<T = any> extends WatchOptions {
@@ -58,7 +58,7 @@ export function useCloned<T>(
     immediate = true,
   } = options
 
-  watch(cloned, () => {
+  watch(() => cloned.get(), () => {
     if (_lastSync) {
       _lastSync = false
       return
@@ -77,11 +77,22 @@ export function useCloned<T>(
   }
 
   if (!manual && (isRef(source) || typeof source === 'function')) {
-    watch(source as WatchSource<any>, sync, {
-      ...options,
-      deep,
-      immediate,
-    })
+    if (isRef(source)) {
+      watch(() => source.get(), sync, {
+        ...options,
+        deep: deep as boolean,
+        immediate,
+      })
+    } else {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      watch(() => source(), sync, {
+        ...options,
+        deep: deep as boolean,
+        immediate,
+      })
+    }
+
   }
   else {
     sync()

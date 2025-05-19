@@ -8,7 +8,7 @@ import { defaultWindow } from '../_configurable';
 import { toValue } from '../shared/toValue/index';
 import { tryOnScopeDispose } from '../shared/tryOnScopeDispose';
 import { useSupported } from '../useSupported';
-import { effect, MaybeRefOrGetter, signal, watch } from '@type-dom/signals';
+import { effect, MaybeRefOrGetter, signal } from '@type-dom/signals';
 
 /**
  * Reactive Media Query.

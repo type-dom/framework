@@ -39,12 +39,12 @@ export interface UseElementBoundingOptions {
   /**
    * Timing to recalculate the bounding box
    *
-   * Setting to `next-frame` can be useful when using this together with something like {@link useBreakpoints}
+   * Setting to `preview-frame` can be useful when using this together with something like {@link useBreakpoints}
    * and therefore the layout (which influences the bounding box of the observed element) is not updated on the current tick.
    *
    * @default 'sync'
    */
-  updateTiming?: 'sync' | 'next-frame'
+  updateTiming?: 'sync' | 'preview-frame'
 }
 
 /**
@@ -110,7 +110,7 @@ export function useElementBounding(
     // console.error('updateRoot . opt is ', opt);
     if (updateTiming === 'sync') {
       recalculate();
-    } else if (updateTiming === 'next-frame') {
+    } else if (updateTiming === 'preview-frame') {
       requestAnimationFrame(() => recalculate());
     }
   }

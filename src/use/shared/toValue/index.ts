@@ -17,7 +17,7 @@ import { isFunction } from '../../../shared/general';
  * @param source - A getter, an existing ref, or a non-function value.
  * @see {@link https://vuejs.org/api/reactivity-utilities.html#tovalue}
  */
-export function toValue<T>(source: MaybeRefOrGetter<T>): T {
+export function toValue<T>(source: MaybeRefOrGetter<T>): T | undefined {
   return isFunction(source) ? source() : unref(source)
 }
 /**

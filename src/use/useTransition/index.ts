@@ -174,10 +174,10 @@ export function executeTransition<T extends number | number[]>(
       const now = Date.now();
       const alpha = ease((now - startedAt) / duration);
       // console.log('alpha is ', alpha);
-      const arr = toVec(source.get()).map((n, i) => lerp(v1[i], v2[i], alpha));
+      const arr = toVec(source.get()).map((_n, i) => lerp(v1[i], v2[i], alpha));
       // console.log('arr[0] is ', arr[0]);
       if (Array.isArray(source.get())) {
-        source.set(arr.map((n, i) => lerp(v1[i] ?? 0, v2[i] ?? 0, alpha)) as T);
+        source.set(arr.map((_n, i) => lerp(v1[i] ?? 0, v2[i] ?? 0, alpha)) as T);
       } else if (typeof source.get() === 'number') {
         source.set(Math.floor(arr[0]) as T);
       }

@@ -10,7 +10,7 @@ import { nextTick } from '../../core/scheduler';
 
 export interface UseVModelOptions<T, Passive extends boolean = false> {
   /**
-   * When passive is set to `true`, it will use `watch` to sync with props and ref.
+   * When passive is set to `true`, it will use `reaction` to sync with props and ref.
    * Instead of relying on the `v-model` or `.sync` to work.
    *
    * @default false
@@ -74,7 +74,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
  * @param key (default 'modelValue')
  * @param emit
  */
-export function useVModel<P extends object, K extends keyof P, Name extends string, Passive extends boolean>(
+export function useVModel<P extends object, K extends keyof P, _Name extends string, Passive extends boolean>(
   props: P,
   key?: K,
   emit?: (...args: any[]) => void,
@@ -136,7 +136,7 @@ export function useVModel<P extends object, K extends keyof P, Name extends stri
     )
 
     watch(
-      proxy,
+      () => proxy.get(),
       (v) => {
         if (!isUpdating && (v !== unref(props[key!]) || deep))
           triggerEmit(v as P[K])

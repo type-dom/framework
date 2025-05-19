@@ -77,7 +77,7 @@ export function debounceFilter(ms: MaybeRefOrGetter<number>, options: DebounceFi
   }
 
   const filter: EventFilter = (invoke) => {
-    const duration = toValue(ms)
+    const duration = toValue(ms)!
     const maxDuration = toValue(options.maxWait)
 
     if (timer)
@@ -170,7 +170,7 @@ export function throttleFilter(...args: any[]) {
   }
 
   const filter: EventFilter = (_invoke) => {
-    const duration = toValue(ms)
+    const duration = toValue(ms)!
     const elapsed = Date.now() - lastExec
     const invoke = () => {
       return lastValue = _invoke()

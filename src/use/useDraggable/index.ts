@@ -163,7 +163,7 @@ export function useDraggable(
   }
 
   const start = (e: PointerEvent) => {
-    if (!toValue(buttons).includes(e.button))
+    if (!toValue(buttons)?.includes(e.button))
       return
     if (toValue(options.disabled) || !filterEvent(e))
       return

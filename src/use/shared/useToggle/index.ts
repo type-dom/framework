@@ -37,7 +37,7 @@ export function useToggle(
       return _value.get()
     } else {
       const truthy = toValue(truthyValue)
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // eslint-disable-preview-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error
       _value.set(_value.get() === truthy)
         ? toValue(falsyValue)

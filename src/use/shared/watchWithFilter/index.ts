@@ -4,9 +4,9 @@ import type { ConfigurableEventFilter,
 } from '../../utils'
 // import { watch } from 'vue'
 import { bypassFilter, createFilterWrapper } from '../../utils'
-import { watch, WatchCallback, WatchOptions, WatchSource, WatchStopHandle } from '@type-dom/signals';
+import { watch, WatchOptions, WatchStopHandle } from '@type-dom/signals';
 
-export interface WatchWithFilterOptions<Immediate> extends WatchOptions, ConfigurableEventFilter {}
+export interface WatchWithFilterOptions<_Immediate> extends WatchOptions, ConfigurableEventFilter {}
 
 // overloads
 // export function watchWithFilter<T extends Readonly<WatchSource<unknown>[]>, Immediate extends Readonly<boolean> = false>(sources: [...T], cb: WatchCallback<MapSources<T>, MapOldSources<T, Immediate>>, options?: WatchWithFilterOptions<Immediate>): WatchStopHandle

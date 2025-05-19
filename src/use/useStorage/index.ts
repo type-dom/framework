@@ -152,7 +152,6 @@ export function useStorage<T extends (string | number | boolean | object | null)
     listenToStorageChanges = true,
     writeDefaults = true,
     mergeDefaults = false,
-    shallow,
     window = defaultWindow,
     eventFilter,
     onError = (e) => {

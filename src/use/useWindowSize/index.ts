@@ -84,7 +84,7 @@ export function useWindowSize(options: UseWindowSizeOptions = {}) {
 
   if (listenOrientation) {
     const matches = useMediaQuery('(orientation: portrait)')
-    watch(matches, () => update())
+    watch(() => matches.get(), () => update())
   }
 
   return { width, height }

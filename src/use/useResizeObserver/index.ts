@@ -71,7 +71,7 @@ export function useResizeObserver(
   }) as Computed<HTMLElement[]>
 
   const stopWatch = watch(
-    targets,
+    () => targets.get(),
     (els) => {
       cleanup()
       if (isSupported.get() && window) {

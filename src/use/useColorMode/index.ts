@@ -203,7 +203,7 @@ export function useColorMode<T extends string = BasicColorMode>(
 
       if (disableTransition) {
         // Calling getComputedStyle forces the browser to redraw
-        const _ = window!.getComputedStyle(style!).opacity
+        // const _ = window!.getComputedStyle(style!).opacity
         document.head.removeChild(style!)
       }
     },
@@ -221,7 +221,7 @@ export function useColorMode<T extends string = BasicColorMode>(
     }
   }
 
-  watch(state, onChanged, { flush: 'post', immediate: true })
+  watch(() => state.get(), onChanged, { flush: 'post', immediate: true })
 
   tryOnMounted(() => onChanged(state.get()!))
 

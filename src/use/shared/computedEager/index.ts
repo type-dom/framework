@@ -4,7 +4,7 @@
 // import type { Ref, WatchOptionsBase } from 'vue'
 // import { readonly, shallowRef, watchEffect } from 'vue'
 
-import { effect, readonly, signal, Ref, watch, WatchOptions, Signal } from '@type-dom/signals';
+import { effect, signal, WatchOptions, Signal } from '@type-dom/signals';
 
 /**
  * Note: If you are using Vue 3.4+, you can straight use computed instead.
@@ -13,10 +13,10 @@ import { effect, readonly, signal, Ref, watch, WatchOptions, Signal } from '@typ
  * refer: https://github.com/vuejs/core/pull/5912
  *
  * @param fn effect function
- * @param options WatchOptionsBase
+ * @param _options WatchOptionsBase
  * @returns readonly ref
  */
-export function computedEager<T>(fn: () => T, options?: WatchOptions): Signal<T | undefined> {
+export function computedEager<T>(fn: () => T, _options?: WatchOptions): Signal<T | undefined> {
   const result = signal<T>()
 
   effect(() => {

@@ -1,6 +1,6 @@
 
 export const isClient = typeof window !== 'undefined' && typeof document !== 'undefined'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// eslint-disable-preview-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 export const isWorker = typeof WorkerGlobalScope !== 'undefined' && globalThis instanceof WorkerGlobalScope
 export const isDef = <T = any>(val?: T): val is T => typeof val !== 'undefined'

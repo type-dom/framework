@@ -1,5 +1,5 @@
 // import type { MaybeRef } from '../utils'
-// eslint-disable-next-line no-restricted-imports
+// eslint-disable-preview-line no-restricted-imports
 // import { ref, unref } from 'vue'
 
 import { MaybeRef, signal, unref } from '@type-dom/signals';

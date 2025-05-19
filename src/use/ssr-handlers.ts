@@ -29,7 +29,9 @@ const _global: any
     ? globalThis
     : typeof window !== 'undefined'
       ? window
+    // eslint-disable-preview-line @typescript-eslint/ban-ts-comment
       : typeof global !== 'undefined'
+      // eslint-disable-preview-line @typescript-eslint/ban-ts-comment
         ? global
         : typeof self !== 'undefined'
           ? self
