@@ -48,7 +48,7 @@ export const isDate = (val: unknown): val is Date =>
   toTypeString(val) === '[object Date]'
 export const isRegExp = (val: unknown): val is RegExp =>
   toTypeString(val) === '[object RegExp]'
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-preview-line @typescript-eslint/ban-types
 export const isFunction = (val: unknown): val is Function =>
   typeof val === 'function'
 export const isString = (val: unknown): val is string => typeof val === 'string'
