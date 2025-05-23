@@ -25,16 +25,16 @@ export function useVModel(element: TypeElement) {
         if (element.params.attrObj?.type === 'checkbox'
           // || element.params.attrObj?.type === 'radio'
         ) {
-          element.addEvents({
-            change: (evt) => {
-              // console.warn('checkbox radio change emit , evt is ', evt);
-              // const isChecked  = evt.checked;
-              // radio-group 中的 radio组件的vModel是没有值的。
-              //    其中的input绑定的是 radio-group的vModel。
-              //    这与checkbox-group中的选中逻辑是不一样的。
-              // element.props.vModel?.set((evt?.target as HTMLInputElement).checked);
-            },
-          });
+          // element.addEvents({
+          //   change: (evt) => {
+          //     // console.warn('checkbox radio change emit , evt is ', evt);
+          //     // const isChecked  = evt.checked;
+          //     // radio-group 中的 radio组件的vModel是没有值的。
+          //     //    其中的input绑定的是 radio-group的vModel。
+          //     //    这与checkbox-group中的选中逻辑是不一样的。
+          //     // element.props.vModel?.set((evt?.target as HTMLInputElement).checked);
+          //   },
+          // });
         } else if (element.params.attrObj?.type === 'radio') {
           //   todo
         } else {
@@ -65,7 +65,7 @@ export function useVModel(element: TypeElement) {
         });
       }
       // todo 监听 vModel,vIf,vShow
-      watch(element.props.vModel, (newValue: any)=> {
+      watch(() => element.props.vModel?.get(), (newValue: any)=> {
         // console.warn('element.className is ' + element.className + ', watch vModel change value , newValue is ', newValue);
         element.props.modelValue = newValue;
       }, { immediate: true });

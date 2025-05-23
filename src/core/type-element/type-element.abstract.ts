@@ -1,6 +1,5 @@
 import { IStyle } from '@type-dom/css-type';
 import { AnyFn  } from '@type-dom/utils';
-import { IJsonDataProp } from '../../interface';
 import type {
   ISlotItem,
   ISlotRaw,
@@ -20,7 +19,6 @@ import { useMount } from './useMount';
 import { useRecurseRender } from './useRecurseRender';
 import { useParams } from './useParams';
 import { useUpdate } from './useUpdate';
-import { getToDom, mountDom } from './mountDom';
 import { useSlotChild } from './useSlotChild';
 import { useSlotChildren } from './useSlotChildren';
 import { useRender } from './useRender';
@@ -103,9 +101,9 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     return this.props[key];
   }
 
-  set(key: keyof TypeProps, value: IJsonDataProp) {
-    const propValue = this.props[key];
-
+  set(key: keyof TypeProps, value: any) {
+    // const propValue = this.props[key];
+    this.props[key] = value;
   }
 
   // setTransitionProps(props: TransitionProps) {
@@ -136,7 +134,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     useSlotChildren(this, slot);
   }
 
-  slotChild(slot?: ISlotRaw | ISlotRaw[] | ((arg?: any) => ISlotRaw | ISlotRaw[]), type: 'add' | 'unshift' = 'add') {
+  slotChild(slot?: ISlotRaw | ISlotRaw[] | ((arg?: any) => ISlotRaw | ISlotRaw[]), _type: 'add' | 'unshift' = 'add') {
     if (slot === undefined) {
       return;
     }
@@ -395,17 +393,17 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     return this.childNodes[index] ?? null;
   }
 
-  setPropValue(key: keyof this, value: IJsonDataProp) {
-    const propValue = this[key];
-    // if (propValue instanceof XProxy) {
-    //   propValue.setValue(value);
-    //   if (key === 'modelValue') {
-    //     // debugger;
-    //     console.log('propValue is ', propValue);
-    //     (this as any)?.setModelValue(value);
-    //   }
-    // }
-  }
+  // setPropValue(key: keyof this, value: IJsonDataProp) {
+  //   // const propValue = this[key];
+  //   // if (propValue instanceof XProxy) {
+  //   //   propValue.setValue(value);
+  //   //   if (key === 'modelValue') {
+  //   //     // debugger;
+  //   //     console.log('propValue is ', propValue);
+  //   //     (this as any)?.setModelValue(value);
+  //   //   }
+  //   // }
+  // }
 
   /**
    *

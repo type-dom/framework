@@ -12,10 +12,12 @@ export function useVShow(element: TypeElement) {
       // if (element.className === 'TdScrollbar') {
       //   console.warn('this.props.vShow is ', condition);
       // }
-      // 添加 监听
-      watch(condition, (newValue, oldValue) => {
+      // 添加 监听 todo watch 有问题；
+      watch(() => condition.get(), (newValue, oldValue) => {
         // console.warn('newValue', newValue);
         useRawVShow(newValue, element, oldValue);
+      }, {
+        immediate: true
       })
     } else {
       // when this element mount , should useShow

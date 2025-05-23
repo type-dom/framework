@@ -1,4 +1,4 @@
-import { toRaw, unref } from '@type-dom/signals';
+import { toRaw } from '@type-dom/signals';
 import { TypeElement } from './type-element.abstract';
 import { mountDom } from './mountDom';
 

@@ -18,7 +18,7 @@ export function useParams<Props extends TypeProps>(element: TypeElement, params 
   }
   if (params?.html) {
     const parser = new Parser();
-    const xElement = parser.parseFromString(unref(params.html));
+    const xElement = parser.parseFromString(unref(params.html)!);
     element.addChild(xElement);
   }
   // if (params?.data) {
