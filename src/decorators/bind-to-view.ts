@@ -23,8 +23,8 @@ function bindToView(target: any, key: string, descriptor?: PropertyDescriptor) {
 }
 
 class ViewModel {
-  @bindToView
-  public myProperty: string = 'initial value';
+  // @bindToView
+  public myProperty = 'initial value';
 
   constructor() {
     console.log(`Initial value of myProperty: ${this.myProperty}`);

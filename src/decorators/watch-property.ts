@@ -1,6 +1,6 @@
-interface PropertyHistory {
-  [key: string]: string[];
-}
+// interface PropertyHistory {
+//   [key: string]: string[];
+// }
 
 export function watchProperty(target: any, key: string, descriptor?: PropertyDescriptor) {
   let originalValue = descriptor?.get?.call(target);
@@ -30,20 +30,20 @@ export function watchProperty(target: any, key: string, descriptor?: PropertyDes
 }
 
 //
-class MyClass {
-  private history: PropertyHistory = {};
-
-  @watchProperty
-  myProperty = 'initial value';
-
-  constructor() {
-    console.log(`Initial value of myProperty: ${this.myProperty}`);
-  }
-
-  getHistory(key: string): string[] | undefined {
-    return this.history[key];
-  }
-}
+// class MyClass {
+//   private history: PropertyHistory = {};
+//
+//   @watchProperty
+//   myProperty = 'initial value';
+//
+//   constructor() {
+//     console.log(`Initial value of myProperty: ${this.myProperty}`);
+//   }
+//
+//   getHistory(key: string): string[] | undefined {
+//     return this.history[key];
+//   }
+// }
 
 //
 // const instance = new MyClass();
