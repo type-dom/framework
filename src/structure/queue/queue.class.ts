@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import { AnyFn } from '@type-dom/utils';
 import { EventsMap, Options, QueueWorker, EventListenerOrEventListenerObject } from './queue.interface';
 import { QueueEvent } from './queue-event';
@@ -338,15 +339,15 @@ export class Queue extends EventTarget {
     return [...this.jobs];
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // eslint-disable-preview-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error
   override addEventListener<Event extends keyof EventsMap>(name: Event, callback: EventListenerOrEventListenerObject<QueueEvent<Event, EventsMap[Event]>>, options?: AddEventListenerOptions | boolean): void;
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // eslint-disable-preview-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error
   dispatchEvent<Event extends keyof EventsMap>(event: QueueEvent<Event, EventsMap[Event]>): boolean;
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // eslint-disable-preview-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error
   removeEventListener<Event extends keyof EventsMap>(name: Event, callback: EventListenerOrEventListenerObject<QueueEvent<Event, EventsMap[Event]>>, options?: EventListenerOptions | boolean): void;
 
