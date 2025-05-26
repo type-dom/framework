@@ -33,7 +33,7 @@ export class Parser {
   }
 
   resolveEntities(s: string): string {
-    return s.replace(/&([^;]+);/g, (all, entity) => {
+    return s.replace(/&([^;]+);/g, (_all, entity) => {
       if (entity.substring(0, 2) === '#x') {
         return String.fromCodePoint(parseInt(entity.substring(2), 16));
       } else if (entity.substring(0, 1) === '#') {
@@ -370,7 +370,7 @@ export class Parser {
    * 在结束的元素
    * @param name 应该是nodeName
    */
-  onEndElement(name?: string): (XElement | TextNode) | null {
+  onEndElement(_name?: string): (XElement | TextNode) | null {
     // console.log('onEndElement . name is ', name);
     // 取回缓存的节点
     this.currentFragment = this.stack?.pop() || [];
