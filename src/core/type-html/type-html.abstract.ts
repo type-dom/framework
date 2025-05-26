@@ -21,7 +21,7 @@ export abstract class TypeHtml<T extends HTMLElement = HTMLElement>
   abstract override dom?: T; // 构造阶段不创建dom
   abstract override props: HtmlProps;
   // private timer?: ReturnType<typeof rAF> | undefined;
-  transitionTimer?: NodeJS.Timeout;
+  // transitionTimer?: NodeJS.Timeout;
   style: Style;
   attr: Attribute;
 
