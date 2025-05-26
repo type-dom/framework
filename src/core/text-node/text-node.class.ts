@@ -2,7 +2,6 @@ import { Computed, isRef, Signal, toRaw, watch } from '@type-dom/signals';
 import { isMustache } from '@type-dom/utils';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TypeElement } from '../type-element/type-element.abstract';
-import { mustacheNode } from '../util';
 import { LifecycleHooks, NodeName } from '../enums';
 import type { TypeProps } from '../type-node/type-node.interface';
 import type { ITextNode } from './text-node.interface';
@@ -66,7 +65,7 @@ export class TextNode extends TypeNode implements ITextNode {
       this.nodeValue = toRaw(text).toString();
       setTimeout(() => { // todo 只有这样才生效 ？？？？？
         // slotChildren 在constructor中调用
-        watch(() => toRaw(text), (newVal, oldVal) => {
+        watch(() => toRaw(text), (newVal) => {
           // console.warn('TextNode watch text is ', this.nodeValue);
           this.nodeValue = newVal?.toString();
           this.setText(newVal);
