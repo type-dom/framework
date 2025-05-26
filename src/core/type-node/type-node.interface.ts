@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import { Dayjs } from 'dayjs';
 import { Computed, MaybeRef, Ref, Signal } from '@type-dom/signals';
 import { IPrimitive } from '@type-dom/utils';
 import { type IJsonDataProp, StyleValue } from '../../interface';
@@ -256,7 +256,7 @@ export interface TypeProps extends ITypeBase {
   ariaHaspopup?: MaybeRef<string>;
 }
 
-export type ISlotRaw = string | number | boolean | undefined | dayjs.Dayjs | TypeNode;
+export type ISlotRaw = string | number | boolean | undefined | Dayjs | TypeNode;
 export type ISlotRef<T extends ISlotRaw = ISlotRaw> = Signal<T> | Computed<T>;
 export type ISlotItem<T extends ISlotRaw = ISlotRaw> = MaybeRef<T | T[]> | MaybeRef<T>[]
   | ((...args: any[]) => T | T[]);
