@@ -57,11 +57,11 @@ export const BaseTransitionPropsValidators: Record<string, any> = {
 };
 
 // todo
-const recursiveGetSubtree = (instance: TypeNode): TypeNode => {
-  const subTree = instance; // .subTree
-  // return subTree.component ? recursiveGetSubtree(subTree.component) : subTree
-  return instance;
-};
+// const recursiveGetSubtree = (instance: TypeNode): TypeNode => {
+//   const subTree = instance; // .subTree
+//   // return subTree.component ? recursiveGetSubtree(subTree.component) : subTree
+//   return instance;
+// };
 
 export function findNonCommentChild(children: TypeNode[]): TypeNode {
   let child: TypeNode = children[0];
@@ -132,13 +132,14 @@ export function resolveTransitionHooks(
   const leavingVNodesCache = getLeavingNodesForType(state, vnode);
 
   const callHook: TransitionHookCaller = (hook, args) => {
-    hook &&
+    if (hook) {
       callWithAsyncErrorHandling(
         hook,
         instance,
         ErrorCodes.TRANSITION_HOOK,
         args
       );
+    }
   };
 
   const callAsyncHook = (
@@ -329,7 +330,7 @@ export function setTransitionHooks(
 
 export function getTransitionRawChildren(
   children: TypeNode[],
-  keepComment = false
+  _keepComment = false
   // parentKey?: TypeNode['key'],
 ): TypeNode[] {
   if (!children) {
