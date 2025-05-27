@@ -1,7 +1,7 @@
 import { AnyFn } from '@type-dom/utils';
 import { DebuggerEvent } from '../debug';
 import { LifecycleHooks } from './enums';
-import { currentInstance, setCurrentInstance } from './instance';
+import { currentInstance } from './instance';
 import { TypeNode } from './type-node/type-node.abstract';
 
 export function injectHook(

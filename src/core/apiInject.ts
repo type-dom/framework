@@ -2,9 +2,19 @@ import { warn } from '../utils/debug'
 import { currentInstance } from './instance'
 import { useInject } from './type-node/useInject';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface InjectionConstraint<T> {/*empty*/}
+/**
+ * 标记类型：用于唯一标识依赖注入的键
+ * 通过品牌化技术确保类型安全（仅通过特定方法创建的 symbol 可被接受）
+ */
+interface InjectionConstraint<_T> {
+  // 品牌化属性（运行时无实际作用，仅用于类型系统约束）
+  readonly __injectionKeyBrand?: unique symbol;
+}
 
+/**
+ * 依赖注入键类型：关联注入值的类型 T 与唯一 symbol 标识
+ * 示例：const myKey = Symbol() as InjectionKey<MyService>;
+ */
 export type InjectionKey<T> = symbol & InjectionConstraint<T>
 
 export function provide<T, K = InjectionKey<T> | string | number>(

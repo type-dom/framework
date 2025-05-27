@@ -3,7 +3,6 @@ import { LifecycleHooks } from './enums'
 import { TypeNode } from './type-node/type-node.abstract';
 import { ITypeNode } from './type-node/type-node.interface';
 
-
 // contexts where user provided function may be executed, in addition to
 // lifecycle hooks.
 export enum ErrorCodes {
@@ -66,7 +65,7 @@ export const ErrorTypeStrings: Record<ErrorTypes, string> = {
 export type ErrorTypes = LifecycleHooks | ErrorCodes; // | WatchErrorCodes
 
 export function callWithErrorHandling(
-  // eslint-disable-next-line @typescript-eslint/ban-types
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   fn: Function,
   instance: ITypeNode | null | undefined,
   type: ErrorTypes,
@@ -152,6 +151,7 @@ export function handleError(
     // }
   }
   // logError(err, type, contextVNode, throwInDev, throwUnhandledErrorInProduction)
+  console.error(err, type, throwInDev)
 }
 
 // function logError(

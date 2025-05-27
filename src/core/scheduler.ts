@@ -1,5 +1,5 @@
 import { isArray } from '@type-dom/utils';
-import { ErrorCodes, callWithErrorHandling, handleError } from './errorHandling'
+import { ErrorCodes, callWithErrorHandling } from './errorHandling'
 // import { NOOP } from '../constants';
 import { ITypeNode } from './type-node/type-node.interface';
 // import { NOOP, isArray } from '@vue/shared'
@@ -27,7 +27,7 @@ export enum SchedulerJobFlags {
   DISPOSED = 1 << 3,
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 export interface SchedulerJob extends Function {
   id?: number
   /**
@@ -54,7 +54,7 @@ let postFlushIndex = 0
 const resolvedPromise = /*@__PURE__*/ Promise.resolve() as Promise<any>
 let currentFlushPromise: Promise<void> | null = null
 
-const RECURSION_LIMIT = 100
+// const RECURSION_LIMIT = 100
 type CountMap = Map<SchedulerJob, number>
 
 export function nextTick<T = void, R = void>(
@@ -140,7 +140,7 @@ export function queuePostFlushCb(cb: SchedulerJobs): void {
 
 export function flushPreFlushCbs(
   instance?: ITypeNode, // ComponentInternalInstance,
-  seen?: CountMap,
+  // seen?: CountMap,
   // skip the current job
   i: number = flushIndex + 1,
 ): void {
@@ -183,9 +183,9 @@ export function flushPostFlushCbs(seen?: CountMap): void {
     }
 
     activePostFlushCbs = deduped
-    // if (__DEV__) {
-    //   seen = seen || new Map()
-    // }
+    if (__DEV__) {
+      seen = seen || new Map()
+    }
 
     for (
       postFlushIndex = 0;
@@ -266,24 +266,24 @@ function flushJobs(seen?: CountMap) {
   }
 }
 
-function checkRecursiveUpdates(seen: CountMap, fn: SchedulerJob) {
-  const count = seen.get(fn) || 0
-  if (count > RECURSION_LIMIT) {
-    const instance = fn.i
-    const componentName = instance && instance.className; // getComponentName(instance.type)
-    handleError(
-      `Maximum recursive updates exceeded${
-        componentName ? ` in component <${componentName}>` : ``
-      }. ` +
-        `This means you have a reactive effect that is mutating its own ` +
-        `dependencies and thus recursively triggering itself. Possible sources ` +
-        `include component template, render function, updated hook or ` +
-        `watcher source function.`,
-      null,
-      ErrorCodes.APP_ERROR_HANDLER,
-    )
-    return true
-  }
-  seen.set(fn, count + 1)
-  return false
-}
+// function checkRecursiveUpdates(seen: CountMap, fn: SchedulerJob) {
+//   const count = seen.get(fn) || 0
+//   if (count > RECURSION_LIMIT) {
+//     const instance = fn.i
+//     const componentName = instance && instance.className; // getComponentName(instance.type)
+//     handleError(
+//       `Maximum recursive updates exceeded${
+//         componentName ? ` in component <${componentName}>` : ``
+//       }. ` +
+//         `This means you have a reactive effect that is mutating its own ` +
+//         `dependencies and thus recursively triggering itself. Possible sources ` +
+//         `include component template, render function, updated hook or ` +
+//         `watcher source function.`,
+//       null,
+//       ErrorCodes.APP_ERROR_HANDLER,
+//     )
+//     return true
+//   }
+//   seen.set(fn, count + 1)
+//   return false
+// }

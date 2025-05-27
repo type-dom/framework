@@ -1,16 +1,16 @@
-import { warn } from '../utils/debug';
+// import { warn } from '../utils/debug';
 import { getCurrentInstance } from './instance';
 import { ISlots } from './type-node/type-node.interface';
 import { TypeNode } from './type-node/type-node.abstract';
 import { ITypeAttribute } from './attribute/attribute.interface';
 
 // dev only
-const warnRuntimeUsage = (method: string) =>
-  warn(
-    `${method}() is a compiler-hint helper that is only usable inside ` +
-      `<script setup> of a single file component. Its arguments should be ` +
-      `compiled away and passing it at runtime has no effect.`,
-  )
+// const warnRuntimeUsage = (method: string) =>
+//   warn(
+//     `${method}() is a compiler-hint helper that is only usable inside ` +
+//       `<script setup> of a single file component. Its arguments should be ` +
+//       `compiled away and passing it at runtime has no effect.`,
+//   )
 
 /**
  * Vue `<script setup>` compiler macro for declaring component props. The

@@ -1,6 +1,5 @@
-import { Computed, MaybeRef, Ref, Signal } from '@type-dom/signals';
+import { Computed, MaybeRef, Signal } from '@type-dom/signals';
 import { IPrimitive } from '@type-dom/utils';
-import { Arrayable } from '../../interface';
 
 /**
  * class: active

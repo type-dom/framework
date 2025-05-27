@@ -12,15 +12,20 @@ export abstract class EventEmitter {
    * todo emits 和 events应该是分开的，而不是混合在一起的。一个是自定义事件，一个一个是监听事件。
    */
   // observers: Record<string, AnyFn[]>;
-  private eventObservers:  Record<string, AnyFn[]>;
-  private emitObservers:  Record<string, AnyFn[]>;
+  private eventObservers: Record<string, AnyFn[]>;
+  private emitObservers: Record<string, AnyFn[]>;
   /**
    * 属性项
    */
   abstract props: TypeProps;
   // abstract nodeName: NodeName.TEXT | NodeName.FRAGMENT | string;
-  abstract dom?: HTMLElement | SVGElement | DocumentFragment | Text | null | undefined;
-
+  abstract dom?:
+    | HTMLElement
+    | SVGElement
+    | DocumentFragment
+    | Text
+    | null
+    | undefined;
 
   constructor() {
     // This is an Object containing Maps:
@@ -47,9 +52,11 @@ export abstract class EventEmitter {
    */
   addEmits(emits?: IEmits) {
     // 遍历事件映射，为每个事件名称添加监听器
-    emits && Object.entries(emits).forEach(([eventName, listener]) => {
-      this.on(eventName, listener, 'emit');
-    });
+    if (emits) {
+      Object.entries(emits).forEach(([eventName, listener]) => {
+        this.on(eventName, listener, 'emit');
+      });
+    }
   }
 
   /**
@@ -99,7 +106,7 @@ export abstract class EventEmitter {
    * @param listener 事件监听器，一个函数
    * @returns 返回this，允许链式调用
    */
-  once = (eventName: string, listener: AnyFn)=> {
+  once = (eventName: string, listener: AnyFn) => {
     // 创建一个包装后的监听器，触发后会自动移除自身
     const wrappedListener = (...args: any[]) => {
       this.off(eventName, wrappedListener);
@@ -108,7 +115,7 @@ export abstract class EventEmitter {
     // 将包装后的监听器添加到事件中
     this.on(eventName, wrappedListener);
     return this;
-  }
+  };
 
   /**
    * Remove event listener
@@ -118,23 +125,32 @@ export abstract class EventEmitter {
    * @param listener 要移除的事件监听器
    * @returns 返回this，允许链式调用
    */
-  off(event: string, listener?: AnyFn, type: 'emit' | 'event' = 'event') {
+  off(event: string, listener?: AnyFn, _type: 'emit' | 'event' = 'event') {
     if (!this.eventObservers[event]) {
       return;
     }
     if (!listener) {
-      if (this.dom) { // 不是 fragment组件
+      if (this.dom) {
+        // 不是 fragment组件
         for (const observer of this.eventObservers[event]) {
           // console.log(`observer : ${observer.name}`);
-          this.dom && this.dom.removeEventListener(event as keyof GlobalEventHandlersEventMap, observer);
+          if (this.dom)
+            this.dom.removeEventListener(
+              event as keyof GlobalEventHandlersEventMap,
+              observer
+            );
         }
       }
       delete this.eventObservers[event];
       return;
     }
     // todo 移除订阅者
-    if (this.dom) { // 不是 fragment组件
-      this.dom.removeEventListener(event as keyof GlobalEventHandlersEventMap, listener);
+    if (this.dom) {
+      // 不是 fragment组件
+      this.dom.removeEventListener(
+        event as keyof GlobalEventHandlersEventMap,
+        listener
+      );
     }
     const index = this.eventObservers[event].indexOf(listener);
     if (index !== -1) {
@@ -154,14 +170,15 @@ export abstract class EventEmitter {
       // todo INPUT, CHANGE
       // if (event === 'update:modelValue' || event === 'change' || event === 'input') {
       //   console.warn('emit event is ', event);
-        for (const listener of listeners) {
-          // todo 要保证验证监听器在第一个。
-          const result = listener(...args);
-          if ( result === false) { // 验证器验证失败
+      for (const listener of listeners) {
+        // todo 要保证验证监听器在第一个。
+        const result = listener(...args);
+        if (result === false) {
+          // 验证器验证失败
           //   todo 是打断监听还是清除监听器
-            break;
-          }
+          break;
         }
+      }
       // } else {
       //   listeners.forEach((listener) => {
       //     listener(...args);
@@ -175,7 +192,7 @@ export abstract class EventEmitter {
     //     listener(...args);
     //   });
     // }
-  }
+  };
 
   /**
    * 检查是否存在指定事件的监听器
@@ -185,7 +202,8 @@ export abstract class EventEmitter {
   hasListeners(eventName: string) {
     // 检查事件名称是否存在监听器数组，并且数组长度大于0
     return Boolean(
-      this.eventObservers[eventName] && this.eventObservers[eventName].length > 0
+      this.eventObservers[eventName] &&
+        this.eventObservers[eventName].length > 0
     );
   }
 
@@ -230,14 +248,18 @@ export abstract class EventEmitter {
 
   // 添加一个事件监听器，并添加到dom上
   // todo
-// 绑定触摸开始事件，并设置 passive 选项, 优化， 如何传第三个参数监听；
-//   element.addEventListener('touchstart', handleTouchStart, { passive: true });
+  // 绑定触摸开始事件，并设置 passive 选项, 优化， 如何传第三个参数监听；
+  //   element.addEventListener('touchstart', handleTouchStart, { passive: true });
   setEvent<T extends Event>(key: string, handleEvent: IEvent<T>) {
     const eventHandler = (evt: Event) => {
       handleEvent(evt as T, this as unknown as TypeElement);
     };
     this.on(key, eventHandler);
-    this.dom && this.dom.addEventListener(key as keyof GlobalEventHandlersEventMap, eventHandler);
+    if (this.dom)
+      this.dom.addEventListener(
+        key as keyof GlobalEventHandlersEventMap,
+        eventHandler
+      );
   }
 
   // 清除移除所有事件监听器
@@ -263,12 +285,15 @@ export abstract class EventEmitter {
     if (this.eventObservers) {
       // dom 监听事件要挂载到真实dom上。
       for (const key in this.eventObservers) {
-        const cloned =this.eventObservers[key];
+        const cloned = this.eventObservers[key];
         cloned.forEach((observer) => {
-          this.dom && this.dom.addEventListener(key as keyof GlobalEventHandlersEventMap, observer);
+          if (this.dom)
+            this.dom.addEventListener(
+              key as keyof GlobalEventHandlersEventMap,
+              observer
+            );
         });
       }
     }
   }
-
 }
