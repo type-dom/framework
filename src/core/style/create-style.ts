@@ -21,7 +21,7 @@
  * @param cssStyles
  */
 import { IStyle } from '@type-dom/css-type';
-import { currentInstance, vHash } from '../index';
+import { vHash } from '../index';
 import { camelToDash } from '@type-dom/utils';
 
 const styleElement = createStyleElement();
@@ -44,10 +44,13 @@ function createStyleElement() {
   return styleElement;
 }
 
-export function createStyle(cssStyles: string) {
+export function createStyle(cssStyles: string, scoped?: boolean) {
   // console.log('createStyle . cssStyles is ', cssStyles);
   // styleSheet?.insertRule('body { background-color: blue; }', styleSheet.cssRules.length)
   // styleSheet?.insertRule(cssStyles, styleSheet.cssRules.length);
+  if (scoped) { // 作用域
+    cssStyles = addScopedStyle(cssStyles)
+  }
 
 // Internet Explorer支持通过styleSheet对象和addRule方法添加样式
   if ((styleElement as any)?.styleSheet) {
@@ -90,3 +93,23 @@ function buildCssRule(selector: string, style: IStyle) {
 
 // let cssRuleString = jsonToCssRule(cssRuleJson);
 // cssRuleString 现在是 ".myClass { color: blue; font-size: 16px; }"
+
+/**
+ * 为 CSS 选择器添加 scoped 特性
+ * @param {string} css 原始 CSS 内容
+ * @returns {string} 转换后的作用域 CSS
+ */
+export function addScopedStyle(css: string) {
+  // const instance = currentInstance; // todo
+  const scopedAttr = `[data-v-${vHash}]`;
+
+  return css
+    // 处理选择器
+    .replace(/([^{]+){/g, (_match, selectors) => {
+      return selectors.split(',')
+        .map((s: string) => `${s.trim()}${scopedAttr}`)
+        .join(', ') + ' {';
+    })
+    // 处理最后一个分号
+    .replace(/;\s*}/g, ' }');
+}
