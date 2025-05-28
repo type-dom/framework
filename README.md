@@ -226,9 +226,8 @@ npm install @type-dom/framework
 Create a hello world page to app:
 
 ```app-root.ts
-import { TypeRoot, type ITypeNode } from '@type-dom/framework';
-import { router } from '../router';
-import { Layout } from '../layout/layout.class';
+import { TypeProps, TypeRoot } from '@type-dom/framework';
+import  { RouterView } from '@type-dom/router';
 
 /**
  * 应用类，挂载全局属性和方法。
@@ -238,75 +237,208 @@ import { Layout } from '../layout/layout.class';
 export class AppRoot extends TypeRoot {
   className: 'AppRoot';
   static el: HTMLElement | string;
-  childNodes: [Layout];
-  constructor(option?: ITypeNode) {
-    super(option);
+  constructor(option?: TypeProps) {
+    super();
     this.className = 'AppRoot';
     this.attr.addName('app-root');
     this.style.addObj({
       display: 'flex',
       flexDirection: 'column',
-      // padding: '10px',
-      // border: '10px solid #dddddd',
     });
-    const layout = new Layout();
-    this.routerView = layout.routerView;
-    this.addChild(layout);
-    // 使用路由
-    // 路由器初始化，并挂载到当前页
-    router.install(this);
+    this.routerView = new RouterView();
+    this.addChild(this.routerView);
+    this.useParams(option);
   }
 }
-
 ```
 
 ``` app.element.ts
 import './app.element.scss';
 import { AppRoot } from './app-root';
-
+import { routerSample } from '../router';
 /**
  * 这个类其实就是一个真实DOM
  */
 export class AppElement extends HTMLElement {
   public static observedAttributes = [];
-
   /**
    * connectedCallback会在 custom element 首次被插入到文档 DOM 节点上时被调用，
    * 而 attributeChangedCallback则会在 custom element 增加、删除或者修改某个属性时被调用。
    */
   connectedCallback() { // 省去了监听document加载完毕
     const title = 'type-app';
-    const appRoot = new AppRoot();
-    appRoot.attr.setName(title);
+    const appRoot = new AppRoot({
+      name: title,
+    });
     // 使用路由
-    appRoot.useRouter();
-    const shadowRoot = this.attachShadow({ mode: 'open' }); // mode "closed" | "open"
+    // 路由器初始化，并挂载到当前页
+    routerSample.install(appRoot);
     // 挂载
-    appRoot.mount(shadowRoot);
+    appRoot.mount(this);
   }
 }
 customElements.define('app-root', AppElement);
+```
+
+```router/index.ts
+import { createRouter, createWebHashHistory, RouteRecordRaw } from '@type-dom/router';
+// 创建一个路由表
+const routes: RouteRecordRaw[] = [
+  {
+    name: 'Root',
+    path: '/',
+    redirect: '/home',
+    component: () => import('../layout/layout'),
+    children: [
+      {
+        name: 'Home',
+        path: 'home',
+        component: () => import('../views/home-view/home-view')
+      }
+    ]
+  },
+];
+export const routerSample = createRouter({ routes, history: createWebHashHistory() })
 
 ```
+
+```layout/layout.ts
+import { TypeDiv, Span, Div } from '@type-dom/framework';
+import { Menus, TdAside, TdFooter, TdHeader, TdImage, TdMain, TdText } from '@type-dom/ui';
+import { RouterView } from '@type-dom/router';
+import { routerSample } from '../router';
+
+/**
+ * 项目布局组件
+ * todo 最外层是TdContainer就可以了。本身的div这一层是多出来的。
+ */
+export class Layout extends TypeDiv {
+  className: 'Layout';
+  // routerView: RouterView;
+
+  constructor() {
+    super();
+    console.warn('layout constructor . ');
+    this.className = 'Layout';
+    this.attr.addName('layout');
+    const header = this.createHeader();
+    const aside = this.createAside();
+    const main = this.createMain();
+    this.addChildren(header, aside, main);
+  }
+
+  private createHeader() {
+    return new TdHeader({
+      name: 'header',
+      styleObj: {
+        display: 'flex',
+        position: 'sticky',
+        top: 0,
+        left: 0,
+        borderBottom: '1px solid #ddd'
+      },
+      slot: [
+        new TdImage({
+          name: 'logo',
+          src: './assets/logo.png',
+          styleObj: {
+            margin: 'auto 0',
+            width: 40,
+            height: 40
+          }
+        }),
+        new TdText({
+          slot: 'UI Component',
+          styleObj: {
+            paddingLeft: '20px'
+          }
+        }),
+        new TdText({
+          slot: 'Logout',
+          styleObj: {
+            position: 'absolute',
+            lineHeight: 2.5,
+            right: '50px',
+          },
+          events: {
+            click: () => {
+              routerSample.push('/login');
+            },
+          }
+        })
+      ]
+    });
+  }
+  createAside() {
+    return new TdAside({
+      name: 'td-aside',
+      styleObj: {
+        position: 'fixed',
+        top: 60,
+        bottom: 0,
+        left: 0,
+        borderRight: '1px solid #ddd',
+        padding: '30px 32px',
+        width: '250px',
+        height: '90%'
+      },
+      slot: new Menus({
+        name: 'menus',
+        router: routerSample,
+      })
+    });
+  }
+  createMain() {
+    return new TdMain({
+      styleObj: {
+        padding: '0 20px 20px 266px',
+        overflow: 'none',
+      },
+      slot: [
+        new RouterView(),
+        new TdFooter({
+          name: 'footer',
+          backgroundColor: 'f5f7fa',
+          styleObj: {
+            padding: '20px 30px 60px',
+            boxSizing: 'border-box',
+          },
+          slot: new Div({
+            slot: [
+              new Span({
+                slot: 'Copyright © 2025-present TypeDom'
+              })
+            ]
+          })
+        })
+      ]
+    });
+  }
+}
+
+```
+
 
 ``` main.ts 项目主程序
 import './app/app.element';
 
 ```
 
-```index.ht
+```index.html
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
-  <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <title>type dom example</title>
-  </head>
-  <body>
-    <app-root></app-root>
-  </body> 
+<html lang='en'>
+<head>
+  <meta charset='utf-8' />
+  <title>TypeSample</title>
+  <base href='/' />
+  <meta name='viewport' content='width=device-width, initial-scale=1' />
+  <link rel='icon' type='image/x-icon' href='favicon.ico' />
+</head>
+<body>
+  <app-root></app-root>
+</body>
 </html>
+
 ```
 
 ## Documentation
