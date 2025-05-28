@@ -1,5 +1,5 @@
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
-import { ISvgLine, ISvgLineAttribute, SvgLineProps } from './line.interface';
+import { ISvgLine, SvgLineProps } from './line.interface';
 
 export class SvgLine extends TypeSvg implements ISvgLine {
   nodeName: 'line';

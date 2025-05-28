@@ -1,5 +1,4 @@
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
-import { TypeProps } from '../../../core/type-node/type-node.interface';
 import type { ISvgImage, SvgImageProps } from './image.interface';
 
 /**

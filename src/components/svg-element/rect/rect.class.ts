@@ -1,5 +1,5 @@
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
-import { ISvgRect, ISvgRectAttribute, SvgRectProps } from './rect.interface';
+import { ISvgRect, SvgRectProps } from './rect.interface';
 
 export class SvgRect extends TypeSvg implements ISvgRect {
   nodeName: 'rect';

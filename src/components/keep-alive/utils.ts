@@ -1,33 +1,32 @@
-
-import { AnyFn, isArray, isRegExp, isString, remove } from '@type-dom/utils';
+import { AnyFn, remove } from '@type-dom/utils';
 import { LifecycleHooks } from '../../constants';
-import { KeepAlive } from './keep-alive.class';
+// import { KeepAlive } from './keep-alive.class';
 import { TypeNode } from '../../core/type-node/type-node.abstract';
 import { currentInstance } from '../../core/instance';
 import { injectHook, onUnmounted } from '../../core/apiLifecycle';
 
-type MatchPattern = string | RegExp | (string | RegExp)[]
+// type MatchPattern = string | RegExp | (string | RegExp)[]
 
 export const isKeepAlive = (vnode: TypeNode): boolean =>
   (vnode as any).__isKeepAlive
 
-const decorate = (t: KeepAlive) => {
-  // t.__isBuiltIn = true
-  return t
-}
-
-function matches(pattern: MatchPattern, name: string): boolean {
-  if (isArray(pattern)) {
-    return pattern.some((p: string | RegExp) => matches(p, name))
-  } else if (isString(pattern)) {
-    return pattern.split(',').includes(name)
-  } else if (isRegExp(pattern)) {
-    pattern.lastIndex = 0
-    return pattern.test(name)
-  }
-  /* v8 ignore next */
-  return false
-}
+// const decorate = (t: KeepAlive) => {
+//   // t.__isBuiltIn = true
+//   return t
+// }
+//
+// function matches(pattern: MatchPattern, name: string): boolean {
+//   if (isArray(pattern)) {
+//     return pattern.some((p: string | RegExp) => matches(p, name))
+//   } else if (isString(pattern)) {
+//     return pattern.split(',').includes(name)
+//   } else if (isRegExp(pattern)) {
+//     pattern.lastIndex = 0
+//     return pattern.test(name)
+//   }
+//   /* v8 ignore preview */
+//   return false
+// }
 
 export function onActivated(
   hook: AnyFn,
@@ -95,13 +94,13 @@ function injectToKeepAliveRoot(
   }, target)
 }
 
-function resetShapeFlag(vnode: TypeNode) {
-  // bitwise operations to remove keep alive flags
-  // vnode.shapeFlag &= ~ShapeFlags.COMPONENT_SHOULD_KEEP_ALIVE
-  // vnode.shapeFlag &= ~ShapeFlags.COMPONENT_KEPT_ALIVE
-}
-
-function getInnerChild(vnode: TypeNode) {
-  // return vnode.shapeFlag & ShapeFlags.SUSPENSE ? vnode.ssContent! : vnode
-  return vnode;
-}
+// function resetShapeFlag(vnode: TypeNode) {
+//   // bitwise operations to remove keep alive flags
+//   // vnode.shapeFlag &= ~ShapeFlags.COMPONENT_SHOULD_KEEP_ALIVE
+//   // vnode.shapeFlag &= ~ShapeFlags.COMPONENT_KEPT_ALIVE
+// }
+//
+// function getInnerChild(vnode: TypeNode) {
+//   // return vnode.shapeFlag & ShapeFlags.SUSPENSE ? vnode.ssContent! : vnode
+//   return vnode;
+// }

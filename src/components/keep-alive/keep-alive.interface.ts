@@ -1,7 +1,6 @@
 import { ITypeFragment, TypeFragmentProps } from '../../core/type-fragment/type-fragment.interface';
 import { TypeNode } from '../../core/type-node/type-node.abstract';
 
-
 export interface IKeepAlive extends ITypeFragment {
   className: 'KeepAlive';
 }

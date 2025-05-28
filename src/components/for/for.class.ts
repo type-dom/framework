@@ -1,8 +1,7 @@
-import { computed, effect, isSignal, isComputed, toRaw, unref } from '@type-dom/signals';
+import { effect, isSignal, isComputed, toRaw } from '@type-dom/signals';
 import { TypeFragment } from '../../core/type-fragment/type-fragment.abstract';
 import { IFor, ForProps } from './for.interface';
 import { getToDom, mountDom } from '../../core/type-element/mountDom';
-import { Fragment } from '../fragment/fragment.class';
 // todo For 多层嵌套时，有问题；
 //    TdSpace 下直接添加 For 组件，子元素没有添加。
 export class For extends TypeFragment implements IFor {
@@ -24,7 +23,7 @@ export class For extends TypeFragment implements IFor {
         // todo 如何替换子对象
         effect(() => {
           const newData = toRaw(props.data);
-          console.warn('effect newData', newData);
+          // console.warn('effect newData', newData);
           this.clearChildren();
           if (newData) {
             this.slotRawData(newData);
@@ -50,8 +49,8 @@ export class For extends TypeFragment implements IFor {
 
           const upDom = mountDom(this);
           if (upDom) { // todo 是插入还是添加
-            console.log('upDom is ', upDom)
-            console.log('this.index is ', this.index);
+            // console.log('upDom is ', upDom)
+            // console.log('this.index is ', this.index);
             // todo 插入位置，有哪些不同的情况 ？？？
             if (this.index !== -1 && upDom.childNodes[this.index]) {
               // upDom.insertBefore(this.dom!, upDom.firstChild);
@@ -73,7 +72,7 @@ export class For extends TypeFragment implements IFor {
 
   // todo 方法本身没有渲染组件
   slotRawData(data: any[]) {
-    console.warn('slotRawData . ');
+    // console.warn('slotRawData . ');
     const getter = this.props.getter;
     data.forEach((item, index) => {
       if (getter) {
@@ -85,9 +84,9 @@ export class For extends TypeFragment implements IFor {
   }
 
   getRawSlot() {
-    console.warn('getRawSlot . this.props.data is ', this.props.data);
-    return toRaw(this.props.data)?.map((item, index) => {
-      console.warn('getRawSlot . ', item, index);
+    // console.warn('getRawSlot . this.props.data is ', this.props.data);
+    return toRaw(this.props.data)?.map((item: any, index: number) => {
+      // console.warn('getRawSlot . ', item, index);
       return this.props.getter ? this.props.getter(item, index) : item;
     })
   }

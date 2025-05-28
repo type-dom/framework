@@ -1,10 +1,10 @@
-import { TypeNode } from '../../core/type-node/type-node.abstract';
-
-export enum MoveType {
-  ENTER,
-  LEAVE,
-  REORDER,
-}
+// import { TypeNode } from '../../core/type-node/type-node.abstract';
+//
+// export enum MoveType {
+//   ENTER,
+//   LEAVE,
+//   REORDER,
+// }
 
 // export function moveTeleport(
 //   vnode: TypeNode,

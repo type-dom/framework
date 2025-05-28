@@ -1,6 +1,4 @@
-import { TypeElement } from '../../../core/type-element/type-element.abstract';
 import { TypeLI } from '../../../core/type-html/li/li.abstract';
-import { TextNode } from '../../../core/text-node/text-node.class';
 import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import type { ILI } from './li.interface';
 

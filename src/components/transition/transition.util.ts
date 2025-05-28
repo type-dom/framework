@@ -1,9 +1,9 @@
+/// <reference types="node" />
 import { isArray, isObject, isString } from '@type-dom/utils';
 import {
   Hook, TypeTransitionProps
   // TypeTransitionProps
 } from '../../core/type-transition/type-transition.interface';
-import { TypeHtml } from '../../core/type-html/type-html.abstract';
 import {
   ANIMATION,
   CSSTransitionInfo,
@@ -11,7 +11,6 @@ import {
   StylePropertiesKey,
   TransitionUtil, ElementWithTransition, vtcKey
 } from './transition.interface';
-import { TypeNode } from '../../core';
 
 const DOMTransitionPropsValidators = {
   name: String,
@@ -99,7 +98,9 @@ export function resolveTransitionProps(
   const finishEnter = (el: Element, isAppear: boolean, done?: () => void) => {
     removeTransitionClass(el, isAppear ? appearToClass : enterToClass);
     removeTransitionClass(el, isAppear ? appearActiveClass : enterActiveClass);
-    done && done();
+    if (done) {
+      done();
+    }
   };
 
   const finishLeave = (
@@ -110,7 +111,9 @@ export function resolveTransitionProps(
     removeTransitionClass(el, leaveFromClass);
     removeTransitionClass(el, leaveToClass);
     removeTransitionClass(el, leaveActiveClass);
-    done && done();
+    if (done) {
+      done();
+    }
   };
 
   const makeEnterHook = (isAppear: boolean) => {
@@ -222,7 +225,7 @@ export function whenTransitionEnds(
   expectedType: TransitionProps['type'] | undefined,
   explicitTimeout: number | null,
   resolve: () => void
-) {
+): void | number {
   // console.warn('whenTransitionEnds . el is ', el, ' expectedType is ', expectedType);
   const id = (el._endId = ++endId);
   const resolveIfNotStale = () => {
@@ -232,7 +235,7 @@ export function whenTransitionEnds(
   };
 
   if (explicitTimeout) {
-    return setTimeout(resolveIfNotStale, explicitTimeout);
+    return setTimeout(resolveIfNotStale, explicitTimeout) as unknown as number;
   }
 
   const { type, timeout, propCount } = getTransitionInfo(el, expectedType);

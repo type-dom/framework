@@ -1,7 +1,5 @@
 import { toRaw } from '@type-dom/signals';
 import { getCurrentInstance } from '../../core/instance';
-import { TypeFragment } from '../../core/type-fragment/type-fragment.abstract';
-import { TypeElement } from '../../core/type-element/type-element.abstract';
 import { TypeNode } from '../../core/type-node/type-node.abstract';
 import { onUpdated } from '../../core/apiLifecycle';
 import { useSlots } from '../../core/apiSetupHelpers';

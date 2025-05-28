@@ -1,4 +1,3 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import type {
   ITypeHead,
   TypeHeadProps,

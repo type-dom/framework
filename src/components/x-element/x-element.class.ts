@@ -1,7 +1,6 @@
 import { Parser } from '../../parser/parser.class';
 import { TypeElement } from '../../core/type-element/type-element.abstract';
 import type { IAttr } from '../../core/type-node/type-node.interface';
-import { TextNode } from '../../core/text-node/text-node.class';
 import { Style } from '../../core/style/style.class';
 import { Attribute } from '../../core/attribute/attribute.class';
 import { IXElement, XElementProps } from './x-element.interface';
@@ -92,7 +91,7 @@ export class XElement extends TypeElement implements IXElement {
       if (attr.name.startsWith(':')) {
         // 绑定值
         // console.log('attr.name is ', attr.name);
-        const attrName = attr.name.substring(1);
+        // const attrName = attr.name.substring(1);
         // console.log('this.itemData is ', this.itemData);
         // if (this.itemData && attr.value !== undefined) {
         //   const keys = attr.value?.split('.');
