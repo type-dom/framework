@@ -1,13 +1,16 @@
 export { onClickOutside } from './onClickOutside/index';
 export { unrefElement } from './unrefElement/index';
 export { useActiveElement } from './useActiveElement';
+export { useClipboard } from './useClipboard/index';
 export { useColorMode } from './useColorMode';
+export { useCssVar } from './useCssVar/index';
 export { useDocumentVisibility } from './useDocumentVisibility';
 export { useDraggable } from './useDraggable';
 export { useElementBounding } from './useElementBounding';
 export { useEventListener } from './useEventListener/index';
 export { useMounted } from './useMounted';
 export { useMutationObserver } from './useMutationObserver';
+export { usePermission } from './usePermission';
 export { usePreferredDark } from './usePreferredDark';
 export { useResizeObserver } from './useResizeObserver';
 export type { UseResizeObserverReturn } from './useResizeObserver';
