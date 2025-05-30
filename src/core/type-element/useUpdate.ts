@@ -47,35 +47,35 @@ export function useUpdate(element: TypeElement, el?: ElProp): void {
 
   if (element.props.nodeName === NodeName.FRAGMENT) {
     // todo DocumentFragment 挂载到其他元素上，子节点要根据数组重新赋值。
-    for (const child of element.children) {
-      // fragment 的dom是DocumentFragment。
-      child.dom && element.dom?.appendChild(child.dom); // todo 如何处理？？？
-      // todo child 是 Transition时，这里的逻辑有问题
-      // appEl = appEl || element.parent?.elementParent?.dom;
-      if (unref(element.to)) {
-        child.update(unref(element.to));
-        // console.log('element.to is ', element.to);
-      } else if (appEl) {
-        child.update(appEl);
-      } else {
-        // throw Error('Can not find el . ');
-        if (child.className === 'Teleport') {
-          child.update();
-        } else {
-          child.update(element.elementParent?.dom);
-        }
-      }
-    }
+    // for (const child of element.children) {
+    //   // // fragment 的dom是DocumentFragment。
+    //   // child.dom && element.dom?.appendChild(child.dom); // todo 如何处理？？？
+    //   // // todo child 是 Transition时，这里的逻辑有问题
+    //   // // appEl = appEl || element.parent?.elementParent?.dom;
+    //   // if (unref(element.to)) {
+    //   //   child.update(unref(element.to));
+    //   //   // console.log('element.to is ', element.to);
+    //   // } else if (appEl) {
+    //   //   child.update(appEl);
+    //   // } else {
+    //   //   // throw Error('Can not find el . ');
+    //   //   if (child.className === 'Teleport') {
+    //   //     child.update();
+    //   //   } else {
+    //   //     child.update(element.elementParent?.dom);
+    //   //   }
+    //   // }
+    // }
   } else {
     element.render(); // setStyleObj, setAttrObj
     if (appEl && element.dom) {
       appEl.appendChild(element.dom);
     }
     // 如CollapsibleBox中，contents重新赋值后，children会变，而childNodes是不变的。
-    for (const child of element.children) {
-      // element.renderChild(child);
-      child.update(element.dom);
-    }
+    // for (const child of element.children) {
+    //   // element.renderChild(child);
+    //   // child.update(element.dom);
+    // }
   }
   element.updated?.();
   element.lifeCycles[LifecycleHooks.UPDATED]?.forEach((cb) => cb());

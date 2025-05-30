@@ -1,9 +1,9 @@
 import { isArray, isFunction } from '@type-dom/utils';
 import { toRaw } from '@type-dom/signals';
-import { TypeElement } from './type-element.abstract';
 import { ISlotRaw } from '../type-node/type-node.interface';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TextNode } from '../text-node/text-node.class';
+import { TypeElement } from './type-element.abstract';
 
 export function useSlotChild(element: TypeElement, slot: ISlotRaw | ISlotRaw[] | ((arg?: any) => ISlotRaw | ISlotRaw[]), type: 'add' | 'unshift' = 'add') {
   // console.log('slotChild is called . ');

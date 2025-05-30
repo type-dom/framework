@@ -10,7 +10,7 @@ export function useVIf(element: TypeElement) {
     const condition = element.props.vIf;
     // console.warn('condition is ', condition);
     if (isRef(condition)) {
-      console.warn('this.props.vIf is ref， ', condition);
+      // console.warn('this.props.vIf is ref， ', condition);
       // 添加 监听
       watch(() => condition.get(), (newValue, oldValue) => {
         useRawIf(newValue, element, oldValue);

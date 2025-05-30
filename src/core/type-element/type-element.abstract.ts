@@ -18,7 +18,6 @@ import type { ElProp, IBoundBox, ITypeElement } from './type-element.interface';
 import { useMount } from './useMount';
 import { useRecurseRender } from './useRecurseRender';
 import { useParams } from './useParams';
-import { useUpdate } from './useUpdate';
 import { useSlotChild } from './useSlotChild';
 import { useSlotChildren } from './useSlotChildren';
 import { useRender } from './useRender';
@@ -424,10 +423,10 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   }
 
   // todo
-  update(el?: ElProp): void  {
-    // console.warn('then update this.className is ' + this.className);
-    useUpdate(this, el);
-  }
+  // update(el?: ElProp): void  {
+  //   // console.warn('then update this.className is ' + this.className);
+  //   useUpdate(this, el);
+  // }
 
   /**
    * 默认初始化方法
