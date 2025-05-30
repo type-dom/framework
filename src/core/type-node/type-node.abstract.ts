@@ -97,11 +97,6 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
    */
   abstract render(): void;
 
-  /**
-   * 更新，更新属性，样式，事件等。
-   */
-  abstract update(el?: ElProp): void;
-
   // abstract attrObj?: ITypeAttribute | undefined; // 合并到 this.props中
   isRoot?: boolean; // 是否是根节点 只有TypeRoot才为true
   attributes?: IAttr[] | undefined;

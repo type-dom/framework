@@ -130,6 +130,7 @@ export interface TypeProps extends ITypeBase {
   name?: string | number; // 节点名称, 转化为 attrObj.name;
   tag?: keyof HTMLElementTagNameMap | NodeName.FRAGMENT | NodeName.TEXT | string; // 转为 nodeName
   nodeName?: keyof HTMLElementTagNameMap | NodeName.FRAGMENT | NodeName.TEXT | string;
+  config?: any; // 全局配置属性；
   /**
    * nodeValue只在 TextNode中才有。
    * nodeValue存在时，就应该是 TextNode类
