@@ -1,5 +1,4 @@
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
-import { TypeSvgSvg } from '../../../core/type-svg/svg/svg.abstract';
 import { ISvgPath, SvgPathProps } from './path.interface';
 
 export class SvgPath extends TypeSvg implements ISvgPath {
@@ -7,7 +6,6 @@ export class SvgPath extends TypeSvg implements ISvgPath {
   dom: SVGPathElement;
   className: 'SvgPath';
   override props: SvgPathProps;
-  override parent?: TypeSvgSvg;
   // override attrObj: ISvgPathAttribute;
   override childNodes: [];
 

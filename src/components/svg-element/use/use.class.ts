@@ -1,5 +1,4 @@
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
-import { TypeSvgSvg } from '../../../core/type-svg/svg/svg.abstract';
 import { TypeProps } from '../../../core/type-node/type-node.interface';
 import type { ISvgUse } from './use.interface';
 
@@ -7,7 +6,6 @@ export class SvgUse extends TypeSvg implements ISvgUse {
   className: 'SvgUse';
   nodeName: 'use';
   dom: SVGUseElement;
-  override parent?: TypeSvgSvg;
   override childNodes: [];
 
   override isBasic = true;

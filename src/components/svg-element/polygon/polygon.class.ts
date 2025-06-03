@@ -1,5 +1,4 @@
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
-import { TypeSvgSvg } from '../../../core/type-svg/svg/svg.abstract';
 import { TypeProps } from '../../../core/type-node/type-node.interface';
 import type { ISvgPolygon } from './polygon.interface';
 
@@ -7,7 +6,6 @@ export class SvgPolygon extends TypeSvg implements ISvgPolygon {
   className: 'SvgPolygon';
   nodeName: 'polygon';
   dom: SVGPolygonElement;
-  override parent?: TypeSvgSvg;
   override childNodes: [];
 
   override isBasic = true;

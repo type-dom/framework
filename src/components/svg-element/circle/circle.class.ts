@@ -1,5 +1,4 @@
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
-import { TypeSvgSvg } from '../../../core/type-svg/svg/svg.abstract';
 import { TypeProps } from '../../../core/type-node/type-node.interface';
 import type { ISvgCircle } from './circle.interface';
 
@@ -7,7 +6,6 @@ export class SvgCircle extends TypeSvg implements ISvgCircle {
   nodeName: 'circle';
   className: 'SvgCircle';
   dom: SVGCircleElement;
-  override parent?: TypeSvgSvg;
   override childNodes: [];
   override isBasic = true;
 

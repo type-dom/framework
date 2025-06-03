@@ -1,5 +1,4 @@
 import { TextNode } from '../../../core/text-node/text-node.class';
-import { TypeSvgSvg } from '../../../core/type-svg/svg/svg.abstract';
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
 import type {
   ISvgText,
@@ -13,7 +12,6 @@ export class SvgText extends TypeSvg implements ISvgText {
   dom: SVGTextElement;
   // override attrObj: ISvgTextAttribute;
   override childNodes: TextNode[];
-  override parent?: TypeSvgSvg;
   // override textNode: TextNode;
 
   override isBasic = true;
