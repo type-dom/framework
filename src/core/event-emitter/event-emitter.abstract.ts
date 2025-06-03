@@ -4,6 +4,12 @@ import { TypeProps } from '../type-node/type-node.interface';
 import { NodeName } from '../enums';
 import { IEmits, IEvent, IEvents } from './event-emitter.interface';
 
+/**
+ * 1.原生 DOM 元素 当 events, addEvents，原生 DOM 事件监听器。
+ * 2.自定义组件 会优先使用 emits, addEmits。
+ * 若组件未声明 click 为自定义事件，并尝试将事件绑定到组件根 DOM 元素上（退化为原生事件监听）。
+ * 开发者需通过组件的 emits， events 声明明确自定义事件以避免歧义。
+ */
 export abstract class EventEmitter {
   /**
    * 存储事件名称与事件监听器数组的映射
@@ -184,6 +190,20 @@ export abstract class EventEmitter {
       //     listener(...args);
       //   })
       // }
+    } else { // 降级为原生监听
+      const listeners = this.eventObservers[event] ?? []; // 监听器数组
+      // todo INPUT, CHANGE
+      // if (event === 'update:modelValue' || event === 'change' || event === 'input') {
+      //   console.warn('emit event is ', event);
+      for (const listener of listeners) {
+        // todo 要保证验证监听器在第一个。
+        const result = listener(...args);
+        if (result === false) {
+          // 验证器验证失败
+          //   todo 是打断监听还是清除监听器
+          break;
+        }
+      }
     }
 
     // if (this.observers['*']) {
@@ -209,10 +229,11 @@ export abstract class EventEmitter {
 
   /**
    * 添加事件集合
+   * Fragment 不可使用；
    */
   addEvents(events?: Partial<IEvents>) {
     if (this.props.nodeName === NodeName.FRAGMENT || !events) {
-      // console.log('This is fragment or events is undefined . ');
+      console.error('This is fragment or events is undefined . ');
       return;
     }
     for (const key in events) {
@@ -232,10 +253,14 @@ export abstract class EventEmitter {
     this.on(key, eventHandler);
   }
 
-  // 设置一些事件监听器，添加到dom上
+  /**
+   * 设置一些事件监听器，添加到dom上
+   * Fragment 不可以使用。
+   * @param events
+   */
   setEvents(events: Partial<IEvents>) {
     if (this.props.nodeName === NodeName.FRAGMENT) {
-      // console.log('fragment cannot add events . ');
+      console.error('fragment cannot add events . ');
       return;
     }
     for (const key in events) {
