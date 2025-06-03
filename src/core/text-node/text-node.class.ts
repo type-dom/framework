@@ -36,10 +36,6 @@ export class TextNode extends TypeNode implements ITextNode {
    * 子节点，此处未定义
    */
   childNodes: undefined;
-  /**
-   * 模板对象，此处未定义
-   */
-  override template?: undefined;
 
   rendered: boolean;
 
