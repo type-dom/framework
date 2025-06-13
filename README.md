@@ -245,8 +245,7 @@ export class AppRoot extends TypeRoot {
       display: 'flex',
       flexDirection: 'column',
     });
-    this.routerView = new RouterView();
-    this.addChild(this.routerView);
+    this.addChild(new RouterView());
     this.useParams(option);
   }
 }
@@ -443,7 +442,7 @@ import './app/app.element';
 
 ## Documentation
 
-To check out [live examples](https://) and docs, visit [type-dom.org](https://).
+To check out [live examples](https://) and docs, visit [type-dom](https://deepwiki.com/type-dom/framework).
 
 ## Questions
 

@@ -49,11 +49,12 @@
     "ts-loader": "^9.4.3",
     "typedoc": "^0.25.2",
     "typescript": "^5.2.2",
-    "typescript-coverage-report": "^0.8.0"
+    "typescript-coverage-report": "^0.8.0",
+    "vitest": "^3.1.4"
   },
   "dependencies": {
-    "@type-dom/signals": "*",
     "@type-dom/css-type": "*",
+    "@type-dom/signals": "*",
     "@type-dom/utils": "*"
   },
   "typeCoverage": {
