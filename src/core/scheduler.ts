@@ -60,7 +60,7 @@ type CountMap = Map<SchedulerJob, number>
 export function nextTick<T = void, R = void>(
   this: T,
   fn?: (this: T) => R,
-): Promise<Awaited<R>> {
+): Promise<R | Awaited<R>> {
   const p = currentFlushPromise || resolvedPromise
   return fn ? p.then(this ? fn.bind(this) : fn) : p
 }

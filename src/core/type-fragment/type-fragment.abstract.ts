@@ -5,6 +5,9 @@ import { ITypeAttribute } from '../attribute/attribute.interface';
 import { NodeName } from '../enums';
 import { ITypeFragment, TypeFragmentProps } from './type-fragment.interface';
 
+/**
+ * 要注意继承TypeFragment的类，不要直接获取 .dom 属性。因为  Fragment 创建的dom元素是 DocumentFragment。
+ */
 export abstract class TypeFragment extends TypeElement implements ITypeFragment {
   override props: TypeFragmentProps;
   override dom?: DocumentFragment;
@@ -20,13 +23,15 @@ export abstract class TypeFragment extends TypeElement implements ITypeFragment 
   }
 
   addStyleObj(styleObj?: StyleValue) {
-    this.childNodes.forEach(child => {
-      if (child instanceof TypeFragment) {
-        child.addStyleObj(styleObj);
-      } else {
-        child.style?.addObj(styleObj);
-      }
-    });
+    this.onCreated(() => { // todo onCreate hook
+      this.childNodes.forEach(child => {
+        if (child instanceof TypeFragment) {
+          child.addStyleObj(styleObj);
+        } else {
+          child.style?.addObj(styleObj);
+        }
+      });
+    })
   }
 
   setStyleObj(styleObj?: StyleValue) {
@@ -40,13 +45,15 @@ export abstract class TypeFragment extends TypeElement implements ITypeFragment 
   }
 
   addAttrObj(attrObj?: ITypeAttribute) {
-    this.childNodes.forEach(child => {
-      if (child instanceof TypeFragment) {
-        child.addAttrObj(attrObj);
-      } else {
-        child.attr?.addObj(attrObj);
-      }
-    });
+    this.onCreated(() => {
+      this.childNodes.forEach(child => {
+        if (child instanceof TypeFragment) {
+          child.addAttrObj(attrObj);
+        } else {
+          child.attr?.addObj(attrObj);
+        }
+      });
+    })
   }
 
   setAttrObj(attrObj?: ITypeAttribute) {
@@ -62,15 +69,18 @@ export abstract class TypeFragment extends TypeElement implements ITypeFragment 
   // 向下传递 styleObj attrObj;
   override useParams<Props extends TypeProps>(params = {} as Props): Props {
     super.useParams<Props>(params);
-    this.childNodes.forEach(child => {
-      if (child instanceof TypeFragment) {
-        child.addStyleObj(params.styleObj);
-        child.addAttrObj(params.attrObj);
-      } else {
-        child.style?.addObj(params.styleObj);
-        child.attr?.addObj(params.attrObj);
-      }
-    });
+    // 子元素可能是 setup中新增的，这时 this.childNodes可能没有或不全；
+    this.onCreated(() => {
+      this.childNodes.forEach(child => {
+        if (child instanceof TypeFragment) {
+          child.addStyleObj(params.styleObj);
+          child.addAttrObj(params.attrObj);
+        } else {
+          child.style?.addObj(params.styleObj);
+          child.attr?.addObj(params.attrObj);
+        }
+      });
+    })
     return this.props as Props;
   }
 }
