@@ -16,7 +16,7 @@ export abstract class TypeRoot extends TypeHtml implements ITypeRoot {
   override isRoot: true;
   override props: HtmlProps;
 
-  protected constructor(nodeName?: string) {
+  constructor(nodeName?: string) {
     super();
     this.isRoot = true; // 根节点
     this.props = this.useParams({
