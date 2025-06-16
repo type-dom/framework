@@ -70,7 +70,7 @@ export function usePermission(
   } = options
 
   const isSupported = useSupported(() => navigator && 'permissions' in navigator)
-  const permissionStatus = signal<PermissionStatus>()
+  const permissionStatus = signal<PermissionStatus | undefined>()
 
   const desc = typeof permissionDesc === 'string'
     ? { name: permissionDesc } as PermissionDescriptor
@@ -78,28 +78,28 @@ export function usePermission(
   const state = signal<PermissionState | undefined>()
 
   const update = () => {
-    state.value = permissionStatus.value?.state ?? 'prompt'
+    state.set(permissionStatus.get()?.state ?? 'prompt')
   }
 
   useEventListener(permissionStatus, 'change', update, { passive: true })
 
   const query = createSingletonPromise(async () => {
-    if (!isSupported.value)
+    if (!isSupported.get())
       return
 
-    if (!permissionStatus.value) {
+    if (!permissionStatus.get()) {
       try {
-        permissionStatus.value = await navigator!.permissions.query(desc)
+        permissionStatus.set(await navigator!.permissions.query(desc))
       }
       catch {
-        permissionStatus.value = undefined
+        permissionStatus.set(undefined);
       }
       finally {
         update()
       }
     }
 
-    if (controls) return toRaw(permissionStatus.value)
+    if (controls) return toRaw(permissionStatus.get())
     return;
   })
 
