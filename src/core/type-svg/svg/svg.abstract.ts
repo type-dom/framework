@@ -8,7 +8,7 @@ export abstract class TypeSvgSvg extends TypeSvg implements ITypeSvgSvg {
   width: string | number = '100%';
   height: string | number = '100%';
 
-  protected constructor() {
+  constructor()  {
     super();
     this.nodeName = 'svg';
     this.dom = document.createElementNS('http://www.w3.org/2000/svg', 'svg');

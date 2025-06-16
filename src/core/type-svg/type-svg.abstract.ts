@@ -21,7 +21,7 @@ export abstract class TypeSvg<T extends SVGElement = SVGElement> extends TypeEle
   style: Style;
   attr: Attribute;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.style = new Style(this);
     this.attr = new Attribute(this);
