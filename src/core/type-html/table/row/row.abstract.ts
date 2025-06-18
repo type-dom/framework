@@ -7,7 +7,7 @@ export abstract class TypeTableRow extends TypeHtml implements ITypeTableRow {
   dom?: HTMLTableRowElement;
   override childNodes: TypeTableDataCell[];
 
-  protected constructor() {
+  constructor()  {
     super();
     // console.log('trData is ', trData);
     this.props = this.useParams({

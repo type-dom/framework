@@ -8,7 +8,7 @@ export abstract class TypeTableHeaderCell extends TypeHtml implements ITypeTable
   dom?: HTMLElement;
   override childNodes: TextNode[];
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'th'

@@ -5,7 +5,7 @@ export abstract class TypeTableDataCell extends TypeHtml implements ITypeTableDa
   props: TypeTableDataCellProps;
   dom?: HTMLTableCellElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'td'

@@ -5,7 +5,7 @@ export abstract class TypeTableCaption extends TypeHtml implements ITypeTableCap
   props: TypeTableCaptionProps;
   dom?: HTMLTableCaptionElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'caption'

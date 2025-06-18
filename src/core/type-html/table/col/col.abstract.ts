@@ -5,7 +5,7 @@ export abstract class TypeTableCol extends TypeHtml implements ITypeTableCol {
   props: TypeTableColProps;
   dom?: HTMLTableColElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'col'
