@@ -75,7 +75,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   // };
   uid: number;
   isDeactivated: any;
-  protected constructor() {
+  constructor() {
     super();
     this.uid = uid++;
     this.params = {}; // Object.freeze({}) as TypeProps;

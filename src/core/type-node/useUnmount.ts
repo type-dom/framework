@@ -36,7 +36,7 @@ export function useUnmount(element: TypeNode, root?: TypeElement) {
     // todo  如果项目没有设置root，则无法删除了。或者有多个root时，可能查找有问题；
     //      element.parent 都没有了，还如何获取 element.root ?
     const parent = element.findParent(root, element);
-    parent?.childNodes && parent.childNodes.splice(element.index, 1);
+    if (parent?.childNodes) parent.childNodes.splice(element.index, 1);
   }
   element.unmounted?.();
   setCurrentInstance(null);
