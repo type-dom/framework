@@ -14,15 +14,14 @@ export function useMount<T extends TypeElement>(element: T, el?: ElProp) {
   // 如果在constructor 中添加了子节点，会导致子节点被清除了
   //    如果在setup 中有添加子节点，切换路由，会导致子节点被重复添加。
   // element.clearChildren(); // 空白了 todo why ???? 清理子节点，包括DOM  todo ??? 不能加 ？？？？没有加载子节点。 useParams
-  element.clearSetupChildren(); //
+  element.clearSetupChildren(); // 在setup 中添加的子节点， 清理监听事件 element.clearEvents()
+  // element.clearEvents(); // useMount可能会反复使用；TdMessage 无法弹出 add by me 2025/06/12 16:21
   setCurrentInstance(element); // todo watch 优化 props.vIf的监听
   element.setup?.();
 
   useVIf(element);
   useVShow(element);
   useVModel(element);
-
-  setCurrentInstance(null);
 
   element.created?.();
   element.lifeCycles[LifecycleHooks.CREATED]?.forEach((cb) => cb());
@@ -94,5 +93,8 @@ export function useMount<T extends TypeElement>(element: T, el?: ElProp) {
   // fragment 可以设置监听事件。但监听的dom对象不是fragment的dom。
   element.initEvents?.();
   element.listenEvents();
+
+  setCurrentInstance(null);
+
   return element as unknown as T;
 }

@@ -3,11 +3,11 @@
  * `slot`参数可以是一个或多个子元素，根据`type`的不同，这些子元素会被添加到元素的末尾或前置到元素的开头。
  * @param slot 要添加或插入的子元素或子元素数组。
  */
-import { effect, isRef, toRaw } from '@type-dom/signals';
-import { getToDom, mountDom } from './mountDom';
+import { batchEffect, isRef, toRaw } from '@type-dom/signals';
 import { isArray } from '@type-dom/utils';
 import { ISlotItem } from '../type-node/type-node.interface';
 import { TypeElement } from './type-element.abstract';
+import { getToDom, mountDom } from './mountDom';
 
 export function useSlotChildren(element: TypeElement, slot?: ISlotItem) {
   // console.warn('slotChildren is called . ');
@@ -15,7 +15,7 @@ export function useSlotChildren(element: TypeElement, slot?: ISlotItem) {
     return;
   }
   if (isRef(slot)) {
-    effect(() => {
+    batchEffect(() => {
       // console.error('slotChildren effect . slot.get() is ', slot); // TdCountDown repeat loop .
       const newRaw = toRaw(slot);
       if (!element.dom) {
@@ -25,6 +25,7 @@ export function useSlotChildren(element: TypeElement, slot?: ISlotItem) {
       if (element.dom) {
         // element is not according to original propose.
         //   element then replace all children when reactivity;
+        // element.clearEvents();
         element.clearChildren();
         element.slotChild(newRaw); // todo
         element.childNodes.forEach(child => {

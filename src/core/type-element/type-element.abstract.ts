@@ -1,5 +1,7 @@
 import { IStyle } from '@type-dom/css-type';
-import { AnyFn  } from '@type-dom/utils';
+import { AnyFn,
+  // removeUndefinedProps
+} from '@type-dom/utils';
 import type {
   ISlotItem,
   ISlotRaw,
@@ -43,7 +45,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   rendered: boolean;
   componentId: number;
 
-  protected constructor() {
+  constructor() {
     super();
     this.componentId = componentId++;
     this.attributes = [];
@@ -115,6 +117,17 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * @param params
    */
   useParams<T extends TypeProps>(params = {} as T): T {
+    // console.warn('type-element useParams . ');
+    // todo TdTimeline example custom-node.ts  属性是undefined的属性，应该被过滤掉的，但是目前没有过滤。
+    //    这样会把默认值给重置为undefined，与设计不符。
+    //    又没有场景就是给props的属性赋值 undefined ?????
+    //    TdInput 会多出前后缀， 有冲突。
+    // const param = removeUndefinedProps(params as any) as unknown as T;
+    // console.log('param is ', param);
+    for (const key of Object.keys(params)) {
+      // 如果已经配置了默认值，则使用默认值
+      if (this.props) (params as any)[key] ??= (this.props as any)?.[key];
+    }
     return useParams(this, params);
   }
 
@@ -280,6 +293,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     if (this.dom instanceof DocumentFragment) {
       this.childNodes.forEach((child) => {
         if (child?.createdIn === 'setup') {
+          this.clearEvents();
           child.removeDom();
         }
       });
@@ -291,6 +305,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       // }
       this.childNodes.forEach(child => {
         if (child?.createdIn === 'setup') {
+          this.clearEvents();
           child.removeDom();
         }
       })
