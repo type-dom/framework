@@ -5,7 +5,7 @@ export abstract class TypeBase extends TypeHtml implements ITypeBase {
   props: TypeBaseProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'base'

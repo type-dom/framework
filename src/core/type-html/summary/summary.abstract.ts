@@ -5,7 +5,7 @@ export abstract class TypeSummary extends TypeHtml implements ITypeSummary {
   props: TypeSummaryProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'summary'

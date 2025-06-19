@@ -5,7 +5,7 @@ export abstract class TypeInput extends TypeHtml implements ITypeInput {
   props: TypeInputProps;
   dom?: HTMLInputElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'input'

@@ -5,7 +5,7 @@ export abstract class TypeAddress extends TypeHtml implements ITypeAddress {
   props: TypeAddressProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'address'

@@ -5,7 +5,7 @@ export abstract class TypeKbd extends TypeHtml implements ITypeKbd {
   props: TypeKbdProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'kbd'

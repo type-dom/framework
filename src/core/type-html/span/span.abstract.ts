@@ -5,7 +5,7 @@ export abstract class TypeSpan extends TypeHtml implements ITypeSpan {
   props: TypeSpanProps;
   dom?: HTMLSpanElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'span'

@@ -5,7 +5,7 @@ export abstract class TypeAbbr extends TypeHtml implements ITypeAbbr {
   dom?: HTMLElement;
   props: TypeAbbrProps;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'abbr',

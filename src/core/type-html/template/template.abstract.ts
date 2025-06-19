@@ -5,7 +5,7 @@ export abstract class TypeTemplate extends TypeHtml implements ITypeTemplate {
   props: TypeTemplateProps;
   dom?: HTMLTemplateElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'template'

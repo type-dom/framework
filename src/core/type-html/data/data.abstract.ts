@@ -5,7 +5,7 @@ export abstract class TypeData extends TypeHtml implements ITypeData {
   props: TypeDataProps;
   dom?: HTMLDataElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'data'

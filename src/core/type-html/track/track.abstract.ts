@@ -5,7 +5,7 @@ export abstract class TypeTrack extends TypeHtml implements ITypeTrack {
   props: TypeTrackProps;
   dom?: HTMLTrackElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'track'

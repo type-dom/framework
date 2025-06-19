@@ -9,7 +9,7 @@ export abstract class TypeDD extends TypeHtml implements ITypeDD {
   props: TypeDDProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'dd'

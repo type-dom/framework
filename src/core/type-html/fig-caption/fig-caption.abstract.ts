@@ -5,7 +5,7 @@ export abstract class TypeFigCaption extends TypeHtml implements ITypeFigCaption
   props: TypeFigCaptionProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'figcaption'

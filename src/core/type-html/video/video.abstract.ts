@@ -5,7 +5,7 @@ export abstract class TypeVideo extends TypeHtml implements ITypeVideo {
   props: ITypeVideo['props'];
   dom?: HTMLVideoElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'video'

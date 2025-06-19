@@ -5,7 +5,7 @@ export abstract class TypeMain extends TypeHtml implements ITypeMain {
   props: TypeMainProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'main'

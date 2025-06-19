@@ -5,7 +5,7 @@ export abstract class TypeProgress extends TypeHtml implements ITypeProgress {
   props: TypeProgressProps;
   dom?: HTMLProgressElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'progress'

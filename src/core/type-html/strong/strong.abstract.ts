@@ -5,7 +5,7 @@ export abstract class TypeStrong extends TypeHtml implements ITypeStrong {
   props: TypeStrongProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'strong'

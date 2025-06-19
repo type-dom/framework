@@ -5,7 +5,7 @@ export abstract class TypeOption extends TypeHtml implements ITypeOption {
   props: TypeOptionProps;
   dom?: HTMLOptionElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'option'

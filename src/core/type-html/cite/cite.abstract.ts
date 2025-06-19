@@ -5,7 +5,7 @@ export abstract class TypeCite extends TypeHtml implements ITypeCite {
   props: TypeCiteProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'cite'

@@ -5,7 +5,7 @@ export abstract class TypeSlot extends TypeHtml implements ITypeSlot {
   props: TypeSlotProps;
   dom?: HTMLSlotElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'slot'

@@ -5,7 +5,7 @@ export abstract class TypeAside extends TypeHtml implements ITypeAside {
   props: TypeAsideProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'aside'

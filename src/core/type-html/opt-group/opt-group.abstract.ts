@@ -5,7 +5,7 @@ export abstract class TypeOptGroup extends TypeHtml implements ITypeOptGroup {
   props: TypeOptGroupProps;
   dom?: HTMLOptGroupElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'optgroup'

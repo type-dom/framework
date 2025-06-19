@@ -5,7 +5,7 @@ export abstract class TypeIFrame extends TypeHtml implements ITypeIFrame {
   props: TypeIFrameProps;
   dom?: HTMLIFrameElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'iframe'

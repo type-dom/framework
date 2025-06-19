@@ -5,7 +5,7 @@ export abstract class TypeArea extends TypeHtml implements ITypeArea {
   props: TypeAreaProps;
   dom?: HTMLAreaElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'area'

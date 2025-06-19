@@ -5,7 +5,7 @@ export abstract class TypeHeader extends TypeHtml implements ITypeHeader {
   props: TypeHeaderProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'header'

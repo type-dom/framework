@@ -5,7 +5,7 @@ export abstract class TypeLegend extends TypeHtml implements ITypeLegend {
   props: TypeLegendProps;
   dom?: HTMLLegendElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'legend'

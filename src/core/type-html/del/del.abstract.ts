@@ -5,7 +5,7 @@ export abstract class TypeDel extends TypeHtml implements ITypeDel {
   props: TypeDelProps;
   dom?: HTMLModElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'del'

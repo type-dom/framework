@@ -5,7 +5,7 @@ export abstract class TypeTitle extends TypeHtml implements ITypeTitle {
   props: TypeTitleProps;
   dom?: HTMLTitleElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'title'

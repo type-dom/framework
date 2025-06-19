@@ -5,7 +5,7 @@ export abstract class TypeVar extends TypeHtml implements ITypeVar {
   props: TypeVarProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'var'

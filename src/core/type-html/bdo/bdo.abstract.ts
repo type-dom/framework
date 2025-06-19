@@ -5,7 +5,7 @@ export abstract class TypeBdo extends TypeHtml implements ITypeBdo {
   props: TypeBdoProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'bdo'

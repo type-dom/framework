@@ -5,7 +5,7 @@ export abstract class TypeSup extends TypeHtml implements ITypeSup {
   props: ITypeSup['props'];
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'sup'

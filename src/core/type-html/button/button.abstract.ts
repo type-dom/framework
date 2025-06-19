@@ -8,7 +8,7 @@ export abstract class TypeButton extends TypeHtml implements ITypeButton {
   props: TypeButtonProps;
   dom?: HTMLButtonElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'button',

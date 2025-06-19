@@ -5,7 +5,7 @@ export abstract class TypeSmall extends TypeHtml implements ITypeSmall {
   props: TypeSmallProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'small'

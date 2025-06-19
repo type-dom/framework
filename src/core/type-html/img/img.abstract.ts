@@ -6,7 +6,7 @@ export abstract class TypeImg extends TypeHtml implements ITypeImg {
   dom?: HTMLImageElement;
   override childNodes: [];
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'img'

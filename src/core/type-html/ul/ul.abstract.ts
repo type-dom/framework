@@ -7,7 +7,7 @@ export abstract class TypeUL extends TypeHtml implements ITypeUL {
   dom?: HTMLUListElement;
   override childNodes: TypeLI[];
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'ul',

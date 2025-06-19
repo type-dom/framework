@@ -5,7 +5,7 @@ export abstract class TypeBdi extends TypeHtml implements ITypeBdi {
   props: TypeBdiProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'bdi',

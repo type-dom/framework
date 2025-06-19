@@ -5,7 +5,7 @@ export abstract class TypeEm extends TypeHtml implements ITypeEm {
   props: TypeEmProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'em'

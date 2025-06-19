@@ -5,7 +5,7 @@ export abstract class TypeCode extends TypeHtml implements ITypeCode {
   props: TypeCodeProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'code'

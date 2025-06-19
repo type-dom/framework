@@ -5,7 +5,7 @@ export abstract class TypeP extends TypeHtml implements ITypeP {
   props: TypePProps;
   dom?: HTMLParagraphElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'p'

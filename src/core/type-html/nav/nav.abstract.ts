@@ -5,7 +5,7 @@ export abstract class TypeNav extends TypeHtml implements ITypeNav {
   props: TypeNavProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'nav'

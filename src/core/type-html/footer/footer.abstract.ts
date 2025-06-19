@@ -5,7 +5,7 @@ export abstract class TypeFooter extends TypeHtml implements ITypeFooter {
   props: TypeFooterProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'footer'

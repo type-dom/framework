@@ -8,7 +8,7 @@ export abstract class TypeLI extends TypeHtml implements ITypeLI {
   props: TypeLIProps;
   dom?: HTMLLIElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'li'

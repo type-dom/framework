@@ -19,7 +19,7 @@ export abstract class TypeOL extends TypeHtml implements ITypeOL {
   override childNodes: (TypeLI | TypeUL)[];
 
   // type, start 在属性中单独配置，不需要在构造函数中传参
-  protected constructor() {
+  constructor()  {
     super();
     // this.attr.addObj({
     //   type,

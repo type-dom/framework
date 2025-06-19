@@ -5,7 +5,7 @@ export abstract class TypeSection extends TypeHtml implements ITypeSection {
   props: TypeSectionProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'section'

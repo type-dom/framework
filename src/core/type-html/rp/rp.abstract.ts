@@ -5,7 +5,7 @@ export abstract class TypeRp extends TypeHtml implements ITypeRp {
   props: TypeRpProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'rp'

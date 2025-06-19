@@ -5,7 +5,7 @@ export abstract class TypeEmbed extends TypeHtml implements ITypeEmbed {
   props: TypeEmbedProps;
   dom?: HTMLEmbedElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'embed'

@@ -8,7 +8,7 @@ export abstract class TypeHGroup extends TypeHtml implements ITypeHGroup {
   props: TypeHGroupProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'hgroup'

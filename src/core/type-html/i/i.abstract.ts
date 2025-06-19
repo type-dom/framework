@@ -5,7 +5,7 @@ export abstract class TypeI extends TypeHtml implements ITypeI {
   props: TypeIProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'i'

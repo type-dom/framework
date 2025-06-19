@@ -9,7 +9,7 @@ export abstract class TypeDT extends TypeHtml implements ITypeDT {
   props: TypeDTProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'dt'

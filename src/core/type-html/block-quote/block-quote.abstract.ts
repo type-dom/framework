@@ -5,7 +5,7 @@ export abstract class TypeBlockQuote extends TypeHtml implements ITypeBlockQuote
   props: TypeBlockQuoteProps;
   dom?: HTMLQuoteElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'blockquote'

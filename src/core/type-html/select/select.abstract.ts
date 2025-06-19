@@ -5,7 +5,7 @@ export abstract class TypeSelect extends TypeHtml implements ITypeSelect {
   props: TypeSelectProps;
   dom?: HTMLSelectElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'select'

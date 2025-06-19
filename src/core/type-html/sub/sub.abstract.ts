@@ -5,7 +5,7 @@ export abstract class TypeSub extends TypeHtml implements ITypeSub {
   props: ITypeSub['props'];
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'sub',

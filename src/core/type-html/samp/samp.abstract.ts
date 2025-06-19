@@ -5,7 +5,7 @@ export abstract class TypeSamp extends TypeHtml implements ITypeSamp {
   props: TypeSampProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'samp'

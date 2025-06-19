@@ -5,7 +5,7 @@ export abstract class TypeMenuItem extends TypeHtml implements ITypeMenuItem {
   props: TypeMenuItemProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'menuitem'

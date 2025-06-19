@@ -5,7 +5,7 @@ export abstract class TypeAudio extends TypeHtml implements ITypeAudio {
   props: TypeAudioProps;
   dom?: HTMLAudioElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'audio'

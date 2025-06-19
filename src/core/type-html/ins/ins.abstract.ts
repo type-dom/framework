@@ -5,7 +5,7 @@ export abstract class TypeIns extends TypeHtml implements ITypeIns {
   props: TypeInsProps;
   dom?: HTMLModElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'ins'

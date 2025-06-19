@@ -5,7 +5,7 @@ export abstract class TypePre extends TypeHtml implements ITypePre {
   props: TypePreProps;
   dom?: HTMLPreElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'pre'

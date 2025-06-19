@@ -5,7 +5,7 @@ export abstract class TypeOutput extends TypeHtml implements ITypeOutput {
   props: TypeOutputProps;
   dom?: HTMLOutputElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'output'

@@ -5,7 +5,7 @@ export abstract class TypeForm extends TypeHtml implements ITypeForm {
   props: TypeFormProps;
   dom?: HTMLFormElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'form'

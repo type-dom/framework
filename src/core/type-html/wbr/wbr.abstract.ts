@@ -5,7 +5,7 @@ export abstract class TypeWbr extends TypeHtml implements ITypeWbr {
   props: TypeWbrProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'wbr'

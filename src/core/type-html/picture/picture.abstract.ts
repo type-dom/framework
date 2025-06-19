@@ -5,7 +5,7 @@ export abstract class TypePicture extends TypeHtml implements ITypePicture {
   props: TypePictureProps;
   dom?: HTMLPictureElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'picture'

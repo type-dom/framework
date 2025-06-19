@@ -5,7 +5,7 @@ export abstract class TypeArticle extends TypeHtml implements ITypeArticle {
   props: TypeArticleProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'article'

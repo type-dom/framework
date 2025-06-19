@@ -5,7 +5,7 @@ export abstract class TypeRuby extends TypeHtml implements ITypeRuby {
   props: TypeRubyProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'ruby'

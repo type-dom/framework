@@ -5,7 +5,7 @@ export abstract class TypeHr extends TypeHtml implements ITypeHr {
   props: TypeHrProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'hr'

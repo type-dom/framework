@@ -5,7 +5,7 @@ export abstract class TypeCanvas extends TypeHtml implements ITypeCanvas {
   props: TypeCanvasProps;
   dom?: HTMLCanvasElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'canvas'

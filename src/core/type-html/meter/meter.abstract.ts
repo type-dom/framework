@@ -5,7 +5,7 @@ export abstract class TypeMeter extends TypeHtml implements ITypeMeter {
   props: TypeMeterProps;
   dom?: HTMLMeterElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'meter'

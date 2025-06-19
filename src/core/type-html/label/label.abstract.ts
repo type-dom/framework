@@ -5,7 +5,7 @@ export abstract class TypeLabel extends TypeHtml implements ITypeLabel {
   props: TypeLabelProps;
   dom?: HTMLLabelElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'label'

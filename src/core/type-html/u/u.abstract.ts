@@ -5,7 +5,7 @@ export abstract class TypeU extends TypeHtml implements ITypeU {
   props: TypeUProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'u'

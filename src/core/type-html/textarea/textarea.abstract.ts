@@ -5,7 +5,7 @@ export abstract class TypeTextarea extends TypeHtml implements ITypeTextarea {
   props: TypeTextareaProps;
   dom?: HTMLTextAreaElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'textarea',

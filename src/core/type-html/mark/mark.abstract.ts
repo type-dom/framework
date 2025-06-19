@@ -5,7 +5,7 @@ export abstract class TypeMark extends TypeHtml implements ITypeMark {
   props: TypeMarkProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'mark'

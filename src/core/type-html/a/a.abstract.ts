@@ -5,7 +5,7 @@ export abstract class TypeA extends TypeHtml implements ITypeA {
   dom?: HTMLAnchorElement;
   override props: TypeAProps;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'a',

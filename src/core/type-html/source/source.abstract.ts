@@ -5,7 +5,7 @@ export abstract class TypeSource extends TypeHtml implements ITypeSource {
   props: TypeSourceProps;
   dom?: HTMLSourceElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'source'

@@ -5,7 +5,7 @@ export abstract class TypeFigure extends TypeHtml implements ITypeFigure {
   props: TypeFigureProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'figure'

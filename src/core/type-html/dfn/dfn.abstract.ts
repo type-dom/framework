@@ -5,7 +5,7 @@ export abstract class TypeDfn extends TypeHtml implements ITypeDfn {
   props: TypeDfnProps;
   dom?: HTMLElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'dfn'

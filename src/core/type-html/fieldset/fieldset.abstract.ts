@@ -5,7 +5,7 @@ export abstract class TypeFieldset extends TypeHtml implements ITypeFieldset {
   props: TypeFieldsetProps;
   dom?: HTMLFieldSetElement;
 
-  protected constructor() {
+  constructor()  {
     super();
     this.props = this.useParams({
       nodeName: 'fieldset'
