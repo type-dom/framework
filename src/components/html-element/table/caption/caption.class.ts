@@ -1,15 +1,17 @@
 import { TypeTableCaption } from '../../../../core/type-html/table/caption/caption.abstract';
-import { Table } from '../table.class';
+import { TypeTableCaptionProps } from '../../../../core/type-html/table/caption/caption.interface';
 import type { ITableCaption } from './caption.interface';
 
 export class TableCaption extends TypeTableCaption implements ITableCaption {
   className: 'TableCaption';
+  override props: TypeTableCaptionProps;
 
   override isBasic = true;
 
-  constructor(public override parent: Table) {
+  constructor(params: TypeTableCaptionProps) {
     super();
     this.className = 'TableCaption';
-    this.childNodes = [];
+    this.slotChildren(params.slot);
+    this.props = this.useParams(params);
   }
 }

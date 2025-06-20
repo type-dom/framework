@@ -1,17 +1,17 @@
 import { TypeTableFoot } from '../../../../core/type-html/table/foot/foot.abstract';
-import { TableRow } from '../row/row.class';
-import { Table } from '../table.class';
+import { TypeTableFootProps } from '../../../../core/type-html/table/foot/foot.interface';
 import type { ITableFoot } from './foot.interface';
 
 export class TableFoot extends TypeTableFoot implements ITableFoot {
   className: 'TableFoot';
-  override childNodes: TableRow[];
+  override props: TypeTableFootProps;
 
   override isBasic = true;
 
-  constructor(public override parent: Table) {
+  constructor(params: TypeTableFootProps = {}) {
     super();
     this.className = 'TableFoot';
-    this.childNodes = [];
+    this.slotChildren(params.slot);
+    this.props = this.useParams(params);
   }
 }

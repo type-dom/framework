@@ -1,15 +1,17 @@
 import { TypeTableCol } from '../../../../core/type-html/table/col/col.abstract';
-import { Table } from '../table.class';
+import { TypeTableColProps } from '../../../../core/type-html/table/col/col.interface';
 import type { ITableCol } from './col.interface';
 
 export class TableCol extends TypeTableCol implements ITableCol {
   className: 'TableCol';
+  override props: TypeTableColProps;
 
   override isBasic = true;
 
-  constructor(public override parent: Table) {
+  constructor(params: TypeTableColProps = {}) {
     super();
     this.className = 'TableCol';
-    this.childNodes = [];
+    this.slotChildren(params.slot);
+    this.props =  this.useParams(params);
   }
 }

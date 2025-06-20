@@ -1,15 +1,17 @@
 import { TypeTableColGroup } from '../../../../core/type-html/table/col-group/col-group.abstract';
-import { Table } from '../table.class';
+import { TypeTableColGroupProps } from '../../../../core/type-html/table/col-group/col-group.interface';
 import type { ITableColGroup } from './col-group.interface';
 
 export class TableColGroup extends TypeTableColGroup implements ITableColGroup {
   className: 'TableColGroup';
+  override props: TypeTableColGroupProps;
 
   override isBasic = true;
 
-  constructor(public override parent: Table) {
+  constructor(params: TypeTableColGroupProps = {}) {
     super();
     this.className = 'TableColGroup';
-    this.childNodes = [];
+    this.slotChildren(params.slot);
+    this.props = this.useParams(params);
   }
 }

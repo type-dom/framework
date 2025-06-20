@@ -1,18 +1,18 @@
 import { TypeTableHead } from '../../../../core/type-html/table/head/head.abstract';
-import { TableHeaderCell } from '../header-cell/header-cell.class';
-import { Table } from '../table.class';
+import { TypeTableHeadProps } from '../../../../core/type-html/table/head/head.interface';
 import type { ITableHead } from './head.interface';
 
 // 表格页眉
 export class TableHead extends TypeTableHead implements ITableHead {
   className: 'TableHead';
-  override childNodes: TableHeaderCell[];
+  override props: TypeTableHeadProps;
 
   override isBasic = true;
 
-  constructor(public override parent: Table) {
+  constructor(params: TypeTableHeadProps = {}) {
     super();
     this.className = 'TableHead';
-    this.childNodes = [];
+    this.slotChildren(params.slot);
+    this.props = this.useParams(params);
   }
 }
