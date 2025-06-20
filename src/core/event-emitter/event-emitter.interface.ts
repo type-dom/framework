@@ -23,7 +23,7 @@ export interface IEmits {
  * @param T - 继承自Event的事件类型。默认为 Event。
  * @returns {void} - 该函数没有返回值。
  */
-export type IEvent<E extends (Event | string) = Event, T extends TypeElement = TypeElement> = (evt?: E, element?: T) => void;
+export type IEvent<E extends (Event | string) = Event, T extends TypeElement = TypeElement> = (evt?: E, element?: T) => void | boolean | number | Promise<any>;
 
 /**
  * IEvents 接口定义了事件处理的行为。这里定义的时dom元素的事件处理函数。
