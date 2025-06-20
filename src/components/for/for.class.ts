@@ -1,7 +1,7 @@
 import { effect, isSignal, isComputed, toRaw } from '@type-dom/signals';
 import { TypeFragment } from '../../core/type-fragment/type-fragment.abstract';
-import { IFor, ForProps } from './for.interface';
 import { getToDom, mountDom } from '../../core/type-element/mountDom';
+import { IFor, ForProps } from './for.interface';
 // todo For 多层嵌套时，有问题；
 //    TdSpace 下直接添加 For 组件，子元素没有添加。
 export class For extends TypeFragment implements IFor {
@@ -23,7 +23,7 @@ export class For extends TypeFragment implements IFor {
         // todo 如何替换子对象
         effect(() => {
           const newData = toRaw(props.data);
-          // console.warn('effect newData', newData);
+          console.warn('effect newData', newData);
           this.clearChildren();
           if (newData) {
             this.slotRawData(newData);
