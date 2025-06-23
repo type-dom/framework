@@ -1,6 +1,7 @@
 import { MaybeRef } from '@type-dom/signals';
 import { TypeElement } from '../type-element/type-element.abstract';
 import type { ISettings } from './type-node.interface';
+import { TdDom } from '../type-element';
 
 /**
  * TypeDom 最基础的接口，所有接口都继承了这个接口。
@@ -16,8 +17,10 @@ export interface ITypeBase {
    * 移动到 DOM 中 app 之外的其他位置的方式。
    * 该节点不是当前位置的组件的子节点；要避免加入到组件的子节点中；要挂载到指定的组件的DOM,甚至直接指向 body；
    * string 类型，可以指定一个选择器；
+   * 挂载到指定的组件的DOM,可以直接指向 body
+   * todo Teleport execute mount to outer dom, so need not to property.
    */
-  to?: MaybeRef<string | HTMLElement>;
+  to?: MaybeRef<string | TdDom>;
 
   /**
    * parent 可选

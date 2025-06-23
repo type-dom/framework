@@ -14,6 +14,6 @@ export function useRemoveDom(node: TypeNode): void {
       node.dom.remove();
     }
   } else {
-    // console.error('node.dom has been removed . ');
+    console.error('node.dom has been removed . ');
   }
 }

@@ -6,9 +6,9 @@ import { TypeElement } from '../type-element/type-element.abstract';
 import { IEmits, IEvents } from '../event-emitter/event-emitter.interface';
 import { ClassValue, ITypeAttribute } from '../attribute/attribute.interface';
 import { TransitionElement, TransitionHooks } from '../type-transition/type-transition.interface';
+import { NodeName } from '../enums';
 import { TypeNode } from './type-node.abstract';
 import { ITypeBase } from './type-base.interface';
-import { NodeName } from '../enums';
 
 export interface IAttr {
   name: string;
@@ -160,6 +160,7 @@ export interface TypeProps extends ITypeBase {
    * 绑定的class对象，用于获取当前对象的class；
    *  与 ns 方法配合使用，获取当前对象的class；
    *  样式 theme 中的样式，需要通过 class 绑定；
+   *  [ class ] 样式叠加， class 样式替换；
    */
   class?: ClassValue; // <string[]>;
   /**
@@ -170,11 +171,11 @@ export interface TypeProps extends ITypeBase {
   /**
    * 绑定的组件的引用对象，用于获取当前组件；
    */
-  refEl?: MaybeRef<TypeElement | undefined>
+  refEl?: Ref<TypeElement | undefined>
   /**
    * 绑定的组件的引用对象，用于获取当前组件的dom元素；
    */
-  refDom?: MaybeRef<Element | DocumentFragment | undefined>;
+  refDom?: Ref<Element | DocumentFragment | undefined>;
   /**
    * 绑定的refId对象，用于父级查找到当前对象；
    */
@@ -198,7 +199,7 @@ export interface TypeProps extends ITypeBase {
   slot?: ISlotItem; // 默认插槽, 可以是单个元素，也可以是多个元素，即数组；如何直接插入当前元素，则相当与 childNodes属性；
   init?: (element: TypeElement) => void;
   /**
-   * 自定义的事件监听器，与 events 不同，events 是绑定在元素上的事件，而 emits 是在元素上触发的事件；
+   * 自定义的事件监听器，与 events 不同，events 是绑定在基础组件上的事件，而 emits 是在自定义组件上的事件；
    * 与 addEmits 方法配合；
    * emit 方法 触发时，会调用挂载的方法；
    */

@@ -1,9 +1,10 @@
 import { setCurrentInstance } from '../instance';
 import { TypeElement } from '../type-element/type-element.abstract';
+import { LifecycleHooks } from '../enums';
 import { TypeNode } from './type-node.abstract';
 
 export function useUnmount(element: TypeNode, root?: TypeElement) {
-  element.beforeUnmount?.();
+  element.lifeCycles[LifecycleHooks.BEFORE_UNMOUNT]?.forEach(fn => fn());
   if (element.dom) {
     if (element.dom instanceof DocumentFragment) {
       // 清空 DocumentFragment； 如果没有挂载，dom 会有子dom
@@ -38,7 +39,7 @@ export function useUnmount(element: TypeNode, root?: TypeElement) {
     const parent = element.findParent(root, element);
     if (parent?.childNodes) parent.childNodes.splice(element.index, 1);
   }
-  element.unmounted?.();
+  element.lifeCycles[LifecycleHooks.UNMOUNTED]?.forEach(fn => fn());
   setCurrentInstance(null);
   //   ToDo
   // element = undefined;

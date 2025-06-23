@@ -1,5 +1,5 @@
-import { MaybeRef } from '@type-dom/signals';
 import { AnyFn } from '@type-dom/utils';
+import { MaybeRef } from '@type-dom/signals';
 import { IJsonData } from '../../interface';
 import { EventEmitter } from '../event-emitter/event-emitter.abstract';
 import { TypeElement } from '../type-element/type-element.abstract';
@@ -7,6 +7,7 @@ import { Style } from '../style/style.class';
 import { Attribute } from '../attribute/attribute.class';
 import { InjectionKey } from '../apiInject';
 import { LifecycleHooks, NodeName } from '../enums';
+import { ElProp, TdDom } from '../type-element/type-element.interface';
 import type {
   IAttr,
   IMethods,
@@ -18,7 +19,6 @@ import { useUnmount } from './useUnmount';
 import { useDump } from './useDump';
 import { useDown } from './useDown';
 import { useInject } from './useInject';
-import { ElProp } from '../type-element/type-element.interface';
 import { useAssignProps } from './useAssignProps';
 import { useRemoveDom } from './useRemoveDom';
 
@@ -43,6 +43,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   abstract rendered: boolean;
   isBasic?: boolean;
   createdIn?: 'setup';
+  comment?: Comment; // 评论节点；vIf占位符使用，
   key?: string;
   /**
    * 存储 传入的参数。 只需要到处json时有就行。
@@ -59,7 +60,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
    * 挂载到指定的组件的DOM,可以直接指向 body
    * todo Teleport execute mount to outer dom, so need not to property.
    */
-  to?: MaybeRef<string | HTMLElement>;
+  to?: MaybeRef<string | TdDom>;
   isContext?: boolean;
   items?: TypeProps[];
   // textNode?: TextNode;
@@ -81,6 +82,8 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
     this.params = {}; // Object.freeze({}) as TypeProps;
     this.props = this.baseProps = {}; // Object.freeze({}) as TypeProps;
     this.lifeCycles = {} as Record<LifecycleHooks, AnyFn[]>;
+    this.lifeCycles[LifecycleHooks.BEFORE_CREATE]?.forEach((fn) => fn());
+    // onBeforeCreate(this);
     this.beforeCreate?.(); // 挂载前，执行一些初始化操作。其实也就是操作 config本身。
   }
 
@@ -538,36 +541,6 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   }
 
   /**
-   * created函数用于在渲染TypeElement之前进行准备工作。
-   * 该函数不接受参数，也不返回任何值。
-   * 主要完成以下工作：
-   * 1. 打印日志说明当前处于created阶段。
-   * 2. 检查dom属性是否已存在，若不存在，则创建一个新的DOM元素。
-   * 3. 遍历当前Element的所有属性，对以':'和'@'开头的属性进行特殊处理。
-   */
-  created?(): void;
-
-  /**
-   * 可选的函数，无参数，无返回值。
-   */
-  beforeMount?(): void;
-
-  /**
-   * 可选的函数，无参数，无返回值。
-   * 该函数用于在挂载完成后执行一些额外的操作。
-   * 如果需要在特定条件下执行渲染完成后的操作，可以实现此函数。
-   * 在子类中覆写
-   */
-  mounted?(): void;
-
-  beforeUpdate?(): void;
-
-  updated?(): void;
-
-  //   todo update 组件更新
-  beforeUnmount?(): void;
-
-  /**
    * 销毁对象
    * 从父级中删除
    * 类似 render ，要迭代删除子节点；
@@ -577,6 +550,4 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   unmount(root?: TypeElement): void {
     useUnmount(this, root);
   }
-
-  unmounted?(): void;
 }
