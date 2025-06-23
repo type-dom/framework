@@ -8,6 +8,7 @@ import { isArray } from '@type-dom/utils';
 import { ISlotItem } from '../type-node/type-node.interface';
 import { TypeElement } from './type-element.abstract';
 import { getToDom, mountDom } from './mountDom';
+import { replaceCommentWithDom } from './util';
 
 export function useSlotChildren(element: TypeElement, slot?: ISlotItem) {
   // console.warn('slotChildren is called . ');
@@ -30,13 +31,6 @@ export function useSlotChildren(element: TypeElement, slot?: ISlotItem) {
         element.slotChild(newRaw); // todo
         element.childNodes.forEach(child => {
           // console.warn('child then mount, it is ', child);
-          // let up;
-          // const to = unref(element.to);
-          // if (isString(to)) {
-          //   up = document.querySelector(to) as HTMLElement;
-          // } else if (to !== undefined) {
-          //   up = to;
-          // }
           const to = getToDom(child);
           // element.dom is Fragment, child.dom not mount to;
           child.mount(to ?? element.dom); // 如果注释了，统计倒计时不显示。
@@ -45,8 +39,14 @@ export function useSlotChildren(element: TypeElement, slot?: ISlotItem) {
         })
         // todo   if element is fragment, then add children to element.dom, but not up to parent real element.
         // when element is TdIcon, element.dom is Icon; need not to upDom appendChild again .
-        if (element.dom instanceof DocumentFragment) {
-          upDom?.appendChild(element.dom);
+        if (element.dom instanceof DocumentFragment) { // todo why add this condition
+          // maybe comment replace
+          replaceCommentWithDom(element, upDom);
+          // if (upDom && element.comment && isDescendant(upDom, element.comment)) {
+          //   upDom.replaceChild(element.dom, element.comment);
+          // } else {
+          //   upDom?.appendChild(element.dom);
+          // }
           // element.mount();
         }
       }

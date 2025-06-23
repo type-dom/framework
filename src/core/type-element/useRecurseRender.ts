@@ -1,6 +1,6 @@
 import { toRaw } from '@type-dom/signals';
 import { TypeElement } from './type-element.abstract';
-import { mountDom } from './mountDom';
+import { replaceCommentWithDom, replaceDomWithComment } from './util';
 
 /**
  * 递归渲染元素本身及所有后代元素
@@ -25,7 +25,12 @@ export function useRecurseRender(element: TypeElement) {
         if (toRaw(child.props.vIf)) {
           useRecurseRender(child);
         } else {
-          child.removeDom();
+          // child.removeDom();
+          // child.comment = child.comment ?? document.createComment('v-if is false, child.className is ' + child.className);
+          // if (child.dom?.parentElement && isDescendant(child.dom.parentElement, child.dom)) {
+          //   child.dom?.parentElement?.replaceChild(child.comment, child.dom);
+          // }
+          replaceCommentWithDom(child);
         }
       } else {
         useRecurseRender(child);
@@ -34,20 +39,31 @@ export function useRecurseRender(element: TypeElement) {
       child.render();
     }
     // const upDom = mountDom(element); // todo dialog error
-    const upDom = mountDom(child); // todo repeat loop; now may be right;
+    // const upDom = mountDom(child); // todo repeat loop; now may be right;
     // 无法合并到上面的代码中
     // 处理vIf属性，决定是否将子节点添加到DOM树中。
     if (Object.hasOwnProperty.call(child.props, 'vIf')) {
       // if (toRaw(child.props.vIf) !== false) { // TdMessageBox 弹不出来
       if (toRaw(child.props.vIf)) {
-        upDom?.appendChild(child.dom!);
+        // if (upDom && child.dom && isDescendant(upDom, child.dom!)) {
+        //   // nothing
+        // } else {
+        //   if (upDom && child.dom && child.comment && isDescendant(upDom, child.comment)) {
+        //     upDom.replaceChild(child.dom, child.comment);
+        //   } else {
+        //     upDom?.appendChild(child.dom!);
+        //   }
+        // }
+        replaceCommentWithDom(child);
       } else {
-        child.removeDom();
+        // const comment = child.comment ?? document.createComment('v-if is false, child.className is ' + child.className);
+        // upDom?.replaceChild(child.comment, child.dom!);
+        // replaceCommentWithDom(child);
+        replaceDomWithComment(child)
       }
+      // upDom?.appendChild(child.dom!);
     } else {
-      upDom?.appendChild(child.dom!);
+      // if (upDom && child.dom && isDescendant(upDom, child.dom)) upDom.appendChild(child.dom);
     }
-
-    // 注：  vShow 本身不改变dom树的结构，是否显示由 props.vShow 决定。
   })
 }

@@ -68,7 +68,9 @@ export function useVModel(element: TypeElement) {
       watch(() => element.props.vModel?.get(), (newValue: any)=> {
         // console.warn('element.className is ' + element.className + ', watch vModel change value , newValue is ', newValue);
         element.props.modelValue = newValue;
-      }, { immediate: true });
+      }, {
+        immediate: true
+      });
     }
   }
 }

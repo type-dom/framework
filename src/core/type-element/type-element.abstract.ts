@@ -2,15 +2,10 @@ import { IStyle } from '@type-dom/css-type';
 import { AnyFn,
   // removeUndefinedProps
 } from '@type-dom/utils';
-import type {
-  ISlotItem,
-  ISlotRaw,
-  TypeProps,
-} from '../type-node/type-node.interface';
+import type { ISlotItem, ISlotRaw, TypeProps, } from '../type-node/type-node.interface';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TextNode } from '../text-node/text-node.class';
 import { currentInstance } from '../instance';
-import { useResetFragment } from '../type-node/useResetFragment';
 import { LifecycleHooks, NodeName } from '../enums';
 import {
   TransitionElement,
@@ -34,7 +29,6 @@ export let componentId = 0;
  * 与对应的导出时的数据结构是不一样的。
  * 除了 TextNode 之外的其它类型的 Node 。
  */
-// @StyleManager
 export abstract class TypeElement extends TypeNode implements ITypeElement {
   abstract override dom?: HTMLElement | SVGElement | DocumentFragment; // 不会是Text；
   // 包括 fragment
@@ -80,7 +74,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   // }
 
   get boundBox(): IBoundBox {
-    if (this.dom === undefined || this.dom instanceof DocumentFragment) {
+    if (this.dom === undefined || this.dom instanceof DocumentFragment || this.dom instanceof Comment) {
       return {
         left: 0,
         top: 0,
@@ -271,9 +265,10 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * @param length 移除的个数
    */
   removeChildDomAtIndex(index: number, length = 1): void {
-    useResetFragment(this);
+    // useResetFragment(this);
     for (let i = 0; i < length; i++) {
       if (this.childNodes[index + i].dom) {
+        // todo 好像应该是 index
         this.dom?.removeChild(this.childNodes[index + i].dom!);
         //   this.childNodes[index + i].dom?.remove();
       }
@@ -293,7 +288,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     if (this.dom instanceof DocumentFragment) {
       this.childNodes.forEach((child) => {
         if (child?.createdIn === 'setup') {
-          this.clearEvents();
+          // this.clearEvents(); // fix drawer with footer, button events emit thirdly
           child.removeDom();
         }
       });
@@ -305,7 +300,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       // }
       this.childNodes.forEach(child => {
         if (child?.createdIn === 'setup') {
-          this.clearEvents();
+          // this.clearEvents(); // fix drawer with footer, button events emit thirdly
           child.removeDom();
         }
       })

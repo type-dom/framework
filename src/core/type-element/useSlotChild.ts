@@ -20,12 +20,16 @@ export function useSlotChild(element: TypeElement, slot: ISlotRaw | ISlotRaw[] |
         element.unshiftChild(slot);
       } else if (typeof slot === 'string' || typeof slot === 'number') {
         element.unshiftChild(new TextNode(String(slot)));
+      } else {
+        console.error('useSlotChild: slot is not TypeNode or string or number, it is ', slot);
       }
     } else {
       if (slot instanceof TypeNode) {
         element.addChild(slot);
       } else if (typeof slot === 'string' || typeof slot === 'number') {
         element.addChild(new TextNode(String(slot)));
+      } else {
+        console.error('useSlotChild: slot is not TypeNode or string or number, it is ', slot);
       }
     }
   }

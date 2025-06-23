@@ -1,50 +1,48 @@
-import { unref } from '@type-dom/signals';
 import { LifecycleHooks, NodeName } from '../enums';
+import { TextNode } from '../text-node/text-node.class';
 import { TypeElement } from './type-element.abstract';
 import { ElProp } from './type-element.interface';
+// import { useVIf } from './useVIf';
+// import { useVShow } from './useVShow';
+// import { useVModel } from './useVModel';
 
 export function useUpdate(element: TypeElement, el?: ElProp): void {
   // console.warn('then update element.className is ' + element.className);
-  if (element.props.disabled) {
+  if (!element) {
+    console.error('element does not exist . ');
     return;
   }
-  let appEl: Exclude<ElProp, string>;
-  if (typeof el === 'string') {
-    appEl = document.querySelector<HTMLElement>(el);
-  } else {
-    appEl = el;
-  }
-  // element.clearChildren(); // 清理子节点，包括DOM  todo ??? 不能加。
-  // element.recurseSetup(); // 挂载时，递归执行setup
+
+  // if (element.props.disabled) {
+  //   return;
+  // }
+  // let appEl: Exclude<ElProp, string>;
+  // if (
+  //   element?.to // 显式验证 to 属性存在且为真值
+  //   && !(
+  //     element.className === 'TdTeleport'
+  //     && Boolean(unref(element.props.disabled))
+  //   )
+  // ) {
+  //   appEl = getToDom(element);
+  // } else if (typeof el === 'string') {
+  //   appEl = document.querySelector<HTMLElement>(el);
+  // } else if (el) { // todo maybe Document, etc.
+  //   appEl = el;
+  // }
+
   element.lifeCycles[LifecycleHooks.BEFORE_UPDATE]?.forEach((cb) => cb());
-  element.beforeUpdate?.();
   element.createDom();
-  if (Object.hasOwnProperty.call(element.props, 'vIf')) {
-    if (unref(element.props.vIf) === false) {
-      // console.log('element.props.vIf === false');
-      // todo transition
-      // element.deleteDom?.();
-      // 只要不挂载就行了。
-      if (element.dom instanceof Element) {
-        element.dom.remove();
-        // element.dom = undefined; // dom 不会删除，只是不再挂载
-      }
-      // return;
-    } else if (unref(element.props.vIf) === true) {
-      // element.createDom?.();
-      // todo 应该时插入
-      //   如果自身不是Fragment, upRealElement 就是自身。
-      const upEl = element.parent?.upRealElement;
-      if (upEl instanceof TypeElement) {
-        // upEl.insertChildDom(this, element.index); // vIf 无法保证dom插入到原来的位置的。
-        // upEl.appendChild(this); // todo 这样会反复插入的。vIf本身不影响插入子元素的。只是影响 dom是否挂载
-      } else {
-        // appEl?.appendChild(element.dom!);
-        // console.error('upEl is undefined . ');
-      }
+  for (const child of element.children) {
+    if (child instanceof TypeElement) {
+      useUpdate(child);
+    } else if (child instanceof TextNode) {
+      // todo TextNode 如何刷新？？？
+      child.update() // TextNode
+    } else {
+      console.warn('child is not TypeElement and TextNode, but is ', child);
     }
   }
-
   if (element.props.nodeName === NodeName.FRAGMENT) {
     // todo DocumentFragment 挂载到其他元素上，子节点要根据数组重新赋值。
     // for (const child of element.children) {
@@ -68,16 +66,19 @@ export function useUpdate(element: TypeElement, el?: ElProp): void {
     // }
   } else {
     element.render(); // setStyleObj, setAttrObj
-    if (appEl && element.dom) {
-      appEl.appendChild(element.dom);
-    }
+    // if (appEl && element.dom) {
+    //   appEl.appendChild(element.dom);
+    // }
     // 如CollapsibleBox中，contents重新赋值后，children会变，而childNodes是不变的。
     // for (const child of element.children) {
     //   // element.renderChild(child);
     //   // child.update(element.dom);
     // }
   }
-  element.updated?.();
+  // useVIf(element);
+  // useVShow(element);
+  // useVModel(element);
+
   element.lifeCycles[LifecycleHooks.UPDATED]?.forEach((cb) => cb());
   // fragment 可以设置监听事件。但监听的dom对象不是fragment的dom。
   // todo 应该是有变化时才需要
