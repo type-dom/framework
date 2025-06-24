@@ -213,9 +213,9 @@ export class TextNode extends TypeNode implements ITextNode {
 
   mount(el?: ElProp) {
     this.dom?.remove();
-    this.created?.();
+    this.lifeCycles[LifecycleHooks.CREATED]?.forEach((cb) => cb());
     this.render();
-    this.beforeMount?.();
+    this.lifeCycles[LifecycleHooks.BEFORE_MOUNT]?.forEach((cb) => cb());
     if (this.dom) {
       let appEl: Exclude<ElProp, string>;
       if (typeof el === 'string') {
@@ -223,12 +223,12 @@ export class TextNode extends TypeNode implements ITextNode {
       } else if (el) {
         appEl = el;
       } else {
-        appEl = this.parent?.elementParent?.dom;
+        appEl = this.parent?.elementParent?.dom as  HTMLElement | SVGElement | undefined;
       }
       appEl?.appendChild(this.dom);
     }
     // console.log('this.dom is ', this.dom);
-    this.mounted?.(); // 渲染后处理
+    this.lifeCycles[LifecycleHooks.MOUNTED]?.forEach((cb) => cb());
   }
 
   // todo 钩子函数
@@ -241,15 +241,16 @@ export class TextNode extends TypeNode implements ITextNode {
     if (typeof el === 'string') {
       appEl = document.querySelector<HTMLElement>(el);
     } else {
-      appEl = el;
+      appEl = el ?? this.parent?.dom;
     }
     this.render();
     if (appEl && this.dom) {
       appEl.appendChild(this.dom);
     }
-    this.updated?.();
+    this.lifeCycles[LifecycleHooks.UPDATED]?.forEach((cb) => cb());
   }
 
+  // todo Text 有绑定事件吗？？
   override unmount(root?: TypeElement) {
     // TypeElement 需要单独清理事件
     this.lifeCycles[LifecycleHooks.BEFORE_UNMOUNT]?.forEach((fn) => fn());
