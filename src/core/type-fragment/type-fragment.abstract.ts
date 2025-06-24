@@ -4,6 +4,7 @@ import { TypeElement } from '../type-element/type-element.abstract';
 import { ITypeAttribute } from '../attribute/attribute.interface';
 import { NodeName } from '../enums';
 import { ITypeFragment, TypeFragmentProps } from './type-fragment.interface';
+import { onBeforeMount } from '../apiLifecycle';
 
 /**
  * 要注意继承TypeFragment的类，不要直接获取 .dom 属性。因为  Fragment 创建的dom元素是 DocumentFragment。
@@ -23,7 +24,7 @@ export abstract class TypeFragment extends TypeElement implements ITypeFragment 
   }
 
   addStyleObj(styleObj?: StyleValue) {
-    this.onCreated(() => { // todo onCreate hook
+    onBeforeMount(() => {
       this.childNodes.forEach(child => {
         if (child instanceof TypeFragment) {
           child.addStyleObj(styleObj);
@@ -45,7 +46,7 @@ export abstract class TypeFragment extends TypeElement implements ITypeFragment 
   }
 
   addAttrObj(attrObj?: ITypeAttribute) {
-    this.onCreated(() => {
+    onBeforeMount(() => {
       this.childNodes.forEach(child => {
         if (child instanceof TypeFragment) {
           child.addAttrObj(attrObj);
@@ -70,7 +71,7 @@ export abstract class TypeFragment extends TypeElement implements ITypeFragment 
   override useParams<Props extends TypeProps>(params = {} as Props): Props {
     super.useParams<Props>(params);
     // 子元素可能是 setup中新增的，这时 this.childNodes可能没有或不全；
-    this.onCreated(() => {
+    onBeforeMount(() => {
       this.childNodes.forEach(child => {
         if (child instanceof TypeFragment) {
           child.addStyleObj(params.styleObj);
