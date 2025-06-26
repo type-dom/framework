@@ -183,22 +183,23 @@ export abstract class EventEmitter {
           break;
         }
       }
-    } else { // 降级为原生监听
-      const listeners = this.eventObservers[event]; // 监听器数组
-      if (!listeners) return;
-      // todo INPUT, CHANGE
-      // if (event === 'update:modelValue' || event === 'change' || event === 'input') {
-      //   console.warn('emit event is ', event);
-      for (const listener of listeners) { // Map 严格按照插入顺序执行
-        // todo 要保证验证监听器在第一个。
-        const result = listener[1](...args);
-        if (result === false) {
-          // 验证器验证失败
-          //   todo 是打断监听还是清除监听器
-          break;
-        }
-      }
     }
+    // else { // 降级为原生监听 todo input password example toggle show password, loop error;
+    //   const listeners = this.eventObservers[event]; // 监听器数组
+    //   if (!listeners) return;
+    //   // todo INPUT, CHANGE
+    //   // if (event === 'update:modelValue' || event === 'change' || event === 'input') {
+    //   //   console.warn('emit event is ', event);
+    //   for (const listener of listeners) { // Map 严格按照插入顺序执行
+    //     // todo 要保证验证监听器在第一个。
+    //     const result = listener[1](...args);
+    //     if (result === false) {
+    //       // 验证器验证失败
+    //       //   todo 是打断监听还是清除监听器
+    //       break;
+    //     }
+    //   }
+    // }
 
     // if (this.observers['*']) {
     //   const listeners = this.observers['*'];
