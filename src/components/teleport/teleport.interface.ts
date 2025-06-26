@@ -1,4 +1,3 @@
-import { MaybeRef } from '@type-dom/signals';
 import { TypeProps, ITypeNode } from '../../core/type-node/type-node.interface';
 
 export interface ITeleport extends ITypeNode {
@@ -6,6 +5,6 @@ export interface ITeleport extends ITypeNode {
 }
 
 export interface TeleportProps extends TypeProps {
-  to?: MaybeRef<string | HTMLElement>;
+  // to?: MaybeRef<string | HTMLElement>;
   disabled?: boolean;
 }

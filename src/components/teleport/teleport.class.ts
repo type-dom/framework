@@ -1,11 +1,12 @@
 import { MaybeRef } from '@type-dom/signals';
 import { TypeFragment } from '../../core/type-fragment/type-fragment.abstract';
 import { ITeleport, TeleportProps } from './teleport.interface';
+import { TdDom } from 'src/core/type-element/type-element.interface';
 
 export class Teleport extends TypeFragment implements ITeleport {
   className: 'Teleport';
   // __isTeleport = true;
-  override to?: MaybeRef<string | HTMLElement>;
+  override to?: MaybeRef<string | TdDom>;
   disabled?: boolean;
 
   constructor(params: TeleportProps = {}) {
