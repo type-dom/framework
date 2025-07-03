@@ -65,15 +65,6 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   items?: TypeProps[];
   // textNode?: TextNode;
   lifeCycles: Record<LifecycleHooks, AnyFn[]>;
-  //   {
-  //   created?: AnyFn[];
-  //   beforeMount?: AnyFn[];
-  //   mounted?: AnyFn[];
-  //   beforeUpdate?: AnyFn[];
-  //   updated?: AnyFn[];
-  //   beforeUnmount?: AnyFn[];
-  //   unmounted?: AnyFn[];
-  // };
   uid: number;
   isDeactivated: any;
   constructor() {
