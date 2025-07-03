@@ -56,9 +56,9 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     }
   }
 
-  get id(): string {
-    return this.attr?.get('id') as string;
-  }
+  // get id(): string {
+  //   return this.attr?.get('id') as string;
+  // }
 
   // get value(): string | undefined {
   //   return this.attr.get('value') ? this.attr.get('value') as string : undefined;
