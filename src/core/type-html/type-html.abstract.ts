@@ -10,9 +10,7 @@ import { Attribute } from '../attribute/attribute.class';
 import type { ITypeHtml, HtmlProps } from './type-html.interface';
 
 export abstract class TypeHtml<T extends HTMLElement = HTMLElement>
-  extends TypeElement
-  implements ITypeHtml
-{
+  extends TypeElement implements ITypeHtml {
   /**
    * 代表HTML元素的抽象属性。
    * 该属性应为一个`HTMLElement`类型，是具体实现中必须提供的。
