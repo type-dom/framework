@@ -2,6 +2,11 @@ import { isObject } from '@type-dom/utils';
 import { warn } from '../utils/debug';
 import { currentInstance } from './instance';
 
+/**
+ * 暴露给外部的属性
+ * 最好减少使用， 直接this.prop 赋值就行。
+ * @param exposed
+ */
 export function defineExpose<T>(exposed: T): void {
   if (currentInstance) {
     if (isObject(exposed)) {
