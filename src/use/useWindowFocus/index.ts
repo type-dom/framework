@@ -1,9 +1,10 @@
 // import type { Ref } from 'vue'
+import { signal } from '@type-dom/signals'
+import { Ref } from '../../reactivity';
 import type { ConfigurableWindow } from '../_configurable'
 // import { ref } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
-import { signal, Ref } from '@type-dom/signals';
 
 /**
  * Reactively track window focus with `window.onfocus` and `window.onblur`.
