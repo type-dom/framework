@@ -1,5 +1,5 @@
-import { Ref, WatchOptions } from '@type-dom/signals';
 import { AnyFn, Fn } from '@type-dom/utils';
+import { Ref, WatchOptions } from '../../reactivity';
 
 /**
  * A ref that allow to set null or undefined

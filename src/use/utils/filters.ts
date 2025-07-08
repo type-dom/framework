@@ -1,5 +1,6 @@
 import { AnyFn } from '@type-dom/utils';
-import { MaybeRefOrGetter, signal } from '@type-dom/signals';
+import { signal } from '@type-dom/signals';
+import { MaybeRefOrGetter } from '../../reactivity';
 import { toValue } from '../shared/toValue/index'
 import { noop } from './is'
 import type { ArgumentsType, Awaited, Pausable, Promisify } from './types'
