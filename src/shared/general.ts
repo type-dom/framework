@@ -1,24 +1,54 @@
 import { AnyFn } from '@type-dom/utils';
 import { makeMap } from './makeMap'
 
-export const EMPTY_OBJ: { readonly [key: string]: any } = {};
-  // __DEV__
-  // ? Object.freeze({})
-  // : {}
-// export const EMPTY_ARR = [] as readonly never[]; // __DEV__ ? Object.freeze([]) : []
+export const EMPTY_OBJ: { readonly [key: string]: any } = {}
+export const EMPTY_ARR: readonly never[] = []
 
-export const NOOP = (): void => { /*nothing*/ }
+export const NOOP = (): void => {/*nothing*/}
 
 /**
  * Always return false.
  */
 export const NO = () => false
 
-export const isOn = (key: string): boolean =>
-  key.charCodeAt(0) === 111 /* o */ &&
-  key.charCodeAt(1) === 110 /* n */ &&
-  // uppercase letter
-  (key.charCodeAt(2) > 122 || key.charCodeAt(2) < 97)
+export function isOn (key: string): boolean {
+  return key.charCodeAt(0) === 111 /* o */ &&
+    key.charCodeAt(1) === 110 /* n */ &&
+    // uppercase letter
+    (key.charCodeAt(2) > 122 || key.charCodeAt(2) < 97);
+}
+
+/**
+ * 检查给定的键是否符合事件命名规范（以'on'开头后跟大写字母）
+ * @param key - 要检查的字符串键
+ * @returns boolean - 是否匹配事件命名规范
+ */
+export function isEventKey (key: string): boolean {
+  // 验证前两个字符是否为 'o' 和 'n' 的 ASCII 码
+  return  key.charCodeAt(0) === 111 /* o */ &&
+  key.charCodeAt(1) === 110 /* n */ && // 确保以 'on' 开头
+  // 检查第三个字符是否为大写字母（ASCII 65-90）
+  (key.charCodeAt(2) > 64 && key.charCodeAt(2) < 91);
+}
+
+/**
+ * 将事件名格式从 'onXxx' 转换为 'xxx'
+ * @param eventName - 符合 'onXxx' 格式的事件名（如 onClick）
+ * @returns 转换后的事件名（如 click）
+ * @throws 如果输入格式不合法
+ */
+export function convertEventName(eventName: string): string {
+  // 校验格式：必须以 'on' 开头且第三个字符为大写字母
+  if (!eventName.startsWith('on') || eventName.length < 3) {
+    throw new Error(`Invalid event name format: "${eventName}". Expected format: "onXxx"`);
+  }
+  const thirdChar = eventName[2];
+  if (thirdChar !== thirdChar.toUpperCase()) {
+    throw new Error(`Third character must be uppercase in event name: "${eventName}"`);
+  }
+  // 截取后缀并转为小写
+  return eventName.slice(2).toLowerCase();
+}
 
 export const isModelListener = (key: string): key is `onUpdate:${string}` =>
   key.startsWith('onUpdate:')
@@ -48,8 +78,7 @@ export const isDate = (val: unknown): val is Date =>
   toTypeString(val) === '[object Date]'
 export const isRegExp = (val: unknown): val is RegExp =>
   toTypeString(val) === '[object RegExp]'
-// eslint-disable-preview-line @typescript-eslint/ban-types
-export const isFunction = (val: unknown): val is Function =>
+export const isFunction = (val: unknown): val is AnyFn =>
   typeof val === 'function'
 export const isString = (val: unknown): val is string => typeof val === 'string'
 export const isSymbol = (val: unknown): val is symbol => typeof val === 'symbol'
@@ -86,15 +115,15 @@ export const isIntegerKey = (key: unknown): boolean =>
 export const isReservedProp: (key: string) => boolean = /*@__PURE__*/ makeMap(
   // the leading comma is intentional so empty string "" is also included
   ',key,ref,ref_for,ref_key,' +
-    'onVnodeBeforeMount,onVnodeMounted,' +
-    'onVnodeBeforeUpdate,onVnodeUpdated,' +
-    'onVnodeBeforeUnmount,onVnodeUnmounted',
+  'onVnodeBeforeMount,onVnodeMounted,' +
+  'onVnodeBeforeUpdate,onVnodeUpdated,' +
+  'onVnodeBeforeUnmount,onVnodeUnmounted',
 )
 
 export const isBuiltInDirective: (key: string) => boolean =
   /*@__PURE__*/ makeMap(
-    'bind,cloak,else-if,else,for,html,if,model,on,once,pre,show,slot,text,memo',
-  )
+  'bind,cloak,else-if,else,for,html,if,model,on,once,pre,show,slot,text,memo',
+)
 
 const cacheStringFunction = <T extends (str: string) => string>(fn: T): T => {
   const cache: Record<string, string> = Object.create(null)
@@ -186,23 +215,23 @@ export const toNumber = (val: any): any => {
 
 // for typeof global checks without @types/node
 // declare var global: {}
-//
-// let _globalThis: any
-// export const getGlobalThis = (): any => {
-//   return (
-//     _globalThis ||
-//     (_globalThis =
-//       typeof globalThis !== 'undefined'
-//         ? globalThis
-//         : typeof self !== 'undefined'
-//           ? self
-//           : typeof window !== 'undefined'
-//             ? window
-//             : typeof global !== 'undefined'
-//               ? global
-//               : {})
-//   )
-// }
+
+let _globalThis: any
+export const getGlobalThis = (): any => {
+  return (
+    _globalThis ||
+    (_globalThis =
+      typeof globalThis !== 'undefined'
+        ? globalThis
+        : typeof self !== 'undefined'
+          ? self
+          : typeof window !== 'undefined'
+            ? window
+            : typeof global !== 'undefined'
+              ? global
+              : {})
+  )
+}
 
 const identRE = /^[_$a-zA-Z\xA0-\uFFFF][_$a-zA-Z0-9\xA0-\uFFFF]*$/
 
