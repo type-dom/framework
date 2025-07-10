@@ -1,29 +1,17 @@
-// export type * from './css-rule/index';
-import { IStyle } from '@type-dom/css-type';
 
+import { CSSProperties } from './style.interface';
+export type * from './style.interface';
 export * from './style.enum';
 export * from './create-style';
-export function setStyles(el?: HTMLElement, styles?: IStyle) {
+export function setStyles(el?: HTMLElement, styles?: CSSProperties) {
   if (!el || !styles) {
     return;
   }
   for (const key in styles) {
     if (Object.prototype.hasOwnProperty.call(styles, key)) {
-      el.style.setProperty(key, styles[key as keyof IStyle] as string);
+      el.style.setProperty(key, styles[key as keyof CSSProperties] as string);
     }
   }
-}
-export function cssStrToObj(cssString: string): IStyle {
-  const styleObject: IStyle = {};
-  const styleRules = cssString.split(';');
-  for (const rule of styleRules) {
-    const [property, value] = rule.split(':').map(part => part.trim());
-    if (property && value) {
-      const camelCaseProperty = property.replace(/-([a-z])/g, (_match, letter) => letter.toUpperCase());
-      (styleObject as any)[camelCaseProperty] = value;
-    }
-  }
-  return styleObject;
 }
 
 // 示例用法

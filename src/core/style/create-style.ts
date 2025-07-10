@@ -20,9 +20,9 @@
  *   `;
  * @param cssStyles
  */
-import { IStyle } from '@type-dom/css-type';
-import { vHash } from '../index';
 import { camelToDash } from '@type-dom/utils';
+import { vHash } from '../index';
+import { CSSProperties } from './style.interface';
 
 const styleElement = createStyleElement();
 
@@ -62,7 +62,7 @@ export function createStyle(cssStyles: string, scoped?: boolean) {
 }
 
 // 有作用域的样式 data-v- *****
-export function createClass(className: string, styleObj: IStyle & Record<string, string | number>) {
+export function createClass(className: string, styleObj: CSSProperties & Record<string, string | number>) {
   // console.log('createClass . className: ', className, ' styleObj: ', styleObj);
   const clsArr = className.split(' ');
   let selector = '';
@@ -80,12 +80,12 @@ export function createClass(className: string, styleObj: IStyle & Record<string,
   createStyle(cssText);
 }
 
-function buildCssRule(selector: string, style: IStyle) {
+function buildCssRule(selector: string, style: CSSProperties) {
   // let selector = jsonRule.selector;
   const styleParts = [];
   for (const prop in style) {
     if (Object.prototype.hasOwnProperty.call(style, prop)) {
-      styleParts.push(`${camelToDash(prop)}: ${style[prop as keyof IStyle]};`);
+      styleParts.push(`${camelToDash(prop)}: ${style[prop as keyof CSSProperties]};`);
     }
   }
   return `${selector} { ${styleParts.join(' ')} }`;

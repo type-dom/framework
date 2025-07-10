@@ -1,4 +1,5 @@
-import { IStyle, Property } from '@type-dom/css-type';
+import {  Property } from '@type-dom/css-type';
+
 import {
   addUnit,
   // camelToDash,
@@ -7,15 +8,16 @@ import {
   isArray,
   isString,
   removeStyle,
-  setStyle,
-  Ratio, isUndefined
+  setStyle, isUndefined,
+  Ratio
 } from '@type-dom/utils';
-import { effect, toRaw, isRef, MaybeRef, Ref } from '@type-dom/signals';
+import { effect } from '@type-dom/signals';
+import { toRaw, isRef, MaybeRef, } from '../../reactivity';
 import { XElement } from '../../components/x-element/x-element.class';
-import { RawStyle, StyleValue } from '../../interface';
 import { TypeHtml } from '../type-html/type-html.abstract';
 import { TypeSvg } from '../type-svg/type-svg.abstract';
 import { cssStrToObj } from './cssStrToObj'; // todo 直接用 '.' 会循环依赖
+import { CSSProperties, RawStyle, StyleValue } from './style.interface';
 
 export class Style {
   private el: TypeHtml | TypeSvg | XElement;
@@ -54,8 +56,8 @@ export class Style {
     return 'none' !== this.el.dom?.style?.display;
   }
 
-  get<T>(key: keyof IStyle): T {
-    return this.obj[key] as T;
+  get(key: keyof CSSProperties) {
+    return this.obj[key];
   }
 
   getObj() {
@@ -72,7 +74,7 @@ export class Style {
     if (!styleObj) {
       return;
     }
-    let rawObj: IStyle = {};
+    let rawObj: RawStyle = {};
     if (isRef(styleObj)) {
       // rawObj = rawStyles(styleObj);
       effect(() => {
@@ -90,19 +92,19 @@ export class Style {
 
       })
     } else {
-      rawObj = doStyleValue(styleObj as StyleValue | Record<string, Ref<string | undefined>>);
+      rawObj = doStyleValue(styleObj);
       // console.error('rawObj is ', rawObj);
     }
     for (const key in rawObj) {
       if (Object.hasOwnProperty.call(rawObj, key)) {
         // todo 如何优化
-        const value = rawObj[key as keyof IStyle];
-        this.add(key as keyof IStyle, value);
+        const value = rawObj[key as keyof CSSProperties];
+        this.add(key as keyof CSSProperties, value);
       }
     }
   }
 
-  add(key: keyof IStyle, value: MaybeRef<string | number | undefined>): void {
+  add(key: keyof CSSProperties, value: MaybeRef<string | number | undefined>): void {
     if (!this.obj) {
       // console.error('style this.obj is undefined .');
       return;
@@ -110,7 +112,7 @@ export class Style {
     if (value === undefined) {
       delete this.obj[key];
     } else {
-      this.obj[key] = value;
+      (this.obj as any)[key] = value;
       // if (key === 'objectFit') {
       //   console.warn('style key is objectFit');
       // }
@@ -126,12 +128,12 @@ export class Style {
 
   /**
    * 根据给定的样式键和值，渲染元素的样式。
-   * @param key 样式属性的名称，必须是IStyle接口中定义的属性名。
+   * @param key 样式属性的名称，必须是 CSSProperties 接口中定义的属性名。
    * @param value 样式属性的值，可以是字符串、数字或布尔值。
    * @throws 如果this.el.dom为null，则抛出错误，指示元素不存在。
    * value 是 Signal或Computed时，需要监听变化；
    */
-  private render(key: keyof IStyle, value: MaybeRef<string | number | undefined>): void {
+  private render(key: keyof CSSProperties, value: MaybeRef<string | number | undefined>): void {
     let dom = this.el.dom;
     if (!dom) {
       this.el.createDom()  // 保证dom存在
@@ -156,7 +158,7 @@ export class Style {
     }
   }
 
-  renderRawStyle(key: keyof IStyle, newValue: string | number | undefined) {
+  renderRawStyle(key: string, newValue: string | number | undefined) {
     // if (key === 'flexShrink') {
     //   console.warn('flexShrink . style key')
     // }
@@ -203,10 +205,10 @@ export class Style {
    * 此方法用于根据给定的键和值来更新元素的样式。如果值为`undefined`，则此方法将删除该样式的属性；
    * 否则，它将添加新的样式属性并立即渲染更新。
    * 此方法会渲染到dom上
-   * @param key 样式属性的键，对应于`IStyle`接口中的属性名。
+   * @param key 样式属性的键，对应于`CSSProperties`接口中的属性名。
    * @param value 样式属性的值，可以是字符串、数字或布尔值。
    */
-  set(key: keyof IStyle, value: string | number | undefined): void {
+  set(key: keyof CSSProperties, value: MaybeRef<string | number | undefined>): void {
     // 当值为undefined时，调用removeStyle方法来删除这个样式属性
     // todo type ???
     if (value === undefined) {
@@ -222,9 +224,9 @@ export class Style {
   }
 
   // 删除样式
-  remove(key: keyof IStyle): void {
-    if (this.getObj() && this.getObj()?.[key]) {
-      delete this.getObj()?.[key];
+  remove(key: string): void {
+    if (this.getObj() && this.getObj()?.[key as keyof CSSProperties]) {
+      delete this.getObj()?.[key as keyof CSSProperties];
     }
     if (this.el.dom) {
       removeStyle(this.el.dom!, key);
@@ -243,9 +245,9 @@ export class Style {
     if (!styleObj) {
       return;
     }
-    let rawObj: IStyle | undefined;
+    let rawObj: RawStyle;
     if (isRef(styleObj)) {
-      rawObj = styleObj.get() as IStyle;
+      rawObj = styleObj.get() as RawStyle;
       effect(() => {
         const newStyleObj = getRawStyles(styleObj);
         // console.error('style newStyleObj is ', newStyleObj);
@@ -259,8 +261,8 @@ export class Style {
     for (const key in rawObj) {
       if (Object.hasOwnProperty.call(styleObj, key)) {
         // todo 如何优化
-        const value = rawObj[key as keyof IStyle];
-        this.set(key as keyof IStyle, value);
+        const value = rawObj[key as keyof CSSProperties];
+        this.set(key as keyof CSSProperties, value);
       }
     }
     // todo 样式一次性渲染。下面的代码 Tag 组件checkable 有问题；
@@ -268,9 +270,9 @@ export class Style {
     // let styleString = '';
     // for (const key in style) {
     //   if (Object.hasOwnProperty.call(style, key)) {
-    //     const value = style[key as keyof IStyle];
+    //     const value = style[key as keyof CSSProperties];
     //     if (value === undefined) {
-    //       this.el.style.remove[key as keyof IStyle];
+    //       this.el.style.remove[key as keyof CSSProperties];
     //       continue;
     //     }
     //     styleString += `${camelToDash(key)}:${value};`;
@@ -325,10 +327,10 @@ export class Style {
     }
   }
 
-  removeObj(styleObj: IStyle): void {
+  removeObj(styleObj: CSSProperties): void {
     for (const key in styleObj) {
       if (Object.hasOwnProperty.call(styleObj, key)) {
-        this.remove(key as keyof IStyle);
+        this.remove(key as keyof CSSProperties);
       }
     }
   }
@@ -336,7 +338,7 @@ export class Style {
   clearObj() {
     for (const key in this.obj) {
       if (Object.hasOwnProperty.call(this.obj, key)) {
-        this.remove(key as keyof IStyle);
+        this.remove(key as keyof CSSProperties);
       }
     }
   }
@@ -345,8 +347,8 @@ export class Style {
     for (const key in styleObj) {
       if (Object.hasOwnProperty.call(styleObj, key)) {
         // todo 如何优化
-        const value = styleObj[key as keyof IStyle];
-        this.render(key as keyof IStyle, value);
+        const value = styleObj[key as keyof CSSProperties];
+        this.render(key as keyof CSSProperties, value);
       }
     }
   }
@@ -367,16 +369,16 @@ export class Style {
 }
 
 // 应该在style类的render中使用
-function getRawStyles(style: StyleValue, res: IStyle = {}) {
-  // const raw = {} as IStyle;
-  // Helper function to convert a Record<keyof IStyle, MaybeRef<string | number>> to IStyle
-  function convertRecordToIStyle(record: Record<keyof IStyle, MaybeRef<string | number>>): IStyle {
+function getRawStyles(style: StyleValue, res: RawStyle = {}) {
+  // const raw = {} as CSSProperties;
+  // Helper function to convert a Record<keyof CSSProperties, MaybeRef<string | number>> to CSSProperties
+  function convertRecordToIStyle(record: RawStyle): RawStyle {
     // return Object.fromEntries(
     //   Object.entries(record).map(([key, value]) => [key, toRaw(value)])
-    // ) as IStyle;
+    // ) as CSSProperties;
     for (const key in record) {
-      const value = toRaw(record[key as keyof IStyle]);
-      res[key as keyof IStyle] = value as any; // IStyle的值类型太复杂了； todo optimize
+      const value = toRaw(record[key as keyof RawStyle]);
+      (res as any)[key] = value; // CSSProperties 的值类型太复杂了； todo optimize
     }
     return res;
   }
@@ -388,24 +390,26 @@ function getRawStyles(style: StyleValue, res: IStyle = {}) {
       } else if (isRef(item)) {
          Object.assign(res, toRaw(item as StyleValue));
       } else {
-         Object.assign(res, convertRecordToIStyle(item as Record<keyof IStyle, MaybeRef<string | number>>));
+         Object.assign(res, convertRecordToIStyle(item as RawStyle));
       }
     });
     return res;
   } else if (isRef(style)) {
     return getRawStyles(toRaw(style));
   } else {
-    return convertRecordToIStyle(style as Record<keyof IStyle, MaybeRef<string | number>>);
+    return convertRecordToIStyle(style as RawStyle);
   }
 }
 
-function doStyleValue(style?: StyleValue, resStyle: IStyle = {}) {
+function doStyleValue(style?: StyleValue, resStyle: RawStyle = {}) {
   if (isString(style)) {
     Object.assign(resStyle, cssStrToObj(style));
   } else if (isArray(style)) {
     style.forEach(item => {
       doStyleValue(item, resStyle);
     });
+  } else if (isRef(style)){
+    Object.assign(resStyle, toRaw(style));
   } else {
     Object.assign(resStyle, style);
   }
