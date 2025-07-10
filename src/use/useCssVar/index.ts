@@ -1,4 +1,5 @@
-import { MaybeRefOrGetter, signal, computed, watch } from '@type-dom/signals';
+import { signal, computed } from '@type-dom/signals';
+import { MaybeRefOrGetter, watch } from '../../reactivity';
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeElementRef } from '../unrefElement'
 // import { computed, shallowRef, toValue, watch } from 'vue'

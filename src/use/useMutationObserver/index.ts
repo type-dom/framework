@@ -1,5 +1,6 @@
 // import type { MaybeRefOrGetter } from '@vueuse/shared'
-import { computed, MaybeRefOrGetter, watch } from '@type-dom/signals';
+import { computed } from '@type-dom/signals';
+import { MaybeRefOrGetter, watch } from '../../reactivity';
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
 // import { notNullish, toValue, tryOnScopeDispose } from '@vueuse/shared'
@@ -8,8 +9,8 @@ import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useSupported } from '../useSupported'
 import { toValue } from '../shared/toValue';
-import { notNullish } from '../utils';
 import { tryOnScopeDispose } from '../shared/tryOnScopeDispose';
+import { notNullish } from '../utils';
 
 export interface UseMutationObserverOptions extends MutationObserverInit, ConfigurableWindow {}
 

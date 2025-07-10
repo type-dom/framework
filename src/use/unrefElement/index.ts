@@ -1,4 +1,4 @@
-import { MaybeRef, MaybeRefOrGetter } from '@type-dom/signals';
+import { MaybeRef, MaybeRefOrGetter } from '../../reactivity';
 import { TypeNode } from '../../core/type-node/type-node.abstract';
 import { toValue } from '../shared/toValue/index';
 

@@ -1,5 +1,6 @@
 // import type { Ref } from 'vue'
-import { signal, Ref } from '@type-dom/signals';
+import { signal } from '@type-dom/signals';
+import { Ref } from '../../reactivity'
 import type { ConfigurableDocument } from '../_configurable'
 // import { ref } from 'vue'
 import { defaultDocument } from '../_configurable'

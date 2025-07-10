@@ -2,7 +2,8 @@
 // import type { Ref, WatchOptions } from 'vue'
 // import { isRef, ref, toValue, watch } from 'vue'
 
-import { isRef, MaybeRefOrGetter, Ref, signal, watch, WatchOptions } from '@type-dom/signals';
+import { signal } from '@type-dom/signals';
+import { isRef, MaybeRefOrGetter, Ref, watch, WatchOptions } from '../../reactivity';
 import { toValue } from '../shared/toValue/index';
 
 export interface UseClonedOptions<T = any> extends WatchOptions {

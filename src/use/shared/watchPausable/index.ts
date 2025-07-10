@@ -1,7 +1,7 @@
 // import type { WatchCallback, WatchSource, WatchStopHandle } from 'vue'
 import {
   // WatchCallback, WatchSource,
-  WatchStopHandle } from '@type-dom/signals';
+  WatchStopHandle } from '../../../reactivity';
 import type {
   // MapOldSources, MapSources,
   Pausable } from '../../utils'

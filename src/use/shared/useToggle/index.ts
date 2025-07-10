@@ -1,8 +1,9 @@
 // import type { Ref } from 'vue'
 // import type { MaybeRef, MaybeRefOrGetter } from '../utils'
 // import { isRef, ref } from 'vue'
+import { signal, Signal } from '@type-dom/signals';
+import { MaybeRef, MaybeRefOrGetter, isRef, unref } from '../../../reactivity';
 import { toValue } from '../toValue/index'
-import { isSignal, isComputed, MaybeRef, MaybeRefOrGetter, signal, Signal } from '@type-dom/signals';
 
 export interface UseToggleOptions<Truthy, Falsy> {
   truthyValue?: MaybeRefOrGetter<Truthy>
@@ -27,8 +28,8 @@ export function useToggle(
     falsyValue = false,
   } = options
 
-  const valueIsRef = isSignal(initialValue) || isComputed(initialValue);
-  const _value = signal(initialValue) as Signal<boolean>
+  const valueIsRef = isRef(initialValue);
+  const _value: Signal<boolean | undefined> = signal(unref(initialValue))
 
   function toggle(value?: boolean) {
     // has arguments
@@ -37,11 +38,9 @@ export function useToggle(
       return _value.get()
     } else {
       const truthy = toValue(truthyValue)
-      // eslint-disable-preview-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      _value.set(_value.get() === truthy)
+      _value.set(_value.get() === truthy
         ? toValue(falsyValue)
-        : truthy
+        : truthy)
       return _value.get()
     }
   }

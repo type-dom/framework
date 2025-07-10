@@ -5,7 +5,8 @@
 // import { isClient } from '../utils'
 
 import { AnyFn } from '@type-dom/utils';
-import { MaybeRefOrGetter, signal } from '@type-dom/signals';
+import { signal } from '@type-dom/signals';
+import { MaybeRefOrGetter } from '../../../reactivity';
 import { Stoppable } from '../../utils';
 import { toValue } from '../toValue/index';
 import { isClient } from '../utils';

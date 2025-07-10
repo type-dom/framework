@@ -1,19 +1,20 @@
 <script setup lang="ts">
-import { useToggle } from '@vueuse/core'
+// import { useToggle } from '@vueuse/core'
+import { useToggle } from './index';
 
 const [value, toggle] = useToggle()
 </script>
 
 <template>
   <div>
-    <p>Value: {{ value ? 'ON' : 'OFF' }}</p>
+    <p>Value: {{ value.get() ? 'ON' : 'OFF' }}</p>
     <button @click="toggle()">
       Toggle
     </button>
-    <button @click="value = true">
+    <button @click="value.set(true)">
       Set ON
     </button>
-    <button @click="value = false">
+    <button @click="value.set(false)">
       Set OFF
     </button>
   </div>

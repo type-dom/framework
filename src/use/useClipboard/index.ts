@@ -1,6 +1,7 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 // import type { ComputedRef, MaybeRefOrGetter } from 'vue'
-import { Ref, MaybeRefOrGetter, computed, signal } from '@type-dom/signals';
+import { computed, signal } from '@type-dom/signals';
+import { Ref, MaybeRefOrGetter } from '../../reactivity';
 import type { ConfigurableNavigator } from '../_configurable'
 // import { useTimeoutFn } from '@vueuse/shared'
 import { defaultNavigator } from '../_configurable'

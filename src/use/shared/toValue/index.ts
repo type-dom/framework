@@ -1,4 +1,4 @@
-import { unref, MaybeRefOrGetter } from '@type-dom/signals';
+import { unref, MaybeRefOrGetter } from '../../../reactivity';
 import { isFunction } from '../../../shared/general';
 
 /**

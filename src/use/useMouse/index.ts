@@ -1,11 +1,12 @@
 // import type { ConfigurableEventFilter } from '@vueuse/shared'
+import { signal } from '@type-dom/signals';
+import { MaybeRefOrGetter } from '../../reactivity';
 import type { ConfigurableWindow } from '../_configurable'
 import type { Position } from '../types'
 // import { ref } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
 import { ConfigurableEventFilter } from '../utils';
-import { MaybeRefOrGetter, signal } from '@type-dom/signals';
 
 export type UseMouseCoordType = 'page' | 'client' | 'screen' | 'movement'
 export type UseMouseSourceType = 'mouse' | 'touch' | null

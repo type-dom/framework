@@ -1,5 +1,5 @@
+import { MaybeRefOrGetter } from '../../reactivity';
 import type { FunctionArgs, PromisifyFn } from '../utils'
-import { MaybeRefOrGetter } from '@type-dom/signals';
 import { createFilterWrapper, throttleFilter } from '../utils'
 
 /**

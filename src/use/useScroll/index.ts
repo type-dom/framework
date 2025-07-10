@@ -1,16 +1,17 @@
 // import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { computed, signal } from '@type-dom/signals';
+import { MaybeRefOrGetter } from '../../reactivity';
 import type { ConfigurableWindow } from '../_configurable'
 // import { noop, tryOnMounted, useDebounceFn, useThrottleFn } from '@vueuse/shared'
 // import { computed, reactive, ref, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { useEventListener } from '../useEventListener'
-import { computed, MaybeRefOrGetter, signal } from '@type-dom/signals';
 import { noop } from '../utils';
 import { toValue } from '../shared/toValue';
 import { useDebounceFn } from '../shared/useDebounceFn';
-import { useThrottleFn } from '../useThrottleFn';
 import { tryOnMounted } from '../shared/tryOnMounted';
+import { useThrottleFn } from '../useThrottleFn';
 
 
 export interface UseScrollOptions extends ConfigurableWindow {

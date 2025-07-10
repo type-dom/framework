@@ -1,7 +1,8 @@
-import { Computed, computed, signal, watch, MaybeRef, MaybeRefOrGetter, Ref } from '@type-dom/signals';
+import { Computed, computed, signal } from '@type-dom/signals';
+import { watch, MaybeRef, MaybeRefOrGetter, Ref } from '../../reactivity';
 import { toValue } from '../shared/toValue/index';
-import { identity as linear, promiseTimeout } from '../utils';
 import { tryOnScopeDispose } from '../shared/tryOnScopeDispose';
+import { identity as linear, promiseTimeout } from '../utils';
 
 /**
  * Cubic bezier points

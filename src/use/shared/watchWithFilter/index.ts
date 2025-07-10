@@ -1,10 +1,10 @@
 // import type { WatchCallback, WatchOptions, WatchSource, WatchStopHandle } from 'vue'
+import { watch, WatchOptions, WatchStopHandle } from '../../../reactivity';
 import type { ConfigurableEventFilter,
   // MapOldSources, MapSources
 } from '../../utils'
 // import { watch } from 'vue'
 import { bypassFilter, createFilterWrapper } from '../../utils'
-import { watch, WatchOptions, WatchStopHandle } from '@type-dom/signals';
 
 export interface WatchWithFilterOptions<_Immediate> extends WatchOptions, ConfigurableEventFilter {}
 

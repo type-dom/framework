@@ -2,7 +2,8 @@
 // eslint-disable-preview-line no-restricted-imports
 // import { ref, unref } from 'vue'
 
-import { MaybeRef, signal, unref } from '@type-dom/signals';
+import { signal } from '@type-dom/signals';
+import { MaybeRef, unref } from '../../../reactivity';
 
 export interface UseCounterOptions {
   min?: number;

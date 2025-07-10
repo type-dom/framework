@@ -1,5 +1,7 @@
 // import type { MaybeRefOrGetter } from '@vueuse/shared'
 // import type { ComputedRef, Ref } from 'vue'
+import { computed, Computed, Signal } from '@type-dom/signals';
+import { MaybeRefOrGetter, toRef, watch } from '../../reactivity';
 // import type { StorageLike } from '../ssr-handlers'
 import type { MaybeElementRef } from '../unrefElement'
 import type { UseStorageOptions } from '../useStorage'
@@ -10,7 +12,6 @@ import { defaultWindow } from '../_configurable'
 import { unrefElement } from '../unrefElement'
 import { usePreferredDark } from '../usePreferredDark'
 import { useStorage } from '../useStorage'
-import { computed, Computed, MaybeRefOrGetter, Signal, toRef, watch } from '@type-dom/signals';
 import { getSSRHandler, StorageLike } from '../ssr-handlers';
 import { tryOnMounted } from '../shared/tryOnMounted';
 

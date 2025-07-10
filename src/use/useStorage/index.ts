@@ -1,6 +1,6 @@
 // import type { Awaitable, ConfigurableEventFilter, ConfigurableFlush, MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
-
-import { MaybeRefOrGetter, signal } from '@type-dom/signals';
+import { signal } from '@type-dom/signals';
+import { MaybeRefOrGetter } from '../../reactivity';
 import type { ConfigurableWindow } from '../_configurable'
 // import type { StorageLike } from '../ssr-handlers'
 // import { pausableWatch, toValue, tryOnMounted } from '@vueuse/shared'
@@ -11,9 +11,9 @@ import { useEventListener } from '../useEventListener'
 import { Awaitable, ConfigurableEventFilter, ConfigurableFlush } from '../utils';
 import { nextTick } from '../../core/scheduler';
 import { toValue } from '../shared/toValue/index';
-import { getSSRHandler, StorageLike } from '../ssr-handlers';
 import { tryOnMounted } from '../shared/tryOnMounted';
 import { pausableWatch } from '../shared/watchPausable';
+import { getSSRHandler, StorageLike } from '../ssr-handlers';
 import { guessSerializerType } from './guess'
 
 export interface Serializer<T> {

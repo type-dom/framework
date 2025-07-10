@@ -3,7 +3,8 @@
 // import { ref, watch } from 'vue'
 // import { useDebounceFn } from '../useDebounceFn'
 
-import { MaybeRefOrGetter, Ref, signal, watch } from '@type-dom/signals';
+import {  signal } from '@type-dom/signals';
+import { MaybeRefOrGetter, Ref, watch } from '../../../reactivity';
 import { DebounceFilterOptions } from '../../utils/filters';
 import { useDebounceFn } from '../useDebounceFn';
 

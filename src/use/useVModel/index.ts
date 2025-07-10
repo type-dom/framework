@@ -1,10 +1,11 @@
 // import type { Ref, UnwrapRef, WritableComputedRef } from 'vue'
+import { computed, Computed, signal } from '@type-dom/signals';
+import { Ref, toRaw, unref, watch } from '../../reactivity';
 import { getCurrentInstance } from '../../core/instance';
 import type { CloneFn } from '../useCloned'
 // import { isDef } from '@vueuse/shared'
 // import { computed, getCurrentInstance, nextTick, ref, watch } from 'vue'
 import { cloneFnJSON } from '../useCloned'
-import { computed, Computed, Ref, signal, toRaw, unref, watch } from '@type-dom/signals';
 import { isDef } from '../utils';
 import { nextTick } from '../../core/scheduler';
 

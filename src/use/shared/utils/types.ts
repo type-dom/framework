@@ -5,8 +5,9 @@
 //   MaybeRefOrGetter,
 // }
 
-import { Computed, MaybeRef, Ref, WatchOptions, WatchSource } from '@type-dom/signals';
+import { Computed } from '@type-dom/signals';
 import { AnyFn, Fn } from '@type-dom/utils';
+import { MaybeRef, Ref, WatchOptions, WatchSource } from '../../../reactivity';
 
 /**
  * A ref that allow to set null or undefined

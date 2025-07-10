@@ -1,6 +1,7 @@
-import { isSignal, isComputed, MaybeRefOrGetter, readonly, signal } from '@type-dom/signals';
+import { signal } from '@type-dom/signals';
 import { AnyFn } from '@type-dom/utils';
 // import { isRef, readonly, ref } from 'vue'
+import { isComputed, isSignal, MaybeRefOrGetter, readonly } from '../../../reactivity';
 import { toValue } from '../toValue'
 import type { ArgumentsType, Awaited, Pausable, Promisify } from './types'
 import { noop } from './is'

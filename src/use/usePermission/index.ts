@@ -1,6 +1,7 @@
 // import type { ComputedRef, ShallowRef } from 'vue'
 // import { shallowRef, toRaw } from 'vue'
-import { signal, toRaw, Signal, Computed } from '@type-dom/signals';
+import { signal, Signal, Computed } from '@type-dom/signals';
+import { toRaw } from '../../reactivity';
 import type { ConfigurableNavigator } from '../_configurable'
 // import { createSingletonPromise } from '@vueuse/shared'
 

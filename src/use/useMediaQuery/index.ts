@@ -1,6 +1,8 @@
 /* this implementation is original ported from https://github.com/logaretm/vue-use-web by Abdelrahman Awad */
 
 // import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { effect, signal } from '@type-dom/signals';
+import { MaybeRefOrGetter } from '../../reactivity';
 import type { ConfigurableWindow } from '../_configurable';
 // import { toValue, tryOnScopeDispose } from '@vueuse/shared'
 // import { ref, watchEffect } from 'vue'
@@ -8,7 +10,6 @@ import { defaultWindow } from '../_configurable';
 import { toValue } from '../shared/toValue/index';
 import { tryOnScopeDispose } from '../shared/tryOnScopeDispose';
 import { useSupported } from '../useSupported';
-import { effect, MaybeRefOrGetter, signal } from '@type-dom/signals';
 
 /**
  * Reactive Media Query.

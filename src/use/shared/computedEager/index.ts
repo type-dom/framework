@@ -4,7 +4,8 @@
 // import type { Ref, WatchOptionsBase } from 'vue'
 // import { readonly, shallowRef, watchEffect } from 'vue'
 
-import { effect, signal, WatchOptions, Signal } from '@type-dom/signals';
+import { effect, signal, Signal } from '@type-dom/signals';
+import { WatchOptions } from '../../../reactivity';
 
 /**
  * Note: If you are using Vue 3.4+, you can straight use computed instead.

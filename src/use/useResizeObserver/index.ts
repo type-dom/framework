@@ -1,4 +1,5 @@
-import { Computed, computed, MaybeRefOrGetter, watch } from '@type-dom/signals';
+import { Computed, computed } from '@type-dom/signals';
+import { MaybeRefOrGetter, watch } from '../../reactivity';
 import type { ConfigurableWindow } from '../_configurable'
 import type { MaybeComputedElementRef, MaybeElement } from '../unrefElement'
 import { defaultWindow } from '../_configurable'

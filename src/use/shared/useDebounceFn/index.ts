@@ -1,10 +1,9 @@
 // import type { DebounceFilterOptions, FunctionArgs, MaybeRefOrGetter, PromisifyFn } from '../utils'
 // import { createFilterWrapper, debounceFilter } from '../utils'
 
-import { MaybeRefOrGetter } from '@type-dom/signals';
+import { MaybeRefOrGetter } from '../../../reactivity';
 import { createFilterWrapper, debounceFilter, DebounceFilterOptions, FunctionArgs } from '../utils/filters';
 import { PromisifyFn } from '../utils/types';
-
 
 /**
  * Debounce execution of a function.

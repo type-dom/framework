@@ -1,4 +1,5 @@
-import { signal, watch } from '@type-dom/signals';
+import { signal } from '@type-dom/signals';
+import { watch } from '../../reactivity';
 import type { ConfigurableWindow } from '../_configurable'
 // import { tryOnMounted } from '@vueuse/shared'
 // import { ref, watch } from 'vue'

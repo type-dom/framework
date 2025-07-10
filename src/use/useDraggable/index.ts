@@ -1,10 +1,11 @@
 // import type { MaybeRefOrGetter } from '@vueuse/shared'
+import { MaybeRefOrGetter, toRefs } from '../../reactivity';
 import type { PointerType, Position } from '../types'
 // import { isClient, toRefs } from '@vueuse/shared'
 // import { computed, ref, toValue } from 'vue'
 import { defaultWindow } from '../_configurable'
 import { useEventListener } from '../useEventListener'
-import { computed, MaybeRefOrGetter, signal, toRefs } from '@type-dom/signals';
+import { computed, signal } from '@type-dom/signals';
 import { toValue } from '../shared';
 import { isClient } from '../utils';
 
