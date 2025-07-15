@@ -1,7 +1,7 @@
 import { camelToDash, encodeToXmlString } from '@type-dom/utils';
-import { IStyle } from '@type-dom/css-type';
-import { TypeNode } from './type-node.abstract';
+import { CSSProperties } from '../style/style.interface';
 import { NodeName } from '../enums';
+import { TypeNode } from './type-node.abstract';
 
 export function useDump(buffer: string[], element: TypeNode) {
   // console.log('type-node dump . ');
@@ -12,7 +12,7 @@ export function useDump(buffer: string[], element: TypeNode) {
   buffer.push(`<${element.props.nodeName}`);
   // 下面组装 属性 和 样式
   if (element.attr?.getObj()) {
-    for (let key in element.attr?.getObj()) {
+    for (let key in element.attr?.getObj() as any) {
       // 下面几个属性不需要转
       if (
         key !== 'viewBox' &&
@@ -31,7 +31,7 @@ export function useDump(buffer: string[], element: TypeNode) {
     let style = '';
     for (const key in element.style?.getObj()) {
       style += `${camelToDash(key)}: ${encodeToXmlString(
-        String(element.style?.get(key as keyof IStyle))
+        String(element.style?.get(key as keyof CSSProperties))
       )};`;
     }
     if (style !== '') {

@@ -1,4 +1,4 @@
-import { MaybeRef } from '@type-dom/signals';
+import { MaybeRef } from '../../reactivity';
 import { TypeElement } from '../type-element/type-element.abstract';
 import type { ISettings } from './type-node.interface';
 import { TdDom } from '../type-element';

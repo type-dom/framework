@@ -1,5 +1,5 @@
 import { AnyFn } from '@type-dom/utils';
-import { MaybeRef } from '@type-dom/signals';
+import { MaybeRef } from '../../reactivity';
 import { IJsonData } from '../../interface';
 import { EventEmitter } from '../event-emitter/event-emitter.abstract';
 import { TypeElement } from '../type-element/type-element.abstract';
@@ -43,7 +43,67 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   abstract rendered: boolean;
   isBasic?: boolean;
   createdIn?: 'setup';
-  comment?: Comment; // 评论节点；vIf占位符使用，
+  /**
+   * anchor 是片段（Fragment）在真实 DOM 中的位置标记，用于标识该片段在 DOM 树中的插入点或边界点。
+   * 它主要用于以下场景：
+   * 片段插入与定位
+   * 当一个组件或模板包含多个根节点时，Vue 会将这些节点包裹在一个 Fragment 类型的 VNode 中。
+   * anchor 属性用于标记该片段在真实 DOM 中的插入位置。
+   * 这有助于渲染器在更新时正确地将整个片段插入到指定的位置，而不会影响其他部分的 DOM 结构。
+   * 动态内容更新
+   * 在动态内容（如 v-for 或 v-if）中，anchor 用于标记片段的起始或结束位置。
+   * 当内容发生变化时，渲染器可以根据 anchor 快速定位到需要更新的区域，从而高效地进行 DOM 操作。
+   * 避免重复渲染
+   * 在某些复杂的渲染场景中，anchor 可以作为参考点，帮助渲染器判断是否需要重新渲染整个片段，或者只需对片段内的部分内容进行更新。
+   * 这有助于减少不必要的 DOM 操作，提升性能。
+   * 与 target 和 targetAnchor 配合使用
+   * 在 Teleport 组件中，anchor 通常与 target 和 targetAnchor 配合使用，用于标识当前片段在目标容器中的插入位置。
+   * 这样可以确保被传送的内容被正确插入到目标 DOM 节点的合适位置。
+   */
+  anchor?: Comment;  // fragment anchor  评论节点；vIf占位符使用，
+  /**
+   * 作用：指向 Teleport 组件要将内容渲染到的目标 DOM 容器。
+   * 场景：当使用 <Teleport to="#app"> 时，target 会指向 document.getElementById('app')。
+   * 生命周期：
+   * 在 创建 VNode 时由 to 属性解析而来。
+   * 在 挂载/更新 阶段用于定位目标容器。
+   */
+  target?: TdDom | null // teleport target
+  /**
+   * 作用：标记 Teleport 内容在目标容器中的起始插入点。
+   * 场景：当目标容器中已有多个 Teleport 内容时，用于标识当前 Teleport 内容的起始位置。
+   * 行为：
+   * 在 首次渲染 时，Vue 会在目标容器中插入一个注释节点作为 targetStart。
+   * 在 更新/卸载 时，通过 targetStart 和 targetAnchor 定位并操作整个 Teleport 内容块。
+   */
+  targetStart?: TdDom | null // teleport target start anchor
+  /**
+   * 作用：标记 Teleport 内容在目标容器中的结束插入点。
+   * 场景：与 targetStart 配合使用，定义 Teleport 内容在目标容器中的边界。
+   * 行为：
+   * 在 首次渲染 时，Vue 会在目标容器中插入一个注释节点作为 targetAnchor。
+   * 在 更新/卸载 时，通过 targetStart 和 targetAnchor 删除或替换整个 Teleport 内容块。
+   */
+  targetAnchor?: TdDom | null // teleport target anchor
+  /**
+   * 三者协作流程
+   * 创建阶段：
+   * Vue 解析 <Teleport to="#app">，设置 target 为 #app。
+   * 在目标容器中插入 targetStart 和 targetAnchor 注释节点作为占位符。
+   * 将 Teleport 的子节点（如 <div>模态框</div>）插入到 targetStart 和 targetAnchor 之间。
+   * 更新阶段：
+   * 如果 Teleport 内容发生变化，Vue 会直接操作 targetStart 和 targetAnchor 之间的 DOM 节点，无需重新插入整个内容块。
+   * 如果目标容器被动态修改（如切换 to 属性），会重新设置 target 并迁移内容。
+   * 卸载阶段：
+   * 通过 targetStart 和 targetAnchor 定位内容范围，删除整个 Teleport 内容及其占位符。
+   */
+
+  /**
+   * 挂载到指定的组件的DOM,可以直接指向 body
+   * todo Teleport execute mount to outer dom, so need not to property.
+   */
+  to?: MaybeRef<string | TdDom>;
+
   key?: string;
   /**
    * 存储 传入的参数。 只需要到处json时有就行。
@@ -56,11 +116,6 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   baseProps: TypeProps;
 
   parent?: TypeElement | undefined;
-  /**
-   * 挂载到指定的组件的DOM,可以直接指向 body
-   * todo Teleport execute mount to outer dom, so need not to property.
-   */
-  to?: MaybeRef<string | TdDom>;
   isContext?: boolean;
   items?: TypeProps[];
   // textNode?: TextNode;

@@ -1,10 +1,11 @@
 import { setCurrentInstance } from '../instance';
-import { TypeElement } from '../type-element/type-element.abstract';
 import { LifecycleHooks } from '../enums';
+import { TypeElement } from '../type-element/type-element.abstract';
 import { TypeNode } from './type-node.abstract';
 
 export function useUnmount(element: TypeNode, root?: TypeElement) {
   element.lifeCycles[LifecycleHooks.BEFORE_UNMOUNT]?.forEach(fn => fn());
+  // element.removeDom();
   if (element.dom) {
     if (element.dom instanceof DocumentFragment) {
       // 清空 DocumentFragment； 如果没有挂载，dom 会有子dom
@@ -23,7 +24,7 @@ export function useUnmount(element: TypeNode, root?: TypeElement) {
   } else {
     console.warn('unmount element.dom is null . ');
   }
-  element.childNodes?.forEach(child => child.unmount());
+  element.childNodes?.forEach(child => useUnmount(child));
   element.childNodes = [];
   delete element.style;
   delete element.attr;
@@ -32,12 +33,12 @@ export function useUnmount(element: TypeNode, root?: TypeElement) {
   if (element.parent) {
     element.parent.childNodes.splice(element.index, 1);
   } else {
-    // console.error('element.parent is null . ');
+    console.error('useUnmount element.parent is null . ');
     // 没有 parent 要root 遍历删除；
     // todo  如果项目没有设置root，则无法删除了。或者有多个root时，可能查找有问题；
     //      element.parent 都没有了，还如何获取 element.root ?
     const parent = element.findParent(root, element);
-    if (parent?.childNodes) parent.childNodes.splice(element.index, 1);
+    if (parent?.childNodes) parent.childNodes.splice(parent.childNodes.indexOf(element), 1);
   }
   element.lifeCycles[LifecycleHooks.UNMOUNTED]?.forEach(fn => fn());
   setCurrentInstance(null);

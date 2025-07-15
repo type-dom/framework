@@ -5,35 +5,39 @@
  */
 import { TypeNode } from './type-node.abstract';
 import { TypeProps } from './type-node.interface';
+import { convertEventName, isEventKey } from '../../shared';
+import { AnyFn } from '@type-dom/utils';
 
-export function useAssignProps<T extends TypeProps>(element: TypeNode, config = {} as T): T {
+export function useAssignProps<T extends TypeProps>(element: TypeNode, props = {} as T): T {
   if (!element.props) {
     // todo override props is undefined
     // console.error('element.props is undefined . ');
     element.props = element.baseProps;
     // console.error('element.props is undefined . ');
   }
-  for (const key in config) {
+  for (const key in props) {
     // styleObj, attrObj, events 要单独处理
     // todo 如果是fragment，要判断是否有子节点，
     //    只有一个子节点，styleObj就加到子节点上,
     //    如果是多个子节点，要怎么处理？？？？
     if (key === 'styleObj') {
-      element.style?.addObj(config.styleObj);
+      element.style?.addObj(props.styleObj);
     } else if (key === 'attrObj') {
-      if (config.attrObj) {
-        element.attr?.addObj(config.attrObj);
+      element.attr?.addObj(props.attrObj);
+    } else if (isEventKey(key)) {
+      if (element.isBasic) {
+        // console.warn('element isBasic . event key is ', key);
+        element.on(convertEventName(key), props[key] as AnyFn);
+      } else {
+        // console.warn('element is component . event key is ', key);
+        element.on(convertEventName(key), props[key] as AnyFn, 'emit');
       }
-    } else if (key === 'events') {
-      element.addEvents?.(config.events);
-    } else if (key === 'emits') {
-      element.addEmits?.(config.emits);
     }
     //
     // if (key === 'visible' && config[key] === null) {
     //   console.warn('key is visible . value is null')
     // }
-    (element.props as T)[key] = config[key];
+    (element.props as T)[key] = props[key];
   }
   return element.props as T;
 }

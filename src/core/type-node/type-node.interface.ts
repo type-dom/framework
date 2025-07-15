@@ -1,12 +1,14 @@
 import { Dayjs } from 'dayjs';
-import { Computed, MaybeRef, Ref, Signal } from '@type-dom/signals';
-import { IPrimitive } from '@type-dom/utils';
-import { type IJsonDataProp, StyleValue } from '../../interface';
+import { Computed, Signal } from '@type-dom/signals';
+import { AnyFn, IPrimitive } from '@type-dom/utils';
+import { MaybeRef, Ref } from '../../reactivity';
+import { type IJsonDataProp } from '../../interface';
 import { TypeElement } from '../type-element/type-element.abstract';
-import { IEmits, IEvents } from '../event-emitter/event-emitter.interface';
-import { ClassValue, ITypeAttribute } from '../attribute/attribute.interface';
+// import { IEmits, IEvents } from '../event-emitter/event-emitter.interface';
+import { Attributes, ClassValue } from '../attribute/attribute.interface';
 import { TransitionElement, TransitionHooks } from '../type-transition/type-transition.interface';
 import { NodeName } from '../enums';
+import { StyleValue } from '../style/style.interface';
 import { TypeNode } from './type-node.abstract';
 import { ITypeBase } from './type-base.interface';
 
@@ -27,7 +29,7 @@ export interface IAttrClass extends IAttr {
 
 export interface IAttrStyle extends IAttr {
   name: 'style';
-  // value: Partial<IStyle>;
+  // value: Partial<CSSProperties>;
 }
 
 export interface IAttrName extends IAttr {
@@ -71,7 +73,6 @@ export interface ITypeNode extends ITypeBase {
   className?: string;
   uid?: number; // 自增id uid: uid++
   params?: TypeProps | undefined; // 传入参数, TypeProps 中是undefined
-  // emits?: IEmits;
   createdIn?: 'setup'; //  constructor
   transition?: TransitionHooks<TransitionElement>;
 }
@@ -183,7 +184,7 @@ export interface TypeProps extends ITypeBase {
   /**
    * 属性对象，除了style对应的属性之外的其他属性。
    */
-  attrObj?: ITypeAttribute | undefined;
+  attrObj?: Attributes | undefined;
   /**
    * 样式对象。
    */
@@ -203,14 +204,14 @@ export interface TypeProps extends ITypeBase {
    * 与 addEmits 方法配合；
    * emit 方法 触发时，会调用挂载的方法；
    */
-  emits?: IEmits;
+  // emits?: IEmits;
   /**
    * 绑定的事件集合,转化为 Subscription; fromEvent
    * 一般在构造函数的参数（params）中传入；
    * 与 addEvents方法配合；
    * initEvents 钩子 调用
    */
-  events?: Partial<IEvents>;
+  // events?: Partial<IEvents>;
   /**
    * 属性值必须用 ' 或 " 包起来
    * 标签必须闭合， 如 <input /> 这样才能闭合。
@@ -229,7 +230,7 @@ export interface TypeProps extends ITypeBase {
   methods?: IMethods;
   defaults?: ISettings; // 同 Extjs 中的defaults
   // type?: string;
-
+  [key: `on${Capitalize<string>}`]: AnyFn | AnyFn[] | undefined;
   // sourceWrapper?:  string | XProxy<IJsonData>;
   // showcase?:  TypeElement[];
   // width?: number | string;
@@ -240,22 +241,6 @@ export interface TypeProps extends ITypeBase {
   // callback?: (...args: any[]) => void;
   // parent?: TypeElement;
   // [propName: string]: any; // todo should be removed
-  /**
-   * @description native `aria-label` attribute
-   */
-  ariaLabel?: MaybeRef<string>;
-  /**
-   * @description native `aria-orientation` attribute
-   */
-  ariaOrientation?: MaybeRef<'horizontal' | 'vertical' | 'undefined'>;
-  /**
-   * @description native `aria-controls` attribute
-   */
-  ariaControls?: MaybeRef<string>;
-
-  ariaDescribedby?: MaybeRef<string>;
-  ariaExpanded?: MaybeRef<string>;
-  ariaHaspopup?: MaybeRef<string>;
 }
 
 export type ISlotRaw = string | number | boolean | undefined | Dayjs | TypeNode;
