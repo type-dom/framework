@@ -1,3 +1,4 @@
+import { IntrinsicElementAttributes } from '../../attribute/attribute.interface';
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeSelect extends ITypeHtml {
@@ -6,4 +7,5 @@ export interface ITypeSelect extends ITypeHtml {
 
 export interface TypeSelectProps extends HtmlProps {
   nodeName?: 'select';
+  attrObj?: IntrinsicElementAttributes['select'];
 }

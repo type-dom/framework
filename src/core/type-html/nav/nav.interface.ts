@@ -1,3 +1,4 @@
+import { IntrinsicElementAttributes } from '../../attribute/attribute.interface';
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeNav extends ITypeHtml {
@@ -6,4 +7,5 @@ export interface ITypeNav extends ITypeHtml {
 
 export interface TypeNavProps extends HtmlProps {
   nodeName?: 'nav';
+  attrObj?: IntrinsicElementAttributes['nav'];
 }

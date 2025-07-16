@@ -1,7 +1,7 @@
-import { IStyle } from '@type-dom/css-type';
-
 // todo 具体样式应该在自定义组件中设置，而不是在基类中设置。
-export const buttonStyle: Partial<IStyle> = {
+import { CSSProperties } from '../../style/style.interface';
+
+export const buttonStyle: Partial<CSSProperties> = {
   // appearance: 'none',
   textAlign: 'center',
   boxSizing: 'border-box',

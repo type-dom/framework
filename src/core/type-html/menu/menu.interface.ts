@@ -1,3 +1,4 @@
+import { IntrinsicElementAttributes } from '../../attribute/attribute.interface';
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeMenu extends ITypeHtml {
@@ -6,4 +7,5 @@ export interface ITypeMenu extends ITypeHtml {
 
 export interface TypeMenuProps extends HtmlProps {
   nodeName?: 'menu';
+  attrObj?: IntrinsicElementAttributes['menu'];
 }

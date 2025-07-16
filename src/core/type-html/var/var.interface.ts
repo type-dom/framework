@@ -1,3 +1,4 @@
+import { IntrinsicElementAttributes } from '../../attribute/attribute.interface';
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeVar extends ITypeHtml {
@@ -6,4 +7,5 @@ export interface ITypeVar extends ITypeHtml {
 
 export interface TypeVarProps extends HtmlProps {
   nodeName?: 'var';
+  attrObj?: IntrinsicElementAttributes['var'];
 }

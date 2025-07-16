@@ -1,3 +1,4 @@
+import { IntrinsicElementAttributes } from '../../attribute/attribute.interface';
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeCanvas extends ITypeHtml {
@@ -6,4 +7,5 @@ export interface ITypeCanvas extends ITypeHtml {
 
 export interface TypeCanvasProps extends HtmlProps {
   nodeName?: 'canvas';
+  attrObj?: IntrinsicElementAttributes['canvas'];
 }

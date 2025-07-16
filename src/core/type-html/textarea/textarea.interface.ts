@@ -1,3 +1,4 @@
+import { IntrinsicElementAttributes } from '../../attribute/attribute.interface';
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeTextarea extends ITypeHtml {
@@ -5,5 +6,7 @@ export interface ITypeTextarea extends ITypeHtml {
 }
 
 export interface TypeTextareaProps extends HtmlProps {
-  nodeName: 'textarea';
+  nodeName?: 'textarea';
+
+  attrObj?: IntrinsicElementAttributes['textarea'],
 }

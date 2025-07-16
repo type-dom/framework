@@ -1,3 +1,4 @@
+import { IntrinsicElementAttributes } from '../../attribute/attribute.interface';
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeBr extends ITypeHtml {
@@ -6,4 +7,5 @@ export interface ITypeBr extends ITypeHtml {
 
 export interface TypeBrProps extends HtmlProps {
   nodeName?: 'br';
+  attrObj?: IntrinsicElementAttributes['br'];
 }

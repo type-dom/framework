@@ -1,3 +1,4 @@
+import { IntrinsicElementAttributes } from '../../../attribute/attribute.interface';
 import { ITypeHtml, HtmlProps } from '../../type-html.interface';
 
 export interface ITypeTableFoot extends ITypeHtml {
@@ -6,4 +7,5 @@ export interface ITypeTableFoot extends ITypeHtml {
 
 export interface TypeTableFootProps extends HtmlProps {
   nodeName?: 'tfoot';
+  attrObj?: IntrinsicElementAttributes['tfoot'];
 }

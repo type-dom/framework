@@ -1,3 +1,4 @@
+import { IntrinsicElementAttributes } from '../../attribute/attribute.interface';
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeFieldset extends ITypeHtml {
@@ -5,5 +6,6 @@ export interface ITypeFieldset extends ITypeHtml {
 }
 
 export interface TypeFieldsetProps extends HtmlProps {
-  nodeName: 'fieldset';
+  nodeName?: 'fieldset';
+  attrObj?: IntrinsicElementAttributes['fieldset'];
 }

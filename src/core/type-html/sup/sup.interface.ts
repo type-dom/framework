@@ -1,3 +1,4 @@
+import { IntrinsicElementAttributes } from '../../attribute/attribute.interface';
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeSup extends ITypeHtml {
@@ -6,4 +7,5 @@ export interface ITypeSup extends ITypeHtml {
 
 export interface TypeSupProps extends HtmlProps {
   nodeName?: 'sup';
+  attrObj?: IntrinsicElementAttributes['sup'];
 }

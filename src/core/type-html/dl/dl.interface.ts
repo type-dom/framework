@@ -1,3 +1,4 @@
+import { IntrinsicElementAttributes } from '../../attribute/attribute.interface';
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeDL extends ITypeHtml {
@@ -7,4 +8,5 @@ export interface ITypeDL extends ITypeHtml {
 
 export interface TypeDLProps extends HtmlProps {
   nodeName?: 'dl';
+  attrObj?: IntrinsicElementAttributes['dl'];
 }

@@ -1,3 +1,4 @@
+import { IntrinsicElementAttributes } from '../../../attribute/attribute.interface';
 import type { ITypeHtml, HtmlProps } from '../../type-html.interface';
 
 export interface ITypeTableCol extends ITypeHtml {
@@ -6,4 +7,5 @@ export interface ITypeTableCol extends ITypeHtml {
 
 export interface TypeTableColProps extends HtmlProps {
   nodeName?: 'col';
+  attrObj?: IntrinsicElementAttributes['col'];
 }

@@ -3,9 +3,9 @@
  * 这个类提供了HTML元素的基本结构和行为的抽象。
  * 将组件和dom的具体类型进行了关联；
  */
-import { IStyle } from '@type-dom/css-type';
 import { TypeElement, vHash } from '../../core/type-element/type-element.abstract';
 import { Style } from '../style/style.class';
+import { StyleValue } from '../style/style.interface';
 import { Attribute } from '../attribute/attribute.class';
 import type { ITypeHtml, HtmlProps } from './type-html.interface';
 
@@ -33,11 +33,11 @@ export abstract class TypeHtml<T extends HTMLElement = HTMLElement>
     })
   }
 
-  addStyleObj(styleObj?: IStyle) {
+  addStyleObj(styleObj?: StyleValue) {
     this.style.addObj(styleObj);
   }
 
-  setStyleObj(styleObj?: IStyle) {
+  setStyleObj(styleObj?: StyleValue) {
     this.style.setObj(styleObj);
   }
 

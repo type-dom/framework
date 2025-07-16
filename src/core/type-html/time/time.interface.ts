@@ -1,3 +1,4 @@
+import { IntrinsicElementAttributes } from '../../attribute/attribute.interface';
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeTime extends ITypeHtml {
@@ -6,4 +7,5 @@ export interface ITypeTime extends ITypeHtml {
 
 export interface TypeTimeProps extends HtmlProps {
   nodeName?: 'time';
+  attrObj?: IntrinsicElementAttributes['time'];
 }

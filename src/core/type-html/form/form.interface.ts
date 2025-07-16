@@ -1,3 +1,4 @@
+import { IntrinsicElementAttributes } from '../../attribute/attribute.interface';
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeForm extends ITypeHtml {
@@ -6,4 +7,5 @@ export interface ITypeForm extends ITypeHtml {
 
 export interface TypeFormProps extends HtmlProps {
   nodeName?: 'form';
+  attrObj?: IntrinsicElementAttributes['form'];
 }

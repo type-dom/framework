@@ -1,3 +1,4 @@
+import { IntrinsicElementAttributes } from '../../attribute/attribute.interface';
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeOptGroup extends ITypeHtml {
@@ -5,5 +6,6 @@ export interface ITypeOptGroup extends ITypeHtml {
 }
 
 export interface TypeOptGroupProps extends HtmlProps {
-  nodeName: 'optgroup';
+  nodeName?: 'optgroup';
+  attrObj?: IntrinsicElementAttributes['optgroup'];
 }
