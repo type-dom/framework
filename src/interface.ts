@@ -1,11 +1,5 @@
 import { Fn, IPrimitive } from '@type-dom/utils';
-import { IStyle } from '@type-dom/css-type';
-import { Computed, MaybeRef, Signal } from '@type-dom/signals';
 
-export type IWritableObj = {
-  get(): unknown,
-  set(val: unknown): void
-}
 /**
  * 一个通用的json数据结构的接口
  * 定义一个接口 IJsonConfig，它是一个键值对的集合，其中键是字符串类型，值是 IJsonProp 类型。
@@ -75,17 +69,3 @@ export interface RendererNode {
 }
 
 export type RendererElement = RendererNode
-
-// Vue's style normalization supports nested arrays
-// export type StyleValue = string | undefined | IStyle | Array<StyleValue | undefined>
-
-/**
- * Record<string, MaybeRef<string | number>>
- *   例如：
- * {
- *    '--el-switch-on-color': '#13ce66',
- *    '--el-switch-off-color': '#ff4949',
- *  }
- */
-export type RawStyle =  IStyle | Record<string, MaybeRef<string | number | undefined>>
-export type StyleValue = MaybeRef<RawStyle> | Signal<StyleValue | undefined> | Computed<StyleValue | undefined> | (StyleValue | undefined)[];
