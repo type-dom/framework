@@ -1,10 +1,11 @@
 import { deepClone, ensureArray, isArray, isFunction } from '@type-dom/utils';
-import { Computed, isRef, Signal, toRaw } from '@type-dom/signals';
-import { IJsonData, IJsonDataProp } from '../interface';
+import { Computed, Signal } from '@type-dom/signals';
+import { isRef, toRaw } from '../reactivity';
+import type { IJsonData, IJsonDataProp } from '../interface';
 import { TypeNode } from './type-node/type-node.abstract';
-import { ITypeElement } from './type-element/type-element.interface';
-import { ITextNode } from './text-node/text-node.interface';
-import { ISlotItem, ISlotRaw, ISlotRef, ITypeNode } from './type-node/type-node.interface';
+import type { ISlotItem, ISlotRaw, ISlotRef, ITypeNode } from './type-node/type-node.interface';
+import type { ITextNode } from './text-node/text-node.interface';
+import type { ITypeElement } from './type-element/type-element.interface';
 import { TypeHtml } from './type-html/type-html.abstract';
 import { TypeSvg } from './type-svg/type-svg.abstract';
 
