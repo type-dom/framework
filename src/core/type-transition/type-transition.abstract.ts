@@ -1,4 +1,4 @@
-import { toRaw } from '@type-dom/signals';
+import { toRaw } from '../../reactivity';
 import { warn } from '../../utils';
 import { TypeFragment } from '../type-fragment/type-fragment.abstract';
 import { TypeHtml } from '../type-html/type-html.abstract';
@@ -311,7 +311,7 @@ export abstract class TypeTransition
   //     this.props.onAfterLeave(el.dom);
   //   } else {
   //     el.style?.setObj({
-  //       opacity: (el.params.styleObj as IStyle)?.opacity,
+  //       opacity: (el.params.styleObj as CSSProperties)?.opacity,
   //     });
   //   }
   // }
