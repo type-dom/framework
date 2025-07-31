@@ -1,5 +1,5 @@
-import { unref } from '@type-dom/signals';
 import { isString } from '@type-dom/utils';
+import { unref } from '../../reactivity';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { NodeName } from '../enums';
 import { ElProp } from './type-element.interface';

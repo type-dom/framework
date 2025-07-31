@@ -1,7 +1,7 @@
-import { isRef, MaybeRef, watch } from '@type-dom/signals';
-import { IStyle } from '@type-dom/css-type';
 import { getStyle } from '@type-dom/utils';
+import { isRef, MaybeRef, watch } from '../../reactivity';
 import { TransitionElement } from '../type-transition/type-transition.interface';
+import { CSSProperties } from '../style/style.interface';
 import { TypeElement } from './type-element.abstract';
 
 export function useVShow(element: TypeElement) {
@@ -27,7 +27,7 @@ export function useVShow(element: TypeElement) {
 }
 
 function useRawVShow(condition: boolean | unknown, element: TypeElement, oldValue?: unknown) {
-  let display: IStyle['display'];
+  let display: CSSProperties['display'];
   if (!element.dom) { // todo TdCollapse 加载有问题，全部显示了。vShow赋值时，dom可能还没有渲染。不能直接拦截。
     // console.warn('element.dom is undefined');
     element.createDom();
@@ -36,7 +36,7 @@ function useRawVShow(condition: boolean | unknown, element: TypeElement, oldValu
     display = getStyle(element.dom, 'display');
   }
   if (condition) {
-    display = element.style?.get('display') ?? display;
+    display = element.style?.get('display') as string ?? display;
     if (element.transition) {
       // console.warn('element.transition is existed . ');
       // 注： 现在这样必须 vShow绑定真实dom才有意义，fragment 的vShow没有意义。

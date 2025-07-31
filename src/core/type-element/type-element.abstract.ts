@@ -1,23 +1,16 @@
-import { IStyle } from '@type-dom/css-type';
-import { AnyFn,
-  // removeUndefinedProps
-} from '@type-dom/utils';
+import { MaybeRef } from '../../reactivity';
 import type { ISlotItem, ISlotRaw, TypeProps, } from '../type-node/type-node.interface';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TextNode } from '../text-node/text-node.class';
 import { currentInstance } from '../instance';
 import { LifecycleHooks, NodeName } from '../enums';
-import {
-  TransitionElement,
-  TransitionHooks,
-} from '../type-transition/type-transition.interface';
+import { TransitionElement, TransitionHooks, } from '../type-transition/type-transition.interface';
 import type { ElProp, IBoundBox, ITypeElement } from './type-element.interface';
 import { useMount } from './useMount';
 import { useRecurseRender } from './useRecurseRender';
 import { useParams } from './useParams';
 import { useSlotChild } from './useSlotChild';
 import { useSlotChildren } from './useSlotChildren';
-import { useRender } from './useRender';
 
 export const vHash = Math.round(Math.random() * 1000000);
 
@@ -34,7 +27,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   // 包括 fragment
   // abstract nodeName: NodeName.FRAGMENT | string; // 必然有； 且不为 #text
   childNodes: TypeNode[];
-  routerView?: any;
+  // routerView?: any;
   transition?: TransitionHooks<TransitionElement> | undefined;
   rendered: boolean;
   componentId: number;
@@ -183,13 +176,19 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * new 时，也就是创建时，可以不设置parent；但是addChild时，需要设置parent。
    * @param newChild
    */
-  addChild(newChild: TypeNode): void {
-    // 如果不是子类，是其它地方的对象加过来，要重设其父类。 一个对象挂载到不同的父类中，可能会造成混乱。
-    newChild.setParent(this);
-    if (currentInstance === this) {
-      newChild.createdIn = 'setup';
+  addChild(newChild: MaybeRef<string> | TypeNode): void {
+    if (newChild instanceof TypeNode) {
+      // 如果不是子类，是其它地方的对象加过来，要重设其父类。 一个对象挂载到不同的父类中，可能会造成混乱。
+      newChild.setParent(this);
+      if (currentInstance === this) {
+        newChild.createdIn = 'setup';
+      }
+      this.childNodes.push(newChild);
+    } else {
+      const text = new TextNode(newChild);
+      text.setParent(this);
+      this.childNodes.push(text);
     }
-    this.childNodes.push(newChild);
   }
 
   /**
@@ -446,7 +445,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    */
   createInstance(literal: ITypeElement): void {
     this.attr?.resetObj(literal.params?.attrObj);
-    this.style?.resetObj(literal.params?.styleObj as IStyle);
+    this.style?.resetObj(literal.params?.styleObj);
     const length = literal.childNodes.length;
     if (length < this.length) {
       for (let i = 0; i < this.length; i++) {
@@ -482,7 +481,15 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * WebPage要另外处理
    */
   render(): void {
-    useRender(this);
+    this.preRender();
+    if (this.props.nodeName !== NodeName.FRAGMENT) {
+      this.style?.renderObj();
+      this.attr?.renderObj();
+    } else {
+      // console.log('fragment render .'); // todo
+    }
+    // console.log('this.dom is ', this.dom);
+    this.rendered = true;
   }
   // 原 destroy
   override unmount(root?: TypeElement) {
@@ -493,90 +500,4 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     super.unmount(root);
     this.lifeCycles[LifecycleHooks.UNMOUNTED]?.forEach((fn) => fn());
   }
-
-  onCreated(fn: AnyFn): void {
-    if (!this.lifeCycles[LifecycleHooks.CREATED]) {
-      this.lifeCycles[LifecycleHooks.CREATED] = [];
-    }
-    this.lifeCycles[LifecycleHooks.CREATED].push(fn);
-  }
-
-  onMounted(fn: AnyFn): void {
-    if (!this.lifeCycles[LifecycleHooks.MOUNTED]) {
-      this.lifeCycles[LifecycleHooks.MOUNTED] = [];
-    }
-    this.lifeCycles[LifecycleHooks.MOUNTED].push(fn);
-  }
-
-  onBeforeUpdate(fn: AnyFn): void {
-    if (!this.lifeCycles[LifecycleHooks.BEFORE_UPDATE]) {
-      this.lifeCycles[LifecycleHooks.BEFORE_UPDATE] = [];
-    }
-    this.lifeCycles[LifecycleHooks.BEFORE_UPDATE].push(fn);
-  }
-
-  onUpdated(fn: AnyFn): void {
-    if (!this.lifeCycles[LifecycleHooks.UPDATED]) {
-      this.lifeCycles[LifecycleHooks.UPDATED] = [];
-    }
-    this.lifeCycles[LifecycleHooks.UPDATED].push(fn);
-  }
-
-  onBeforeUnmount(fn: AnyFn): void {
-    if (!this.lifeCycles[LifecycleHooks.BEFORE_UNMOUNT]) {
-      this.lifeCycles[LifecycleHooks.BEFORE_UNMOUNT] = [];
-    }
-    this.lifeCycles[LifecycleHooks.BEFORE_UNMOUNT].push(fn);
-  }
-
-  onUnmounted(fn: AnyFn): void {
-    if (!this.lifeCycles[LifecycleHooks.UNMOUNTED]) {
-      this.lifeCycles[LifecycleHooks.UNMOUNTED] = [];
-    }
-    this.lifeCycles[LifecycleHooks.UNMOUNTED].push(fn);
-  }
-
-  setDom(dom: HTMLElement) {
-    this.dom = dom;
-  }
-
-  // showDom(enterClass: string = 'enter', enterActiveClass: string = 'enter-active'): void {
-  //   if (this.dom instanceof HTMLElement) {
-  //     this.dom.classList.add(enterClass);
-  //     this.dom.offsetHeight; // 触发重绘
-  //     this.dom.classList.remove(enterClass);
-  //     this.dom.classList.add(enterActiveClass);
-  //   }
-  // }
-  //
-  // hideDom(leaveClass: string = 'leave', leaveActiveClass: string = 'leave-active'): void {
-  //   if (this.dom instanceof HTMLElement) {
-  //     this.dom.classList.add(leaveClass);
-  //     this.dom.offsetHeight; // 触发重绘
-  //     this.dom.classList.remove(leaveClass);
-  //     this.dom.classList.add(leaveActiveClass);
-  //     this.dom.addEventListener('transitionend', () => {
-  //       // this.dom?.classList.remove(leaveActiveClass);
-  //       //
-  //     }, { once: true });
-  //   }
-  // }
-  //
-  deleteDom?(
-    // leaveClass: string = 'leave', leaveActiveClass: string = 'leave-active'
-  ): void; // {
-    // if (this.dom instanceof HTMLElement) {
-    //   this.dom.classList.add(leaveClass);
-    //   this.dom.offsetHeight; // 触发重绘
-    //   this.dom.classList.remove(leaveClass);
-    //   this.dom.classList.add(leaveActiveClass);
-    //   this.dom.addEventListener('transitionend', () => {
-    //     // if (this.dom.parentNode === this.container) {
-    //     //   this.container.removeChild(this.element);
-    //     (this.dom as HTMLElement)?.remove();
-    //     this.dom = undefined;
-    //     // }
-    //   }, { once: true });
-    // }
-  // }
 }

@@ -1,4 +1,4 @@
-import { unref } from '@type-dom/signals';
+import { unref } from '../../reactivity';
 import { Parser } from '../../parser/parser.class';
 import { TypeProps } from '../type-node/type-node.interface';
 import { TypeElement } from './type-element.abstract';

@@ -1,7 +1,6 @@
-import { isRef, watch } from '@type-dom/signals';
+import { isRef, watch } from '../../reactivity';
 import { TransitionElement } from '../type-transition/type-transition.interface';
 import { TypeElement } from './type-element.abstract';
-import { mountDom } from './mountDom';
 import { replaceCommentWithDom, replaceDomWithComment } from './util';
 import { TdDom } from './type-element.interface';
 
@@ -40,16 +39,16 @@ export function useRawIf(condition: boolean | unknown, element: TypeElement, old
       element.createDom();
     }
     if (condition) {
-      // console.warn('vIf true . ');
+      // console.warn('vIf is true, not false or undefined .  ');
       // this.update(); // 会死循环 todo
-      const upDom = mountDom(element);
-      if (upDom) {
+      // todo anchor 还需要upDom appendChild 吗 ？？
+      // const upDom = mountDom(element);
+      // if (upDom) {
         // todo useVIf 在子节点mount前执行的，会导致useRecurseRender执行时找不到对应的子节点。
         // useRecurseRender(element); // ?? todo why add it
-        // if (upDom.childNodes.indexOf(element.dom!))
         // todo 先判断子节点中是否已经包含 element.dom
         replaceCommentWithDom(element);
-      }
+      // }
       if (element.transition && oldValue === false) {
         // console.warn('element.transition is existed . ');
         // 注： 现在这样必须 vShow绑定真实dom才有意义，fragment 的vShow没有意义。
@@ -58,16 +57,14 @@ export function useRawIf(condition: boolean | unknown, element: TypeElement, old
       }
     } else {
       // 正常挂载（mount)时，element.dom应该不会appendChild(child.dom);
-      // console.warn('element.vIf is , ', element.props.vIf, ' then replace dom witch comment . ');
-      element.comment = element.comment ?? document.createComment('v-if is false ');
+      // console.warn('element.vIf is ', element.props.vIf, ' then replace dom witch comment . ');
+      element.anchor = element.anchor ?? document.createComment('v-if');
       if (element.transition && oldValue) {
         // console.warn('element.transition is existed . ');
         element.transition.leave(element.dom! as TransitionElement, () => {
-          // element.removeDom(); // parentNode.replaceChild(newNode, oldNode);
           replaceDomWithComment(element)
         });
       } else {
-        // element.removeDom();
         replaceDomWithComment(element);
       }
     }

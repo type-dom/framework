@@ -1,4 +1,5 @@
-import { watch } from '@type-dom/signals';
+import { watch } from '../../reactivity';
+import { InputHTMLAttributes } from '../attribute';
 import { TypeElement } from './type-element.abstract';
 
 export function useVModel(element: TypeElement) {
@@ -22,7 +23,7 @@ export function useVModel(element: TypeElement) {
         // },
       });
       if (element.className === 'Input') { // todo
-        if (element.params.attrObj?.type === 'checkbox'
+        if ((element.params.attrObj as InputHTMLAttributes)?.type === 'checkbox'
           // || element.params.attrObj?.type === 'radio'
         ) {
           // element.addEvents({
@@ -35,7 +36,7 @@ export function useVModel(element: TypeElement) {
           //     // element.props.vModel?.set((evt?.target as HTMLInputElement).checked);
           //   },
           // });
-        } else if (element.params.attrObj?.type === 'radio') {
+        } else if ((element.params.attrObj as InputHTMLAttributes)?.type === 'radio') {
           //   todo
         } else {
           element.addEvents({
@@ -43,7 +44,7 @@ export function useVModel(element: TypeElement) {
               // console.warn('text input event , evt is ', evt);
               const value = (evt?.target as HTMLInputElement)?.value;
               // todo 节流
-              element.props.vModel?.set(value as any);
+              element.props.vModel?.set(value);
             },
           });
         }
@@ -52,7 +53,7 @@ export function useVModel(element: TypeElement) {
           input: (evt) => {
             // console.warn('textarea event , evt is ', evt);
             const value = (evt?.target as HTMLInputElement)?.value;
-            element.props.vModel?.set(value as any);
+            element.props.vModel?.set(value);
           },
         });
       } else if (element.className === 'Select') {
@@ -60,7 +61,7 @@ export function useVModel(element: TypeElement) {
           change: (evt) => {
             // console.warn('select change , evt is ', evt);
             // const isChecked  = evt.checked;
-            element.props.vModel?.set((evt?.target as HTMLSelectElement).value as any);
+            element.props.vModel?.set((evt?.target as HTMLSelectElement).value);
           },
         });
       }

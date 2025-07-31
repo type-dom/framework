@@ -3,8 +3,8 @@
  * `slot`参数可以是一个或多个子元素，根据`type`的不同，这些子元素会被添加到元素的末尾或前置到元素的开头。
  * @param slot 要添加或插入的子元素或子元素数组。
  */
-import { batchEffect, isRef, toRaw } from '@type-dom/signals';
 import { isArray } from '@type-dom/utils';
+import { batchEffect, isRef, toRaw } from '../../reactivity';
 import { ISlotItem } from '../type-node/type-node.interface';
 import { TypeElement } from './type-element.abstract';
 import { getToDom, mountDom } from './mountDom';
@@ -42,24 +42,21 @@ export function useSlotChildren(element: TypeElement, slot?: ISlotItem) {
         if (element.dom instanceof DocumentFragment) { // todo why add this condition
           // maybe comment replace
           replaceCommentWithDom(element, upDom);
-          // if (upDom && element.comment && isDescendant(upDom, element.comment)) {
-          //   upDom.replaceChild(element.dom, element.comment);
-          // } else {
-          //   upDom?.appendChild(element.dom);
-          // }
-          // element.mount();
         }
       }
     })
   } else {
     if (isArray(slot)) {
-      slot.forEach((item) => {
-        if (isRef(item)) {
-          element.slotChild(item.get());
-        } else {
-          element.slotChild(toRaw(item));
-        }
-      });
+      // slot.forEach((item) => { // todo 应该是递归调用
+      //   // if (isRef(item)) {
+      //   //   element.slotChild(item.get());
+      //   // } else {
+      //   //   element.slotChild(toRaw(item));
+      //   // }
+      // });
+      for (const item of slot) {
+        useSlotChildren(element,item)
+      }
     } else {
       element.slotChild(slot)
     }

@@ -1,4 +1,4 @@
-import { isRef, unref } from '@type-dom/signals';
+import { isRef, unref } from '../../reactivity';
 import { LifecycleHooks } from '../enums';
 import { setCurrentInstance } from '../instance';
 import { useVIf } from './useVIf';
@@ -75,7 +75,6 @@ export function useMount<T extends TypeElement>(element: T, el?: ElProp) {
   useVShow(element);
   useVModel(element);
 
-
   // 如CollapsibleBox中，contents重新赋值后，children会变，而childNodes是不变的。
   for (const child of element.children) {
     child.mount(element.dom);
@@ -92,10 +91,6 @@ export function useMount<T extends TypeElement>(element: T, el?: ElProp) {
     //   todo 注释后， menu 子菜单没渲染 useVIf 在 子组件加载前执行了。
     if (Object.hasOwnProperty.call(element.props, 'vIf')) { // todo 是否于上的useVIf重复了？
       // console.error('element.props.vIf is ', element.props.vIf);
-      // if (element.props.vIf === false) {
-      //   console.warn('props.vIf is false ');
-      // }
-      // element.comment = element.comment ?? document.createComment('v-if'); // todo 路由加载有问题
       if (unref(element.props.vIf)) {
         replaceCommentWithDom(element, appEl);
       } else {

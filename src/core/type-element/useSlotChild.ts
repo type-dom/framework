@@ -1,5 +1,5 @@
 import { isArray, isFunction } from '@type-dom/utils';
-import { toRaw } from '@type-dom/signals';
+import { toRaw } from '../../reactivity';
 import { ISlotRaw } from '../type-node/type-node.interface';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TextNode } from '../text-node/text-node.class';
