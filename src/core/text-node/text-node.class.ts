@@ -1,16 +1,16 @@
-import { Computed, isRef, Signal, toRaw, watch } from '@type-dom/signals';
 import { isMustache } from '@type-dom/utils';
+import { isRef, MaybeRef, toRaw, unref, watch, } from '../../reactivity';
 import { TypeNode } from '../type-node/type-node.abstract';
-import { TypeElement } from '../type-element/type-element.abstract';
-import { LifecycleHooks, NodeName } from '../enums';
 import type { TypeProps } from '../type-node/type-node.interface';
-import type { ITextNode } from './text-node.interface';
+import { TypeElement } from '../type-element/type-element.abstract';
 import { ElProp } from '../type-element/type-element.interface';
+import { LifecycleHooks, NodeName } from '../enums';
 import { useTextRender } from './useRender';
+import type { ITextNode } from './text-node.interface';
 
 /**
  * 文本节点类
- * ----> 本身会渲染成Text。
+ * 会渲染成Text。
  */
 export class TextNode extends TypeNode implements ITextNode {
   /**
@@ -31,7 +31,7 @@ export class TextNode extends TypeNode implements ITextNode {
   /**
    * DOM 文本节点对象
    */
-  dom?: Text;
+  dom: Text;
   /**
    * 子节点，此处未定义
    */
@@ -46,13 +46,14 @@ export class TextNode extends TypeNode implements ITextNode {
    * @param parent 父级节点
    */
   constructor(
-    text: string | number | Signal<string | number> | Computed<string | number> = '\u200c',
+    text: MaybeRef<string | number> = '\u200c',
     parent?: TypeElement
   ) {
     super();
     this.rendered = false;
     this.className = 'TextNode';
     this.nodeName = NodeName.TEXT;
+    this.dom = document.createTextNode(String(unref(text)) || '');
     if (parent) {
       this.parent = parent;
     }
@@ -115,7 +116,8 @@ export class TextNode extends TypeNode implements ITextNode {
    */
   setText(text: boolean | string | number): void {
     this.nodeValue = String(text);
-    this.mount();
+    // this.mount();
+    this.dom.nodeValue = this.nodeValue;
   }
 
   /**
