@@ -5,23 +5,18 @@ import {
   isString, isBoolean, isUndefined, removeClass, isNumber,
   IPrimitive
 } from '@type-dom/utils';
-import {
-  MaybeRef,
-  Ref,
-  unref,
-  isRef,
-  effect, computed, toRaw, Computed, isSignal, isComputed
-} from '@type-dom/signals';
+import { effect, computed, Computed } from '@type-dom/signals';
+import { unref, isRef, toRaw, isSignal, isComputed, MaybeRef, Ref, } from '../../reactivity';
 import { XElement } from '../../components/x-element/x-element.class';
 import { isObject } from '../../use/utils';
 
 import { TypeHtml } from '../type-html/type-html.abstract';
 import { TypeSvg } from '../type-svg/type-svg.abstract';
-import type { ClassValue, ITypeAttribute } from './attribute.interface';
+import type { Attributes, ClassValue } from './attribute.interface';
 
 export class Attribute {
   private el: TypeHtml | TypeSvg | XElement;
-  private obj: ITypeAttribute;
+  private obj: Attributes;
 
   constructor(el: TypeHtml | TypeSvg | XElement) {
     this.el = el;
@@ -29,29 +24,29 @@ export class Attribute {
   }
 
   get<T>(key: string): T {
-    return this.obj[key] as T;
+    return (this.obj as any)[key];
   }
 
-  getObj<T extends ITypeAttribute>(): T {
+  getObj<T extends Attributes>(): T {
     return this.obj as T;
   }
 
-  setObj<T extends ITypeAttribute>(attrObj?: MaybeRef<T>): void {
+  setObj<T extends Attributes>(attrObj?: MaybeRef<T>): void {
     const obj = unref(attrObj);
     for (const key in obj) {
       if (Object.hasOwnProperty.call(obj, key)) {
         // todo 如何优化
-        const value = obj?.[key] as string | number;
+        const value = (obj as any)[key] as MaybeRef<string | number>;
         this.set(key, value);
       }
     }
   }
 
-  addObj<T extends ITypeAttribute>(attrObj?: T): void {
+  addObj<T extends Attributes>(attrObj?: T): void {
     if (attrObj) {
       for (const key in attrObj) {
         if (Object.hasOwnProperty.call(attrObj, key)) {
-          const value = attrObj[key];
+          const value = (attrObj as any)[key] as MaybeRef<IPrimitive>;
           this.add(key, value);
         }
       }
@@ -63,7 +58,7 @@ export class Attribute {
    * 清理原有属性，
    * @param attrObj
    */
-  resetObj<T extends ITypeAttribute>(attrObj?: MaybeRef<T>): void {
+  resetObj<T extends Attributes>(attrObj?: MaybeRef<T>): void {
     if (attrObj === undefined) {
       return;
     }
@@ -71,25 +66,25 @@ export class Attribute {
     this.setObj(attrObj);
   }
 
-  renderObj<T extends ITypeAttribute>(attrObj?: T): void {
+  renderObj<T extends Attributes>(attrObj?: T): void {
     if (attrObj === undefined) {
       attrObj = this.obj as T;
     }
     for (const key in attrObj) {
       if (Object.hasOwnProperty.call(attrObj, key)) {
-        const value = attrObj[key] as string | number;
+        const value = (attrObj as any)[key] as MaybeRef<IPrimitive> | ClassValue;
         this.render(key, value);
       }
     }
   }
 
-  removeObj<T extends ITypeAttribute>(attrObj?: T): void {
+  removeObj<T extends Attributes>(attrObj?: T): void {
     if (attrObj === undefined) {
       return;
     }
     for (const key in attrObj) {
       if (Object.hasOwnProperty.call(attrObj, key)) {
-        delete this.obj[key];
+        delete (this.obj as any)[key];
         this.el.dom?.removeAttribute(key);
       }
     }
@@ -97,14 +92,14 @@ export class Attribute {
 
   clearObj(): void {
     // 需要专门清理一下DOM上的属性
-    for (const attr in this.obj) {
+    for (const attr in this.obj as any) {
       this.el.dom?.removeAttribute(attr);
-      delete this.obj[attr];
+      delete (this.obj as any)[attr];
     }
   }
 
   // 设置属性 dom 属性同步变化
-  set(key: string, value?: string | number | boolean): void {
+  set(key: string, value?: MaybeRef<string | number | boolean>): void {
     this.add(key, value);
     this.render(key, value);
   }
@@ -114,7 +109,7 @@ export class Attribute {
     if (key === 'class') { // class特殊处理
       this.addClass(value as ClassValue);
     } else {
-      this.getObj()[key] = value;
+      (this.getObj() as any)[key] = value;
     }
   }
 
@@ -197,7 +192,7 @@ export class Attribute {
   }
 
   remove(key: string): void {
-    delete this.obj[key];
+    delete (this.obj as any)[key];
     this.el.dom?.removeAttribute(key);
   }
 
@@ -344,14 +339,14 @@ function flattenClass(obj: ClassValue, result: string[] = []): string[] {
       if (Object.prototype.hasOwnProperty.call(obj, key)) {
         const value = toRaw(obj[key]);
         if (isString(value)) {
-          value && result.push(key);
+          if (value) result.push(key);
         } else if (isArray(value)) {
           value.forEach(item => flattenClass(item, result));
         } else if (value) {
           // 如果需要将布尔值或 undefined 转换为字符串，可以在这里处理
           // result.push(String(value));
           if (value) {
-            key && result.push(key);
+            if (key) result.push(key);
           }
         } else {
           // console.warn('class value is null or {} ,  is ', value);
@@ -361,7 +356,7 @@ function flattenClass(obj: ClassValue, result: string[] = []): string[] {
   } else {
     const value = toRaw(obj);
     if (isString(value)) {
-      value && result.push(value);
+      if (value) result.push(value);
     } else if (typeof value === 'boolean' || value === undefined) {
       // 如果需要将布尔值或 undefined 转换为字符串，可以在这里处理
       // result.push(String(value));
