@@ -2,7 +2,7 @@
 import { getCurrentInstance } from './instance';
 import { ISlots } from './type-node/type-node.interface';
 import { TypeNode } from './type-node/type-node.abstract';
-import { ITypeAttribute } from './attribute/attribute.interface';
+import { type Attributes   } from './attribute/attribute.interface';
 
 // dev only
 // const warnRuntimeUsage = (method: string) =>
@@ -357,7 +357,7 @@ export function useSlots<T extends ISlots>(): T | undefined {
   return getContext().props.slots as T
 }
 
-export function useAttrs():  ITypeAttribute | undefined {
+export function useAttrs(): Attributes | undefined {
   return getContext().props.attrObj;
 }
 

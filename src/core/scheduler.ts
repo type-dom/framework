@@ -1,7 +1,7 @@
 import { isArray } from '@type-dom/utils';
 import { ErrorCodes, callWithErrorHandling } from './errorHandling'
 // import { NOOP } from '../constants';
-import { ITypeNode } from './type-node/type-node.interface';
+import type { ITypeNode } from './type-node/type-node.interface';
 // import { NOOP, isArray } from '@vue/shared'
 // import { type ComponentInternalInstance, getComponentName } from './component'
 

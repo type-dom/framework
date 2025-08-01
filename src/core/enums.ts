@@ -30,8 +30,8 @@ export enum LifecycleHooks {
 }
 
 export enum NodeName {
-  FRAGMENT = 'fragment', // DocumentFragment
-  TEXT = '#text', // TextNode
-  // COMMENT = 'comment',
+  FRAGMENT = 'fragment', // DocumentFragment 用于临时存储一组节点（如通过 document.createDocumentFragment() 创建）
+  TEXT = '#text', // TextNode 叶子节点（无子节点）
+  COMMENT = 'comment', // Comment 文档中的注释内容，如 <!-- 注释 -->。
   // ELEMENT = 'element',
 }

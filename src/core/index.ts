@@ -1,10 +1,16 @@
 export * from './type-html';
 
 export type * from './event-emitter/event-emitter.interface';
+
 export { TypeNode } from './type-node/type-node.abstract';
 export type * from './type-node/type-node.interface';
+
 export { TextNode } from './text-node/text-node.class';
 export type { ITextNode } from './text-node/text-node.interface';
+
+export { CommentNode } from './comment-node/comment-node.class';
+export type { ICommentNode } from './comment-node/comment-node.interface';
+
 // export { vHash, TypeElement } from './type-element/type-element.abstract';
 // export type * from './type-element/type-element.interface';
 export * from './type-element/index';
