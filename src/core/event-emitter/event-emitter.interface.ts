@@ -7,16 +7,6 @@ import { TypeElement } from '../type-element/type-element.abstract';
 //   emit(event: string, ...args: any[]): void;
 // }
 
-export interface IEmits {
-  mouseenter?: (evt: MouseEvent) => void; // todo 与events合并；
-  mouseleave?: (evt: MouseEvent) => void;
-  focus?: (evt: FocusEvent) => void;
-  blur?: (evt: FocusEvent) => void;
-  close?: (...args: any[]) => void;
-
-  [key: string]: AnyFn | undefined;
-}
-
 /**
  * 定义了一个泛型接口IEvent，用于表示事件处理函数。
  *
@@ -30,87 +20,281 @@ export type IEvent<E extends (Event | string) = Event, T extends TypeElement = T
  *
  * 对应 GlobalEventHandlersEventMap
  */
-export interface IEvents<T  extends TypeElement = TypeElement> {
-  abort: IEvent<UIEvent>;
-  beforeinput: IEvent<InputEvent>;
-  blur: IEvent<FocusEvent>;
+export interface IEvents {
+  // clipboard events
+  copy: IEvent<ClipboardEvent>
+  cut: IEvent<ClipboardEvent>
+  paste: IEvent<ClipboardEvent>
+
+  // composition events
+  compositionend: IEvent<CompositionEvent>
+  compositionstart: IEvent<CompositionEvent>
+  compositionupdate: IEvent<CompositionEvent>
+
+  // drag drop events
+  drag: IEvent<DragEvent>
+  dragend: IEvent<DragEvent>
+  dragenter: IEvent<DragEvent>
+  dragexit: IEvent<DragEvent>
+  dragleave: IEvent<DragEvent>
+  dragover: IEvent<DragEvent>
+  dragstart: IEvent<DragEvent>
+  drop: IEvent<DragEvent>
+
+  // focus events
+  focus: IEvent<FocusEvent>
+  focusin: IEvent<FocusEvent>
+  focusout: IEvent<FocusEvent>
+  blur: IEvent<FocusEvent>
+
+  // form events
+  change: IEvent<Event>
+  beforeinput: IEvent<Event>
+  input: IEvent<Event>
+  reset: IEvent<Event>
+  submit: IEvent<Event>
+  invalid: IEvent<Event>
+
+  // image events
+  load: IEvent<Event>
+  error: IEvent<Event>
+
+  // keyboard events
+  keydown: IEvent<KeyboardEvent>
+  keypress: IEvent<KeyboardEvent>
+  keyup: IEvent<KeyboardEvent>
+
+  // mouse events
+  auxclick: IEvent<MouseEvent>
+  click: IEvent<MouseEvent>
+  contextmenu: IEvent<MouseEvent>
+  dblclick: IEvent<MouseEvent>
+  mousedown: IEvent<MouseEvent>
+  mouseenter: IEvent<MouseEvent>
+  mouseleave: IEvent<MouseEvent>
+  mousemove: IEvent<MouseEvent>
+  mouseout: IEvent<MouseEvent>
+  mouseover: IEvent<MouseEvent>
+  mouseup: IEvent<MouseEvent>
+
+  // media events
+  abort: IEvent<Event>
+  canplay: IEvent<Event>
+  canplaythrough: IEvent<Event>
+  durationchange: IEvent<Event>
+  emptied: IEvent<Event>
+  encrypted: IEvent<Event>
+  ended: IEvent<Event>
+  loadeddata: IEvent<Event>
+  loadedmetadata: IEvent<Event>
+  loadstart: IEvent<Event>
+  pause: IEvent<Event>
+  play: IEvent<Event>
+  playing: IEvent<Event>
+  progress: IEvent<Event>
+  ratechange: IEvent<Event>
+  seeked: IEvent<Event>
+  seeking: IEvent<Event>
+  stalled: IEvent<Event>
+  suspend: IEvent<Event>
+  timeupdate: IEvent<Event>
+  volumechange: IEvent<Event>
+  waiting: IEvent<Event>
+
+  // selection events
+  select: IEvent<Event>
+
+  // scroll events
+  scroll: IEvent<Event>
+  scrollend: IEvent<Event>
+
+  // touch events
+  touchcancel: IEvent<TouchEvent>
+  touchend: IEvent<TouchEvent>
+  touchmove: IEvent<TouchEvent>
+  touchstart: IEvent<TouchEvent>
+
+  // pointer events
+  pointerdown: IEvent<PointerEvent>
+  pointermove: IEvent<PointerEvent>
+  pointerup: IEvent<PointerEvent>
+  pointercancel: IEvent<PointerEvent>
+  pointerenter: IEvent<PointerEvent>
+  pointerleave: IEvent<PointerEvent>
+  pointerover: IEvent<PointerEvent>
+  pointerout: IEvent<PointerEvent>
+
+  // wheel events
+  wheel: IEvent<WheelEvent>
+
+  // animation events
+  animationstart: IEvent<AnimationEvent>
+  animationend: IEvent<AnimationEvent>
+  animationiteration: IEvent<AnimationEvent>
+
+  // transition events
+  transitionend: IEvent<TransitionEvent>
+  transitionstart: IEvent<TransitionEvent>
+
+
+
+
   cancel: IEvent;
-  canplay: IEvent;
-  canplaythrough: IEvent;
-  change: IEvent; // newValue = evt.target.value
-  click: IEvent<MouseEvent, T>;
   close: IEvent;
-  compositionstart: IEvent<CompositionEvent>;
-  compositionupdate: IEvent<CompositionEvent>;
-  compositionend: IEvent<CompositionEvent>;
-  contextmenu: IEvent<MouseEvent>;
-  copy: IEvent<ClipboardEvent>;
-  cut: IEvent<ClipboardEvent>;
-  dblclick: IEvent<MouseEvent>;
-  drag: IEvent<DragEvent>;
-  dragend: IEvent<DragEvent>;
-  dragenter: IEvent<DragEvent>;
   // dragexit: IEvent;
-  dragleave: IEvent<DragEvent>;
-  dragover: IEvent<DragEvent>;
-  dragstart: IEvent<DragEvent>;
-  drop: IEvent<DragEvent>;
-  durationchange: IEvent;
-  emptied: IEvent;
-  ended: IEvent;
-  error: IEvent<ErrorEvent>;
-  focus: IEvent<FocusEvent>;
-  focusin: IEvent<FocusEvent>;
-  focusout: IEvent<FocusEvent>;
   formdata: IEvent<FormDataEvent>;
   gotpointercapture: IEvent<PointerEvent>;
-  input: IEvent;
   // inputenter: (evt?: InputEvent, element?: TypeElement) => void;
-  invalid: IEvent;
-  keydown: IEvent<KeyboardEvent>;
-  keyup: IEvent<KeyboardEvent>;
-  keypress: IEvent<KeyboardEvent>;
   // keypressenter: IEvent;
-  load: IEvent;
-  loadeddata: IEvent;
-  loadedmetadata: IEvent;
-  loadstart: IEvent;
+
   lostpointercapture: IEvent<PointerEvent>;
-  mousedown: IEvent<MouseEvent>;
-  mouseenter: IEvent<MouseEvent>;
-  mouseleave: IEvent<MouseEvent>;
-  mousemove: IEvent<MouseEvent>;
-  mouseout: IEvent;
-  mouseover: IEvent<MouseEvent>;
-  mouseup: IEvent<MouseEvent>;
   mousewheel: IEvent<WheelEvent>;
   // mspointerdown: IEvent;
   // mspointermove: IEvent;
   // mspointerup: IEvent;
-  paste: IEvent<ClipboardEvent>;
-  pause: IEvent;
-  play: IEvent;
-  playing: IEvent;
-  pointercancel: IEvent<PointerEvent>;
-  pointerdown: IEvent<PointerEvent>;
-  pointerenter: IEvent<PointerEvent>;
-  pointerleave: IEvent<PointerEvent>;
-  pointermove: IEvent<PointerEvent>;
-  pointerout: IEvent<PointerEvent>;
-  pointerover: IEvent<PointerEvent>;
-  pointerup: IEvent<PointerEvent>;
-  progress: IEvent<ProgressEvent>;
+
   resize: IEvent<UIEvent>;
-  scroll: IEvent;
-  select: IEvent<UIEvent>;
   selectionchange: IEvent;
-  submit: IEvent<SubmitEvent>;
-  touchcancel: IEvent<TouchEvent>;
-  touchend: IEvent<TouchEvent>;
-  touchmove: IEvent<TouchEvent>;
-  touchstart: IEvent<TouchEvent>;
-  // touchevent: IEvent;
-  wheel: IEvent<WheelEvent>;
   [key: string]: IEvent<any, any>;
 }
 
+export interface Events {
+  // clipboard events
+  onCopy: ClipboardEvent
+  onCut: ClipboardEvent
+  onPaste: ClipboardEvent
+
+  // composition events
+  onCompositionend: CompositionEvent
+  onCompositionstart: CompositionEvent
+  onCompositionupdate: CompositionEvent
+
+  // drag drop events
+  onDrag: DragEvent
+  onDragend: DragEvent
+  onDragenter: DragEvent
+  onDragexit: DragEvent
+  onDragleave: DragEvent
+  onDragover: DragEvent
+  onDragstart: DragEvent
+  onDrop: DragEvent
+
+  // focus events
+  onFocus: FocusEvent
+  onFocusin: FocusEvent
+  onFocusout: FocusEvent
+  onBlur: FocusEvent
+
+  // form events
+  onChange: Event
+  onBeforeinput: Event
+  onInput: Event
+  onReset: Event
+  onSubmit: Event
+  onInvalid: Event
+
+  // image events
+  onLoad: Event
+  onError: Event
+
+  // keyboard events
+  onKeydown: KeyboardEvent
+  onKeypress: KeyboardEvent
+  onKeyup: KeyboardEvent
+
+  // mouse events
+  onAuxclick: MouseEvent
+  onClick: MouseEvent
+  onContextmenu: MouseEvent
+  onDblclick: MouseEvent
+  onMousedown: MouseEvent
+  onMouseenter: MouseEvent
+  onMouseleave: MouseEvent
+  onMousemove: MouseEvent
+  onMouseout: MouseEvent
+  onMouseover: MouseEvent
+  onMouseup: MouseEvent
+
+  // media events
+  onAbort: Event
+  onCanplay: Event
+  onCanplaythrough: Event
+  onDurationchange: Event
+  onEmptied: Event
+  onEncrypted: Event
+  onEnded: Event
+  onLoadeddata: Event
+  onLoadedmetadata: Event
+  onLoadstart: Event
+  onPause: Event
+  onPlay: Event
+  onPlaying: Event
+  onProgress: Event
+  onRatechange: Event
+  onSeeked: Event
+  onSeeking: Event
+  onStalled: Event
+  onSuspend: Event
+  onTimeupdate: Event
+  onVolumechange: Event
+  onWaiting: Event
+
+  // selection events
+  onSelect: Event
+
+  // scroll events
+  onScroll: Event
+  onScrollend: Event
+
+  // touch events
+  onTouchcancel: TouchEvent
+  onTouchend: TouchEvent
+  onTouchmove: TouchEvent
+  onTouchstart: TouchEvent
+
+  // pointer events
+  onPointerdown: PointerEvent
+  onPointermove: PointerEvent
+  onPointerup: PointerEvent
+  onPointercancel: PointerEvent
+  onPointerenter: PointerEvent
+  onPointerleave: PointerEvent
+  onPointerover: PointerEvent
+  onPointerout: PointerEvent
+
+  // wheel events
+  onWheel: WheelEvent
+
+  // animation events
+  onAnimationstart: AnimationEvent
+  onAnimationend: AnimationEvent
+  onAnimationiteration: AnimationEvent
+
+  // transition events
+  onTransitionend: TransitionEvent
+  onTransitionstart: TransitionEvent
+}
+
+export type EventEmits<E extends IEvents> = {
+  [K in `on${keyof IEvents}`]?: (payload: E[K]) => void;
+}
+// EventHandlers<Events>
+export type EventHandlers<E> = {
+  [K in keyof E]?: E[K] extends (...args: any[]) => any
+    ? E[K]
+    : (payload: E[K]) => void
+}
+
+// export type IEmits = EventHandlers<AnyFn>
+
+export interface IEmits extends EventHandlers<AnyFn> {
+  // mouseenter?: (evt: MouseEvent) => void; // todo 与events合并；
+  // mouseleave?: (evt: MouseEvent) => void;
+  // focus?: (evt: FocusEvent) => void;
+  // blur?: (evt: FocusEvent) => void;
+  // close?: (...args: any[]) => void;
+  [key: string]: AnyFn | undefined;
+  // [K in keyof E]: E extends Events
+  //   ? E[K]
+  //   : AnyFn
+}
