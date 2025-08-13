@@ -1,4 +1,4 @@
-import { MaybeRef } from '@type-dom/signals';
+import { MaybeRef } from '../../reactivity';
 import { TypeFragment } from '../../core/type-fragment/type-fragment.abstract';
 import { ITeleport, TeleportProps } from './teleport.interface';
 import { TdDom } from 'src/core/type-element/type-element.interface';
