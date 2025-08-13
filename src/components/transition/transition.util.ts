@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { isArray, isObject, isString } from '@type-dom/utils';
+// import { isArray, isObject, isString } from '@type-dom/utils';
 import {
   Hook, TypeTransitionProps
   // TypeTransitionProps
@@ -11,6 +11,7 @@ import {
   StylePropertiesKey,
   TransitionUtil, ElementWithTransition, vtcKey
 } from './transition.interface';
+import { isArray, isObject, toNumber } from '../../shared';
 
 const DOMTransitionPropsValidators = {
   name: String,
@@ -291,10 +292,10 @@ function NumberOf(val: unknown): number {
  * Only concerns number-like strings
  * "123-foo" will be returned as-is
  */
-export const toNumber = (val: any): any => {
-  const n = isString(val) ? Number(val) : NaN;
-  return isNaN(n) ? val : n;
-};
+// export const toNumber = (val: any): any => {
+//   const n = isString(val) ? Number(val) : NaN;
+//   return isNaN(n) ? val : n;
+// };
 
 export function addTransitionClass(el: Element, cls: string) {
   // console.log('addTransitionClass . el is ', el);
