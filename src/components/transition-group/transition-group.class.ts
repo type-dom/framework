@@ -1,4 +1,4 @@
-import { toRaw } from '@type-dom/signals';
+import { toRaw } from '../../reactivity';
 import { getCurrentInstance } from '../../core/instance';
 import { TypeNode } from '../../core/type-node/type-node.abstract';
 import { onUpdated } from '../../core/apiLifecycle';
