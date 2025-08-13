@@ -6,6 +6,7 @@
  */
 import type { ITypeElement } from '../../core/type-element/type-element.interface';
 import { IAttr, TypeProps } from '../../core/type-node/type-node.interface';
+import { MaybeRef } from '../../reactivity/ref';
 
 export interface IXElement extends ITypeElement {
   className: 'XElement'; // 定义元素的类名为 'XElement'。
@@ -14,4 +15,5 @@ export interface IXElement extends ITypeElement {
 
 export interface XElementProps extends TypeProps {
   attributes?: IAttr[];
+  attrObj?: Record<string, MaybeRef<string | number | boolean | undefined>>;
 }
