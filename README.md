@@ -359,11 +359,9 @@ export class Layout extends TypeDiv {
             lineHeight: 2.5,
             right: '50px',
           },
-          events: {
-            click: () => {
-              routerSample.push('/login');
-            },
-          }
+          onClick: () => {
+            routerSample.push('/login');
+          },
         })
       ]
     });

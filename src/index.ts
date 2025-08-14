@@ -1,7 +1,8 @@
 export type * from './interface';
 export * from './parser';
 // export * from './observer/index';
-// export * from './reactivity/index';
+export * from './shared/index'
+export * from './reactivity';
 export * from './utils/index';
 // export * from './core/style/index';
 // export * from './core/attribute/index'
@@ -18,7 +19,7 @@ export * from './utils/index';
 export * from './core';
 export * from './use';
 
-export * from './components/index';
+export * from './components';
 
-export * from './decorators/index';
+export * from './decorators';
 
