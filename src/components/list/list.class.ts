@@ -1,7 +1,9 @@
-import { effect, isSignal, isComputed, toRaw } from '@type-dom/signals';
+import { effect } from '@type-dom/signals';
+import { isSignal, isComputed, toRaw, unref } from '../../reactivity';
 import { TypeFragment } from '../../core/type-fragment/type-fragment.abstract';
 import { getToDom, mountDom } from '../../core/type-element/mountDom';
 import { IList, ListProps } from './list.interface';
+import { isArray } from '../../shared';
 // todo For 多层嵌套时，有问题；
 //    TdSpace 下直接添加 For 组件，子元素没有添加。
 export class List extends TypeFragment implements IList {
@@ -31,7 +33,7 @@ export class List extends TypeFragment implements IList {
           if (!this.dom) {
             this.createDom();
           }
-          this.childNodes.forEach(child => {
+          this.childNodes.forEach((child) => {
             // console.warn('child then mount, it is ', child);
             // let up;
             // const to = unref(element.to);
@@ -43,12 +45,14 @@ export class List extends TypeFragment implements IList {
             const to = getToDom(child);
             // element.dom is Fragment, child.dom not mount to;
             child.mount(to ?? this.dom); // 如果注释了，统计倒计时不显示。
+            // const upDom = mountDom(child);
             // child.mount(upDom); // todo repeat loop .
             // element.appendChild(child); // what different between mount and appendChild ?
-          })
+          });
 
           const upDom = mountDom(this);
-          if (upDom) { // todo 是插入还是添加
+          if (upDom) {
+            // todo 是插入还是添加
             // console.log('upDom is ', upDom)
             // console.log('this.index is ', this.index);
             // todo 插入位置，有哪些不同的情况 ？？？
@@ -60,7 +64,7 @@ export class List extends TypeFragment implements IList {
             }
           }
           // this.slotChildren(this.getRawSlot());
-        })
+        });
       } else {
         this.slotRawData(props.data as any[]);
         // this.slotChildren(this.getRawSlot());
@@ -71,35 +75,76 @@ export class List extends TypeFragment implements IList {
   }
 
   // todo 方法本身没有渲染组件
-  slotRawData(data: any[]) {
+  slotRawData(data: any[] | number | unknown) {
     // console.warn('slotRawData . ');
     const getter = this.props.getter;
-    data.forEach((item, index) => {
-      if (getter) {
-        this.slotChild(getter(item, index));
-      } else {
-        this.slotChild(item);
+    if (isArray(data)) {
+      data.forEach((item, index) => {
+        if (getter) {
+          this.slotChild(getter(item, index));
+        } else {
+          this.slotChild(item);
+        }
+      });
+    } else if (typeof data === 'number') {
+      for (let i = 0; i < data; i++) {
+        if (getter) {
+          this.slotChild(getter(i));
+        } else {
+          this.slotChild(i);
+        }
       }
-    });
+    } else {
+      throw new Error('raw data is not array or number');
+    }
   }
 
   getRawSlot() {
     // console.warn('getRawSlot . this.props.data is ', this.props.data);
-    return toRaw(this.props.data)?.map((item: any, index: number) => {
-      // console.warn('getRawSlot . ', item, index);
-      return this.props.getter ? this.props.getter(item, index) : item;
-    })
+    if (isArray(this.props.data)) {
+      return toRaw(this.props.data)?.map((item: any, index: number) => {
+        // console.warn('getRawSlot . ', item, index);
+        return this.props.getter ? this.props.getter(item, index) : item;
+      });
+    } else if (typeof this.props.data === 'number') {
+      return Array.from({ length: this.props.data }, (_, index) => {
+        return this.props.getter ? this.props.getter(index) : index;
+      });
+    } else {
+      throw new Error('raw data is not array or number');
+    }
   }
 
-  add(item: any) {
-
+  //   todo isRef this.props.data
+  add(item: any, index?: number) {
+    const data = unref(this.props.data);
+    if (isArray(data)) {
+      if (index) {
+        data.splice(index, 0, item);
+      } else {
+        data.push(item);
+      }
+      // this.props.data = data;
+    } else if(typeof data === 'number') {
+      if (index) {
+        // data.splice(index, 0, item);
+      } else {
+        // data += 1;
+      }
+    } else {
+      throw new Error('props.data is not array');
+    }
   }
 
   delete(index: number) {
-
+    const data = unref(this.props.data);
+    if (isArray(data)) {
+      data.splice(index, 1);
+    }
+    // this.props.data = data;
   }
 
   addList(data: any[]) {
-
+    // todo
   }
 }
