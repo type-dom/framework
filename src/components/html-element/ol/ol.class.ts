@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeOL } from '../../../core/type-html/ol/ol.abstract';
+import { TypeOLProps } from '../../../core/type-html/ol/ol.interface';
 import type { IOL } from './ol.interface';
 
 export class OL extends TypeOL implements IOL {
@@ -7,7 +7,7 @@ export class OL extends TypeOL implements IOL {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeOLProps = {}) {
     super();
     this.className = 'OL';
     this.slotChildren(params.slot);

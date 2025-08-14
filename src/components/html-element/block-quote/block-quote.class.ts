@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeBlockQuote } from '../../../core/type-html/block-quote/block-quote.abstract';
+import { TypeBlockQuoteProps } from '../../../core/type-html/block-quote/block-quote.interface';
 import type { IBlockQuote } from './block-quote.interface';
 
 export class BlockQuote extends TypeBlockQuote implements IBlockQuote {
@@ -7,7 +7,7 @@ export class BlockQuote extends TypeBlockQuote implements IBlockQuote {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeBlockQuoteProps = {}) {
     super();
     this.className = 'BlockQuote';
     this.slotChildren(params.slot);

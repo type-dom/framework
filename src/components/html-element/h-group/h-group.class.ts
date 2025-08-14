@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeHGroup } from '../../../core/type-html/hgroup/hgroup.abstract';
+import { TypeHGroupProps } from '../../../core/type-html/hgroup/hgroup.interface';
 import type { IHGroup } from './h-group.interface';
 
 export class HGroup extends TypeHGroup implements IHGroup {
@@ -7,7 +7,7 @@ export class HGroup extends TypeHGroup implements IHGroup {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeHGroupProps = {}) {
     super();
     this.className = 'HGroup';
     this.slotChildren(params.slot);

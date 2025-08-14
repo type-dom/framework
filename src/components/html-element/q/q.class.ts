@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeQ } from '../../../core/type-html/q/q.abstract';
+import { TypeQProps } from '../../../core/type-html/q/q.interface';
 import type { IQ } from './q.interface';
 
 export class Q extends TypeQ implements IQ {
@@ -7,7 +7,7 @@ export class Q extends TypeQ implements IQ {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeQProps = {}) {
     super();
     this.className = 'Q';
     this.slotChildren(params.slot);

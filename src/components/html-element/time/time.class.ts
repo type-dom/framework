@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeTime } from '../../../core/type-html/time/time.abstract';
+import { TypeTimeProps } from '../../../core/type-html/time/time.interface';
 import type { ITime } from './time.interface';
 
 export class Time extends TypeTime implements ITime {
@@ -7,7 +7,7 @@ export class Time extends TypeTime implements ITime {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeTimeProps = {}) {
     super();
     this.className = 'Time';
     this.slotChildren(params.slot);

@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeLegend } from '../../../core/type-html/legend/legend.abstract';
+import { TypeLegendProps } from '../../../core/type-html/legend/legend.interface';
 import type { ILegend } from './legend.interface';
 
 export class Legend extends TypeLegend implements ILegend {
@@ -7,7 +7,7 @@ export class Legend extends TypeLegend implements ILegend {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeLegendProps = {}) {
     super();
     this.className = 'Legend';
     this.slotChildren(params.slot);

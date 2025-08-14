@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeVideo } from '../../../core/type-html/video/video.abstract';
+import { TypeVideoProps } from '../../../core/type-html/video/video.interface';
 import type { IVideo } from './video.interface';
 
 export class Video extends TypeVideo implements IVideo {
@@ -7,7 +7,7 @@ export class Video extends TypeVideo implements IVideo {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeVideoProps = {}) {
     super();
     this.className = 'Video';
     this.slotChildren(params.slot);

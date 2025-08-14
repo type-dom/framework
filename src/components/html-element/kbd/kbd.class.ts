@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeKbd } from '../../../core/type-html/kbd/kbd.abstract';
+import { TypeKbdProps } from '../../../core/type-html/kbd/kbd.interface';
 import type { IKbd } from './kbd.interface';
 
 export class Kbd extends TypeKbd implements IKbd {
@@ -7,7 +7,7 @@ export class Kbd extends TypeKbd implements IKbd {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeKbdProps = {}) {
     super();
     this.className = 'Kbd';
     this.slotChildren(params.slot);

@@ -1,5 +1,5 @@
 import { TypeSpan } from '../../../core/type-html/span/span.abstract';
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
+import { TypeSpanProps } from '../../../core/type-html/span/span.interface';
 import type { ISpan } from './span.interface';
 
 export class Span extends TypeSpan implements ISpan {
@@ -7,7 +7,7 @@ export class Span extends TypeSpan implements ISpan {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeSpanProps = {}) {
     super();
     this.className = 'Span';
     this.slotChildren(params.slot);

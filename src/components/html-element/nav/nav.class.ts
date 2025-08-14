@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeNav } from '../../../core/type-html/nav/nav.abstract';
+import { TypeNavProps } from '../../../core/type-html/nav/nav.interface';
 import type { INav } from './nav.interface';
 
 export class Nav extends TypeNav implements INav {
@@ -7,7 +7,7 @@ export class Nav extends TypeNav implements INav {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeNavProps = {}) {
     super();
     this.className = 'Nav';
     this.slotChildren(params.slot);

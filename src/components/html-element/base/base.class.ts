@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeBase } from '../../../core/type-html/base/base.abstract';
+import { TypeBaseProps } from '../../../core/type-html/base/base.interface';
 import type { IBase } from './base.interface';
 
 export class Base extends TypeBase implements IBase {
@@ -7,7 +7,7 @@ export class Base extends TypeBase implements IBase {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeBaseProps = {}) {
     super();
     this.className = 'Base';
     this.slotChildren(params.slot);

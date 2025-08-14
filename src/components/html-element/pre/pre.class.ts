@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypePre } from '../../../core/type-html/pre/pre.abstract';
+import { TypePreProps } from '../../../core/type-html/pre/pre.interface';
 import type { IPre } from './pre.interface';
 
 export class Pre extends TypePre implements IPre {
@@ -7,7 +7,7 @@ export class Pre extends TypePre implements IPre {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypePreProps = {}) {
     super();
     this.className = 'Pre';
     this.slotChildren(params.slot);

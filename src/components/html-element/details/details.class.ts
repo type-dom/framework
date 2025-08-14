@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeDetails } from '../../../core/type-html/details/details.abstract';
+import { TypeDetailsProps } from '../../../core/type-html/details/details.interface';
 import type { IDetails } from './details.interface';
 
 export class Details extends TypeDetails implements IDetails {
@@ -7,7 +7,7 @@ export class Details extends TypeDetails implements IDetails {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeDetailsProps = {}) {
     super();
     this.className = 'Details';
     this.slotChildren(params.slot);

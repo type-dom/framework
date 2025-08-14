@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeFieldset } from '../../../core/type-html/fieldset/fieldset.abstract';
+import { TypeFieldsetProps } from '../../../core/type-html/fieldset/fieldset.interface';
 import type { IFieldset } from './fieldset.interface';
 
 export class Fieldset extends TypeFieldset implements IFieldset {
@@ -7,7 +7,7 @@ export class Fieldset extends TypeFieldset implements IFieldset {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeFieldsetProps = {}) {
     super();
     this.className = 'Fieldset';
     this.slotChildren(params.slot);

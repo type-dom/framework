@@ -1,5 +1,5 @@
 import { TypeTable } from '../../../core/type-html/table/table.abstract';
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
+import { TypeTableProps } from '../../../core/type-html/table/table.interface';
 import { TableRow } from './row/row.class';
 import { TableHead } from './head/head.class';
 import type { ITable } from './table.interface';
@@ -10,7 +10,7 @@ export class Table extends TypeTable implements ITable {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeTableProps = {}) {
     super();
     this.className = 'Table';
     this.childNodes = [];

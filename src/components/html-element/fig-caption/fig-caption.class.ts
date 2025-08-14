@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeFigCaption } from '../../../core/type-html/fig-caption/fig-caption.abstract';
+import { TypeFigCaptionProps } from '../../../core/type-html/fig-caption/fig-caption.interface';
 import type { IFigCaption } from './fig-caption.interface';
 
 export class FigCaption extends TypeFigCaption implements IFigCaption {
@@ -7,7 +7,7 @@ export class FigCaption extends TypeFigCaption implements IFigCaption {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeFigCaptionProps = {}) {
     super();
     this.className = 'FigCaption';
     this.slotChildren(params.slot);

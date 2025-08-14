@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeHeader } from '../../../core/type-html/header/header.abstract';
+import { TypeHeaderProps } from '../../../core/type-html/header/header.interface';
 import type { IHeader } from './header.interface';
 
 export class Header extends TypeHeader implements IHeader {
@@ -7,7 +7,7 @@ export class Header extends TypeHeader implements IHeader {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeHeaderProps = {}) {
     super();
     this.className = 'Header';
     this.slotChildren(params.slot);

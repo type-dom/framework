@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeIns } from '../../../core/type-html/ins/ins.abstract';
+import { TypeInsProps } from '../../../core/type-html/ins/ins.interface';
 import type { IIns } from './ins.interface';
 
 export class Ins extends TypeIns implements IIns {
@@ -7,7 +7,7 @@ export class Ins extends TypeIns implements IIns {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeInsProps = {}) {
     super();
     this.className = 'Ins';
     this.slotChildren(params.slot);

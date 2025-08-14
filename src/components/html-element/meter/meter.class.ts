@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeMeter } from '../../../core/type-html/meter/meter.abstract';
+import { TypeMeterProps } from '../../../core/type-html/meter/meter.interface';
 import type { IMeter } from './meter.interface';
 
 export class Meter extends TypeMeter implements IMeter {
@@ -7,7 +7,7 @@ export class Meter extends TypeMeter implements IMeter {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeMeterProps = {}) {
     super();
     this.className = 'Meter';
     this.slotChildren(params.slot);

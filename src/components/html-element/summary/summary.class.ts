@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeSummary } from '../../../core/type-html/summary/summary.abstract';
+import { TypeSummaryProps } from '../../../core/type-html/summary/summary.interface';
 import type { ISummary } from './summary.interface';
 
 export class Summary extends TypeSummary implements ISummary {
@@ -7,7 +7,7 @@ export class Summary extends TypeSummary implements ISummary {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeSummaryProps = {}) {
     super();
     this.className = 'Summary';
     this.slotChildren(params.slot);

@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeDfn } from '../../../core/type-html/dfn/dfn.abstract';
+import { TypeDfnProps } from '../../../core/type-html/dfn/dfn.interface';
 import type { IDfn } from './dfn.interface';
 
 export class Dfn extends TypeDfn implements IDfn {
@@ -7,7 +7,7 @@ export class Dfn extends TypeDfn implements IDfn {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeDfnProps = {}) {
     super();
     this.className = 'Dfn';
     this.slotChildren(params.slot);

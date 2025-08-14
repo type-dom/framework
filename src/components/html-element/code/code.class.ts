@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeCode } from '../../../core/type-html/code/code.abstract';
+import { TypeCodeProps } from '../../../core/type-html/code/code.interface';
 import type { ICode } from './code.interface';
 
 export class Code extends TypeCode implements ICode {
@@ -7,7 +7,7 @@ export class Code extends TypeCode implements ICode {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeCodeProps = {}) {
     super();
     this.className = 'Code';
     this.slotChildren(params.slot);

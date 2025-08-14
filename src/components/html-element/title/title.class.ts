@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeTitle } from '../../../core/type-html/title/title.abstract';
+import { TypeTitleProps } from '../../../core/type-html/title/title.interface';
 import type { ITitle } from './title.interface';
 
 export class Title extends TypeTitle implements ITitle {
@@ -7,7 +7,7 @@ export class Title extends TypeTitle implements ITitle {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeTitleProps = {}) {
     super();
     this.className = 'Title';
     this.slotChildren(params.slot);

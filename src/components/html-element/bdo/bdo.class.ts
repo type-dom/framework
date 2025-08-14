@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeBdo } from '../../../core/type-html/bdo/bdo.abstract';
+import { TypeBdoProps } from '../../../core/type-html/bdo/bdo.interface';
 import type { IBdo } from './bdo.interface';
 
 export class Bdo extends TypeBdo implements IBdo {
@@ -7,7 +7,7 @@ export class Bdo extends TypeBdo implements IBdo {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeBdoProps = {}) {
     super();
     this.className = 'Bdo';
     this.slotChildren(params.slot);

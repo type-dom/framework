@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeU } from '../../../core/type-html/u/u.abstract';
+import { TypeUProps } from '../../../core/type-html/u/u.interface';
 import type { IU } from './u.interface';
 
 export class U extends TypeU implements IU {
@@ -7,7 +7,7 @@ export class U extends TypeU implements IU {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeUProps = {}) {
     super();
     this.className = 'U';
     this.slotChildren(params.slot);

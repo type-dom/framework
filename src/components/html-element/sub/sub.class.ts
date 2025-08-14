@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeSub } from '../../../core/type-html/sub/sub.abstract';
+import { TypeSubProps } from '../../../core/type-html/sub/sub.interface';
 import type { ISub } from './sub.interface';
 
 export class Sub extends TypeSub implements ISub {
@@ -7,7 +7,7 @@ export class Sub extends TypeSub implements ISub {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeSubProps = {}) {
     super();
     this.className = 'Sub';
     this.slotChildren(params.slot);

@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeVar } from '../../../core/type-html/var/var.abstract';
+import { TypeVarProps } from '../../../core/type-html/var/var.interface';
 import type { IVar } from './var.interface';
 
 export class Var extends TypeVar implements IVar {
@@ -7,7 +7,7 @@ export class Var extends TypeVar implements IVar {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeVarProps = {}) {
     super();
     this.className = 'Var';
     this.slotChildren(params.slot);

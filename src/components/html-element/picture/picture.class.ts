@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypePicture } from '../../../core/type-html/picture/picture.abstract';
+import { TypePictureProps } from '../../../core/type-html/picture/picture.interface';
 import type { IPicture } from './picture.interface';
 
 export class Picture extends TypePicture implements IPicture {
@@ -7,7 +7,7 @@ export class Picture extends TypePicture implements IPicture {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypePictureProps = {}) {
     super();
     this.className = 'Picture';
     this.slotChildren(params.slot);

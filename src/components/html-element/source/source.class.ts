@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeSource } from '../../../core/type-html/source/source.abstract';
+import { TypeSourceProps } from '../../../core/type-html/source/source.interface';
 import type { ISource } from './source.interface';
 
 export class Source extends TypeSource implements ISource {
@@ -7,7 +7,7 @@ export class Source extends TypeSource implements ISource {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeSourceProps = {}) {
     super();
     this.className = 'Source';
     this.slotChildren(params.slot);

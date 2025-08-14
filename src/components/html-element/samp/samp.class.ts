@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeSamp } from '../../../core/type-html/samp/samp.abstract';
+import { TypeSampProps } from '../../../core/type-html/samp/samp.interface';
 import type { ISamp } from './samp.interface';
 
 export class Samp extends TypeSamp implements ISamp {
@@ -7,7 +7,7 @@ export class Samp extends TypeSamp implements ISamp {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeSampProps = {}) {
     super();
     this.className = 'Samp';
     this.slotChildren(params.slot);

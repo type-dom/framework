@@ -1,13 +1,13 @@
 import { TypeSlot } from '../../../core/type-html/slot/slot.abstract';
-import type { ISlot, SlotProps } from './slot.interface';
+import { TypeSlotProps } from '../../../core/type-html/slot/slot.interface';
+import type { ISlot } from './slot.interface';
 
 export class Slot extends TypeSlot implements ISlot {
   className: 'Slot';
-  override props: SlotProps;
 
   override isBasic = true;
 
-  constructor(params = {} as SlotProps) {
+  constructor(params: TypeSlotProps = {}) {
     super();
     this.className = 'Slot';
     this.props = this.useParams(params);

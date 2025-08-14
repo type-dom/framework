@@ -1,5 +1,5 @@
 import { TypeLI } from '../../../core/type-html/li/li.abstract';
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
+import { TypeLIProps } from '../../../core/type-html/li/li.interface';
 import type { ILI } from './li.interface';
 
 export class LI extends TypeLI implements ILI {
@@ -8,7 +8,7 @@ export class LI extends TypeLI implements ILI {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeLIProps = {}) {
     super();
     this.className = 'LI';
     // this.childNodes = [];

@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeBdi } from '../../../core/type-html/bdi/bdi.abstract';
+import { TypeBdiProps } from '../../../core/type-html/bdi/bdi.interface';
 import type { IBdi } from './bdi.interface';
 
 export class Bdi extends TypeBdi implements IBdi {
@@ -7,7 +7,7 @@ export class Bdi extends TypeBdi implements IBdi {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeBdiProps = {}) {
     super();
     this.className = 'Bdi';
     this.slotChildren(params.slot);

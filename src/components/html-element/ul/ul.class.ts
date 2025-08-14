@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeUL } from '../../../core/type-html/ul/ul.abstract';
+import { TypeULProps } from '../../../core/type-html/ul/ul.interface';
 import type { IUL } from './ul.interface';
 
 export class UL extends TypeUL implements IUL {
@@ -7,7 +7,7 @@ export class UL extends TypeUL implements IUL {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeULProps = {}) {
     super();
     this.className = 'UL';
 

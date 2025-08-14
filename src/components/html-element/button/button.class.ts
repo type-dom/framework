@@ -1,5 +1,5 @@
 import { TypeButton } from '../../../core/type-html/button/button.abstract';
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
+import { TypeButtonProps } from '../../../core/type-html/button/button.interface';
 import type { IButton } from './button.interface';
 
 export class Button extends TypeButton implements IButton {
@@ -7,7 +7,7 @@ export class Button extends TypeButton implements IButton {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeButtonProps = {}) {
     super();
     this.className = 'Button';
     this.slotChildren(params.slot);

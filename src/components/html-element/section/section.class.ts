@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeSection } from '../../../core/type-html/section/section.abstract';
+import { TypeSectionProps } from '../../../core/type-html/section/section.interface';
 import type { ISection } from './section.interface';
 
 export class Section extends TypeSection implements ISection {
@@ -7,16 +7,9 @@ export class Section extends TypeSection implements ISection {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeSectionProps = {}) {
     super();
     this.className = 'Section';
-    this.style.addObj({
-      display: 'flex',
-      justifyContent: 'space-between',
-    });
-    this.attr.addObj({
-      name: 'section',
-    });
     this.slotChildren(params.slot);
     this.useParams(params);
   }

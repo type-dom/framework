@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeRuby } from '../../../core/type-html/ruby/ruby.abstract';
+import { TypeRubyProps } from '../../../core/type-html/ruby/ruby.interface';
 import type { IRuby } from './ruby.interface';
 
 export class Ruby extends TypeRuby implements IRuby {
@@ -7,7 +7,7 @@ export class Ruby extends TypeRuby implements IRuby {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeRubyProps = {}) {
     super();
     this.className = 'Ruby';
     this.slotChildren(params.slot);

@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeProgress } from '../../../core/type-html/progress/progress.abstract';
+import { TypeProgressProps } from '../../../core/type-html/progress/progress.interface';
 import type { IProgress } from './progress.interface';
 
 export class Progress extends TypeProgress implements IProgress {
@@ -7,7 +7,7 @@ export class Progress extends TypeProgress implements IProgress {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeProgressProps = {}) {
     super();
     this.className = 'Progress';
     this.slotChildren(params.slot);

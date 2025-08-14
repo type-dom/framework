@@ -1,5 +1,5 @@
 import { TypeDiv } from '../../../core/type-html/div/div.abstract';
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
+import { TypeDivProps } from '../../../core/type-html/div/div.interface';
 import type { IDiv } from './div.interface';
 
 export class Div extends TypeDiv implements IDiv {
@@ -7,7 +7,7 @@ export class Div extends TypeDiv implements IDiv {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeDivProps = {}) {
     super();
     this.className = 'Div';
     this.slotChildren(params.slot);

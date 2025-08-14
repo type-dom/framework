@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeOutput } from '../../../core/type-html/output/output.abstract';
+import { TypeOutputProps } from '../../../core/type-html/output/output.interface';
 import type { IOutput } from './output.interface';
 
 export class Output extends TypeOutput implements IOutput {
@@ -7,7 +7,7 @@ export class Output extends TypeOutput implements IOutput {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeOutputProps = {}) {
     super();
     this.className = 'Output';
     this.slotChildren(params.slot);

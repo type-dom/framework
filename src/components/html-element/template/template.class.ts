@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeTemplate } from '../../../core/type-html/template/template.abstract';
+import { TypeTemplateProps } from '../../../core/type-html/template/template.interface';
 import type { ITemplate } from './template.interface';
 
 export class Template extends TypeTemplate implements ITemplate {
@@ -7,7 +7,7 @@ export class Template extends TypeTemplate implements ITemplate {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeTemplateProps = {}) {
     super();
     this.className = 'Template';
     this.slotChildren(params.slot);

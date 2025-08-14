@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeDel } from '../../../core/type-html/del/del.abstract';
+import { TypeDelProps } from '../../../core/type-html/del/del.interface';
 import type { IDel } from './del.interface';
 
 export class Del extends TypeDel implements IDel {
@@ -7,7 +7,7 @@ export class Del extends TypeDel implements IDel {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeDelProps = {}) {
     super();
     this.className = 'Del';
     this.slotChildren(params.slot);

@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeArea } from '../../../core/type-html/area/area.abstract';
+import { TypeAreaProps } from '../../../core/type-html/area/area.interface';
 import type { IArea } from './area.interface';
 
 export class Area extends TypeArea implements IArea {
@@ -7,7 +7,7 @@ export class Area extends TypeArea implements IArea {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeAreaProps = {}) {
     super();
     this.className = 'Area';
     this.slotChildren(params.slot);

@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeArticle } from '../../../core/type-html/article/article.abstract';
+import { TypeArticleProps } from '../../../core/type-html/article/article.interface';
 import type { IArticle } from './article.interface';
 
 export class Article extends TypeArticle implements IArticle {
@@ -7,7 +7,7 @@ export class Article extends TypeArticle implements IArticle {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeArticleProps = {}) {
     super();
     this.className = 'Article';
     this.slotChildren(params.slot);

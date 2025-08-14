@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeTrack } from '../../../core/type-html/track/track.abstract';
+import { TypeTrackProps } from '../../../core/type-html/track/track.interface';
 import type { ITrack } from './track.interface';
 
 export class Track extends TypeTrack implements ITrack {
@@ -7,7 +7,7 @@ export class Track extends TypeTrack implements ITrack {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeTrackProps = {}) {
     super();
     this.className = 'Track';
     this.slotChildren(params.slot);

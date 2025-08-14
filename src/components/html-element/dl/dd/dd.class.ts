@@ -1,5 +1,5 @@
-import { TypeProps } from '../../../../core/type-node/type-node.interface';
 import { TypeDD } from '../../../../core/type-html/dl/dd/dd.abstract';
+import { TypeDDProps } from '../../../../core/type-html/dl/dd/dd.interface';
 import type { IDD } from './dd.interface';
 
 export class DD extends TypeDD implements IDD {
@@ -7,7 +7,7 @@ export class DD extends TypeDD implements IDD {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeDDProps = {}) {
     super();
     this.className = 'DD';
     this.slotChildren(params.slot);

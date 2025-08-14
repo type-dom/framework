@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeIFrame } from '../../../core/type-html/iframe/iframe.abstract';
+import { TypeIFrameProps } from '../../../core/type-html/iframe/iframe.interface';
 import type { IIFrame } from './iframe.interface';
 
 export class IFrame extends TypeIFrame implements IIFrame {
@@ -7,7 +7,7 @@ export class IFrame extends TypeIFrame implements IIFrame {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeIFrameProps = {}) {
     super();
     this.className = 'IFrame';
     this.slotChildren(params.slot);

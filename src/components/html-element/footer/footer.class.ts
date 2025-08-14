@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeFooter } from '../../../core/type-html/footer/footer.abstract';
+import { TypeFooterProps } from '../../../core/type-html/footer/footer.interface';
 import type { IFooter } from './footer.interface';
 
 export class Footer extends TypeFooter implements IFooter {
@@ -7,7 +7,7 @@ export class Footer extends TypeFooter implements IFooter {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeFooterProps = {}) {
     super();
     this.className = 'Footer';
     this.slotChildren(params.slot);

@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeS } from '../../../core/type-html/s/s.abstract';
+import { TypeSProps } from '../../../core/type-html/s/s.interface';
 import type { IS } from './s.interface';
 
 export class S extends TypeS implements IS {
@@ -7,7 +7,7 @@ export class S extends TypeS implements IS {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeSProps = {}) {
     super();
     this.className = 'S';
     this.slotChildren(params.slot);

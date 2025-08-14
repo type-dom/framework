@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeCanvas } from '../../../core/type-html/canvas/canvas.abstract';
+import { TypeCanvasProps } from '../../../core/type-html/canvas/canvas.interface';
 import type { ICanvas } from './canvas.interface';
 
 export class Canvas extends TypeCanvas implements ICanvas {
@@ -7,7 +7,7 @@ export class Canvas extends TypeCanvas implements ICanvas {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeCanvasProps = {}) {
     super();
     this.className = 'Canvas';
     this.slotChildren(params.slot);

@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeHr } from '../../../core/type-html/hr/hr.abstract';
+import { TypeHrProps } from '../../../core/type-html/hr/hr.interface';
 import type { IHr } from './hr.interface';
 
 export class Hr extends TypeHr implements IHr {
@@ -7,7 +7,7 @@ export class Hr extends TypeHr implements IHr {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeHrProps = {}) {
     super();
     this.className = 'Hr';
     this.slotChildren(params.slot);

@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeWbr } from '../../../core/type-html/wbr/wbr.abstract';
+import { TypeWbrProps } from '../../../core/type-html/wbr/wbr.interface';
 import type { IWbr } from './wbr.interface';
 
 export class Wbr extends TypeWbr implements IWbr {
@@ -7,7 +7,7 @@ export class Wbr extends TypeWbr implements IWbr {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeWbrProps = {}) {
     super();
     this.className = 'Wbr';
     this.slotChildren(params.slot);

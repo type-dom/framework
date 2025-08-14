@@ -1,4 +1,3 @@
-import { TypeSelect } from '../../../core/type-html/select/select.abstract';
 import {
   ITypeOptGroup,
   TypeOptGroupProps,
@@ -6,10 +5,6 @@ import {
 
 export interface IOptGroup extends ITypeOptGroup {
   className: 'OptGroup';
-  props: OptGroupProps;
+  props: TypeOptGroupProps;
   // childNodes: ITypNode[],
-}
-
-export interface OptGroupProps extends TypeOptGroupProps {
-  parent: TypeSelect;
 }

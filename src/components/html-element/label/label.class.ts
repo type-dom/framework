@@ -1,6 +1,6 @@
 import { TextNode } from '../../../core/text-node/text-node.class';
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeLabel } from '../../../core/type-html/label/label.abstract';
+import { TypeLabelProps } from '../../../core/type-html/label/label.interface';
 import type { Input } from '../input/input.class';
 import type { ILabel } from './label.interface';
 
@@ -10,7 +10,7 @@ export class Label extends TypeLabel implements ILabel {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeLabelProps = {}) {
     super();
     this.className = 'Label';
     this.attr.addName('label');

@@ -1,5 +1,5 @@
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeRp } from '../../../core/type-html/rp/rp.abstract';
+import { TypeRpProps } from '../../../core/type-html/rp/rp.interface';
 import type { IRp } from './rp.interface';
 
 export class Rp extends TypeRp implements IRp {
@@ -7,7 +7,7 @@ export class Rp extends TypeRp implements IRp {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: TypeRpProps = {}) {
     super();
     this.className = 'Rp';
     this.slotChildren(params.slot);
