@@ -1,21 +1,9 @@
-import { IStyle, Property } from '@type-dom/css-type';
-import { MaybeRef } from '@type-dom/signals';
 import type { ITypeSvg } from '../../../core/type-svg/type-svg.interface';
-import { TypeProps } from '../../../core/type-node/type-node.interface';
-import { ITypeAttribute } from '../../../core/attribute/attribute.interface';
-
-export interface ISvgPathStyle extends IStyle {
-  fill?: Property.Fill; // white;
-  stroke?: Property.Stroke; // red;
-  strokeWidth?: Property.StrokeWidth; // 2
-}
-
-export interface ISvgPathAttribute extends ITypeAttribute {
-  d?: string; // M250 150 L150 350 L350 350 Z
-  fill?: string;
-  strokeWidth?: number;
-  fillRule?: 'nonzero' | 'evenodd' | 'inherit'; // Default value	nonzero
-}
+// export interface ISvgPathStyle extends CSSProperties {
+//   fill?: Property.Fill; // white;
+//   stroke?: Property.Stroke; // red;
+//   strokeWidth?: Property.StrokeWidth; // 2
+// }
 
 /**
  * <path> 标签用来定义路径。
@@ -37,9 +25,4 @@ export interface ISvgPath extends ITypeSvg {
   nodeName: 'path';
   className: 'SvgPath';
   childNodes: [];
-}
-
-export interface SvgPathProps extends TypeProps {
-  styleObj?: MaybeRef<ISvgPathStyle>;
-  attrObj?: ISvgPathAttribute;
 }

@@ -1,11 +1,12 @@
+import { SvgProps } from '../../../core/type-svg/type-svg.interface';
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
-import { ISvgRect, SvgRectProps } from './rect.interface';
+import { ISvgRect } from './rect.interface';
 
 export class SvgRect extends TypeSvg implements ISvgRect {
   nodeName: 'rect';
   className: 'SvgRect';
   dom: SVGRectElement;
-  override props: SvgRectProps;
+  override props: SvgProps;
   // override attrObj: ISvgRectAttribute;
   override childNodes: [];
   x = 0;
@@ -15,7 +16,7 @@ export class SvgRect extends TypeSvg implements ISvgRect {
 
   override isBasic = true;
 
-  constructor(params: SvgRectProps = {}) {
+  constructor(params: SvgProps = {}) {
     super();
     this.nodeName = 'rect';
     this.className = 'SvgRect';

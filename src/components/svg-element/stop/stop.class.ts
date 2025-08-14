@@ -1,6 +1,6 @@
+import { SvgProps } from '../../../core/type-svg/type-svg.interface';
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
 import type { ISvgStop } from './stop.interface';
-import { TypeProps } from '../../../core/type-node/type-node.interface';
 
 export class SvgStop extends TypeSvg implements ISvgStop {
   nodeName: 'stop';
@@ -11,7 +11,7 @@ export class SvgStop extends TypeSvg implements ISvgStop {
 
   override isBasic = true;
 
-  constructor(params: TypeProps) {
+  constructor(params: SvgProps) {
     super();
     this.nodeName = 'stop';
     this.className = 'SvgStop';

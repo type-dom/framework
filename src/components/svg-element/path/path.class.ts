@@ -1,17 +1,18 @@
+import { SvgProps } from '../../../core/type-svg/type-svg.interface';
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
-import { ISvgPath, SvgPathProps } from './path.interface';
+import { ISvgPath } from './path.interface';
 
 export class SvgPath extends TypeSvg implements ISvgPath {
   nodeName: 'path';
   dom: SVGPathElement;
   className: 'SvgPath';
-  override props: SvgPathProps;
+  override props: SvgProps;
   // override attrObj: ISvgPathAttribute;
   override childNodes: [];
 
   override isBasic = true;
 
-  constructor(params: SvgPathProps = {}) {
+  constructor(params: SvgProps = {}) {
     super();
     this.nodeName = 'path';
     this.dom = document.createElementNS(

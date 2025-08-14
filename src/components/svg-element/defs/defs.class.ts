@@ -3,7 +3,7 @@
  * 它继承自 `TypeSvg` 类，实现了 `ISvgDefs` 接口。
  */
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
-import { TypeProps } from '../../../core/type-node/type-node.interface';
+import { SvgProps } from '../../../core/type-svg/type-svg.interface';
 import type { ISvgDefs } from './defs.interface';
 
 export class SvgDefs extends TypeSvg implements ISvgDefs {
@@ -18,7 +18,7 @@ export class SvgDefs extends TypeSvg implements ISvgDefs {
    */
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: SvgProps = {}) {
     super(); // 调用父类的构造函数
     this.nodeName = 'defs'; // 设置节点名称
     this.className = 'SvgDefs'; // 设置类名

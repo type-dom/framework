@@ -1,19 +1,19 @@
+import { SvgProps } from '../../../core/type-svg/type-svg.interface';
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
 import type {
   ISvgFeGaussianBlur,
-  SvgFeGaussianBlurProps,
 } from './fe-gaussian-blur.interface';
 
 export class SvgFeGaussianBlur extends TypeSvg implements ISvgFeGaussianBlur {
   nodeName: 'feGaussianBlur';
   className: 'SvgFeGaussianBlur';
   dom: SVGFEGaussianBlurElement;
-  override props: SvgFeGaussianBlurProps;
+  override props: SvgProps;
   override childNodes: [];
 
   override isBasic = true;
 
-  constructor(params?: SvgFeGaussianBlurProps) {
+  constructor(params?: SvgProps) {
     super();
     this.nodeName = 'feGaussianBlur';
     this.className = 'SvgFeGaussianBlur';

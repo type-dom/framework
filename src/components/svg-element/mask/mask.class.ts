@@ -2,8 +2,8 @@
  * `SvgMask` 类定义了SVG定义元素的封装，用于创建和管理SVG定义（如渐变、过滤器等）。
  * 它继承自 `TypeSvg` 类，实现了 `ISvgMask` 接口。
  */
+import { SvgProps } from '../../../core/type-svg/type-svg.interface';
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
-import { TypeProps } from '../../../core/type-node/type-node.interface';
 import type { ISvgMask } from './mask.interface';
 
 export class SvgMask extends TypeSvg implements ISvgMask {
@@ -18,7 +18,7 @@ export class SvgMask extends TypeSvg implements ISvgMask {
    */
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: SvgProps = {}) {
     super(); // 调用父类的构造函数
     this.nodeName = 'mask'; // 设置节点名称
     this.className = 'SvgMask'; // 设置类名

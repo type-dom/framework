@@ -1,5 +1,6 @@
+import { SvgProps } from '../../../core/type-svg/type-svg.interface';
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
-import type { ISvgImage, SvgImageProps } from './image.interface';
+import type { ISvgImage } from './image.interface';
 
 /**
  * image标签
@@ -8,14 +9,14 @@ export class SvgImage extends TypeSvg implements ISvgImage {
   nodeName: 'image';
   className: 'SvgImage';
   dom: SVGImageElement;
-  override props: SvgImageProps;
+  override props: SvgProps;
   // override attrObj: ISvgImageAttribute;
   // override styleObj: ISvgImageStyle;
   override childNodes: [];
 
   override isBasic = true;
 
-  constructor(params?: SvgImageProps) {
+  constructor(params?: SvgProps) {
     super();
     this.nodeName = 'image';
     this.className = 'SvgImage';

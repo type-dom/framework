@@ -1,6 +1,6 @@
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
-import { TypeProps } from '../../../core/type-node/type-node.interface';
 import type { ISvgCircle } from './circle.interface';
+import { SvgProps } from '../../../core/type-svg/type-svg.interface';
 
 export class SvgCircle extends TypeSvg implements ISvgCircle {
   nodeName: 'circle';
@@ -9,7 +9,7 @@ export class SvgCircle extends TypeSvg implements ISvgCircle {
   override childNodes: [];
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: SvgProps = {}) {
     super();
     this.nodeName = 'circle';
     this.className = 'SvgCircle';

@@ -1,5 +1,5 @@
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
-import { TypeProps } from '../../../core/type-node/type-node.interface';
+import { SvgProps } from '../../../core/type-svg/type-svg.interface';
 import { ISvgFilter } from './filter.interface';
 
 export class SvgFilter extends TypeSvg implements ISvgFilter {
@@ -10,7 +10,7 @@ export class SvgFilter extends TypeSvg implements ISvgFilter {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: SvgProps = {}) {
     super();
     this.nodeName = 'filter';
     this.className = 'SvgFilter';

@@ -1,11 +1,12 @@
+import { SvgProps } from '../../../core/type-svg/type-svg.interface';
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
-import { ISvgLine, SvgLineProps } from './line.interface';
+import { ISvgLine } from './line.interface';
 
 export class SvgLine extends TypeSvg implements ISvgLine {
   nodeName: 'line';
   className: 'SvgLine';
   dom: SVGLineElement;
-  override props: SvgLineProps;
+  override props: SvgProps;
   // override attrObj: ISvgLineAttribute;
   override childNodes: [];
   x1 = 0;
@@ -15,7 +16,7 @@ export class SvgLine extends TypeSvg implements ISvgLine {
 
   override isBasic = true;
 
-  constructor(params?: SvgLineProps) {
+  constructor(params?: SvgProps) {
     super();
     this.nodeName = 'line';
     this.className = 'SvgLine';

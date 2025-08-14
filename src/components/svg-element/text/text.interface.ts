@@ -8,26 +8,23 @@
  * </text>
  * transform="rotate(30 20,40)"
  */
-import { IStyle, Property } from '@type-dom/css-type';
 import type { ITextNode } from '../../../core/text-node/text-node.interface';
 import type { ITypeElement, } from '../../../core/type-element/type-element.interface';
-import { TypeProps } from '../../../core/type-node/type-node.interface';
-import { ITypeAttribute } from '../../../core/attribute/attribute.interface';
 
-export interface ISvgTextStyle extends IStyle {
-  fontFamily?: Property.FontFamily; // rgb(0,0,255) blue
-  // fontSize?: string;
-  stroke?: Property.Stroke; // rgb(0,0,0) pink
-  fill?: Property.Fill; // #0000ff;"
-}
-
-export interface ISvgTextAttribute extends ITypeAttribute {
-  x: number;
-  y: number;
-  dx?: number;
-  dy?: number;
-  transform?: string;
-}
+// export interface ISvgTextStyle extends CSSProperties {
+//   fontFamily?: Property.FontFamily; // rgb(0,0,255) blue
+//   // fontSize?: string;
+//   stroke?: Property.Stroke; // rgb(0,0,0) pink
+//   fill?: Property.Fill; // #0000ff;"
+// }
+//
+// export interface ISvgTextAttribute extends ITypeAttribute {
+//   x: number;
+//   y: number;
+//   dx?: number;
+//   dy?: number;
+//   transform?: string;
+// }
 
 export interface ISvgText extends ITypeElement {
   className: 'SvgText';
@@ -35,8 +32,8 @@ export interface ISvgText extends ITypeElement {
   childNodes: ITextNode[];
 }
 
-export interface SvgTextProps extends TypeProps {
-  text?: string;
-  styleObj?: ISvgTextStyle;
-  attrObj?: ISvgTextAttribute;
-}
+// export interface SvgTextProps extends TypeProps {
+//   text?: string;
+//   // styleObj?: ISvgTextStyle;
+//   attrObj?: SVGAttributes;
+// }

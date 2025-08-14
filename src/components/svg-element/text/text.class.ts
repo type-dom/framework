@@ -1,10 +1,7 @@
+import { SvgProps } from '../../../core/type-svg/type-svg.interface';
 import { TextNode } from '../../../core/text-node/text-node.class';
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
-import type {
-  ISvgText,
-  // ISvgTextAttribute,
-  SvgTextProps,
-} from './text.interface';
+import type { ISvgText, } from './text.interface';
 
 export class SvgText extends TypeSvg implements ISvgText {
   className: 'SvgText';
@@ -16,7 +13,7 @@ export class SvgText extends TypeSvg implements ISvgText {
 
   override isBasic = true;
 
-  constructor(params: SvgTextProps) {
+  constructor(params: SvgProps) {
     super();
     this.nodeName = 'text';
     this.dom = document.createElementNS(

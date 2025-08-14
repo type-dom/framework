@@ -1,21 +1,21 @@
+import { SvgProps } from '../../../core/type-svg/type-svg.interface';
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
 import { SvgStop } from '../stop/stop.class';
 import type {
   ISvgLinearGradient,
-  SvgLinearGradientProps,
 } from './linear-gradient.interface';
 
 export class SvgLinearGradient extends TypeSvg implements ISvgLinearGradient {
   nodeName: 'linearGradient';
   dom: SVGLinearGradientElement;
   className: 'SvgLinearGradient';
-  override props: SvgLinearGradientProps;
+  override props: SvgProps;
   // override attrObj: ISvgLinearGradientAttribute;
   override childNodes: SvgStop[];
 
   override isBasic = true;
 
-  constructor(params: SvgLinearGradientProps = {}) {
+  constructor(params: SvgProps = {}) {
     super();
     this.nodeName = 'linearGradient';
     this.className = 'SvgLinearGradient';

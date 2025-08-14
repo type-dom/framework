@@ -1,5 +1,5 @@
+import { SvgProps } from '../../../core/type-svg/type-svg.interface';
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
-import { TypeProps } from '../../../core/type-node/type-node.interface';
 import type { ISvgPolygon } from './polygon.interface';
 
 export class SvgPolygon extends TypeSvg implements ISvgPolygon {
@@ -10,7 +10,7 @@ export class SvgPolygon extends TypeSvg implements ISvgPolygon {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: SvgProps = {}) {
     super();
     this.nodeName = 'polygon';
     this.className = 'SvgPolygon';

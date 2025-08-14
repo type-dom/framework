@@ -1,6 +1,6 @@
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
+import { SvgProps } from '../../../core/type-svg/type-svg.interface';
 import { ISvgClipPath } from './clip-path.interface';
-import { TypeProps } from '../../../core/type-node/type-node.interface';
 
 // todo 有文字内容的
 export class SvgClipPath extends TypeSvg implements ISvgClipPath {
@@ -11,7 +11,7 @@ export class SvgClipPath extends TypeSvg implements ISvgClipPath {
 
   override isBasic = true;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: SvgProps = {}) {
     super();
     this.nodeName = 'clipPath';
     this.className = 'SvgClipPath';

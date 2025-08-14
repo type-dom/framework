@@ -1,7 +1,4 @@
-import { IStyle, Property } from '@type-dom/css-type';
 import type { ITypeSvg } from '../../../core/type-svg/type-svg.interface';
-import { TypeProps } from '../../../core/type-node/type-node.interface';
-import { ITypeAttribute } from '../../../core/attribute/attribute.interface';
 
 /**
  * width 和 height 属性可定义矩形的高度和宽度
@@ -16,31 +13,26 @@ import { ITypeAttribute } from '../../../core/attribute/attribute.interface';
  * CSS 的 stroke-opacity 属性定义笔触颜色的透明度（合法的范围是：0 - 1）
  * CSS 的 opacity 属性定义整个元素的透明值（合法的范围是：0 - 1）
  */
-export interface ISvgRectStyle extends IStyle {
-  fillOpacity?: Property.FillOpacity; // 0.1
-  strokeOpacity?: Property.StopOpacity; // 0.9
-  opacity?: Property.Opacity; // 0.9
-}
-
-export interface ISvgRectAttribute extends ITypeAttribute {
-  fill?: string; // rgb(0,0,255) blue
-  strokeWidth?: number;
-  stroke?: string; // rgb(0,0,0) pink
-  x?: number;
-  y?: number;
-  rx?: number;
-  ry?: number;
-  width: number | string;
-  height: number | string; // px
-}
+// export interface ISvgRectStyle extends CSSProperties {
+//   fillOpacity?: Property.FillOpacity; // 0.1
+//   strokeOpacity?: Property.StopOpacity; // 0.9
+//   opacity?: Property.Opacity; // 0.9
+// }
+//
+// export interface ISvgRectAttribute extends ITypeAttribute {
+//   fill?: string; // rgb(0,0,255) blue
+//   strokeWidth?: number;
+//   stroke?: string; // rgb(0,0,0) pink
+//   x?: number;
+//   y?: number;
+//   rx?: number;
+//   ry?: number;
+//   width: number | string;
+//   height: number | string; // px
+// }
 
 export interface ISvgRect extends ITypeSvg {
   nodeName: 'rect';
   className: 'SvgRect';
   childNodes: [];
-}
-
-export interface SvgRectProps extends TypeProps {
-  attrObj?: ISvgRectAttribute;
-  styleObj?: ISvgRectStyle;
 }

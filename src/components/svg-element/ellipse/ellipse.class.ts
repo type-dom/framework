@@ -1,11 +1,12 @@
+import { SvgProps } from '../../../core/type-svg/type-svg.interface';
 import { TypeSvg } from '../../../core/type-svg/type-svg.abstract';
-import type { ISvgEllipse, SvgEllipseProps } from './ellipse.interface';
+import type { ISvgEllipse } from './ellipse.interface';
 
 export class SvgEllipse extends TypeSvg implements ISvgEllipse {
   nodeName: 'ellipse';
   className: 'SvgEllipse';
   dom: SVGEllipseElement;
-  override props: SvgEllipseProps;
+  override props: SvgProps;
   // override attrObj: ISvgEllipseAttribute;
   override childNodes: [];
   cx = 0;
@@ -15,7 +16,7 @@ export class SvgEllipse extends TypeSvg implements ISvgEllipse {
 
   override isBasic = true;
 
-  constructor(params?: SvgEllipseProps) {
+  constructor(params?: SvgProps) {
     super();
     this.nodeName = 'ellipse';
     this.className = 'SvgEllipse';
