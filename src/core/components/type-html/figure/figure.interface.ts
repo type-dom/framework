@@ -1,0 +1,11 @@
+import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/attribute.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
+
+export interface ITypeFigure extends ITypeHtml {
+  props: TypeFigureProps;
+}
+
+export interface TypeFigureProps extends HtmlProps {
+  nodeName?: 'figure';
+  attrObj?: IntrinsicElementAttributes['figure'];
+}

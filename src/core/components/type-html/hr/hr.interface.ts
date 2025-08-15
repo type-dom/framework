@@ -1,0 +1,14 @@
+import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/attribute.interface';
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
+
+/**
+ * Horizontal Rule
+ */
+export interface ITypeHr extends ITypeHtml {
+  props: TypeHrProps;
+}
+
+export interface TypeHrProps extends HtmlProps {
+  nodeName?: 'hr';
+  attrObj?: IntrinsicElementAttributes['hr'];
+}
