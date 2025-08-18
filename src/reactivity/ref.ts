@@ -1,10 +1,11 @@
 // import { isArray, isFunction, isObject } from 'lodash-es';
+import { isArray, isFunction, isObject } from '@type-dom/utils';
 import { computed, Computed, signal, Signal } from '@type-dom/signals';
-import { IfAny, isArray, isFunction, isObject } from '../shared';
+// import { warn } from './warning';
 
 // If the type T accepts type "any", output type Y, otherwise output type N.
 // https://stackoverflow.com/questions/49927523/disallow-call-with-any/49928360#49928360
-// export type IfAny<T, Y, N> = 0 extends 1 & T ? Y : N;
+type IfAny<T, Y, N> = 0 extends 1 & T ? Y : N;
 
 export type Ref<T = unknown> = Signal<T> | Computed<T>;
 
@@ -15,11 +16,12 @@ export type Ref<T = unknown> = Signal<T> | Computed<T>;
  * @see {@link https://vuejs.org/api/reactivity-utilities.html#isref}
  */
 export function isRef<T>(r: unknown): r is Ref<T> {
+  // console.warn('r is ', r);
   return r instanceof Signal || r instanceof Computed;
 }
 
 export function isSignal<T>(r: Signal<T> | unknown): r is Signal<T>
-export function isSignal(s: any): s is Signal {
+export function isSignal(s: unknown): s is Signal {
   return s instanceof Signal;
 }
 
@@ -27,17 +29,57 @@ export function isComputed<T>(r: MaybeRef<T>): r is Computed<T> {
   return r instanceof Computed;
 }
 
-export type MaybeRef<T = unknown> = T | Ref<T>;
-// | ShallowRef<T>
-// | WritableComputedRef<T>
-// export type MaybeRef<T = any> = T | Signal<T> | Computed; // todo optimize Computed不能加 T， 否则会报错
+/**
+ * Force trigger effects that depends on a shallow ref. This is typically used
+ * after making deep mutations to the inner value of a shallow ref.
+ *
+ * @example
+ * ```js
+ * const shallow = shallowRef({
+ *   greet: 'Hello, world'
+ * })
+ *
+ * // Logs "Hello, world" once for the first run-through
+ * watchEffect(() => {
+ *   console.log(shallow.value.greet)
+ * })
+ *
+ * // This won't trigger the effect because the ref is shallow
+ * shallow.value.greet = 'Hello, universe'
+ *
+ * // Logs "Hello, universe"
+ * triggerRef(shallow)
+ * ```
+ *
+ * @param ref - The ref whose tied effects shall be executed.
+ * @see {@link https://vuejs.org/api/reactivity-advanced.html#triggerref}
+ */
+export function triggerRef(ref: Ref): void {
+  // ref may be an instance of ObjectRefImpl
+  // if ((ref as unknown as RefImpl).dep) {
+  //   if (__DEV__) {
+  //     ;(ref as unknown as RefImpl).dep.trigger({
+  //       target: ref,
+  //       type: TriggerOpTypes.SET,
+  //       key: 'value',
+  //       newValue: (ref as unknown as RefImpl)._value,
+  //     })
+  //   } else {
+  //     ;(ref as unknown as RefImpl).dep.trigger()
+  //   }
+  // }
+  ref.notify(); // add by me
+}
+
+// export type MaybeRef<T = any> =
+//   | T
+//   | Ref<T>
+//   | ShallowRef<T>
+//   | WritableComputedRef<T>
+export type MaybeRef<T = unknown> = T | Signal<T> | Computed<T>;
 
 // export type MaybeRefOrGetter<T = any> = MaybeRef<T> | ComputedRef<T> | (() => T)
-export type MaybeRefOrGetter<T = unknown> =
-  | T
-  | Signal<T>
-  | Computed<T>
-  | (() => T);
+export type MaybeRefOrGetter<T = unknown> = MaybeRef<T> | (() => T);
 
 /**
  * Returns the inner value if the argument is a ref, otherwise return the
@@ -57,6 +99,26 @@ export type MaybeRefOrGetter<T = unknown> =
  */
 export function unref<T>(ref: MaybeRef<T>): T {
   return isRef(ref) ? ref.get() : ref;
+}
+
+/**
+ * Normalizes values / refs / getters to values.
+ * This is similar to {@link unref}, except that it also normalizes getters.
+ * If the argument is a getter, it will be invoked and its return value will
+ * be returned.
+ *
+ * @example
+ * ```js
+ * toValue(1) // 1
+ * toValue(ref(1)) // 1
+ * toValue(() => 1) // 1
+ * ```
+ *
+ * @param source - A getter, an existing ref, or a non-function value.
+ * @see {@link https://vuejs.org/api/reactivity-utilities.html#tovalue}
+ */
+export function toValue<T>(source: MaybeRefOrGetter<T>): T {
+  return isFunction(source) ? source() : unref(source)
 }
 
 export type ToRef<T> = IfAny<T, Ref<T>, [T] extends [Ref<T>] ? T : Ref<T>>;
@@ -105,14 +167,14 @@ export type ToSignal<T> = IfAny<
  * console.log(fooRef.value) // 3
  * ```
  *
- * @param source - A getter, an existing ref, a non-function value, or a
+ * @param value - A getter, an existing ref, a non-function value, or a
  *                 reactive object to create a property ref from.
  * @param [key] - (optional) Name of the property in the reactive object.
  * @see {@link https://vuejs.org/api/reactivity-utilities.html#toref}
  */
 export function toRef<T>(
   value: T
-): T extends () => infer R ? Readonly<Ref<R>> : T extends Ref<T> ? T : Ref<T>;
+): T extends () => infer R ? Ref<R> : T extends Ref<T> ? T : Ref<T>;
 export function toRef<T extends object, K extends keyof T>(
   object: T,
   key: K
@@ -122,12 +184,11 @@ export function toRef<T extends object, K extends keyof T>(
   key: K,
   defaultValue: T[K]
 ): ToRef<Exclude<T[K], undefined>>;
-
 export function toRef(
-  source: Record<string, any>,
+  source: Record<string, any> | MaybeRef,
   key?: string,
   defaultValue?: unknown
-): Ref<any> {
+): Ref {
   if (isRef(source)) {
     return source;
   } else if (isFunction(source)) {
@@ -165,12 +226,12 @@ export type ToSignals<T = any> = {
 };
 
 export type ToRefs<T = any> = {
-  // [K in keyof T]: ToRef<T[K]>
-  [K in keyof T]: T[K] extends Ref<T[K]> ? T[K] : Ref<T[K]>;
+  [K in keyof T]: ToRef<T[K]> // todo 这才是原始的写法
+  // [K in keyof T]: T[K] extends Ref<T[K]> ? T[K] : Ref<T[K]>; // add by me
 };
 export const toSignal = propertyToSignal;
 
-export type ToMaybeRefs<T = any> = {
+export type ToMaybeRefs<T = Record<string, any>> = {
   [K in keyof T]: MaybeRef<T[K]>;
 }
 
@@ -183,6 +244,9 @@ export type ToMaybeRefs<T = any> = {
  * @see {@link https://vuejs.org/api/reactivity-utilities.html#torefs}
  */
 export function toRefs<T extends object>(object: T): ToRefs<T> {
+  // if (__DEV__) { // error
+  //   warn(`toRefs() expects a reactive object but received a plain one.`)
+  // }
   const ret: any = isArray(object) ? new Array(object.length) : {};
   for (const key in object) {
     ret[key] = propertyToRef(object, key);
@@ -198,60 +262,6 @@ export function toSignals<T extends Record<string, any>>(
     ret[key] = propertyToSignal(object, key);
   }
   return ret;
-}
-
-/**
- * Returns the raw, original object of a Vue-created proxy.
- *
- * `toRaw()` can return the original object from proxies created by
- * {@link reactive()}, {@link readonly()}, {@link shallowReactive()} or
- * {@link shallowReadonly()}.
- *
- * This is an escape hatch that can be used to temporarily read without
- * incurring proxy access / tracking overhead or write without triggering
- * changes. It is **not** recommended to hold a persistent reference to the
- * original object. Use with caution.
- *
- * @example
- * ```js
- * const foo = {}
- * const reactiveFoo = reactive(foo)
- *
- * console.log(toRaw(reactiveFoo) === foo) // true
- * ```
- *
- * @param observed - The object for which the "raw" value is requested.
- * @see {@link https://vuejs.org/api/reactivity-advanced.html#toraw}
- *
- *
- * todo 深层的响应式数据无法转换
- *
- * @param observed - The object for which the "raw" value is requested.
- */
-export function toRaw<T = any>(observed?: MaybeRef<T | undefined>): T {
-  // computed 返回 false 时会死循环；
-  // const raw = isRef(observed) && observed.get();
-  // if (isArray(observed)) {
-  //   observed.map((r) => {
-  //     if (isRef(r)) {
-  //       return toRaw(r.get());
-  //     }
-  //     return r;
-  //   });
-  // } else if (isObject(observed)) {
-  //   for (const key in observed) {
-  //     if (isRef(observed[key] as any)) {
-  //       (observed as any)[key] = toRaw(observed[key]?.get());
-  //     }
-  //   }
-  // }
-  // computed 返回 false 时会死循环；
-  // return raw ? toRaw(raw) : observed as T;
-  if (isRef(observed)) {
-    return toRaw(observed.get()); // 递归求原数据
-  } else {
-    return observed as T;
-  }
 }
 
 // type Primitive = string | number | boolean | bigint | symbol | undefined | null

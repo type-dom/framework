@@ -1,7 +1,8 @@
 import { isEqual, isFunction, isObject } from 'lodash-es';
 import { AnyFn } from '@type-dom/utils';
 import { effect, effectScope, endBatch, startBatch } from '@type-dom/signals';
-import { Ref, isRef, toRaw } from './ref.js';
+import { Ref, isRef } from './ref.js';
+import { toRaw } from './reactive.js';
 
 export type OnCleanup = (cleanupFn: () => void) => void
 export type WatchSource<T = any> = (() => T | undefined) | Ref<T>;

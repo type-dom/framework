@@ -1,7 +1,6 @@
 import { computed, effect, setCurrentSub } from '@type-dom/signals';
-import { isArray, isObject, isPlainObject } from '@type-dom/utils';
+import { isFunction, isMap, isSet, isArray, isObject, isPlainObject } from '@type-dom/utils';
 import { MaybeRef, Ref, isRef } from '../reactivity/index';
-import { isFunction, isMap, isSet } from '../shared';
 import { warn } from './warning.js';
 
 export type WatchSource<T = any> = Ref<T> | (() => T | undefined) | (MaybeRef<T> | (() => T | undefined))[];
