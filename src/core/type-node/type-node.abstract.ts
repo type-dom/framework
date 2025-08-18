@@ -1,26 +1,25 @@
 import { AnyFn } from '@type-dom/utils';
 import { MaybeRef } from '../../reactivity';
 import { IJsonData } from '../../interface';
-import { EventEmitter } from '../event-emitter/event-emitter.abstract';
+import { Attributes } from '../../dom/modules/attribute';
+import { RawStyle } from '../../dom/modules/style/style.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
-import { Style } from '../style/style.class';
-import { Attribute } from '../attribute/attribute.class';
-import { InjectionKey } from '../apiInject';
+import { TypeEl, RawDom } from '../type-element/type-element.interface';
+import { unmount } from '../helpers/unmount';
+import { findDown } from '../helpers/findDown';
+import { ObjectEmitsOptions } from '../componentEmits';
+import { Data } from '../component';
 import { LifecycleHooks, NodeName } from '../enums';
-import { ElProp, TdDom } from '../type-element/type-element.interface';
-import type {
+import { NormalizedPropsOptions, } from '../componentProps';
+import { IEvent } from '../event-emitter/event-emitter.interface';
+import { emit } from '../event-emitter/event-emitter';
+import {
   IAttr,
   IMethods,
   ISettings,
   ITypeNode,
-  TypeProps,
+  TypeProps
 } from './type-node.interface';
-import { useUnmount } from './useUnmount';
-import { useDump } from './useDump';
-import { useDown } from './useDown';
-import { useInject } from './useInject';
-import { useAssignProps } from './useAssignProps';
-import { useRemoveDom } from './useRemoveDom';
 
 let uid = 0;
 /**
@@ -30,17 +29,20 @@ let uid = 0;
  *    TypeElement
  *    TextNode
  */
-export abstract class TypeNode extends EventEmitter implements ITypeNode {
+export abstract class TypeNode<A extends Attributes = Attributes> implements ITypeNode {
   /**
    * 在生成dom字符串时，可以转为 attributes 的一个元素 { name: 'className', value: string }
    * 在定义ClassName时，要把当前类写入到TypeMap中；
    */
   abstract className: string; // 最终实体类的名称，解析转换时需要创建对应的类； 必然有；
-  abstract style?: Style | undefined;
-  abstract attr?: Attribute | undefined;
+  // abstract style?: Style | undefined;
+  // abstract attr?: Attribute | undefined;
+  attrObj?: A = {} as A; // unmount时，要能够被删除
+  styleObj?: RawStyle = {};
   // abstract nodeValue?: string | number | undefined;
   abstract childNodes?: TypeNode[] | undefined;
   abstract rendered: boolean;
+  config?: any;
   isBasic?: boolean;
   createdIn?: 'setup';
   /**
@@ -60,7 +62,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
    * 在 Teleport 组件中，anchor 通常与 target 和 targetAnchor 配合使用，用于标识当前片段在目标容器中的插入位置。
    * 这样可以确保被传送的内容被正确插入到目标 DOM 节点的合适位置。
    */
-  anchor?: Comment;  // fragment anchor  评论节点；vIf占位符使用，
+  anchor?: Comment; // fragment anchor  评论节点；vIf占位符使用，
   /**
    * 作用：指向 Teleport 组件要将内容渲染到的目标 DOM 容器。
    * 场景：当使用 <Teleport to="#app"> 时，target 会指向 document.getElementById('app')。
@@ -68,7 +70,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
    * 在 创建 VNode 时由 to 属性解析而来。
    * 在 挂载/更新 阶段用于定位目标容器。
    */
-  target?: TdDom | null // teleport target
+  target?: RawDom | null; // teleport target
   /**
    * 作用：标记 Teleport 内容在目标容器中的起始插入点。
    * 场景：当目标容器中已有多个 Teleport 内容时，用于标识当前 Teleport 内容的起始位置。
@@ -76,7 +78,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
    * 在 首次渲染 时，Vue 会在目标容器中插入一个注释节点作为 targetStart。
    * 在 更新/卸载 时，通过 targetStart 和 targetAnchor 定位并操作整个 Teleport 内容块。
    */
-  targetStart?: TdDom | null // teleport target start anchor
+  targetStart?: RawDom | null; // teleport target start anchor
   /**
    * 作用：标记 Teleport 内容在目标容器中的结束插入点。
    * 场景：与 targetStart 配合使用，定义 Teleport 内容在目标容器中的边界。
@@ -84,7 +86,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
    * 在 首次渲染 时，Vue 会在目标容器中插入一个注释节点作为 targetAnchor。
    * 在 更新/卸载 时，通过 targetStart 和 targetAnchor 删除或替换整个 Teleport 内容块。
    */
-  targetAnchor?: TdDom | null // teleport target anchor
+  targetAnchor?: RawDom | null; // teleport target anchor
   /**
    * 三者协作流程
    * 创建阶段：
@@ -102,18 +104,34 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
    * 挂载到指定的组件的DOM,可以直接指向 body
    * todo Teleport execute mount to outer dom, so need not to property.
    */
-  to?: MaybeRef<string | TdDom>;
+  to?: MaybeRef<string | RawDom>;
 
   key?: string;
   /**
    * 存储 传入的参数。 只需要到处json时有就行。
    */
-  params: TypeProps;
+  params?: TypeProps;
   /**
    * 属性项
    */
   props: TypeProps;
+
   baseProps: TypeProps;
+  /**
+   * resolved props options
+   * @internal
+   */
+  propsOptions: NormalizedPropsOptions = [];
+  /**
+   * resolved emits options
+   * @internal
+   */
+  emitsOptions: ObjectEmitsOptions | null = null;
+  /**
+   * used for keeping track of .once event handlers on components
+   * @internal
+   */
+  emitted: Record<string, boolean> | null = null;
 
   parent?: TypeElement | undefined;
   isContext?: boolean;
@@ -121,25 +139,63 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   // textNode?: TextNode;
   lifeCycles: Record<LifecycleHooks, AnyFn[]>;
   uid: number;
-  isDeactivated: any;
+  /**
+   * 存储事件名称与事件监听器数组的映射
+   * key 事件名 value: callback[]  回调数组
+   * 注：  Map是es6新特性，所以这里用它来代替数组可能会有兼容问题。
+   *
+   *  This is an Object containing Maps:
+   *   { [event: string]: Map<listener: function, numTimesAdded: number> }
+   *    We use a Map for O(1) insertion/deletion and because it can have functions as keys.
+   *
+   *    We keep track of numTimesAdded (the number of times it was added) because if you attach the same listener twice,
+   *     we should actually call it twice for each emitted event.
+   */
+    // observers: Record<string, AnyFn[]>;
+  eventObservers: Record<string, Map<AnyFn | undefined, IEvent>> = {};
+  emitObservers: Record<string, Map<AnyFn | undefined, number>> = {};
+  // abstract nodeName: NodeName.TEXT | NodeName.FRAGMENT | string;
+
+  /**
+   * used for caching the value returned from props default factory functions to
+   * avoid unnecessary watcher trigger
+   * @internal
+   */
+  propsDefaults?: Data
+
+  // lifecycle
+  isMounted?: boolean
+  isUnmounted?: boolean
+  isDeactivated?: boolean
+
+  abstract dom?:
+    | HTMLElement
+    | SVGElement
+    | DocumentFragment
+    | Text
+    | Comment
+    | null
+    | undefined;
+
   constructor() {
-    super();
+    // this.eventObservers = {};
+    // this.emitObservers = {};
     this.uid = uid++;
-    this.params = {}; // Object.freeze({}) as TypeProps;
-    this.props = this.baseProps = {}; // Object.freeze({}) as TypeProps;
+    // this.params = {}; // Object.freeze({}) as TypeProps;
+    this.props = this.baseProps = {};
     this.lifeCycles = {} as Record<LifecycleHooks, AnyFn[]>;
     this.lifeCycles[LifecycleHooks.BEFORE_CREATE]?.forEach((fn) => fn());
-    // onBeforeCreate(this);
     this.beforeCreate?.(); // 挂载前，执行一些初始化操作。其实也就是操作 config本身。
   }
 
   /**
    * mount 才是组件对外的主方法
    * constructor 时，只是 this.props 赋值。
+   * 子类 override props 时； props is undefined;
    * todo 要理顺与 render 方法的关系。 render 最终要私有化；
    * @param el
    */
-  abstract mount(el?: ElProp): void;
+  abstract mount(el?: TypeEl): void;
 
   /**
    * 渲染出真实DOM
@@ -152,7 +208,18 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   settings?: ISettings;
   _data?: IJsonData; // IObData;
   methods?: IMethods;
+  /**
+   * Object containing values this component provides for its descendants
+   * @internal
+   */
   provides?: Record<string | symbol, unknown>;
+  /**
+   * for tracking useId()
+   * first element is the current boundary prefix
+   * second number is the index of the useId call within that boundary
+   * @internal
+   */
+  ids: [string, number, number] = ['', 0, 0];
   template?: string | undefined;
   /**
    * 获取根节点;
@@ -195,7 +262,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
 
   get textContent(): string | number | boolean {
     if (!this.childNodes) {
-      return this.props.nodeValue ?? '';
+      return this.baseProps.nodeValue ?? '';
     }
     // 使用一个字符串变量迭代添加,而非递归来累积文本内容。
     let content = '';
@@ -227,15 +294,15 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   }
   // 向下获取真实的 element ; TypeHtml TypeSvg
   get downRealElement(): TypeNode | undefined {
-    if (this.props.nodeName === NodeName.FRAGMENT) {
+    if (this.baseProps.nodeName === NodeName.FRAGMENT) {
       for (const child of this.children) {
-        if (child.props.nodeName === NodeName.FRAGMENT) {
+        if (child.baseProps.nodeName === NodeName.FRAGMENT) {
           return child.downRealElement;
-        } else if (child.props.nodeName !== NodeName.TEXT) {
+        } else if (child.baseProps.nodeName !== NodeName.TEXT) {
           return child;
         }
       }
-    } else if (this.props.nodeName !== NodeName.TEXT) {
+    } else if (this.baseProps.nodeName !== NodeName.TEXT) {
       return this;
     }
     return undefined;
@@ -243,9 +310,9 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
 
   // 向上获取真实的 element ;
   get upRealElement(): TypeNode | undefined {
-    if (this.props.nodeName === NodeName.FRAGMENT) {
+    if (this.baseProps.nodeName === NodeName.FRAGMENT) {
       return this.parent?.upRealElement;
-    } else if (this.props.nodeName !== NodeName.TEXT) {
+    } else if (this.baseProps.nodeName !== NodeName.TEXT) {
       return this;
     }
     return undefined;
@@ -263,11 +330,11 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   }
 
   getProp<T extends keyof TypeProps>(key: T) {
-    return this.props[key];
+    return this.baseProps[key];
   }
 
   addProp(key: string, value: any) {
-    Object.defineProperty(this.props, key, {
+    Object.defineProperty(this.baseProps, key, {
       configurable: true,
       enumerable: true,
       get() {
@@ -280,28 +347,19 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   }
 
   setProp<T extends TypeProps>(key: keyof T, value?: any) {
-    (this.props as T)[key] = value;
+    (this.baseProps as T)[key] = value;
     if (value === undefined) {
-      delete (this.props as T)?.[key];
+      delete (this.baseProps as T)?.[key];
     }
-  }
-
-  /**
-   * 组装属性
-   * 根据提供的配置参数构建属性
-   * @param config
-   */
-  assignProps<T extends TypeProps>(config = {} as T): T {
-    return useAssignProps(this, config);
   }
 
   // props.slots中添加slot的对象
   addPropSlot(name: string, slot: string | TypeNode | (string | TypeNode)[]) {
-    if (!this.props?.slots) {
+    if (!this.baseProps?.slots) {
       // console.error('styleObj is not initialized.');
-      this.props.slots = {};
+      this.baseProps.slots = {};
     }
-    this.props.slots[name] = slot;
+    this.baseProps.slots[name] = slot;
   }
 
   setRoot(isRoot: boolean) {
@@ -347,30 +405,6 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   //   console.log('TypeNode.typeMap is ', TypeNode.typeMap);
   // }
 
-  // 提供
-  provide = <T, K = InjectionKey<T> | string | number>(
-    key: K,
-    value: K extends InjectionKey<infer V> ? V : T
-  ) => {
-    this.provides = this.provides || {};
-    this.provides[key as string] = value;
-  };
-
-  /**
-   * 注入
-   * 依赖 parent 递归注入
-   * 要在 created 中调用，否则可能会parent没有初始化。
-   * @param key
-   * @param defaultValue
-   */
-  inject<T>(
-    key: InjectionKey<T> | string,
-    defaultValue?: T,
-    treatDefaultAsFactory = false
-  ): T | undefined {
-    return useInject(this, key, defaultValue, treatDefaultAsFactory);
-  }
-
   setParent(parent: TypeElement): void {
     this.parent = parent; // 单一原则
   }
@@ -392,7 +426,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
    * @param value 如：TdIcon        1       /home
    */
   down<T extends TypeNode>(expr: string, value: any): T | undefined {
-    return useDown<T>(expr, value, this as unknown as T);
+    return findDown<T>(expr, value, this as unknown as T);
   }
 
   up<T extends TypeElement>(className: string): T | undefined {
@@ -416,7 +450,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
     if (node.parent) {
       return node.parent;
     } else {
-      for (const child of parent?.childNodes || []) {
+      for (const child of (parent?.childNodes || [])) {
         if (child === node) {
           return parent;
         } else {
@@ -489,15 +523,6 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   }
 
   /**
-   * 拼接出DOM字符串对应的数组。
-   * buffer.join(''), 获得对应的字符串。
-   * @param buffer
-   */
-  dump(buffer: string[]): void {
-    useDump(buffer, this);
-  }
-
-  /**
    * 保存json数据时使用。
    * 把当前数据层对象转换为 JSON 字面量。
    * 但是就数据层存储而言，是不需要转化page及其子元素的。
@@ -535,23 +560,8 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
     // 创建类的新实例
     return new (this.constructor as any)(this.params) as T;
   }
-
-  /**
-   * 清除自有dom节点。对象自身还没有被删除。
-   * 删除对象，要在父级中。
-   * this.dom的值也没有变。
-   */
-  removeDom(): void {
-    useRemoveDom(this);
-  }
-
-  // clear this.dom.childNodes
-  clearChildDom() {
-    if (this.dom) {
-      while (this.dom.firstChild) {
-        this.dom.removeChild(this.dom.firstChild);
-      }
-    }
+  emit = (event: string, ...args: any[])=> {
+    emit(this, event, ...args);
   }
 
   /**
@@ -565,28 +575,7 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
   beforeCreate?(): void;
 
   /**
-   * 创建DOM元素
-   *
-   * 根据提供的标签名创建一个DOM元素，并将该元素赋值给实例的dom属性
-   */
-  // todo 与 transition 中对应的方法
-  createDom(): void {
-    if (!this.dom) {
-      // console.warn('createDom this.dom has existed . ');
-      const nodeName = this.props.tag || this.props.nodeName;
-      if (nodeName === NodeName.FRAGMENT) {
-        this.dom = document.createDocumentFragment();
-      } else if (nodeName === NodeName.TEXT) {
-        this.dom = document.createTextNode(
-          this.props.nodeValue?.toString() || ''
-        ); // todo content
-      } else {
-        this.dom = document.createElement(nodeName || 'div');
-      }
-    }
-  }
-
-  /**
+   * 原 destroy
    * 销毁对象
    * 从父级中删除
    * 类似 render ，要迭代删除子节点；
@@ -594,6 +583,6 @@ export abstract class TypeNode extends EventEmitter implements ITypeNode {
    * 要清理绑定的事件，  组件中绑定的事件时，有可能是 绑到 document,window的，必须清理，否则逻辑可能错误。
    */
   unmount(root?: TypeElement): void {
-    useUnmount(this, root);
+    unmount(this, root);
   }
 }

@@ -3,12 +3,12 @@ import { Computed, Signal } from '@type-dom/signals';
 import { AnyFn, IPrimitive } from '@type-dom/utils';
 import { MaybeRef, Ref } from '../../reactivity';
 import { type IJsonDataProp } from '../../interface';
+import { StyleValue } from '../../dom/modules/style/style.interface';
+import { Attributes, ClassValue } from '../../dom/modules/attribute/attribute.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
 // import { IEmits, IEvents } from '../event-emitter/event-emitter.interface';
-import { Attributes, ClassValue } from '../attribute/attribute.interface';
-import { TransitionElement, TransitionHooks } from '../type-transition/type-transition.interface';
+import { TransitionElement, TransitionHooks } from '../components/type-transition/type-transition.interface';
 import { NodeName } from '../enums';
-import { StyleValue } from '../style/style.interface';
 import { TypeNode } from './type-node.abstract';
 import { ITypeBase } from './type-base.interface';
 
@@ -52,6 +52,8 @@ export interface IPath {
   pos: number;
 }
 
+// type Data = Record<string, unknown>
+
 /**
  * 这个接口定义了节点的基本属性，如：
  * 1.  节点类名
@@ -72,7 +74,7 @@ export interface IPath {
 export interface ITypeNode extends ITypeBase {
   className?: string;
   uid?: number; // 自增id uid: uid++
-  params?: TypeProps | undefined; // 传入参数, TypeProps 中是undefined
+  params?: TypeProps; // 传入参数, TypeProps 中是undefined
   createdIn?: 'setup'; //  constructor
   transition?: TransitionHooks<TransitionElement>;
 }
@@ -146,6 +148,7 @@ export interface TypeProps extends ITypeBase {
   modelValue?: IPrimitive | object | (IPrimitive | object)[];
   // 双向绑定的就应该是 Signal<IPrimitive | object> 类型；与 modelValue 联合使用
   vModel?:  Ref<IPrimitive | object | (IPrimitive | object)[]>;
+  value?: any;
   /**
    * 是否创建dom，默认为 true，如果为 false，则不挂载到dom树中。
    * 监听到值变化时，触发更新，重新处理 dom 树。
@@ -175,6 +178,7 @@ export interface TypeProps extends ITypeBase {
   refEl?: Ref<TypeElement | undefined>
   /**
    * 绑定的组件的引用对象，用于获取当前组件的dom元素；
+   * 与anchor无关
    */
   refDom?: Ref<Element | DocumentFragment | undefined>;
   /**
@@ -184,7 +188,7 @@ export interface TypeProps extends ITypeBase {
   /**
    * 属性对象，除了style对应的属性之外的其他属性。
    */
-  attrObj?: Attributes | undefined;
+  attrObj?: Attributes;
   /**
    * 样式对象。
    */
@@ -197,7 +201,9 @@ export interface TypeProps extends ITypeBase {
   // 多个插槽 ———— 对应的 是 TypeNode | TypeNode[], 不同于一般的属性；需要组件本身单独处理的。setConfig方法中没有默认处理方法；
   slots?: ISlots; // 指定多个不同位置的插槽，需要有插槽名称的；需要在类中添加插槽的位置；
   // 默认插槽  同 slots.default  组件没有插槽时，为undefined。这时子元素只能用 childNodes 属性；
-  slot?: ISlotItem; // 默认插槽, 可以是单个元素，也可以是多个元素，即数组；如何直接插入当前元素，则相当与 childNodes属性；
+  //  可以是单个元素，也可以是多个元素，即数组；如何直接插入当前元素，则直接添加到 childNodes；
+  slot?: ISlotItem;
+  // todo slot可以是方法， init方法可以没有
   init?: (element: TypeElement) => void;
   /**
    * 自定义的事件监听器，与 events 不同，events 是绑定在基础组件上的事件，而 emits 是在自定义组件上的事件；
@@ -220,16 +226,17 @@ export interface TypeProps extends ITypeBase {
   html?: MaybeRef<string>;
   fieldSetting?: IOptionSetting;
 
+  // data?: UnwrapNestedRefs<IObData>; // 数据  TypeProps 需要继承
+  // 绑定的方法集合
+  methods?: IMethods;
+  // todo defaultOptions
+  defaults?: ISettings; // 同 Extjs 中的defaults
+  // type?: string;
   /**
    * The other props of the element.
    */
   // [dataKey: `data-${string}` | `on${string}` | `td-${string}`]: unknown;
-  // data?: UnwrapNestedRefs<IObData>; // 数据  TypeProps 需要继承
-  // subscriptions?: Subscription[];
-  // 绑定的方法集合
-  methods?: IMethods;
-  defaults?: ISettings; // 同 Extjs 中的defaults
-  // type?: string;
+  [modifier: `${Uncapitalize<string>}Modifiers`]: Record<string, boolean> | undefined;
   [key: `on${Capitalize<string>}`]: AnyFn | AnyFn[] | undefined;
   // sourceWrapper?:  string | XProxy<IJsonData>;
   // showcase?:  TypeElement[];
