@@ -1,13 +1,14 @@
-import { deepClone, ensureArray, isArray, isFunction } from '@type-dom/utils';
+import { deepClone, isArray, isFunction } from '@type-dom/utils';
 import { Computed, Signal } from '@type-dom/signals';
+import { castArray as ensureArray } from 'lodash-es';
 import { isRef, toRaw } from '../reactivity';
 import type { IJsonData, IJsonDataProp } from '../interface';
 import { TypeNode } from './type-node/type-node.abstract';
 import type { ISlotItem, ISlotRaw, ISlotRef, ITypeNode } from './type-node/type-node.interface';
-import type { ITextNode } from './text-node/text-node.interface';
+import type { ITextNode } from '../dom/components/text-node/text-node.interface';
 import type { ITypeElement } from './type-element/type-element.interface';
-import { TypeHtml } from './type-html/type-html.abstract';
-import { TypeSvg } from './type-svg/type-svg.abstract';
+import { TypeHtml } from './components/type-html/type-html.abstract';
+import { TypeSvg } from './components/type-svg/type-svg.abstract';
 
 /**
  * 保存数据时使用。
@@ -17,11 +18,11 @@ import { TypeSvg } from './type-svg/type-svg.abstract';
 export function toJSON(element: TypeHtml | TypeSvg): ITypeElement {
   return {
     // nodeName: element.nodeName,
-    nodeName: element.props.nodeName,
+    nodeName: element.baseProps.nodeName,
     className: element.className,
     params: {
-      styleObj: deepClone(element.style.getObj()), // 深拷贝
-      attrObj: deepClone(element.attr.getObj()) // 深拷贝
+      styleObj: deepClone(element.styleObj), // 深拷贝
+      attrObj: deepClone(element.attrObj) // 深拷贝
     },
     settings: element?.settings,
     // items, page ----> 不起作用
@@ -31,7 +32,7 @@ export function toJSON(element: TypeHtml | TypeSvg): ITypeElement {
       } else {
         return {
           props: {
-            nodeValue: child.props.nodeValue // textContent
+            nodeValue: child.baseProps.nodeValue // textContent
           }
         } as ITextNode;
       }
@@ -182,7 +183,7 @@ export function rawSlot<T extends ISlotRaw>(item: ISlotItem<T>): ISlotRaw[] {
           result.push(rawItem);
         }
       }
-    } else if (Array.isArray(item)) {
+    } else if (isArray(item)) {
       item.forEach(subItem => processItem(subItem));
     } else if (isRef(item)) {
       result.push(...ensureArray(toRaw(item)));

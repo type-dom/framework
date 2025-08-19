@@ -1,4 +1,4 @@
-import { isArray } from '@type-dom/utils';
+import { AnyFn, isArray } from '@type-dom/utils';
 import { ErrorCodes, callWithErrorHandling } from './errorHandling'
 // import { NOOP } from '../constants';
 import type { ITypeNode } from './type-node/type-node.interface';
@@ -183,9 +183,9 @@ export function flushPostFlushCbs(seen?: CountMap): void {
     }
 
     activePostFlushCbs = deduped
-    if (__DEV__) {
-      seen = seen || new Map()
-    }
+    // if (__DEV__) {
+    //   seen = seen || new Map()
+    // }
 
     for (
       postFlushIndex = 0;
@@ -235,7 +235,7 @@ function flushJobs(seen?: CountMap) {
           job.flags! &= ~SchedulerJobFlags.QUEUED
         }
         callWithErrorHandling(
-          job,
+          job as AnyFn,
           job.i,
           job.i ? ErrorCodes.COMPONENT_UPDATE : ErrorCodes.SCHEDULER,
         )

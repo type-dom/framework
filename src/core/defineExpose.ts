@@ -1,6 +1,6 @@
 import { isObject } from '@type-dom/utils';
-import { warn } from '../utils/debug';
-import { currentInstance } from './instance';
+import { warn } from './warning';
+import { currentInstance } from './component';
 
 /**
  * 暴露给外部的属性

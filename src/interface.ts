@@ -1,4 +1,4 @@
-import { Fn, IPrimitive } from '@type-dom/utils';
+import { IPrimitive } from '@type-dom/utils';
 
 /**
  * 一个通用的json数据结构的接口
@@ -30,26 +30,23 @@ export interface IObData {
 }
 
 export type IObDataProp = IPrimitive | IObData | IObData[];
-
-export interface Stoppable<StartFnArgs extends any[] = any[]> {
-  /**
-   * A ref indicate whether a stoppable instance is executing
-   */
-  isPending: Readonly<boolean>;
-
-  /**
-   * Stop the effect from executing
-   */
-  stop: Fn;
-
-  /**
-   * Start the effects
-   */
-  start: (...args: StartFnArgs) => void;
-}
-
-export type Arrayable<T> = T[] | T
-
+//
+// export interface Stoppable<StartFnArgs extends any[] = any[]> {
+//   /**
+//    * A ref indicate whether a stoppable instance is executing
+//    */
+//   isPending: Readonly<boolean>;
+//
+//   /**
+//    * Stop the effect from executing
+//    */
+//   stop: Fn;
+//
+//   /**
+//    * Start the effects
+//    */
+//   start: (...args: StartFnArgs) => void;
+// }
 // export const Fragment = Symbol.for('v-fgt') as any as {
 //   __isFragment: true
 //   // new (): {

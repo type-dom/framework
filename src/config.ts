@@ -119,11 +119,11 @@ export const config = {
    * This will significantly reduce performance if set to false.
    */
   async: true,
-  //
-  // /**
-  //  * Exposed for legacy reasons
-  //  */
+
+  /**
+   * Exposed for legacy reasons
+   */
   // _lifecycleHooks: LIFECYCLE_HOOKS
 } as unknown as Config;
 
-export const __DEV__ = true;
+// export const __DEV__ = true;

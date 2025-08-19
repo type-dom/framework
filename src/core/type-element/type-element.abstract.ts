@@ -1,16 +1,22 @@
 import { MaybeRef } from '../../reactivity';
+// import { renderAttrObj } from '../../dom/modules/attrs';
+import { TextNode } from '../../dom/components/text-node/text-node.class';
+import { removeDom } from '../helpers/removeDom';
+import {createDom} from "../helpers/createDom";
+import { findDown } from '../helpers/findDown';
 import type { ISlotItem, ISlotRaw, TypeProps, } from '../type-node/type-node.interface';
 import { TypeNode } from '../type-node/type-node.abstract';
-import { TextNode } from '../text-node/text-node.class';
-import { currentInstance } from '../instance';
-import { LifecycleHooks, NodeName } from '../enums';
-import { TransitionElement, TransitionHooks, } from '../type-transition/type-transition.interface';
-import type { ElProp, IBoundBox, ITypeElement } from './type-element.interface';
-import { useMount } from './useMount';
-import { useRecurseRender } from './useRecurseRender';
-import { useParams } from './useParams';
-import { useSlotChild } from './useSlotChild';
-import { useSlotChildren } from './useSlotChildren';
+import { currentInstance } from '../component';
+import { NodeName } from '../enums';
+import { TransitionElement, TransitionHooks, } from '../components/type-transition/type-transition.interface';
+import type { TypeEl, IBoundBox, ITypeElement } from './type-element.interface';
+import { useMount } from '../helpers/useMount';
+import { useRecurseRender } from '../helpers/useRecurseRender';
+import { useParams } from '../helpers/useParams';
+import { useSlotChild } from '../helpers/useSlotChild';
+import { useSlotChildren } from '../helpers/useSlotChildren';
+import { Attributes, renderAttrObj, resetAttrObj } from '../../dom/modules/attribute';
+import { renderStyleObj, resetStyleObj } from '../../dom/modules/style/style';
 
 export const vHash = Math.round(Math.random() * 1000000);
 
@@ -22,7 +28,7 @@ export let componentId = 0;
  * 与对应的导出时的数据结构是不一样的。
  * 除了 TextNode 之外的其它类型的 Node 。
  */
-export abstract class TypeElement extends TypeNode implements ITypeElement {
+export abstract class TypeElement<A extends Attributes = Attributes> extends TypeNode<A> implements ITypeElement {
   abstract override dom?: HTMLElement | SVGElement | DocumentFragment; // 不会是Text；
   // 包括 fragment
   // abstract nodeName: NodeName.FRAGMENT | string; // 必然有； 且不为 #text
@@ -42,7 +48,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
 
   // 向上获取真实的 element ;
   get elementParent(): TypeElement | undefined {
-    if (this.props.nodeName=== NodeName.FRAGMENT) {
+    if (this.baseProps.nodeName=== NodeName.FRAGMENT) {
       return this.parent?.elementParent;
     } else {
       return this;
@@ -85,13 +91,13 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     };
   }
 
-  get(key: keyof TypeProps) {
-    return this.props[key];
+  get(key: string) {
+    return this.baseProps[key as keyof TypeProps];
   }
 
-  set(key: keyof TypeProps, value: any) {
-    // const propValue = this.props[key];
-    this.props[key] = value;
+  set(key: string, value: any) {
+    // const propValue = this.baseProps[key];
+    this.baseProps[key as keyof TypeProps] = value;
   }
 
   // setTransitionProps(props: TransitionProps) {
@@ -113,7 +119,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
     // console.log('param is ', param);
     for (const key of Object.keys(params)) {
       // 如果已经配置了默认值，则使用默认值
-      if (this.props) (params as any)[key] ??= (this.props as any)?.[key];
+      (params as any)[key] ??= (this.baseProps as any)?.[key];
     }
     return useParams(this, params);
   }
@@ -121,7 +127,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
   get textNode(): TextNode | undefined {
     // 如果 textNode 已经存在，直接返回
     // 否则创建一个新的 TextNode 并返回
-    return this.down<TextNode>('className', 'TextNode');
+    return findDown<TextNode>('className', 'TextNode', this);
   }
 
   /**
@@ -288,7 +294,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       this.childNodes.forEach((child) => {
         if (child?.createdIn === 'setup') {
           // this.clearEvents(); // fix drawer with footer, button events emit thirdly
-          child.removeDom();
+          removeDom(child);
         }
       });
     } else {
@@ -300,7 +306,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       this.childNodes.forEach(child => {
         if (child?.createdIn === 'setup') {
           // this.clearEvents(); // fix drawer with footer, button events emit thirdly
-          child.removeDom();
+          removeDom(child);
         }
       })
     }
@@ -328,7 +334,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
       //   todo if this child dom be removed , then repalce new Child how to get original position .
       //    so should remove dom after replaeced .
       this.childNodes.forEach((child) => {
-        child.removeDom();
+        removeDom(child);
       });
     } else {
       // child is Text, can not delete , write like this;
@@ -427,12 +433,12 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * 使用fragment要优化
    * @param el 是DocumentFragment时，和HTMLElement一样处理。层层 appendChild
    */
-  mount<T extends TypeElement>(el?: ElProp): T {
+  mount<T extends TypeElement>(el?: TypeEl): T {
     return useMount(this as unknown as T, el);
   }
 
   // todo
-  // update(el?: ElProp): void  {
+  // update(el?: TypeEl): void  {
   //   // console.warn('then update this.className is ' + this.className);
   //   useUpdate(this, el);
   // }
@@ -444,8 +450,8 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    * @param literal
    */
   createInstance(literal: ITypeElement): void {
-    this.attr?.resetObj(literal.params?.attrObj);
-    this.style?.resetObj(literal.params?.styleObj);
+    resetAttrObj(this, literal.params?.attrObj)
+    resetStyleObj(this, literal.params?.styleObj);
     const length = literal.childNodes.length;
     if (length < this.length) {
       for (let i = 0; i < this.length; i++) {
@@ -467,7 +473,7 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    */
   preRender(): void {
     // console.log('this.className is ' + this.className + ', preRender . ');
-    this.createDom();
+    createDom(this);
   }
 
   /**
@@ -482,22 +488,13 @@ export abstract class TypeElement extends TypeNode implements ITypeElement {
    */
   render(): void {
     this.preRender();
-    if (this.props.nodeName !== NodeName.FRAGMENT) {
-      this.style?.renderObj();
-      this.attr?.renderObj();
+    if (this.baseProps.nodeName !== NodeName.FRAGMENT) {
+      renderStyleObj(this);
+      renderAttrObj(this);
     } else {
       // console.log('fragment render .'); // todo
     }
     // console.log('this.dom is ', this.dom);
     this.rendered = true;
-  }
-  // 原 destroy
-  override unmount(root?: TypeElement) {
-    // console.warn('then unmount this.className is ' + this.className);
-    // TypeElement 需要单独清理事件
-    this.lifeCycles[LifecycleHooks.BEFORE_UNMOUNT]?.forEach((fn) => fn());
-    this.clearEvents();
-    super.unmount(root);
-    this.lifeCycles[LifecycleHooks.UNMOUNTED]?.forEach((fn) => fn());
   }
 }

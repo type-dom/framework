@@ -1,8 +1,8 @@
 // import { warn } from '../utils/debug';
-import { getCurrentInstance } from './instance';
+import { getCurrentInstance } from './component';
 import { ISlots } from './type-node/type-node.interface';
 import { TypeNode } from './type-node/type-node.abstract';
-import { type Attributes   } from './attribute/attribute.interface';
+import { type Attributes   } from '../dom/modules/attribute/attribute.interface';
 
 // dev only
 // const warnRuntimeUsage = (method: string) =>
@@ -120,9 +120,9 @@ import { type Attributes   } from './attribute/attribute.interface';
 //   }
 //   return null as any
 // }
-//
-// export type ComponentTypeEmits = ((...args: any[]) => any) | Record<string, any>
-//
+
+export type ComponentTypeEmits = ((...args: any[]) => any) | Record<string, any>
+
 // type RecordToUnion<T extends Record<string, any>> = T[keyof T]
 //
 // type ShortEmits<T extends Record<string, any>> = UnionToIntersection<
@@ -354,11 +354,11 @@ import { type Attributes   } from './attribute/attribute.interface';
 // }
 
 export function useSlots<T extends ISlots>(): T | undefined {
-  return getContext().props.slots as T
+  return getContext().baseProps.slots as T
 }
 
 export function useAttrs(): Attributes | undefined {
-  return getContext().props.attrObj;
+  return getContext().baseProps.attrObj;
 }
 
 function getContext(): TypeNode {

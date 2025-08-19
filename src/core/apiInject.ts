@@ -1,6 +1,7 @@
-import { warn } from '../utils/debug'
-import { currentInstance } from './instance'
-import { useInject } from './type-node/useInject';
+import { warn } from './warning'
+import { currentInstance } from './component'
+import { TypeNode } from './type-node/type-node.abstract';
+import { isFunction } from '@type-dom/utils';
 
 /**
  * 标记类型：用于唯一标识依赖注入的键
@@ -20,14 +21,17 @@ export type InjectionKey<T> = symbol & InjectionConstraint<T>
 export function provide<T, K = InjectionKey<T> | string | number>(
   key: K,
   value: K extends InjectionKey<infer V> ? V : T,
+  instance = currentInstance
 ): void {
-  if (!currentInstance) {
+  if (!instance) {
     warn(`provide() can only be used inside setup().`)
   } else {
-    if (currentInstance.provides === undefined) {
-      currentInstance.provides = {}
-    }
-    currentInstance.provide(key, value);
+    // if (currentInstance.provides === undefined) {
+    //   currentInstance.provides = {}
+    // }
+    // currentInstance.provide(key, value);
+    instance.provides = instance.provides || {};
+    instance.provides[key as string] = value;
     // let provides = currentInstance.provides;
     // // by default an instance inherits its parent's provides object
     // // but when it needs to provide values of its own, it creates its
@@ -43,7 +47,12 @@ export function provide<T, K = InjectionKey<T> | string | number>(
     // provides[key as string] = value
   }
 }
-
+/**
+ * 注入
+ * 依赖 parent 递归注入
+ * 要在 created 中调用，否则可能会parent没有初始化。
+ * @param key
+ */
 export function inject<T>(key: InjectionKey<T> | string): T | undefined
 export function inject<T>(
   key: InjectionKey<T> | string,
@@ -107,4 +116,28 @@ export function inject(
  */
 export function hasInjectionContext(): boolean {
   return !!(currentInstance); // || currentRenderingInstance || currentApp)
+}
+function useInject<T>(
+  node: TypeNode | undefined,
+  key: InjectionKey<T> | string,
+  defaultValue?: T,
+  treatDefaultAsFactory = false): T {
+  if (node?.upProvides) { // 上一级 有 provides 的组件；
+    if (node.upProvides[key]) {
+      return node.upProvides[key] as T;
+    } else { // 多级 存在 provides 的情况，需要递归查找。
+      const context = useInject(node.parent, key, defaultValue, treatDefaultAsFactory);
+      if (context) {
+        return context as T;
+      } else {
+        return treatDefaultAsFactory && isFunction(defaultValue)
+          ? defaultValue.call(node) as T
+          : defaultValue as T;
+      }
+    }
+  } else {
+    return treatDefaultAsFactory && isFunction(defaultValue)
+      ? defaultValue.call(node) as T
+      : defaultValue as T;
+  }
 }

@@ -1,8 +1,10 @@
 import { AnyFn } from '@type-dom/utils';
 import { DebuggerEvent } from '../debug';
 import { LifecycleHooks } from './enums';
-import { currentInstance } from './instance';
+import { currentInstance } from './component';
 import { TypeNode } from './type-node/type-node.abstract';
+
+export { onActivated, onDeactivated } from '../dom/components/keep-alive/utils'
 
 export function injectHook(
   type: LifecycleHooks,
@@ -72,6 +74,7 @@ type CreateHook<T = any> = (
   target?: TypeNode | null
 ) => void
 
+export const onBeforeCreate: CreateHook = createHook(LifecycleHooks.BEFORE_CREATE); // add by me
 export const onBeforeMount: CreateHook = createHook(LifecycleHooks.BEFORE_MOUNT);
 export const onMounted: CreateHook = createHook(LifecycleHooks.MOUNTED);
 export const onBeforeUpdate: CreateHook = createHook(

@@ -2,6 +2,7 @@ import { AnyFn, isArray, isFunction, isPromise } from '@type-dom/utils';
 import { LifecycleHooks } from './enums'
 import { TypeNode } from './type-node/type-node.abstract';
 import { ITypeNode } from './type-node/type-node.interface';
+import { warn } from './warning';
 
 // contexts where user provided function may be executed, in addition to
 // lifecycle hooks.
@@ -65,8 +66,7 @@ export const ErrorTypeStrings: Record<ErrorTypes, string> = {
 export type ErrorTypes = LifecycleHooks | ErrorCodes; // | WatchErrorCodes
 
 export function callWithErrorHandling(
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  fn: Function,
+  fn: AnyFn,
   instance: ITypeNode | null | undefined,
   type: ErrorTypes,
   args?: unknown[],
@@ -100,12 +100,11 @@ export function callWithAsyncErrorHandling(
       values.push(callWithAsyncErrorHandling(fn[i], instance, type, args))
     }
     return values
+  } else { // if (__DEV__) {
+    warn(
+      `Invalid value type passed to callWithAsyncErrorHandling(): ${typeof fn}`,
+    )
   }
-  // else if (__DEV__) {
-  //   warn(
-  //     `Invalid value type passed to callWithAsyncErrorHandling(): ${typeof fn}`,
-  //   )
-  // }
 }
 
 export function handleError(
