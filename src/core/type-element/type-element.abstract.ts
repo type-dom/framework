@@ -15,12 +15,17 @@ import { useRecurseRender } from '../helpers/useRecurseRender';
 import { useParams } from '../helpers/useParams';
 import { useSlotChild } from '../helpers/useSlotChild';
 import { useSlotChildren } from '../helpers/useSlotChildren';
-import { Attributes, renderAttrObj, resetAttrObj } from '../../dom/modules/attribute';
+import {
+  addAttrProp,
+  Attributes,
+  renderAttrObj,
+  resetAttrObj,
+} from '../../dom/modules/attribute';
 import { renderStyleObj, resetStyleObj } from '../../dom/modules/style/style';
 
-export const vHash = Math.round(Math.random() * 1000000);
-
+export let uid = 0;
 export let componentId = 0;
+export const vHash = Math.round(Math.random() * 1000000);
 
 /**
  * 虚拟元素Element的数据结构
@@ -117,6 +122,7 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
     //    TdInput 会多出前后缀， 有冲突。
     // const param = removeUndefinedProps(params as any) as unknown as T;
     // console.log('param is ', param);
+    this.uid = uid++;
     for (const key of Object.keys(params)) {
       // 如果已经配置了默认值，则使用默认值
       (params as any)[key] ??= (this.baseProps as any)?.[key];
@@ -167,6 +173,10 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
    */
   unshiftChild(newChild: TypeNode): void {
     newChild.setParent(this); // 如果不是子类，是其它地方的对象加过来，要重设其父类。 一个对象挂载到不同的父类中，可能会造成混乱。
+    if (this.scopedId) {
+      newChild.scopedId = this.scopedId;
+      addAttrProp(newChild, newChild.scopedId, '');
+    }
     if (currentInstance === this) {
       newChild.createdIn = 'setup';
     }
@@ -186,6 +196,11 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
     if (newChild instanceof TypeNode) {
       // 如果不是子类，是其它地方的对象加过来，要重设其父类。 一个对象挂载到不同的父类中，可能会造成混乱。
       newChild.setParent(this);
+      if (this.parent?.scopedId) this.scopedId = this.parent.scopedId;
+      if (this.scopedId) {
+        newChild.scopedId = this.scopedId;
+        addAttrProp(newChild, newChild.scopedId, '');
+      }
       if (currentInstance === this) {
         newChild.createdIn = 'setup';
       }
