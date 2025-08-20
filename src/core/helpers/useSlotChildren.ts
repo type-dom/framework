@@ -5,7 +5,7 @@
  */
 import { isArray } from '@type-dom/utils';
 import { batchEffect, isRef, toRaw } from '../../reactivity';
-import { ISlotItem } from '../type-node/type-node.interface';
+import { ISlotItem, ISlotRaw } from '../type-node/type-node.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { getToDom, mountDom } from './mountDom';
 import { replaceCommentWithDom } from './toggleCommentAndDom';
@@ -24,17 +24,26 @@ export function useSlotChildren(element: TypeElement, slot?: ISlotItem) {
         createDom(element);
       }
       const upDom = mountDom(element);
+      console.warn('upDom is ', upDom);
       if (element.dom) {
         // element is not according to original propose.
         //   element then replace all children when reactivity;
         // element.clearEvents();
+        // todo
         element.clearChildren();
         element.slotChild(newRaw); // todo
         element.childNodes.forEach(child => {
           // console.warn('child then mount, it is ', child);
           const to = getToDom(child);
           // element.dom is Fragment, child.dom not mount to;
-          child.mount(to ?? element.dom); // 如果注释了，统计倒计时不显示。
+          // if (element.dom instanceof DocumentFragment) { // todo
+          //   console.error('element.dom instanceof DocumentFragment .');
+          //   child.mount(to ?? upDom);
+          // } else {
+            child.mount(to ?? element.dom);
+          // }
+          // const ele = (element.dom instanceof DocumentFragment ? upDom : element.dom)
+          // child.mount(to ?? ele); // 如果注释了，统计倒计时不显示。
           // child.mount(upDom); // todo repeat loop .
           // element.appendChild(child); // what different between mount and appendChild ?
         })
@@ -59,7 +68,7 @@ export function useSlotChildren(element: TypeElement, slot?: ISlotItem) {
         useSlotChildren(element,item)
       }
     } else {
-      element.slotChild(slot)
+      element.slotChild(slot as ISlotRaw)
     }
   }
 }

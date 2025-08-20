@@ -1,8 +1,8 @@
 import { isRef, MaybeRef, unref, watch } from '../../reactivity';
-import { vShow, VShowElement, vShowOriginalDisplay } from '../../dom/directives/vShow';
+import { removeStyleProp, setStyleObj } from '../../dom/modules/style/style';
 import { TransitionElement } from '../components/type-transition/type-transition.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
-import { removeStyleProp, setStyleObj } from '../../dom/modules/style/style';
+import { vShow, VShowElement, vShowOriginalDisplay } from './vShow';
 
 export function useVShow(element: TypeElement) {
   if (Object.prototype.hasOwnProperty.call(element.baseProps, 'vShow')) {

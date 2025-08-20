@@ -12,9 +12,10 @@ export function useVIf(element: TypeElement, upDom?: RawDom | null) {
     const condition = element.baseProps.vIf;
     // console.warn('condition is ', condition);
     if (isRef(condition)) {
-      // console.warn('this.baseProps.vIf is ref， ', condition);
+      console.warn('this.baseProps.vIf is ref， ', condition);
       // 添加 监听
       watch(condition, (newValue, oldValue) => {
+        console.warn('watch useVIf . newValue and oldValue is ', newValue, oldValue);
         useRawIf(newValue, element, oldValue);
       },
         // { immediate: true, } // todo 加载就触发有问题

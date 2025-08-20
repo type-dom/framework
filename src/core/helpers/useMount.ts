@@ -13,6 +13,9 @@ import { createDom } from './createDom';
 
 export function useMount<T extends TypeElement>(element: T, el?: TypeEl) {
   // console.warn('mount .');
+  if (el instanceof DocumentFragment) {
+    console.error('useMount el is DocumentFragment . ');
+  }
   // 如果不清理，再次挂载时，子节点会再添加一次。 2024/11/07 22:34
   // 如果在constructor 中添加了子节点，会导致子节点被清除了
   //    如果在setup 中有添加子节点，切换路由，会导致子节点被重复添加。
@@ -80,7 +83,11 @@ export function useMount<T extends TypeElement>(element: T, el?: TypeEl) {
 
   // 如CollapsibleBox中，contents重新赋值后，children会变，而childNodes是不变的。
   for (const child of element.children) {
-    child.mount(element.dom);
+    // if (element.dom instanceof DocumentFragment) { // todo 这样 TdButton 会多出一个 空 icon 图标；
+    //   child.mount(appEl);
+    // } else {
+      child.mount(element.dom);
+    // }
   }
 
   // useVIf(element, appEl); // ImageView 预览不显示；
@@ -97,6 +104,9 @@ export function useMount<T extends TypeElement>(element: T, el?: TypeEl) {
       if (unref(element.baseProps.vIf)) {
         replaceCommentWithDom(element, appEl);
       } else {
+        if (appEl instanceof DocumentFragment) {
+          console.error('appEl instanceof DocumentFragment . ');
+        }
         replaceDomWithComment(element, appEl);
       }
     } else {

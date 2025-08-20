@@ -15,8 +15,13 @@ import { mountDom } from './mountDom';
 //   // element.removeDom(); // todo mount时可以不处理吗？ 默认应该时没有被挂载的，有问题的还是一个对象多处判断。
 
 export function replaceDomWithComment(element: TypeNode, upDom?: RawDom) {
+  console.error('upDom is ', upDom);
   const dom = element.dom;
   // 真实父节点
+  if (upDom instanceof DocumentFragment) {
+    console.error('upDom is DocumentFragment . ');
+    // return;
+  }
   const parentElement = upDom ?? mountDom(element);
   // anchor和dom不能同时存在
   if (parentElement && element.dom && element.anchor &&
@@ -67,6 +72,10 @@ export function replaceDomWithComment(element: TypeNode, upDom?: RawDom) {
  * @param upDom
  */
 export function replaceCommentWithDom(element: TypeNode, upDom?: RawDom | null) {
+  if (upDom instanceof DocumentFragment) {
+    console.warn('upDom is DocumentFragment . ');
+    // return;
+  }
   upDom = upDom ?? mountDom(element);
   if (!upDom) return;
   // if (element.dom && isDescendant(upDom, element.dom) && element.anchor && isDescendant(upDom, element.anchor)) {

@@ -11,6 +11,7 @@ import { InputHTMLAttributes } from '../../dom/modules/attribute';
 // } from './vModel';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { addEmits, addEvents } from '../event-emitter/event-emitter';
+// import { onMounted } from '../apiLifecycle';
 // import { onBeforeMount, onMounted } from '../../apiLifecycle';
 // import { invokeArrayFns, isArray, looseToNumber } from '@type-dom/utils';
 
@@ -105,6 +106,12 @@ export function useVModel(element: TypeElement) {
           //     // element.baseProps.vModel?.set((evt?.target as HTMLInputElement).checked);
           //   },
           // });
+          // onMounted(() => {
+          //   // console.warn('useVModel onMounted . ');
+          //   const value = !!element.baseProps.vModel?.get();
+          //   const el = element.dom as HTMLInputElement | HTMLTextAreaElement;
+          //   (el as any).checked = value
+          // }, element);
         } else if ((element.params?.attrObj as InputHTMLAttributes)?.type === 'radio') {
           //   todo
         } else {
