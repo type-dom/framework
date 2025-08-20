@@ -253,7 +253,7 @@ export interface TypeProps extends ITypeBase {
 export type ISlotRaw = string | number | boolean | undefined | Dayjs | TypeNode;
 export type ISlotRef<T extends ISlotRaw = ISlotRaw> = Signal<T> | Computed<T>;
 export type ISlotItem<T extends ISlotRaw = ISlotRaw> = MaybeRef<T | T[]> | MaybeRef<T>[]
-  | ((...args: any[]) => T | T[]);
+  | ((...args: any[]) => ISlotItem<T>);
 
 export interface ISlots {
   [propName: 'default' | string]: ISlotItem | undefined;

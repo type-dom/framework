@@ -21,7 +21,6 @@ import {
   TypeProps
 } from './type-node.interface';
 
-let uid = 0;
 /**
  * 虚拟DOM，TypeNode 抽象节点类, 所有节点类的抽象类；
  * abstract syntax tree 抽象语法树 抽象节点类
@@ -138,7 +137,7 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
   items?: TypeProps[];
   // textNode?: TextNode;
   lifeCycles: Record<LifecycleHooks, AnyFn[]>;
-  uid: number;
+  uid?: number;
   /**
    * 存储事件名称与事件监听器数组的映射
    * key 事件名 value: callback[]  回调数组
@@ -167,6 +166,8 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
   isMounted?: boolean
   isUnmounted?: boolean
   isDeactivated?: boolean
+  // 是否触发样式作用域
+  scopedId?: string;
 
   abstract dom?:
     | HTMLElement
@@ -180,7 +181,7 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
   constructor() {
     // this.eventObservers = {};
     // this.emitObservers = {};
-    this.uid = uid++;
+    // this.uid = uid++;
     // this.params = {}; // Object.freeze({}) as TypeProps;
     this.props = this.baseProps = {};
     this.lifeCycles = {} as Record<LifecycleHooks, AnyFn[]>;
