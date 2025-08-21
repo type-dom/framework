@@ -5,9 +5,9 @@
  */
 import { addStyleObj, setStyleObj } from '../../../dom/modules/style/style';
 import { StyleValue } from '../../../dom/modules/style/style.interface';
-import { addAttrId, addAttrObj, HTMLAttributes } from '../../../dom/modules/attribute';
+import { addAttrId, HTMLAttributes } from '../../../dom/modules/attribute';
 import { ToMaybeRefs } from '../../../reactivity';
-import { TypeElement, vHash } from '../../type-element/type-element.abstract';
+import { TypeElement, } from '../../type-element/type-element.abstract';
 import type { ITypeHtml, HtmlProps } from './type-html.interface';
 
 export abstract class TypeHtml<T extends HTMLElement = HTMLElement, A extends ToMaybeRefs<HTMLAttributes> = ToMaybeRefs<HTMLAttributes>>
@@ -25,9 +25,9 @@ export abstract class TypeHtml<T extends HTMLElement = HTMLElement, A extends To
   constructor() {
     super();
     addAttrId(this, this.componentId);
-    addAttrObj(this, {
-      ['data-v-' + vHash]: '',
-    })
+    // addAttrObj(this, {
+    //   ['data-v-' + vHash]: '',
+    // })
   }
 
   addStyleObj(styleObj?: StyleValue) {

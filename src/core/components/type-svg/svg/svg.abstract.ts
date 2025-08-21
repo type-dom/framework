@@ -16,8 +16,8 @@ export abstract class TypeSvgSvg extends TypeSvg implements ITypeSvgSvg {
     addAttrObj(this, {
       version: '1.1',
       xmlns: 'http://www.w3.org/2000/svg',
-      width: this.width,
-      height: this.height
+      // width: this.width,
+      // height: this.height
       // viewBox: '0 0 1024 1024'
     });
     this.childNodes = [];

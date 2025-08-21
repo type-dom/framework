@@ -1,7 +1,7 @@
 import { TextNode } from '../../../dom/components/text-node/text-node.class';
-import { SVGAttributes } from '../../../dom/modules/attribute';
+import { addAttrObj, SVGAttributes } from '../../../dom/modules/attribute';
 import type { TypeProps } from '../../type-node/type-node.interface';
-import { TypeElement } from '../../type-element/type-element.abstract';
+import { TypeElement, vHash } from '../../type-element/type-element.abstract';
 import type { ITypeSvg } from './type-svg.interface';
 
 /**
@@ -20,6 +20,9 @@ export abstract class TypeSvg<T extends SVGElement = SVGElement, A extends SVGAt
   constructor()  {
     super();
     this.childNodes = []; // 初始化子节点数组为空
+    addAttrObj(this, {
+      ['data-v-' + vHash]: '',
+    });
   }
 
   override useParams<T extends TypeProps>(params = {} as T): T {
