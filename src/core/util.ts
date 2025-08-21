@@ -167,7 +167,6 @@ export function arraySlot<T extends ISlotRaw = ISlotRaw>(slot?: ISlotItem<T>): (
   }
 }
 
-
 export function rawSlot<T extends ISlotRaw>(item: ISlotItem<T>): ISlotRaw[] {
   const result: ISlotRaw[] = [];
 
@@ -180,7 +179,7 @@ export function rawSlot<T extends ISlotRaw>(item: ISlotItem<T>): ISlotRaw[] {
         result.push(toRaw(rawItem) as ISlotRaw);
       } else {
         if (rawItem !== undefined) {
-          result.push(rawItem);
+          result.push(rawItem as ISlotRaw);
         }
       }
     } else if (isArray(item)) {
