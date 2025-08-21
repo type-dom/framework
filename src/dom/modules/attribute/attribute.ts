@@ -162,16 +162,16 @@ export function renderAttrProp(el: TypeNode | undefined, key: string, value?: Ma
           // if (key === 'disabled') {
           //   console.warn('key is disabled . ')
           // }
-          console.warn('key is ' + key + ' . ')
-          console.warn('raw is true . ')
+          // console.warn('key is ' + key + ' . ')
+          // console.warn('raw is true . ')
           if (dom?.hasAttribute(key)) {
             return;
           }
-          // (dom as any)[key] = true;
+          (dom as any)[key] = true;
           dom.setAttribute(key, '');
         } else if (raw === false) {
-          console.warn('key is ' + key + ' . ');
-          console.warn('raw is false . ');
+          // console.warn('key is ' + key + ' . ');
+          // console.warn('raw is false . ');
           // disabled dom?.getAttribute(key) result is ''
           if (!dom?.hasAttribute(key)) {
             return;

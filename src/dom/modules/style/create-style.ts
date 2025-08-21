@@ -21,7 +21,10 @@
  * @param cssStyles
  */
 import { camelToDash } from '@type-dom/utils';
-import { vHash } from '../../../core/type-element/type-element.abstract';
+import { getCurrentInstance } from '../../../core/component';
+import { TypeNode } from '../../../core/type-node/type-node.abstract';
+import { onMounted } from '../../../core/apiLifecycle';
+import { setAttrProp } from '../attribute';
 import { CSSProperties } from './style.interface';
 
 const styleElement = createStyleElement();
@@ -30,12 +33,12 @@ function createStyleElement() {
   // 创建一个新的<style>元素
   const styleElement = document.createElement('style');
 
-// 设置<style>元素的type属性为"text/css"
+  // 设置<style>元素的type属性为"text/css"
   styleElement.type = 'text/css';
 
-  styleElement.className = 'td-ui-' + vHash;
+  // styleElement.className = 'td-ui-' + vHash;
 
-// 将创建好的<style>标签添加到<head>中，使其生效
+  // 将创建好的<style>标签添加到<head>中，使其生效
   document.head.appendChild(styleElement);
   // sheet.insertRule('body { background-color: blue; }', 0); // 参数1是CSS规则，参数2是插入的位置索引
   // if (!styleElement.sheet?.insertRule) {
@@ -48,17 +51,19 @@ export function createStyle(cssStyles: string, scoped?: boolean) {
   // console.log('createStyle . cssStyles is ', cssStyles);
   // styleSheet?.insertRule('body { background-color: blue; }', styleSheet.cssRules.length)
   // styleSheet?.insertRule(cssStyles, styleSheet.cssRules.length);
-  if (scoped) { // 作用域
-    cssStyles = addScopedStyle(cssStyles)
-  }
+  onMounted(() => {
+    if (scoped) { // 作用域
+      cssStyles = addScopedStyle(cssStyles);
+    }
 
-// Internet Explorer支持通过styleSheet对象和addRule方法添加样式
-  if ((styleElement as any)?.styleSheet) {
-    (styleElement as any).styleSheet.cssText = cssStyles;
-  } else {
-    // 其他现代浏览器支持通过textContent或innerHTML属性添加样式文本
-    styleElement.appendChild(document.createTextNode(cssStyles));
-  }
+    // Internet Explorer支持通过styleSheet对象和addRule方法添加样式
+    if ((styleElement as any)?.styleSheet) {
+      (styleElement as any).styleSheet.cssText = cssStyles;
+    } else {
+      // 其他现代浏览器支持通过textContent或innerHTML属性添加样式文本
+      styleElement.appendChild(document.createTextNode(cssStyles));
+    }
+  });
 }
 
 // 有作用域的样式 data-v- *****
@@ -66,13 +71,14 @@ export function createClass(className: string, styleObj: CSSProperties & Record<
   // console.log('createClass . className: ', className, ' styleObj: ', styleObj);
   const clsArr = className.split(' ');
   let selector = '';
+  const instance = getCurrentInstance();
   clsArr.forEach(className => {
     if (className.includes(':')) { // 有伪类时 :hover :focus
       const [name, pseudoClass] = className.split(':');
       // console.log('pseudoClass is ', pseudoClass);
-      selector = `.${name}[data-v-${vHash}]:${pseudoClass}`;
+      selector = `.${name}[data-v-${instance?.uid}]:${pseudoClass}`;
     } else {
-      selector += `.${className}[data-v-${vHash}] `;
+      selector += `.${className}[data-v-${instance?.uid}] \n`;
     }
   })
 
@@ -88,7 +94,7 @@ function buildCssRule(selector: string, style: CSSProperties) {
       styleParts.push(`${camelToDash(prop)}: ${style[prop as keyof CSSProperties]};`);
     }
   }
-  return `${selector} { ${styleParts.join(' ')} }`;
+  return `${selector} {${styleParts.join(' ')}}`;
 }
 
 // let cssRuleString = jsonToCssRule(cssRuleJson);
@@ -100,16 +106,33 @@ function buildCssRule(selector: string, style: CSSProperties) {
  * @returns {string} 转换后的作用域 CSS
  */
 export function addScopedStyle(css: string) {
-  // const instance = currentInstance; // todo
-  const scopedAttr = `[data-v-${vHash}]`;
+  const instance = getCurrentInstance(); // todo
+  console.error('addScopedStyle instance is ', instance);
+  if (instance) {
+    // instance.scopedId = 'data-v-' + instance.uid;
+    // addAttrProp(instance, instance.scopedId, '');
+    generateScoped(instance, instance?.uid);
+  }
 
-  return css
+  const scopedAttr = instance ? `[data-v-${instance.uid}]` : '';
+  // const scopedAttr = `[data-v-${vHash}]`;
+
+  return css.trim()
     // 处理选择器
     .replace(/([^{]+){/g, (_match, selectors) => {
-      return selectors.split(',')
-        .map((s: string) => `${s.trim()}${scopedAttr}`)
+      return selectors
+        .split(',')
+        .map((s: string) => `${s.trimEnd()}${scopedAttr}`)
         .join(', ') + ' {';
     })
     // 处理最后一个分号
-    .replace(/;\s*}/g, ' }');
+    .replace(/;\s*}/g, ' \n }');
+}
+
+function generateScoped(node: TypeNode, uid?: number) {
+  // setAttrObj(node, { ['data-v-' + uid]: '' });
+  setAttrProp(node, 'data-v-' + uid, '');
+  node.childNodes?.forEach(child => { // todo TdImage load-failed example has error
+    if (child.props.nodeName !== 'text') generateScoped(child, uid);
+  })
 }

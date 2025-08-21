@@ -7,7 +7,7 @@ import { warn } from '../../../core/warning';
 //   vShowOriginalDisplay,
 // } from '../directives/vShow'
 import { CSS_VAR_TEXT } from '../../helpers/useCssVars';
-import { VShowElement, vShowOriginalDisplay, vShowHidden } from '../../directives/vShow';
+import { VShowElement, vShowOriginalDisplay, vShowHidden } from '../../../core/helpers/vShow';
 
 export type Style = string | Record<string, string | string[]> | null
 

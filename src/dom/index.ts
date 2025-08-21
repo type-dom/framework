@@ -273,16 +273,16 @@
 // } from './components/TransitionGroup'
 
 // **Internal** DOM-only runtime directive helpers
-export {
-  vModelText,
-  vModelCheckbox,
-  vModelRadio,
-  vModelSelect,
-  // vModelDynamic,
-  resolveDynamicModel,
-} from './directives/vModel'
+// export {
+//   vModelText,
+//   vModelCheckbox,
+//   vModelRadio,
+//   vModelSelect,
+//   // vModelDynamic,
+//   resolveDynamicModel,
+// } from './directives/vModel'
 // export { withModifiers, withKeys } from './directives/vOn'
-export { vShow } from './directives/vShow'
+export { vShow } from '../core/helpers/vShow'
 
 // import { initVModelForSSR } from './directives/vModel'
 // import { initVShowForSSR } from './directives/vShow'
