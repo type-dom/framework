@@ -109,7 +109,7 @@ export function addScopedStyle(css: string) {
   const instance = getCurrentInstance(); // todo
   console.error('addScopedStyle instance is ', instance);
   if (instance) {
-    // instance.scopedId = 'data-v-' + instance.uid;
+    instance.scopedId = 'data-v-' + instance.uid;
     // addAttrProp(instance, instance.scopedId, '');
     generateScoped(instance, instance?.uid);
   }
@@ -132,6 +132,7 @@ export function addScopedStyle(css: string) {
 function generateScoped(node: TypeNode, uid?: number) {
   // setAttrObj(node, { ['data-v-' + uid]: '' });
   setAttrProp(node, 'data-v-' + uid, '');
+  node.scopedId = 'data-v-' + uid;
   node.childNodes?.forEach(child => { // todo TdImage load-failed example has error
     if (child.props.nodeName !== 'text') generateScoped(child, uid);
   })

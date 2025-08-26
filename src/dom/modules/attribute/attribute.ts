@@ -198,8 +198,14 @@ export function renderAttrProp(el: TypeNode | undefined, key: string, value?: Ma
           (dom as any)[key] = val;
           // dom.setAttribute(key, val);  // setAttribute方法存在问题
         }
-      } else {
-        console.warn('dom is not Element . ');
+      } else if (dom instanceof DocumentFragment) {
+        // console.warn('dom is DocumentFragment . ');
+      } else if (dom instanceof Text) {
+        // console.warn('dom is Text . ');
+      } else if (dom instanceof Comment) {
+        console.warn('dom is Comment, and is ', dom);
+      } else  {
+        console.warn('dom is not Element or DocumentFragment ， is ', dom);
       }
     })
   } else {
@@ -285,7 +291,7 @@ export function addAttrClass(el: TypeNode, classValue: ClassValue): void {
       const computeClass = computed(() => [oldClass, classValue.get()]);
       el.attrObj.class = computeClass as Computed<ClassValue>;
     } else if (isObject(classValue)) { // Record<string, MaybeRef<boolean | unknown>>
-      console.warn('addAttrClass object . classValue is ', classValue);
+      // console.warn('addAttrClass object . classValue is ', classValue);
       if (!Object.prototype.hasOwnProperty.call(classValue, oldClass)) {
         classValue[oldClass] = true;
       } else {
@@ -389,7 +395,7 @@ function flattenClass(obj: ClassValue, result: string[] = []): string[] {
     } else if (typeof value === 'boolean' || value === undefined) {
       // 如果需要将布尔值或 undefined 转换为字符串，可以在这里处理
       // result.push(String(value));
-      console.warn('class raw value is boolean or undefined , value is ', value);
+      // console.warn('class raw value is boolean or undefined , value is ', value);
     }
   }
   return result;
