@@ -96,15 +96,16 @@ export function watch<T>(
       return dataFn();
     } catch (error) {
       untracked(() => onError?.(error));
-      return prevValue!;
+      return prevValue;
     }
   });
 
   const dispose = effect(() => {
     // console.warn('watch effect . ');
     const current = tracked.get();
+    // console.warn('current is ', current);
     if (!immediate && !version) {
-      prevValue = current;
+      prevValue = (isArray(current) ? [...current] : current) as T;
     }
     version++;
     // immediate: true, current: undefined 时， 要执行一下dataFn
@@ -122,7 +123,7 @@ export function watch<T>(
         }
       }
     }
-    const oldValue = prevValue;
+    const oldValue = (isArray(prevValue) ? [...prevValue] : prevValue) as T;
     prevValue = current;
     let scheduler: (fn: () => void) => void;
     if (options.scheduler) {
