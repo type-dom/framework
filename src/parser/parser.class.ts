@@ -288,15 +288,15 @@ export class Parser {
   }
 
   onPi(name: string, value: string): void {
-    console.log('onPi name is ' + name + ' value is ' + value);
+    console.warn('onPi name is ' + name + ' value is ' + value);
   }
 
   onComment(text: string): void {
-    console.log('onComment text is ', text);
+    console.warn('onComment text is ', text);
   }
 
   onDoctype(doctypeContent: string): void {
-    console.log('doctypeContent is ', doctypeContent);
+    console.warn('doctypeContent is ', doctypeContent);
   }
 
   /**
