@@ -83,7 +83,7 @@ export class XElement extends TypeElement implements IXElement {
   override setup(): void {
     // console.log('XElement setup . ');
     const props = this.props;
-    this.slotChildren(props.slot || props.slots?.['default']);
+    this.slotChildren(props.slot || props.slots?.default);
     // todo nodejs下没有document，Parser可能会用到
     // 加载自定义属性
     for (const attr of this.attributes) {
