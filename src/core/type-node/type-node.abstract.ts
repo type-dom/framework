@@ -60,8 +60,15 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
    * 与 target 和 targetAnchor 配合使用
    * 在 Teleport 组件中，anchor 通常与 target 和 targetAnchor 配合使用，用于标识当前片段在目标容器中的插入位置。
    * 这样可以确保被传送的内容被正确插入到目标 DOM 节点的合适位置。
+   * 注： this is Fragment , 片段的结束标记，用于标识片段的结束位置。
    */
   anchor?: Comment; // fragment anchor  评论节点；vIf占位符使用，
+  // todo <!--[--> <!--]--> 片段的起始和结束标记，用于标识片段的起始和结束位置。
+  /**
+   * 片段的起始标记，用于标识片段的起始位置。
+   */
+  anchorStart?: Comment;
+
   /**
    * 作用：指向 Teleport 组件要将内容渲染到的目标 DOM 容器。
    * 场景：当使用 <Teleport to="#app"> 时，target 会指向 document.getElementById('app')。
