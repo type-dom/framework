@@ -9,11 +9,7 @@ export class A extends TypeA implements IA {
   constructor(params: TypeAProps = {}) {
     super();
     this.className = 'A';
+    this.slotChildren(params.slot);
     this.useParams(params);
-  }
-
-  override setup() {
-    const props = this.props;
-    this.slotChildren(props.slot);
   }
 }
