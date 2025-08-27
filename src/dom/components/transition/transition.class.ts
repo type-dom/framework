@@ -8,9 +8,9 @@ export class Transition extends TypeTransition implements ITransition {
   override props: TypeTransitionProps<Element>;
 
   constructor(params: TransitionProps = {}) {
-    super(params);
+    super();
     this.className = 'Transition';
-
+    this.useParams(params);
     const props = resolveTransitionProps(params);
     this.props = this.useParams(props); // dom 操作 nodeName = fragment
   }
