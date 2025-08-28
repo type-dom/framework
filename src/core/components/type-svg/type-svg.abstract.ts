@@ -27,7 +27,7 @@ export abstract class TypeSvg<T extends SVGElement = SVGElement, A extends SVGAt
 
   override useParams<T extends TypeProps>(params = {} as T): T {
     // 插槽默认替换子节点；
-    if (params.slot) {
+    if (params.slot) { // todo why
       this.slotChildren(params.slot);
     }
     super.useParams(params);
