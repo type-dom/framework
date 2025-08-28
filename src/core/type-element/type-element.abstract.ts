@@ -1,6 +1,13 @@
-import { MaybeRef } from '../../reactivity';
-// import { renderAttrObj } from '../../dom/modules/attrs';
+import { Dayjs } from 'dayjs';
+import { isString, isNumber } from '@type-dom/utils';
 import { TextNode } from '../../dom/components/text-node/text-node.class';
+import {
+  addAttrProp,
+  Attributes,
+  renderAttrObj,
+  resetAttrObj,
+} from '../../dom/modules/attribute';
+import { renderStyleObj, resetStyleObj } from '../../dom/modules/style/style';
 import { removeDom } from '../helpers/removeDom';
 import {createDom} from "../helpers/createDom";
 import { findDown } from '../helpers/findDown';
@@ -9,19 +16,11 @@ import { TypeNode } from '../type-node/type-node.abstract';
 import { currentInstance } from '../component';
 import { NodeName } from '../enums';
 import { TransitionElement, TransitionHooks, } from '../components/type-transition/type-transition.interface';
-import type { TypeEl, IBoundBox, ITypeElement } from './type-element.interface';
 import { useMount } from '../helpers/useMount';
 import { useRecurseRender } from '../helpers/useRecurseRender';
 import { useParams } from '../helpers/useParams';
-import { useSlotChild } from '../helpers/useSlotChild';
 import { useSlotChildren } from '../helpers/useSlotChildren';
-import {
-  addAttrProp,
-  Attributes,
-  renderAttrObj,
-  resetAttrObj,
-} from '../../dom/modules/attribute';
-import { renderStyleObj, resetStyleObj } from '../../dom/modules/style/style';
+import type { TypeEl, IBoundBox, ITypeElement } from './type-element.interface';
 
 export let uid = 0;
 export let componentId = 0;
@@ -145,13 +144,6 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
     useSlotChildren(this, slot);
   }
 
-  slotChild(slot?: ISlotRaw | ISlotRaw[] | ((arg?: any) => ISlotRaw | ISlotRaw[]), _type: 'add' | 'unshift' = 'add') {
-    if (slot === undefined) {
-      return;
-    }
-    useSlotChild(this, slot);
-  }
-
   /**
    * 在最后位置添加一个子节点，并渲染；
    * 如果newChild.parent存在，则可能需要执行newChild?.parent.removeChild(newChild)。需要根据业务逻辑判断。
@@ -171,16 +163,26 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
    * 从前面添加子元素
    * @param newChild
    */
-  unshiftChild(newChild: TypeNode): void {
-    newChild.setParent(this); // 如果不是子类，是其它地方的对象加过来，要重设其父类。 一个对象挂载到不同的父类中，可能会造成混乱。
-    if (this.scopedId) {
-      newChild.scopedId = this.scopedId;
-      addAttrProp(newChild, newChild.scopedId, '');
+  unshiftChild(newChild: string | number | boolean | undefined | Dayjs | TypeNode): void {
+    if (newChild instanceof TypeNode) {
+      newChild.setParent(this); // 如果不是子类，是其它地方的对象加过来，要重设其父类。 一个对象挂载到不同的父类中，可能会造成混乱。
+      if (this.scopedId) {
+        this.scopedId = this.scopedId ?? this.parent?.scopedId;
+        newChild.scopedId = newChild.scopedId ?? this.scopedId;
+        addAttrProp(newChild, newChild.scopedId, '');
+      }
+      if (currentInstance === this) {
+        newChild.createdIn = 'setup';
+        this.createdIn = 'setup';
+      }
+      this.childNodes.unshift(newChild);
+    } else if (isNumber(newChild) || isString(newChild)) {
+      const text = new TextNode(newChild);
+      text.setParent(this);
+      this.childNodes.unshift(text);
+    } else {
+      console.error('newChild is ', newChild);
     }
-    if (currentInstance === this) {
-      newChild.createdIn = 'setup';
-    }
-    this.childNodes.unshift(newChild);
   }
 
   unshiftChildren(...newChildren: TypeNode[]) {
@@ -190,25 +192,29 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
   /**
    * 后面添加子元素
    * new 时，也就是创建时，可以不设置parent；但是addChild时，需要设置parent。
+   * todo List 动态添加子元素时，新元素的scopedId会丢失。
    * @param newChild
    */
-  addChild(newChild: MaybeRef<string> | TypeNode): void {
+  addChild(newChild: string | number | boolean | undefined | Dayjs | TypeNode): void {
     if (newChild instanceof TypeNode) {
       // 如果不是子类，是其它地方的对象加过来，要重设其父类。 一个对象挂载到不同的父类中，可能会造成混乱。
       newChild.setParent(this);
-      if (this.parent?.scopedId) this.scopedId = this.parent.scopedId;
+      this.scopedId = this.scopedId ?? this.parent?.scopedId;
       if (this.scopedId) {
-        newChild.scopedId = this.scopedId;
+        newChild.scopedId = newChild.scopedId ?? this.scopedId;
         addAttrProp(newChild, newChild.scopedId, '');
       }
       if (currentInstance === this) {
-        newChild.createdIn = 'setup';
+        newChild.createdIn = 'setup'; // todo why ???
+        this.createdIn = 'setup';
       }
       this.childNodes.push(newChild);
-    } else {
+    } else if (isNumber(newChild) || isString(newChild)) {
       const text = new TextNode(newChild);
       text.setParent(this);
       this.childNodes.push(text);
+    } else {
+      console.error('newChild  is ', newChild);
     }
   }
 
@@ -225,10 +231,17 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
    * @param child
    * @param index 要插入的目标位置
    */
-  insertChild(child: TypeNode, index: number): void {
+  insertChild(child: ISlotRaw, index: number): void {
     // console.log('insertChild . ');
-    this.childNodes.splice(index, 0, child);
-    child.setParent(this);
+    if (child instanceof TypeNode) {
+      this.childNodes.splice(index, 0, child);
+      child.setParent(this);
+    } else {
+      // if (isBoolean(child)) child = String(child);
+      const text = new TextNode(String(child));
+      text.setParent(this);
+      this.childNodes.splice(index, 0, text);
+    }
   }
 
   /**
@@ -289,8 +302,9 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
     for (let i = 0; i < length; i++) {
       if (this.childNodes[index + i].dom) {
         // todo 好像应该是 index
-        this.dom?.removeChild(this.childNodes[index + i].dom!);
+        // this.dom?.removeChild(this.childNodes[index + i].dom!); //    有问题。 dom 是 DocumentFragment时， 其childNodes 是空的。
         //   this.childNodes[index + i].dom?.remove();
+        removeDom(this.childNodes[index + i]);
       }
     }
   }
@@ -305,14 +319,14 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
   }
 
   clearSetupChildrenDom(): void {
-    if (this.dom instanceof DocumentFragment) {
-      this.childNodes.forEach((child) => {
-        if (child?.createdIn === 'setup') {
-          // this.clearEvents(); // fix drawer with footer, button events emit thirdly
-          removeDom(child);
-        }
-      });
-    } else {
+    // if (this.dom instanceof DocumentFragment) {
+    //   this.childNodes.forEach((child) => {
+    //     if (child?.createdIn === 'setup') {
+    //       // this.clearEvents(); // fix drawer with footer, button events emit thirdly
+    //       removeDom(child);
+    //     }
+    //   });
+    // } else {
       // let first = this.dom?.firstElementChild;
       // while (first) {
       //   first.remove();
@@ -324,7 +338,7 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
           removeDom(child);
         }
       })
-    }
+    // }
   }
 
   /**
@@ -389,7 +403,7 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
         this.childNodes.splice(index, 1, newNode);
         if (newNode.dom && oldNode?.dom) {
           // fragment处理
-          if (this.dom instanceof DocumentFragment && this.dom.childElementCount === 0) {
+          if (this.dom instanceof DocumentFragment && this.dom.childNodes.length === 0) {
             this.dom.appendChild(newNode.dom);
           } else {
             this.dom?.replaceChild(newNode.dom, oldNode.dom);
