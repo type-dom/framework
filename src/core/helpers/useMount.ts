@@ -13,21 +13,23 @@ import { createDom } from './createDom';
 
 export function useMount<T extends TypeElement>(element: T, el?: TypeEl) {
   // console.warn('mount .');
-  if (el instanceof DocumentFragment) {
-    console.error('useMount el is DocumentFragment . ');
-  }
+  // if (el instanceof DocumentFragment) {
+  //   console.error('useMount el is DocumentFragment . ');
+  // } else {
+  //   console.error('el is not DocumentFragment, and is ', el);
+  // }
   // 如果不清理，再次挂载时，子节点会再添加一次。 2024/11/07 22:34
   // 如果在constructor 中添加了子节点，会导致子节点被清除了
   //    如果在setup 中有添加子节点，切换路由，会导致子节点被重复添加。
   // element.clearChildren(); // 空白了 todo why ???? 清理子节点，包括DOM  todo ??? 不能加 ？？？？没有加载子节点。 useParams
-  element.clearSetupChildren(); // 在setup 中添加的子节点， 清理监听事件 element.clearEvents()
-  // element.clearEvents(); // useMount可能会反复使用；TdMessage 无法弹出 add by me 2025/06/12 16:21
-  setCurrentInstance(element); // todo watch 优化 props.vIf的监听
-  // if (element.rendered) {
-  //
-  // } else {
+  if (element.setup) { // 基础组件没有setup
+    if (element.rendered) {
+      element.clearSetupChildren(); // 在setup 中添加的子节点， 清理监听事件 element.clearEvents()
+    }
+    // element.clearEvents(); // useMount可能会反复使用；TdMessage 无法弹出 add by me 2025/06/12 16:21
+    setCurrentInstance(element); // todo watch 优化 props.vIf的监听
     element.setup?.();
-  // }
+  }
   setCurrentInstance(element);
   element.lifeCycles[LifecycleHooks.CREATED]?.forEach((cb) => cb());
   // element.recurseSetup(); // 挂载时，递归执行setup
@@ -70,6 +72,13 @@ export function useMount<T extends TypeElement>(element: T, el?: TypeEl) {
   } else if (el) { // todo maybe Document, etc.
     appEl = el;
   }
+
+  // if (appEl instanceof DocumentFragment) {
+  //   console.warn('appEl is DocumentFragment . ');
+  // } else {
+  //   console.warn('appEl is not DocumentFragment , and is ', appEl);
+  // }
+
   setCurrentInstance(element);
   element.lifeCycles[LifecycleHooks.BEFORE_MOUNT]?.forEach((cb) => cb());
 
@@ -94,7 +103,7 @@ export function useMount<T extends TypeElement>(element: T, el?: TypeEl) {
   // useVIf(element); // TdRate 只读 3.7 的0.7 没有渲染；
   // useVShow(element);
   // useVModel(element);
-
+  // todo 要考虑 appEl 或 element.dom 是 DocumentFragment 的情景
   if (appEl && element.dom) { // 不能放到 处理子节点的前面， dialog弹框无法弹出
     // 如果注释了， drawer body会跑到footer下面； messagebox的title会不渲染；
     //   原因时， useIf的watch不是立即执行的。
@@ -102,16 +111,44 @@ export function useMount<T extends TypeElement>(element: T, el?: TypeEl) {
     if (Object.hasOwnProperty.call(element.baseProps, 'vIf')) { // todo 是否于上的useVIf重复了？
       // console.error('element.baseProps.vIf is ', element.baseProps.vIf);
       if (unref(element.baseProps.vIf)) {
-        replaceCommentWithDom(element, appEl);
+        // console.error('element.baseProps.vIf is  true');
+        replaceCommentWithDom(element, appEl); // todo ？？？
       } else {
-        if (appEl instanceof DocumentFragment) {
-          console.error('appEl instanceof DocumentFragment . ');
-        }
         replaceDomWithComment(element, appEl);
       }
     } else {
-      appEl.appendChild(element.dom);
+      if (element.dom instanceof DocumentFragment) {
+        // console.error('element.dom is DocumentFragment . ');
+        /**
+         *  添加 定位锚点
+         * 确保元素拥有注释节点作为占位符）
+         * 当element.anchor不存在时创建新的注释节点
+         */
+        // if (element.className === undefined) {
+        //   console.error('element.className === undefined , element is ', element);
+        // }
+        // if (element.uid === 50) {
+        //   console.error('element.uid === 50 , element is ', element);
+        // }
+        element.anchorStart = element.anchorStart ?? document.createComment('[--' + element.className + '' + element.uid);
+        appEl.appendChild(element.anchorStart);
+        appEl.appendChild(element.dom);
+        element.anchor = element.anchor ?? document.createComment(element.className + '' + element.uid + '--]');
+        appEl.appendChild(element.anchor);
+      } else {
+        appEl.appendChild(element.dom);
+      }
     }
+    // if (element.dom instanceof DocumentFragment) {
+    //   console.error('element.dom is DocumentFragment . ');
+    //   /**
+    //    *  添加 定位锚点
+    //    * 确保元素拥有注释节点作为占位符）
+    //    * 当element.anchor不存在时创建新的注释节点
+    //    */
+    //   element.anchor = element.anchor ?? document.createComment('fragment-' + element.className);
+    //   appEl.appendChild(element.anchor);
+    // }
   }
   // 挂载后，再设置refDom,因为可能在挂载前，refDom被设置。
   // if (isRef(element.baseProps.refDom)) { // 语义更明确

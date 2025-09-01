@@ -17,7 +17,7 @@ import { addEmits, addEvents } from '../event-emitter/event-emitter';
 
 export function useVModel(element: TypeElement) {
   if (Object.prototype.hasOwnProperty.call(element.baseProps, 'vModel')) {
-    console.warn('useVModel baseProps has vModel. ');
+    // console.warn('useVModel baseProps has vModel. ');
     // const el = element.dom as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
     // resolveDynamicModel(el.tagName, el.type);
     // vModelText(element);

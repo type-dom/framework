@@ -11,7 +11,7 @@ export function resetFragment(element: TypeNode) {
   // 检查 element.dom 是否为 DocumentFragment 实例。
   if (element.dom instanceof DocumentFragment) {
     // 如果是 DocumentFragment，进一步检查其子节点数量是否为零。
-    if (element.dom.childElementCount > 0) {
+    if (element.dom.childNodes.length > 0) {
       // 如果子节点数量不为零，先清理现有的子节点，然后重新挂载。
       clearChildDom(element);
     }
