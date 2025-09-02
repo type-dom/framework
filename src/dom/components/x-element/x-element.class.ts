@@ -6,6 +6,7 @@ import { assignProps } from '../../../core/helpers/assignProps'
 import { Parser } from '../../../parser/parser.class';
 import { addAttrObj } from '../../modules/attribute';
 import { IXElement, XElementProps } from './x-element.interface';
+import { transformSlot } from '../../../core/helpers/transformSlot';
 
 /**
  * XElement是一个通用元素基础组件，是其它类组件的子节点,Html/Svg
@@ -59,7 +60,8 @@ export class XElement extends TypeElement implements IXElement {
       // this.parent?.addChild(item); // this.parent is undefined
       this.addChild(item);
     } else if (isTypeNode(params.template)) {
-      this.slotChildren(params.template);
+      // transformSlot(this, params.template);
+      transformSlot(this, params.template);
     }
     // todo 报错 template 和 childNodes 同时存在时
     // this.childNodes =
@@ -83,7 +85,8 @@ export class XElement extends TypeElement implements IXElement {
   override setup(): void {
     // console.log('XElement setup . ');
     const props = this.props;
-    this.slotChildren(props.slot || props.slots?.default);
+    // transformSlot(this, props.slot || props.slots?.default);
+    transformSlot(this, props.slot ?? props.slots?.default)
     // todo nodejs下没有document，Parser可能会用到
     // 加载自定义属性
     for (const attr of this.attributes) {
