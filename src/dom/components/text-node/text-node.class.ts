@@ -5,7 +5,8 @@ import { TypeNode } from '../../../core/type-node/type-node.abstract';
 import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeElement } from '../../../core/type-element/type-element.abstract';
 import { TypeEl } from '../../../core/type-element/type-element.interface';
-import { assignProps } from '../../../core/helpers/assignProps'
+import { assignProps } from '../../../core/helpers/assignProps';
+import { mountText } from '../../../core/helpers/mountText';
 import { useTextRender } from './useRender';
 import type { ITextNode } from './text-node.interface';
 
@@ -64,7 +65,7 @@ export class TextNode extends TypeNode implements ITextNode {
       // console.warn('TextNode isRef text is ', text);
       this.nodeValue = toRaw(text).toString();
       setTimeout(() => { // todo 只有这样才生效 ？？？？？
-        // slotChildren 在constructor中调用
+        // transformSlot 在constructor中调用
         watch(() => toRaw(text), (newVal) => {
           // console.warn('TextNode watch text is ', this.nodeValue);
           this.nodeValue = newVal?.toString();
@@ -135,8 +136,8 @@ export class TextNode extends TypeNode implements ITextNode {
       return;
     }
     this.nodeValue = this.nodeValue.concat(content);
-    this.mount();
     // this.parent?.mount();
+    mountText(this);
   }
 
   /**
@@ -212,28 +213,8 @@ export class TextNode extends TypeNode implements ITextNode {
     // console.log('newContent is ', newContent);
     this.setText(newContent);
     // TODO 不能直接用 this.mount(); 光标调到行程头部。
-    this.mount();
+    mountText(this);
     // this.parent?.mount();
-  }
-
-  mount(el?: TypeEl) {
-    this.dom?.remove();
-    this.lifeCycles[LifecycleHooks.CREATED]?.forEach((cb) => cb());
-    this.render();
-    this.lifeCycles[LifecycleHooks.BEFORE_MOUNT]?.forEach((cb) => cb());
-    if (this.dom) {
-      let appEl: Exclude<TypeEl, string>;
-      if (typeof el === 'string') {
-        appEl = document.querySelector<HTMLElement>(el);
-      } else if (el) {
-        appEl = el;
-      } else {
-        appEl = this.parent?.elementParent?.dom as  HTMLElement | SVGElement | undefined;
-      }
-      appEl?.appendChild(this.dom);
-    }
-    // console.log('this.dom is ', this.dom);
-    this.lifeCycles[LifecycleHooks.MOUNTED]?.forEach((cb) => cb());
   }
 
   // todo 钩子函数
@@ -241,6 +222,9 @@ export class TextNode extends TypeNode implements ITextNode {
     useTextRender(this);
   }
 
+  mount(el?: TypeEl) {
+    mountText(this, el);
+  }
   update(el?: TypeEl): void {
     let appEl: Exclude<TypeEl, string>;
     if (typeof el === 'string') {
