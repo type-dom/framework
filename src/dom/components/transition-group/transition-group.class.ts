@@ -1,14 +1,15 @@
 import { toRaw } from '../../../reactivity';
 import { getCurrentInstance } from '../../../core/component';
 import { TypeNode } from '../../../core/type-node/type-node.abstract';
+import { TypeHtml } from '../../../core/components/type-html/type-html.abstract';
 import { onUpdated } from '../../../core/apiLifecycle';
 import { useSlots } from '../../../core/apiSetupHelpers';
+import { transformSlot } from '../../../core/helpers/transformSlot';
 import {
   resolveTransitionHooks,
   setTransitionHooks,
   useTransitionState,
 } from '../../../core/components/type-transition/type-transition.use';
-import { TypeHtml } from '../../../core/components/type-html/type-html.abstract';
 import {
   addTransitionClass,
   forceReflow,
@@ -25,7 +26,6 @@ import {
   recordPosition,
 } from './transition-group.util';
 import { TransitionGroupProps } from './transition-group.interface';
-
 
 export class TransitionGroup extends TypeHtml {
   className: 'TransitionGroup';
@@ -46,7 +46,8 @@ export class TransitionGroup extends TypeHtml {
     const prevChildren: TypeNode[] = [];
     let children: TypeNode[] = [];
 
-    this.slotChildren(props.slot || slots?.default);
+    // transformSlot(this, props.slot || slots?.default);
+    transformSlot(this, props.slot ?? slots?.default)
     onUpdated(() => {
       // children is guaranteed to exist after initial render
       if (!prevChildren.length) {
@@ -148,6 +149,6 @@ export class TransitionGroup extends TypeHtml {
     // //   nodeName: tag,
     // //   // slot: children,
     // // })
-    // this.slotChildren(children);
+    // transformSlot(this, children);
   }
 }
