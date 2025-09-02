@@ -22,6 +22,7 @@ import { TypeSvg } from '../../../core/components/type-svg/type-svg.abstract';
 import { TypeHtml } from '../../../core/components/type-html/type-html.abstract';
 import { XElement } from '../../components';
 import { CSSProperties, RawStyle, StyleValue } from './style.interface';
+import { onBeforeMount, TypeFragment } from '../../../core';
 
 // get clientHeight(): string {
 //   if ( el.dom) {
@@ -69,6 +70,14 @@ export function getStyleObj(el: TypeHtml | TypeSvg | XElement) {
 export function addStyleObj<Node extends TypeNode>(el: Node | undefined, styleObj?: StyleValue) {
   if (!el) return;
   if (!styleObj) return;
+  if (el instanceof TypeFragment) {
+    onBeforeMount(() => {
+      el.childNodes.forEach(child => {
+        addStyleObj(child, styleObj);
+      });
+    }, el);
+    return;
+  }
   let rawObj: RawStyle = {};
   if (isRef(styleObj)) {
     // rawObj = rawStyles(styleObj);
@@ -87,7 +96,7 @@ export function addStyleObj<Node extends TypeNode>(el: Node | undefined, styleOb
       }
     });
   } else {
-    rawObj = doStyleValue(styleObj);
+    rawObj = parseStyleValue(styleObj);
     // console.error('rawObj is ', rawObj);
   }
   for (const key in rawObj) {
@@ -107,6 +116,12 @@ export function addStyleProp(
   if (!el) return;
   if (!el.styleObj) {
     // console.error('style el.styleObj is undefined .');
+    return;
+  }
+  if (el instanceof TypeFragment) {
+    el.childNodes.forEach(child => {
+      addStyleProp(child, key, value);
+    });
     return;
   }
   if (value === undefined) {
@@ -273,6 +288,12 @@ export function setStyleObj(el: TypeNode | null | undefined, styleObj?: StyleVal
   if (!styleObj) {
     return;
   }
+  if (el instanceof TypeFragment) {
+    el.childNodes.forEach(child => {
+      setStyleObj(child, styleObj);
+    });
+    return;
+  }
   let rawObj: RawStyle;
   if (isRef(styleObj)) {
     rawObj = styleObj.get() as RawStyle;
@@ -284,7 +305,7 @@ export function setStyleObj(el: TypeNode | null | undefined, styleObj?: StyleVal
       }
     });
   } else {
-    rawObj = doStyleValue(styleObj);
+    rawObj = parseStyleValue(styleObj);
   }
   for (const key in rawObj) {
     if (Object.hasOwnProperty.call(styleObj, key)) {
@@ -451,12 +472,12 @@ function getRawStyles(style: StyleValue, res: RawStyle = {}) {
   }
 }
 
-function doStyleValue(style?: StyleValue, resStyle: RawStyle = {}) {
+function parseStyleValue(style?: StyleValue, resStyle: RawStyle = {}) {
   if (isString(style)) {
     Object.assign(resStyle, parseStringStyle(style));
   } else if (isArray(style)) {
     style.forEach((item) => {
-      doStyleValue(item, resStyle);
+      parseStyleValue(item, resStyle);
     });
   } else if (isRef(style)) {
     Object.assign(resStyle, toRaw(style));

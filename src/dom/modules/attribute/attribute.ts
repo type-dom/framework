@@ -16,6 +16,7 @@ import { TypeNode } from '../../../core/type-node/type-node.abstract';
 import { createDom } from '../../../core/helpers/createDom';
 import { addDomClass, removeDomClass } from '../class';
 import type { Attributes, ClassValue } from './attribute.interface';
+import { onBeforeMount, TypeFragment } from '../../../core';
 
 export function getAttr<T>(el: TypeNode, key: string): T {
   return (el.attrObj as any)[key];
@@ -26,12 +27,21 @@ export function getAttrObj<T extends Attributes>(el: TypeNode): T {
 
 export function setAttrObj<T extends Attributes>(el?: TypeNode, attrObj?: MaybeRef<T>): void {
   if (!el) return;
-  const obj = unref(attrObj);
-  for (const key in obj) {
-    if (Object.hasOwnProperty.call(obj, key)) {
-      // todo 如何优化
-      const value = (obj as any)[key] as MaybeRef<string | number>;
-      setAttrProp(el, key, value);
+  if (attrObj) {
+    if (el instanceof TypeFragment) {
+      onBeforeMount(() => {
+        el.childNodes.forEach(child => {
+          setAttrObj(child, attrObj)
+        });
+      }, el);
+    }
+    const obj = unref(attrObj);
+    for (const key in obj) {
+      if (Object.hasOwnProperty.call(obj, key)) {
+        // todo 如何优化
+        const value = (obj as any)[key] as MaybeRef<string | number>;
+        setAttrProp(el, key, value);
+      }
     }
   }
 }
@@ -39,6 +49,13 @@ export function setAttrObj<T extends Attributes>(el?: TypeNode, attrObj?: MaybeR
 export function addAttrObj<T extends Attributes>(el?: TypeNode, attrObj?: T): void {
   if (!el) return;
   if (attrObj) {
+    if (el instanceof TypeFragment) {
+      onBeforeMount(() => {
+        el.childNodes.forEach(child => {
+          addAttrObj(child, attrObj)
+        });
+      }, el);
+    }
     for (const key in attrObj) {
       if (Object.hasOwnProperty.call(attrObj, key)) {
         const value = (attrObj as any)[key] as MaybeRef<IPrimitive>;
@@ -105,6 +122,13 @@ export function clearAttrObj(el?: TypeNode): void {
 // 设置属性 dom 属性同步变化
 export function setAttrProp(el: TypeNode | undefined, key: string, value?: MaybeRef<string | number | boolean>): void {
   if (!el) return;
+  if (el instanceof TypeFragment) {
+    onBeforeMount(() => {
+      el.childNodes.forEach(child => {
+        setAttrProp(child, key, value)
+      });
+    }, el);
+  }
   addAttrProp(el, key, value);
   renderAttrProp(el, key, value);
 }
@@ -112,6 +136,13 @@ export function setAttrProp(el: TypeNode | undefined, key: string, value?: Maybe
 // 添加属性
 export function addAttrProp(el: TypeNode | undefined, key: string, value?: MaybeRef<IPrimitive | object | IPrimitive[]> | ClassValue): void {
   if (!el) return;
+  if (el instanceof TypeFragment) {
+    onBeforeMount(() => {
+      el.childNodes.forEach(child => {
+        addAttrProp(child, key, value)
+      });
+    }, el);
+  }
   if (key === 'class') { // class特殊处理
     addAttrClass(el, value as ClassValue);
   } else {
