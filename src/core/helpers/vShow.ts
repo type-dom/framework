@@ -1,7 +1,7 @@
 // import type { ObjectDirective } from '@vue/runtime-core'
 
 import { onBeforeMount, onBeforeUnmount, onMounted, onUpdated } from '../apiLifecycle';
-import { TypeElement } from '../type-element/type-element.abstract';
+import { TypeNode } from '../type-node/type-node.abstract';
 
 export const vShowOriginalDisplay: unique symbol = Symbol('_vod')
 export const vShowHidden: unique symbol = Symbol('_vsh')
@@ -12,7 +12,7 @@ export interface VShowElement extends HTMLElement {
   [vShowHidden]: boolean
 }
 
-export function vShow(node: TypeElement, value: any, oldValue?: any) {
+export function vShow(node: TypeNode, value: any, oldValue?: any) {
   // console.warn('v-show  ')
 
   onBeforeMount(()=> {

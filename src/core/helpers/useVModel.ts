@@ -9,13 +9,13 @@ import { InputHTMLAttributes } from '../../dom/modules/attribute';
 //   resolveDynamicModel,
 //   vModelText
 // } from './vModel';
-import { TypeElement } from '../type-element/type-element.abstract';
 import { addEmits, addEvents } from '../event-emitter/event-emitter';
+import { TypeNode } from '../type-node/type-node.abstract';
 // import { onMounted } from '../apiLifecycle';
 // import { onBeforeMount, onMounted } from '../../apiLifecycle';
 // import { invokeArrayFns, isArray, looseToNumber } from '@type-dom/utils';
 
-export function useVModel(element: TypeElement) {
+export function useVModel(element: TypeNode) {
   if (Object.prototype.hasOwnProperty.call(element.baseProps, 'vModel')) {
     // console.warn('useVModel baseProps has vModel. ');
     // const el = element.dom as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;

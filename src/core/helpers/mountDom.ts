@@ -12,7 +12,7 @@ export function mountDom(element: TypeNode) {
   if (getToDom(element)) return getToDom(element);
   if (!element.parent) return;
   if (element.parent.baseProps.nodeName === NodeName.FRAGMENT) {
-    if (element.parent.className === 'Teleport') {
+    if (element.parent.className === 'Teleport') { // todo TdTeleport
       return getToDom(element.parent);
     } else {
       return mountDom(element.parent);

@@ -1,10 +1,10 @@
 import { isRef, MaybeRef, unref, watch } from '../../reactivity';
 import { removeStyleProp, setStyleObj } from '../../dom/modules/style/style';
 import { TransitionElement } from '../components/type-transition/type-transition.interface';
-import { TypeElement } from '../type-element/type-element.abstract';
 import { vShow, VShowElement, vShowOriginalDisplay } from './vShow';
+import { TypeNode } from '../type-node/type-node.abstract';
 
-export function useVShow(element: TypeElement) {
+export function useVShow(element: TypeNode) {
   if (Object.prototype.hasOwnProperty.call(element.baseProps, 'vShow')) {
     // console.warn('element.baseProps has vShow');
     const condition: MaybeRef<boolean | unknown> = element.baseProps.vShow;
@@ -30,7 +30,7 @@ export function useVShow(element: TypeElement) {
   }
 }
 
-function useRawVShow(condition: boolean | unknown, element: TypeElement, oldValue?: unknown) {
+function useRawVShow(condition: boolean | unknown, element: TypeNode, oldValue?: unknown) {
   const display =  (element.dom as VShowElement)[vShowOriginalDisplay];
   const transition = element.transition;
   if (condition) {

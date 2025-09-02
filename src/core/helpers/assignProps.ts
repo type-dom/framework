@@ -9,7 +9,6 @@ import { addStyleObj } from '../../dom/modules/style/style';
 import { on } from '../event-emitter/event-emitter';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TypeProps } from '../type-node/type-node.interface';
-import { TypeElement } from '../type-element/type-element.abstract';
 
 export function assignProps<T extends TypeProps>(element: TypeNode, params = {} as T) {
   // if (!element.props) {
@@ -24,9 +23,9 @@ export function assignProps<T extends TypeProps>(element: TypeNode, params = {} 
     // styleObj, attrObj, events 要单独处理
     // todo 如果是fragment，要判断是否有子节点，
     //    只有一个子节点，styleObj就加到子节点上,
-    //    如果是多个子节点，要怎么处理？？？？
+    //    如果是多个子节点，要怎么处理 ？？？？
     if (key === 'styleObj') {
-      if (element instanceof TypeElement) addStyleObj(element, params.styleObj);
+      addStyleObj(element, params.styleObj);
     } else if (key === 'attrObj') {
       // element.attr?.addObj(params.attrObj);
       addAttrObj(element, params.attrObj); // todo 弹出框error
