@@ -31,7 +31,7 @@ export class List extends TypeFragment implements IList {
     const props = this.props;
     if (props.data) {
       // const slot = computed(() => this.getRawSlot());
-      // this.slotChildren(slot); // slotChildren 循环  TdImage
+      // transformSlot(this, slot); // 循环  TdImage
       if (isSignal(props.data) || isComputed(props.data)) {
         // todo 如何替换子对象
         watch(props.data, (newData, oldData) => {
@@ -87,7 +87,7 @@ export class List extends TypeFragment implements IList {
             //   upDom.appendChild(this.dom!);
             // }
           }
-          // this.slotChildren(this.getRawSlot());
+          // transformSlot(this, this.getRawSlot());
           this.parent?.lifeCycles[LifecycleHooks.UPDATED]?.forEach((fn) => fn());
         }, {
           immediate: true,
@@ -95,7 +95,7 @@ export class List extends TypeFragment implements IList {
         });
       } else {
         this.slotRawData(props.data as any[]);
-        // this.slotChildren(this.getRawSlot());
+        // transformSlot(this, this.getRawSlot());
       }
     } else {
       console.error('props.data is undefined . ');
