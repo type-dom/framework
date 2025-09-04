@@ -1,5 +1,6 @@
 import { TypeTableHead } from '../../../../../core/components/type-html/table/head/head.abstract';
 import { TypeTableHeadProps } from '../../../../../core/components/type-html/table/head/head.interface';
+import { transformSlot } from '../../../../../core/helpers/transformSlot';
 import type { ITableHead } from './head.interface';
 
 // 表格页眉
@@ -12,7 +13,7 @@ export class TableHead extends TypeTableHead implements ITableHead {
   constructor(params: TypeTableHeadProps = {}) {
     super();
     this.className = 'TableHead';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.props = this.useParams(params);
   }
 }

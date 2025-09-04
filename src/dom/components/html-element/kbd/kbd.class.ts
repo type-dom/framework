@@ -1,5 +1,6 @@
 import { TypeKbd } from '../../../../core/components/type-html/kbd/kbd.abstract';
 import { TypeKbdProps } from '../../../../core/components/type-html/kbd/kbd.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IKbd } from './kbd.interface';
 
 export class Kbd extends TypeKbd implements IKbd {
@@ -10,7 +11,7 @@ export class Kbd extends TypeKbd implements IKbd {
   constructor(params: TypeKbdProps = {}) {
     super();
     this.className = 'Kbd';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

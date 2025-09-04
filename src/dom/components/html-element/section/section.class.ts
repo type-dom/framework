@@ -1,5 +1,6 @@
 import { TypeSection } from '../../../../core/components/type-html/section/section.abstract';
 import { TypeSectionProps } from '../../../../core/components/type-html/section/section.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { ISection } from './section.interface';
 
 export class Section extends TypeSection implements ISection {
@@ -10,7 +11,7 @@ export class Section extends TypeSection implements ISection {
   constructor(params: TypeSectionProps = {}) {
     super();
     this.className = 'Section';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

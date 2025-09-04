@@ -1,5 +1,6 @@
 import { TypeArticle } from '../../../../core/components/type-html/article/article.abstract';
 import { TypeArticleProps } from '../../../../core/components/type-html/article/article.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IArticle } from './article.interface';
 
 export class Article extends TypeArticle implements IArticle {
@@ -10,7 +11,7 @@ export class Article extends TypeArticle implements IArticle {
   constructor(params: TypeArticleProps = {}) {
     super();
     this.className = 'Article';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

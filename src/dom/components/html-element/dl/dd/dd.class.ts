@@ -1,5 +1,6 @@
 import { TypeDD } from '../../../../../core/components/type-html/dl/dd/dd.abstract';
 import { TypeDDProps } from '../../../../../core/components/type-html/dl/dd/dd.interface';
+import { transformSlot } from '../../../../../core/helpers/transformSlot';
 import type { IDD } from './dd.interface';
 
 export class DD extends TypeDD implements IDD {
@@ -10,7 +11,7 @@ export class DD extends TypeDD implements IDD {
   constructor(params: TypeDDProps = {}) {
     super();
     this.className = 'DD';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

@@ -1,7 +1,8 @@
 import { TypeInput } from '../../../../core/components/type-html/input/input.abstract';
 import { TypeInputProps } from '../../../../core/components/type-html/input/input.interface';
-import type { IInput } from './input.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import { InputHTMLAttributes, setAttrProp } from '../../../modules/attribute';
+import type { IInput } from './input.interface';
 
 export class Input extends TypeInput implements IInput {
   className: 'Input';
@@ -14,7 +15,7 @@ export class Input extends TypeInput implements IInput {
     super();
     this.className = 'Input';
     this.childNodes = [];
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 

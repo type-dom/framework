@@ -1,5 +1,6 @@
 import { TypeUL } from '../../../../core/components/type-html/ul/ul.abstract';
 import { TypeULProps } from '../../../../core/components/type-html/ul/ul.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IUL } from './ul.interface';
 
 export class UL extends TypeUL implements IUL {
@@ -11,7 +12,7 @@ export class UL extends TypeUL implements IUL {
     super();
     this.className = 'UL';
 
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

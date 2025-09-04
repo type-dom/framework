@@ -1,5 +1,6 @@
 import { TypeCite } from '../../../../core/components/type-html/cite/cite.abstract';
 import { TypeCiteProps } from '../../../../core/components/type-html/cite/cite.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { ICite } from './cite.interface';
 
 export class Cite extends TypeCite implements ICite {
@@ -10,7 +11,7 @@ export class Cite extends TypeCite implements ICite {
   constructor(params: TypeCiteProps = {}) {
     super();
     this.className = 'Cite';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

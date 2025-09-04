@@ -1,5 +1,6 @@
 import { TypeLegend } from '../../../../core/components/type-html/legend/legend.abstract';
 import { TypeLegendProps } from '../../../../core/components/type-html/legend/legend.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { ILegend } from './legend.interface';
 
 export class Legend extends TypeLegend implements ILegend {
@@ -10,7 +11,7 @@ export class Legend extends TypeLegend implements ILegend {
   constructor(params: TypeLegendProps = {}) {
     super();
     this.className = 'Legend';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

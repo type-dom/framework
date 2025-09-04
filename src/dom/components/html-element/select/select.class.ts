@@ -1,5 +1,6 @@
 import { TypeSelect } from '../../../../core/components/type-html/select/select.abstract';
 import { TypeSelectProps } from '../../../../core/components/type-html/select/select.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { ISelect } from './select.interface';
 
 export class Select extends TypeSelect implements ISelect {
@@ -11,7 +12,7 @@ export class Select extends TypeSelect implements ISelect {
   constructor(params: TypeSelectProps = {}) {
     super();
     this.className = 'Select';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

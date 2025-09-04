@@ -1,5 +1,6 @@
 import { TypeTableBody } from '../../../../../core/components/type-html/table/body/body.abstract';
 import { TypeTableBodyProps } from '../../../../../core/components/type-html/table/body/body.interface';
+import { transformSlot } from '../../../../../core/helpers/transformSlot';
 import type { ITableBody } from './body.interface';
 
 export class TableBody extends TypeTableBody implements ITableBody {
@@ -10,7 +11,7 @@ export class TableBody extends TypeTableBody implements ITableBody {
   constructor(params: TypeTableBodyProps) {
     super();
     this.className = 'TableBody';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

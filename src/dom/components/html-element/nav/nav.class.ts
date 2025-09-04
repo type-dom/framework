@@ -1,5 +1,6 @@
 import { TypeNav } from '../../../../core/components/type-html/nav/nav.abstract';
 import { TypeNavProps } from '../../../../core/components/type-html/nav/nav.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { INav } from './nav.interface';
 
 export class Nav extends TypeNav implements INav {
@@ -10,7 +11,7 @@ export class Nav extends TypeNav implements INav {
   constructor(params: TypeNavProps = {}) {
     super();
     this.className = 'Nav';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

@@ -1,9 +1,10 @@
-import { TextNode } from '../../text-node/text-node.class';
 import { TypeLabel } from '../../../../core/components/type-html/label/label.abstract';
 import { TypeLabelProps } from '../../../../core/components/type-html/label/label.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
+import { addAttrName } from '../../../modules/attribute';
+import { TextNode } from '../../text-node/text-node.class';
 import type { Input } from '../input/input.class';
 import type { ILabel } from './label.interface';
-import { addAttrName } from '../../../modules/attribute';
 
 export class Label extends TypeLabel implements ILabel {
   className: 'Label';
@@ -16,7 +17,7 @@ export class Label extends TypeLabel implements ILabel {
     this.className = 'Label';
     addAttrName(this, 'label');
     this.childNodes = [];
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 

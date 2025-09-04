@@ -1,5 +1,6 @@
 import { TypeTable } from '../../../../core/components/type-html/table/table.abstract';
 import { TypeTableProps } from '../../../../core/components/type-html/table/table.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import { TableRow } from './row/row.class';
 import { TableHead } from './head/head.class';
 import type { ITable } from './table.interface';
@@ -14,7 +15,7 @@ export class Table extends TypeTable implements ITable {
     super();
     this.className = 'Table';
     this.childNodes = [];
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

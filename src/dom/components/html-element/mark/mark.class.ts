@@ -1,5 +1,6 @@
 import { TypeMark } from '../../../../core/components/type-html/mark/mark.abstract';
 import { TypeMarkProps } from '../../../../core/components/type-html/mark/mark.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IMark } from './mark.interface';
 
 export class Mark extends TypeMark implements IMark {
@@ -10,7 +11,7 @@ export class Mark extends TypeMark implements IMark {
   constructor(params: TypeMarkProps = {}) {
     super();
     this.className = 'Mark';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

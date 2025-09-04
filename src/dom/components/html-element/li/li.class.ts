@@ -1,5 +1,6 @@
 import { TypeLI } from '../../../../core/components/type-html/li/li.abstract';
 import { TypeLIProps } from '../../../../core/components/type-html/li/li.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { ILI } from './li.interface';
 
 export class LI extends TypeLI implements ILI {
@@ -22,8 +23,8 @@ export class LI extends TypeLI implements ILI {
     //   boxSizing: 'border-box',
     // });
     // addAttrName(this, 'list-item');
-
-    this.slotChildren(params.slot);
+    console.warn('then transformSlot . ');
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

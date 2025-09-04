@@ -1,5 +1,6 @@
 import { TypeSummary } from '../../../../core/components/type-html/summary/summary.abstract';
 import { TypeSummaryProps } from '../../../../core/components/type-html/summary/summary.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { ISummary } from './summary.interface';
 
 export class Summary extends TypeSummary implements ISummary {
@@ -10,7 +11,7 @@ export class Summary extends TypeSummary implements ISummary {
   constructor(params: TypeSummaryProps = {}) {
     super();
     this.className = 'Summary';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

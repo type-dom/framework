@@ -1,5 +1,6 @@
 import { TypeEm } from '../../../../core/components/type-html/em/em.abstract';
 import { TypeEmProps } from '../../../../core/components/type-html/em/em.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IEm } from './em.interface';
 
 export class Em extends TypeEm implements IEm {
@@ -10,7 +11,7 @@ export class Em extends TypeEm implements IEm {
   constructor(params: TypeEmProps = {}) {
     super();
     this.className = 'Em';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

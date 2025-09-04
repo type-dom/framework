@@ -1,5 +1,6 @@
 import { TypeI } from '../../../../core/components/type-html/i/i.abstract';
 import { TypeIProps } from '../../../../core/components/type-html/i/i.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { II } from './i.interface';
 
 export class I extends TypeI implements II {
@@ -10,7 +11,7 @@ export class I extends TypeI implements II {
   constructor(params: TypeIProps = {}) {
     super();
     this.className = 'I';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

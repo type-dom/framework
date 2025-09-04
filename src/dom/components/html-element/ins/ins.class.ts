@@ -1,5 +1,6 @@
 import { TypeIns } from '../../../../core/components/type-html/ins/ins.abstract';
 import { TypeInsProps } from '../../../../core/components/type-html/ins/ins.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IIns } from './ins.interface';
 
 export class Ins extends TypeIns implements IIns {
@@ -10,7 +11,7 @@ export class Ins extends TypeIns implements IIns {
   constructor(params: TypeInsProps = {}) {
     super();
     this.className = 'Ins';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

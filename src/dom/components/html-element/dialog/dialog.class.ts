@@ -1,5 +1,6 @@
 import { TypeDialog } from '../../../../core/components/type-html/dialog/dialog.abstract';
 import { TypeDialogProps } from '../../../../core/components/type-html/dialog/dialog.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IDialog } from './dialog.interface';
 
 export class Dialog extends TypeDialog implements IDialog {
@@ -10,7 +11,7 @@ export class Dialog extends TypeDialog implements IDialog {
   constructor(params: TypeDialogProps = {}) {
     super();
     this.className = 'Dialog';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

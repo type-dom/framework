@@ -1,5 +1,6 @@
 import { TypeForm } from '../../../../core/components/type-html/form/form.abstract';
 import { TypeFormProps } from '../../../../core/components/type-html/form/form.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IForm } from './form.interface';
 
 export class Form extends TypeForm implements IForm {
@@ -10,7 +11,7 @@ export class Form extends TypeForm implements IForm {
   constructor(params: TypeFormProps = {}) {
     super();
     this.className = 'Form';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

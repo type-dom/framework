@@ -1,5 +1,6 @@
 import { TypeAddress } from '../../../../core/components/type-html/address/address.abstract';
 import { TypeAddressProps } from '../../../../core/components/type-html/address/address.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IAddress } from './address.interface';
 
 export class Address extends TypeAddress implements IAddress {
@@ -9,7 +10,7 @@ export class Address extends TypeAddress implements IAddress {
   constructor(params: TypeAddressProps = {}) {
     super();
     this.className = 'Address';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

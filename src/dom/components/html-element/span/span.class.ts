@@ -1,5 +1,6 @@
 import { TypeSpan } from '../../../../core/components/type-html/span/span.abstract';
 import { TypeSpanProps } from '../../../../core/components/type-html/span/span.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { ISpan } from './span.interface';
 
 export class Span extends TypeSpan implements ISpan {
@@ -10,7 +11,7 @@ export class Span extends TypeSpan implements ISpan {
   constructor(params: TypeSpanProps = {}) {
     super();
     this.className = 'Span';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

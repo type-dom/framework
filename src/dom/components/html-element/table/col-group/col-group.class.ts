@@ -1,5 +1,6 @@
 import { TypeTableColGroup } from '../../../../../core/components/type-html/table/col-group/col-group.abstract';
 import { TypeTableColGroupProps } from '../../../../../core/components/type-html/table/col-group/col-group.interface';
+import { transformSlot } from '../../../../../core/helpers/transformSlot';
 import type { ITableColGroup } from './col-group.interface';
 
 export class TableColGroup extends TypeTableColGroup implements ITableColGroup {
@@ -11,7 +12,7 @@ export class TableColGroup extends TypeTableColGroup implements ITableColGroup {
   constructor(params: TypeTableColGroupProps = {}) {
     super();
     this.className = 'TableColGroup';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.props = this.useParams(params);
   }
 }

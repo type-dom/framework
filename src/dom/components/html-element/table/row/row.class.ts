@@ -1,5 +1,6 @@
 import { TypeTableRow } from '../../../../../core/components/type-html/table/row/row.abstract';
 import { TypeTableRowProps } from '../../../../../core/components/type-html/table/row/row.interface';
+import { transformSlot } from '../../../../../core/helpers/transformSlot';
 import type { ITableRow } from './row.interface';
 
 export class TableRow extends TypeTableRow implements ITableRow {
@@ -11,7 +12,7 @@ export class TableRow extends TypeTableRow implements ITableRow {
   constructor(params: TypeTableRowProps = {}) {
     super();
     this.className = 'TableRow';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.props = this.useParams(params);
   }
 }

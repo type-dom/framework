@@ -1,5 +1,6 @@
 import { TypeHr } from '../../../../core/components/type-html/hr/hr.abstract';
 import { TypeHrProps } from '../../../../core/components/type-html/hr/hr.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IHr } from './hr.interface';
 
 export class Hr extends TypeHr implements IHr {
@@ -10,7 +11,7 @@ export class Hr extends TypeHr implements IHr {
   constructor(params: TypeHrProps = {}) {
     super();
     this.className = 'Hr';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

@@ -1,5 +1,6 @@
 import { TypeSmall } from '../../../../core/components/type-html/small/small.abstract';
 import { TypeSmallProps } from '../../../../core/components/type-html/small/small.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { ISmall } from './small.interface';
 
 export class Small extends TypeSmall implements ISmall {
@@ -10,7 +11,7 @@ export class Small extends TypeSmall implements ISmall {
   constructor(params: TypeSmallProps = {}) {
     super();
     this.className = 'Small';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

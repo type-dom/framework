@@ -1,5 +1,6 @@
 import { TypeMenu } from '../../../../core/components/type-html/menu/menu.abstract';
 import { TypeMenuProps } from '../../../../core/components/type-html/menu/menu.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IMenu } from './menu.interface';
 
 export class Menu extends TypeMenu implements IMenu {
@@ -10,7 +11,7 @@ export class Menu extends TypeMenu implements IMenu {
   constructor(params: TypeMenuProps = {}) {
     super();
     this.className = 'Menu';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

@@ -1,5 +1,6 @@
 import { TypeMain } from '../../../../core/components/type-html/main/main.abstract';
 import { TypeMainProps } from '../../../../core/components/type-html/main/main.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IMain } from './main.interface';
 
 export class Main extends TypeMain implements IMain {
@@ -10,7 +11,7 @@ export class Main extends TypeMain implements IMain {
   constructor(params: TypeMainProps = {}) {
     super();
     this.className = 'Main';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

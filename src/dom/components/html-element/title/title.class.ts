@@ -1,5 +1,6 @@
 import { TypeTitle } from '../../../../core/components/type-html/title/title.abstract';
 import { TypeTitleProps } from '../../../../core/components/type-html/title/title.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { ITitle } from './title.interface';
 
 export class Title extends TypeTitle implements ITitle {
@@ -10,7 +11,7 @@ export class Title extends TypeTitle implements ITitle {
   constructor(params: TypeTitleProps = {}) {
     super();
     this.className = 'Title';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

@@ -1,5 +1,6 @@
 import { TypeIFrame } from '../../../../core/components/type-html/iframe/iframe.abstract';
 import { TypeIFrameProps } from '../../../../core/components/type-html/iframe/iframe.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IIFrame } from './iframe.interface';
 
 export class IFrame extends TypeIFrame implements IIFrame {
@@ -10,7 +11,7 @@ export class IFrame extends TypeIFrame implements IIFrame {
   constructor(params: TypeIFrameProps = {}) {
     super();
     this.className = 'IFrame';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

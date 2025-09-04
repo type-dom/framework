@@ -1,5 +1,6 @@
 import { TypeSup } from '../../../../core/components/type-html/sup/sup.abstract';
 import { TypeSupProps } from '../../../../core/components/type-html/sup/sup.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { ISup } from './sup.interface';
 
 export class Sup extends TypeSup implements ISup {
@@ -10,7 +11,7 @@ export class Sup extends TypeSup implements ISup {
   constructor(params: TypeSupProps = {}) {
     super();
     this.className = 'Sup';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

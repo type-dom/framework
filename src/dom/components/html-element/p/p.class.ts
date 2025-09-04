@@ -1,5 +1,6 @@
 import { TypeP } from '../../../../core/components/type-html/p/p.abstract';
 import { TypePProps } from '../../../../core/components/type-html/p/p.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IP } from './p.interface';
 
 export class P extends TypeP implements IP {
@@ -10,7 +11,7 @@ export class P extends TypeP implements IP {
   constructor(params: TypePProps = {}) {
     super();
     this.className = 'P';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

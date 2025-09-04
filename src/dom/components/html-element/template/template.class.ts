@@ -1,5 +1,6 @@
 import { TypeTemplate } from '../../../../core/components/type-html/template/template.abstract';
 import { TypeTemplateProps } from '../../../../core/components/type-html/template/template.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { ITemplate } from './template.interface';
 
 export class Template extends TypeTemplate implements ITemplate {
@@ -10,7 +11,7 @@ export class Template extends TypeTemplate implements ITemplate {
   constructor(params: TypeTemplateProps = {}) {
     super();
     this.className = 'Template';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

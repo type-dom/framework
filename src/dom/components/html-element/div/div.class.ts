@@ -1,5 +1,6 @@
 import { TypeDiv } from '../../../../core/components/type-html/div/div.abstract';
 import { TypeDivProps } from '../../../../core/components/type-html/div/div.interface';
+import {transformSlot} from "../../../../core/helpers/transformSlot";
 import type { IDiv } from './div.interface';
 
 export class Div extends TypeDiv implements IDiv {
@@ -10,7 +11,7 @@ export class Div extends TypeDiv implements IDiv {
   constructor(params: TypeDivProps = {}) {
     super();
     this.className = 'Div';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

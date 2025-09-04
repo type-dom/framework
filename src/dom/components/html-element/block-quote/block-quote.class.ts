@@ -1,5 +1,6 @@
 import { TypeBlockQuote } from '../../../../core/components/type-html/block-quote/block-quote.abstract';
 import { TypeBlockQuoteProps } from '../../../../core/components/type-html/block-quote/block-quote.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IBlockQuote } from './block-quote.interface';
 
 export class BlockQuote extends TypeBlockQuote implements IBlockQuote {
@@ -10,7 +11,7 @@ export class BlockQuote extends TypeBlockQuote implements IBlockQuote {
   constructor(params: TypeBlockQuoteProps = {}) {
     super();
     this.className = 'BlockQuote';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

@@ -1,5 +1,6 @@
 import { TypeMap } from '../../../../core/components/type-html/map/map.abstract';
 import { TypeMapProps } from '../../../../core/components/type-html/map/map.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IMap } from './map.interface';
 
 export class Map extends TypeMap implements IMap {
@@ -10,7 +11,7 @@ export class Map extends TypeMap implements IMap {
   constructor(params: TypeMapProps = {}) {
     super();
     this.className = 'Map';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

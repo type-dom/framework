@@ -1,5 +1,6 @@
 import { TypeProgress } from '../../../../core/components/type-html/progress/progress.abstract';
 import { TypeProgressProps } from '../../../../core/components/type-html/progress/progress.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IProgress } from './progress.interface';
 
 export class Progress extends TypeProgress implements IProgress {
@@ -10,7 +11,7 @@ export class Progress extends TypeProgress implements IProgress {
   constructor(params: TypeProgressProps = {}) {
     super();
     this.className = 'Progress';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

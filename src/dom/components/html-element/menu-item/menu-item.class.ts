@@ -1,5 +1,6 @@
 import { TypeMenuItem } from '../../../../core/components/type-html/menu-item/menu-item.abstract';
 import { TypeMenuItemProps } from '../../../../core/components/type-html/menu-item/menu-item.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IMenuItem } from './menu-item.interface';
 
 /**
@@ -16,7 +17,7 @@ export class MenuItem extends TypeMenuItem implements IMenuItem {
   constructor(params: TypeMenuItemProps = {}) {
     super();
     this.className = 'MenuItem';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }

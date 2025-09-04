@@ -1,5 +1,6 @@
 import { TypeStrong } from '../../../../core/components/type-html/strong/strong.abstract';
 import { TypeStrongProps } from '../../../../core/components/type-html/strong/strong.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IStrong } from './strong.interface';
 
 export class Strong extends TypeStrong implements IStrong {
@@ -10,7 +11,7 @@ export class Strong extends TypeStrong implements IStrong {
   constructor(params: TypeStrongProps = {}) {
     super();
     this.className = 'Strong';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.useParams(params);
   }
 }
