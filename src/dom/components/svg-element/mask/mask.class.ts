@@ -4,6 +4,7 @@
  */
 import { SvgProps } from '../../../../core/components/type-svg/type-svg.interface';
 import { TypeSvg } from '../../../../core/components/type-svg/type-svg.abstract';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { ISvgMask } from './mask.interface';
 
 export class SvgMask extends TypeSvg implements ISvgMask {
@@ -29,7 +30,7 @@ export class SvgMask extends TypeSvg implements ISvgMask {
       this.nodeName
     );
     this.childNodes = []; // 初始化子节点数组
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.props = this.useParams(params); // 设置传入的配置项
   }
 }

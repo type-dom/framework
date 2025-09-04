@@ -1,5 +1,6 @@
 import { SvgProps } from '../../../../core/components/type-svg/type-svg.interface';
 import { TypeSvg } from '../../../../core/components/type-svg/type-svg.abstract';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import { addAttrObj, setAttrObj } from '../../../modules/attribute';
 import { ISvgLine } from './line.interface';
 
@@ -34,7 +35,7 @@ export class SvgLine extends TypeSvg implements ISvgLine {
       x2: this.x2,
       y2: this.y2,
     });
-    this.slotChildren(params?.slot);
+    transformSlot(this, params?.slot);
     this.props = this.useParams(params);
   }
 

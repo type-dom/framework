@@ -1,5 +1,6 @@
 import { SvgProps } from '../../../../core/components/type-svg/type-svg.interface';
 import { TypeSvg } from '../../../../core/components/type-svg/type-svg.abstract';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import { addAttrObj, setAttrObj } from '../../../modules/attribute';
 import type { ISvgStop } from './stop.interface';
 
@@ -26,7 +27,7 @@ export class SvgStop extends TypeSvg implements ISvgStop {
       offset: '0%',
       stopColor: '#000',
     });
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.props = this.useParams(params);
   }
 

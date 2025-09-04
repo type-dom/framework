@@ -1,5 +1,6 @@
 import { SvgProps } from '../../../../core/components/type-svg/type-svg.interface';
 import { TypeSvg } from '../../../../core/components/type-svg/type-svg.abstract';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { ISvgPolygon } from './polygon.interface';
 
 export class SvgPolygon extends TypeSvg implements ISvgPolygon {
@@ -21,7 +22,7 @@ export class SvgPolygon extends TypeSvg implements ISvgPolygon {
     );
     this.childNodes = [];
 
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.props = this.useParams(params);
   }
 }

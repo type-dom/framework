@@ -1,5 +1,6 @@
 import { SvgProps } from '../../../../core/components/type-svg/type-svg.interface';
 import { TypeSvg } from '../../../../core/components/type-svg/type-svg.abstract';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import { addAttrObj, setAttrObj } from '../../../modules/attribute';
 import { ISvgRect } from './rect.interface';
 
@@ -35,7 +36,7 @@ export class SvgRect extends TypeSvg implements ISvgRect {
       width: this.width,
       height: this.height,
     });
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.props = this.useParams(params);
   }
 

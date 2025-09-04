@@ -1,5 +1,6 @@
 import { SvgProps } from '../../../../core/components/type-svg/type-svg.interface';
 import { TypeSvg } from '../../../../core/components/type-svg/type-svg.abstract';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import { addAttrObj } from '../../../modules/attribute';
 import { TextNode } from '../../text-node/text-node.class';
 import type { ISvgText, } from './text.interface';
@@ -28,7 +29,7 @@ export class SvgText extends TypeSvg implements ISvgText {
       y: 0,
     });
     this.childNodes = [];
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.props = this.useParams(params);
   }
 }

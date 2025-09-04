@@ -1,6 +1,7 @@
 import { TypeSvg } from '../../../../core/components/type-svg/type-svg.abstract';
-import type { ISvgCircle } from './circle.interface';
 import { SvgProps } from '../../../../core/components/type-svg/type-svg.interface';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
+import type { ISvgCircle } from './circle.interface';
 
 export class SvgCircle extends TypeSvg implements ISvgCircle {
   nodeName: 'circle';
@@ -19,7 +20,7 @@ export class SvgCircle extends TypeSvg implements ISvgCircle {
       this.nodeName
     );
     this.childNodes = [];
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.props = this.useParams(params);
   }
 }

@@ -1,5 +1,6 @@
 import { SvgProps } from '../../../../core/components/type-svg/type-svg.interface';
 import { TypeSvgSvg } from '../../../../core/components/type-svg/svg/svg.abstract';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { ISvgSvg } from './svg.interface';
 
 // scalable vector graphic 可伸缩矢量图型
@@ -12,7 +13,7 @@ export class SvgSvg extends TypeSvgSvg implements ISvgSvg {
   constructor(params: SvgProps = {}) {
     super();
     this.className = 'SvgSvg';
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.props = this.useParams(params);
   }
 }

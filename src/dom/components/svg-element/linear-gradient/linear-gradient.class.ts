@@ -1,10 +1,9 @@
 import { SvgProps } from '../../../../core/components/type-svg/type-svg.interface';
 import { TypeSvg } from '../../../../core/components/type-svg/type-svg.abstract';
+import { transformSlot } from '../../../../core/helpers/transformSlot';
 import { addAttrObj, setAttrObj } from '../../../modules/attribute';
 import { SvgStop } from '../stop/stop.class';
-import type {
-  ISvgLinearGradient,
-} from './linear-gradient.interface';
+import type { ISvgLinearGradient, } from './linear-gradient.interface';
 
 export class SvgLinearGradient extends TypeSvg implements ISvgLinearGradient {
   nodeName: 'linearGradient';
@@ -32,7 +31,7 @@ export class SvgLinearGradient extends TypeSvg implements ISvgLinearGradient {
       y2: 0,
     });
     this.childNodes = [];
-    this.slotChildren(params.slot);
+    transformSlot(this, params.slot);
     this.props = this.useParams(params);
   }
 
