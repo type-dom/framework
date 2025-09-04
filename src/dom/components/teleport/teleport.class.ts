@@ -2,6 +2,7 @@ import { MaybeRef } from '../../../reactivity';
 import { TypeFragment } from '../../../core/components/type-fragment/type-fragment.abstract';
 import { RawDom } from '../../../core/type-element/type-element.interface';
 import { ITeleport, TeleportProps } from './teleport.interface';
+import { transformSlot } from '../../../core/helpers/transformSlot';
 
 export class Teleport extends TypeFragment implements ITeleport {
   className: 'Teleport';
@@ -10,11 +11,13 @@ export class Teleport extends TypeFragment implements ITeleport {
   disabled?: boolean;
 
   constructor(params: TeleportProps = {}) {
+    console.warn('Teleport constructor . ');
     super();
     this.className = 'Teleport';
     this.to = params.to;
     this.disabled = params?.disabled;
-    this.slotChildren(params.slot);
+    console.error('then transform . ');
+    transformSlot(this, params.slot ?? params.slots?.default);
     this.useParams(params);
   }
 
