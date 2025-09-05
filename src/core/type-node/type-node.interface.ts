@@ -175,7 +175,7 @@ export interface TypeProps extends ITypeBase {
   /**
    * 绑定的组件的引用对象，用于获取当前组件；
    */
-  refEl?: Ref<TypeElement | undefined>
+  refEl?: Ref<TypeNode | undefined>
   /**
    * 绑定的组件的引用对象，用于获取当前组件的dom元素；
    * 与anchor无关

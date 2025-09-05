@@ -4,12 +4,13 @@ import { IJsonData } from '../../interface';
 import { Attributes } from '../../dom/modules/attribute';
 import { RawStyle } from '../../dom/modules/style/style.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
-import { TypeEl, RawDom } from '../type-element/type-element.interface';
+import { RawDom, TypeEl } from '../type-element/type-element.interface';
 import { unmount } from '../helpers/unmount';
 import { findDown } from '../helpers/findDown';
 import { ObjectEmitsOptions } from '../componentEmits';
 import { Data } from '../component';
 import { LifecycleHooks, NodeName } from '../enums';
+import { TransitionElement, TransitionHooks } from '../components/type-transition/type-transition.interface';
 import { NormalizedPropsOptions, } from '../componentProps';
 import { IEvent } from '../event-emitter/event-emitter.interface';
 import { emit } from '../event-emitter/event-emitter';
@@ -21,6 +22,7 @@ import {
   TypeProps
 } from './type-node.interface';
 
+let uid = 0;
 /**
  * 虚拟DOM，TypeNode 抽象节点类, 所有节点类的抽象类；
  * abstract syntax tree 抽象语法树 抽象节点类
@@ -44,6 +46,8 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
   config?: any;
   isBasic?: boolean;
   createdIn?: 'setup';
+
+  transition?: TransitionHooks<TransitionElement> | undefined;
   /**
    * anchor 是片段（Fragment）在真实 DOM 中的位置标记，用于标识该片段在 DOM 树中的插入点或边界点。
    * 它主要用于以下场景：
@@ -144,7 +148,7 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
   items?: TypeProps[];
   // textNode?: TextNode;
   lifeCycles: Record<LifecycleHooks, AnyFn[]>;
-  uid?: number;
+  uid: number;
   /**
    * 存储事件名称与事件监听器数组的映射
    * key 事件名 value: callback[]  回调数组
@@ -176,6 +180,11 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
   // 是否触发样式作用域
   scopedId?: string;
 
+  /**
+   * 废弃
+   */
+  initEvents?(): void;
+
   abstract dom?:
     | HTMLElement
     | SVGElement
@@ -188,13 +197,17 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
   constructor() {
     // this.eventObservers = {};
     // this.emitObservers = {};
-    // this.uid = uid++;
+    this.uid = uid++;
     // this.params = {}; // Object.freeze({}) as TypeProps;
     this.props = this.baseProps = {};
     this.lifeCycles = {} as Record<LifecycleHooks, AnyFn[]>;
     this.lifeCycles[LifecycleHooks.BEFORE_CREATE]?.forEach((fn) => fn());
     this.beforeCreate?.(); // 挂载前，执行一些初始化操作。其实也就是操作 config本身。
   }
+  /**
+   *
+   */
+  setup?(): void;
 
   /**
    * mount 才是组件对外的主方法
@@ -563,6 +576,7 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
 
   // 会循环调用
   clone<T>(): T {
+    console.warn('clone . ');
     // const attrObj = deepClone(this.params.attrObj);
     // const styleObj = deepClone(this.params.styleObj);
     // 创建类的新实例
