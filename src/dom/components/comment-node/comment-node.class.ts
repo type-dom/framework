@@ -1,9 +1,10 @@
-import {TypeNode} from "../../../core/type-node/type-node.abstract";
-import { LifecycleHooks, NodeName } from '../../../core/enums';
-import { TypeElement} from "../../../core/type-element/type-element.abstract";
-import { type TypeEl,} from "../../../core/type-element/type-element.interface";
-import {TypeProps} from "../../../core/type-node/type-node.interface";
-import { assignProps } from '../../../core/helpers/assignProps'
+import { NodeName } from '../../../core/enums';
+import {TypeNode} from '../../../core/type-node/type-node.abstract';
+import {TypeProps} from '../../../core/type-node/type-node.interface';
+import { TypeElement } from '../../../core/type-element/type-element.abstract';
+import { TypeEl } from '../../../core/type-element/type-element.interface';
+import { mountComment } from '../../../core/helpers/mountComment';
+import { assignProps } from '../../../core/helpers/assignProps';
 import {ICommentNode} from "./comment-node.interface";
 
 /**
@@ -43,25 +44,6 @@ export class CommentNode extends TypeNode implements ICommentNode {
   }
 
   mount(el?: TypeEl) {
-    this.dom?.remove();
-    this.lifeCycles[LifecycleHooks.CREATED]?.forEach((cb) => cb());
-    this.render();
-    this.lifeCycles[LifecycleHooks.BEFORE_MOUNT]?.forEach((cb) => cb());
-    if (this.dom) {
-      let appEl: Exclude<TypeEl, string>;
-      if (typeof el === 'string') {
-        appEl = document.querySelector<HTMLElement>(el);
-      } else if (el) {
-        appEl = el;
-      } else {
-        appEl = this.parent?.elementParent?.dom as
-          | HTMLElement
-          | SVGElement
-          | undefined;
-      }
-      appEl?.appendChild(this.dom);
-    }
-    // console.log('this.dom is ', this.dom);
-    this.lifeCycles[LifecycleHooks.MOUNTED]?.forEach((cb) => cb());
+    mountComment(this, el);
   }
 }
