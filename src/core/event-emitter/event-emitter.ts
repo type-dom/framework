@@ -1,12 +1,11 @@
 /**
  * 批量添加事件监听器
  * @param emits 包含事件名称与监听器的映射对象
- * todo 与 events 合并；
  */
 import { AnyFn, isArray } from '@type-dom/utils';
 import { TypeNode } from '../type-node/type-node.abstract';
-import {NodeName} from "../enums";
-import {IEmits, IEvent, IEvents} from "./event-emitter.interface";
+import { NodeName } from "../enums";
+import { IEmits, IEvent, IEvents } from "./event-emitter.interface";
 
 export const addEmits = (node: TypeNode, emits?: IEmits | string[]) => {
   // 遍历事件映射，为每个事件名称添加监听器
@@ -128,7 +127,7 @@ export function off(node: TypeNode, event?: string | string[], listener?: AnyFn,
     delete node.eventObservers[event];
     return;
   }
-  // todo 移除订阅者
+  // 移除订阅者
   if (node.dom) {
     // 不是 fragment组件
     const eventHandler = node.eventObservers[event].get(listener);
@@ -291,27 +290,27 @@ export function clearEvents(node: TypeNode): void {
 export function listenEvents(node: TypeNode): void {
   // node.clearEvents(); // todo 为啥要移除
   if (!node.dom) {
-  return;
-}
-if (node.eventObservers) {
-  // dom 监听事件要挂载到真实dom上。
-  // if (node.dom instanceof HTMLButtonElement) {
-  //   console.warn('node.eventObservers is ', node.eventObservers);
-  // }
-  for (const key in node.eventObservers) {
-    const cloned = node.eventObservers[key];
-    cloned.forEach((observer) => {
-      if (node.dom) {
-        node.dom.removeEventListener(key, observer); // 防止重复监听
-        node.dom.addEventListener(
-          key as keyof GlobalEventHandlersEventMap,
-          observer
-        );
-        // todo error import .
-        // removeEventListener(node.dom as Element, key, observer);
-        // addEventListener(node.dom as Element, key, observer);
-      }
-    });
+    return;
   }
-}
+  if (node.eventObservers) {
+    // dom 监听事件要挂载到真实dom上。
+    // if (node.dom instanceof HTMLButtonElement) {
+    //   console.warn('node.eventObservers is ', node.eventObservers);
+    // }
+    for (const key in node.eventObservers) {
+      const cloned = node.eventObservers[key];
+      cloned.forEach((observer) => {
+        if (node.dom) {
+          node.dom.removeEventListener(key, observer); // 防止重复监听
+          node.dom.addEventListener(
+            key as keyof GlobalEventHandlersEventMap,
+            observer
+          );
+          // todo error import .
+          // removeEventListener(node.dom as Element, key, observer);
+          // addEventListener(node.dom as Element, key, observer);
+        }
+      });
+    }
+  }
 }
