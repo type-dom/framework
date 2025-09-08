@@ -2,6 +2,7 @@ import { TextNode } from '../../../dom/components/text-node/text-node.class';
 import { addAttrObj, SVGAttributes } from '../../../dom/modules/attribute';
 import type { TypeProps } from '../../type-node/type-node.interface';
 import { TypeElement, vHash } from '../../type-element/type-element.abstract';
+import { transformSlot } from '../../helpers/transformSlot';
 import type { ITypeSvg } from './type-svg.interface';
 
 /**
@@ -28,7 +29,8 @@ export abstract class TypeSvg<T extends SVGElement = SVGElement, A extends SVGAt
   override useParams<T extends TypeProps>(params = {} as T): T {
     // 插槽默认替换子节点；
     if (params.slot) { // todo why
-      this.slotChildren(params.slot);
+      // transformSlot(this, params.slot);
+      transformSlot(this, params.slot);
     }
     super.useParams(params);
     return this.baseProps as T;

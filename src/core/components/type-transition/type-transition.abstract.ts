@@ -21,6 +21,7 @@ import {
   TransitionElement,
   // TypeTransitionProps,
 } from './type-transition.interface';
+import { transformSlot } from '../../helpers/transformSlot';
 
 export abstract class TypeTransition
   extends TypeFragment
@@ -38,7 +39,7 @@ export abstract class TypeTransition
   //   // this.mode = params?.mode || 'in-out';
   //   // this.parent = params?.parent;
   //   // if (params.slot instanceof TypeHtml) {
-  //   //   this.slotChildren(params.slot);
+  //   //   transformSlot(this, params.slot);
   //   //   this.content = params.slot;
   //   //   // this.addChild(this.content);
   //   //   // 处理 params, to props
@@ -59,7 +60,8 @@ export abstract class TypeTransition
     const instance = getCurrentInstance()!;
     const state = useTransitionState();
 
-    this.slotChildren(props.slot ?? slots?.default);
+    // transformSlot(this, props.slot ?? slots?.default);
+    transformSlot(this, props.slot ?? slots?.default);
     const children =
       (props.slot ?? slots?.default) &&
       getTransitionRawChildren(this.childNodes, true); // 获取真实dom子节点，过滤Fragment等节点

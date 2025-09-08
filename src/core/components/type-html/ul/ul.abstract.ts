@@ -1,4 +1,3 @@
-import { addStyleObj } from '../../../../dom/modules/style/style';
 import { TypeHtml } from '../type-html.abstract';
 import { TypeLI } from '../li/li.abstract';
 import type { ITypeUL, TypeULProps } from './ul.interface';
@@ -12,10 +11,6 @@ export abstract class TypeUL extends TypeHtml implements ITypeUL {
     super();
     this.props = this.useParams({
       nodeName: 'ul',
-    });
-    addStyleObj(this, {
-      margin: '0',
-      padding: '0'
     });
     this.childNodes = [];
   }

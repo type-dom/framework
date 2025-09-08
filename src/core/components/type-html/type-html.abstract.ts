@@ -24,7 +24,7 @@ export abstract class TypeHtml<T extends HTMLElement = HTMLElement, A extends To
 
   constructor() {
     super();
-    addAttrId(this, this.componentId);
+    addAttrId(this, this.uid);
     // addAttrObj(this, {
     //   ['data-v-' + vHash]: '',
     // })
