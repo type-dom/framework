@@ -11,19 +11,18 @@ import { renderStyleObj, resetStyleObj } from '../../dom/modules/style/style';
 import { removeDom } from '../helpers/removeDom';
 import {createDom} from "../helpers/createDom";
 import { findDown } from '../helpers/findDown';
+import { mountElement } from '../helpers/mountElement';
+import { useRecurseRender } from '../helpers/useRecurseRender';
+import { useParams } from '../helpers/useParams';
+import { transformSlot } from '../helpers/transformSlot';
 import type { ISlotItem, ISlotRaw, TypeProps, } from '../type-node/type-node.interface';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { currentInstance } from '../component';
 import { NodeName } from '../enums';
-import { TransitionElement, TransitionHooks, } from '../components/type-transition/type-transition.interface';
-import { useMount } from '../helpers/useMount';
-import { useRecurseRender } from '../helpers/useRecurseRender';
-import { useParams } from '../helpers/useParams';
-import { useSlotChildren } from '../helpers/useSlotChildren';
-import type { TypeEl, IBoundBox, ITypeElement } from './type-element.interface';
+import type { IBoundBox, ITypeElement, TypeEl } from './type-element.interface';
 
-export let uid = 0;
-export let componentId = 0;
+// export let uid = 0;
+// export let componentId = 0;
 export const vHash = Math.round(Math.random() * 1000000);
 
 /**
@@ -38,13 +37,12 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
   // abstract nodeName: NodeName.FRAGMENT | string; // 必然有； 且不为 #text
   childNodes: TypeNode[];
   // routerView?: any;
-  transition?: TransitionHooks<TransitionElement> | undefined;
   rendered: boolean;
-  componentId: number;
+  // componentId: number;
 
   constructor() {
     super();
-    this.componentId = componentId++;
+    // this.componentId = componentId++;
     this.attributes = [];
     this.childNodes = [];
     this.rendered = false;
@@ -121,7 +119,7 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
     //    TdInput 会多出前后缀， 有冲突。
     // const param = removeUndefinedProps(params as any) as unknown as T;
     // console.log('param is ', param);
-    this.uid = uid++;
+    // this.uid = uid++;
     for (const key of Object.keys(params)) {
       // 如果已经配置了默认值，则使用默认值
       (params as any)[key] ??= (this.baseProps as any)?.[key];
@@ -140,9 +138,9 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
    * `slot`参数可以是一个或多个子元素，根据`type`的不同，这些子元素会被添加到元素的末尾或前置到元素的开头。
    * @param slot 要添加或插入的子元素或子元素数组。
    */
-  slotChildren(slot?: ISlotItem) {
-    useSlotChildren(this, slot);
-  }
+  // slotChildren(slot?: ISlotItem) {
+  //   transformSlot(this, slot);
+  // }
 
   /**
    * 在最后位置添加一个子节点，并渲染；
@@ -319,6 +317,7 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
   }
 
   clearSetupChildrenDom(): void {
+    console.warn('clearSetupChildDom . ');
     // if (this.dom instanceof DocumentFragment) {
     //   this.childNodes.forEach((child) => {
     //     if (child?.createdIn === 'setup') {
@@ -385,7 +384,8 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
 
   replaceChildren(slot: ISlotItem) {
     this.clearChildren();
-    this.slotChildren(slot);
+    // transformSlot(this, slot);
+    transformSlot(this, slot);
   }
 
   /**
@@ -448,10 +448,6 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
   //   // }
   // }
 
-  /**
-   *
-   */
-  setup?(): void;
 
   /**
    * 挂载到真实DOM；
@@ -462,8 +458,8 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
    * 使用fragment要优化
    * @param el 是DocumentFragment时，和HTMLElement一样处理。层层 appendChild
    */
-  mount<T extends TypeElement>(el?: TypeEl): T {
-    return useMount(this as unknown as T, el);
+  mount(el?: TypeEl) {
+    return mountElement(this, el);
   }
 
   // todo
@@ -504,11 +500,6 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
     // console.log('this.className is ' + this.className + ', preRender . ');
     createDom(this);
   }
-
-  /**
-   * 废弃
-    */
-  initEvents?(): void;
 
   /**
    * 渲染方法
