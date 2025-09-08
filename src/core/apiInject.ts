@@ -115,7 +115,7 @@ export function inject(
  * user. One example is `useRoute()` in `vue-router`.
  */
 export function hasInjectionContext(): boolean {
-  return !!(currentInstance); // || currentRenderingInstance || currentApp)
+  return !!currentInstance; // || currentRenderingInstance || currentApp)
 }
 function useInject<T>(
   node: TypeNode | undefined,
