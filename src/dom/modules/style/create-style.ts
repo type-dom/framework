@@ -107,7 +107,7 @@ function buildCssRule(selector: string, style: CSSProperties) {
  */
 export function addScopedStyle(css: string) {
   const instance = getCurrentInstance(); // todo
-  console.error('addScopedStyle instance is ', instance);
+  // console.error('addScopedStyle instance is ', instance);
   if (instance) {
     instance.scopedId = 'data-v-' + instance.uid;
     // addAttrProp(instance, instance.scopedId, '');

@@ -234,9 +234,9 @@ export function renderAttrProp(el: TypeNode | undefined, key: string, value?: Ma
       } else if (dom instanceof Text) {
         // console.warn('dom is Text . ');
       } else if (dom instanceof Comment) {
-        console.warn('dom is Comment, and is ', dom);
+        // console.warn('dom is Comment, and is ', dom);
       } else  {
-        console.warn('dom is not Element or DocumentFragment ， is ', dom);
+        console.warn('dom is not Element or DocumentFragment or Text or Comment， is ', dom);
       }
     })
   } else {

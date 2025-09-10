@@ -56,6 +56,9 @@ import { onBeforeMount, TypeFragment } from '../../../core';
 //   return el.styleObj[key];
 // }
 
+export function getStyleProp(el: TypeHtml | TypeSvg | XElement, key: keyof CSSProperties) {
+  return el.styleObj?.[key];
+}
 export function getStyleObj(el: TypeHtml | TypeSvg | XElement) {
   return el.styleObj;
 }
