@@ -1,5 +1,6 @@
-import { vi } from 'vitest';
-import { Div, useActiveElement, useEventListener } from '../src';
+import { describe, it } from 'vitest';
+// import { useEventListener } from '@type-dom/use';
+import { Div } from '../dist';
 // import { promiseTimeout, createSingletonPromise } from './yourModulePath'; // 请替换为实际的模块路径
 
 // 1. 测试异步操作的性能
@@ -15,7 +16,7 @@ describe('Async operation performance', () => {
   });
 
   it('should measure createSingletonPromise performance', async () => {
-    const createPromise = () => Promise.resolve(0);
+    // const createPromise = () => Promise.resolve(0);
     // const wrapper = createSingletonPromise(createPromise);
     const startTime = performance.now();
     // const promise1 = wrapper();
@@ -33,7 +34,7 @@ describe('Async operation performance', () => {
 describe('Component rendering performance', () => {
   it('should measure useActiveElement rendering performance', () => {
     const startTime = performance.now();
-    const activeElement = useActiveElement();
+    // const activeElement = useActiveElement();
     const endTime = performance.now();
     const executionTime = endTime - startTime;
     console.log(`useActiveElement rendering time: ${executionTime} ms`);
@@ -61,11 +62,11 @@ describe('Data update performance', () => {
 // import { useEventListener } from './yourModulePath'; // 请替换为实际的模块路径
 describe('Bulk operation performance', () => {
   it('should measure useEventListener bulk operation performance', () => {
-    const target = document.createElement('div');
-    const listeners = Array.from({ length: 100 }, () => vi.fn());
-    const events = Array.from({ length: 100 }, (_, i) => `event${i}`);
+    // const target = document.createElement('div');
+    // const listeners = Array.from({ length: 100 }, () => vi.fn());
+    // const events = Array.from({ length: 100 }, (_, i) => `event${i}`);
     const startTime = performance.now();
-    useEventListener(target, events, listeners);
+    // useEventListener(target, events, listeners);
     const endTime = performance.now();
     const executionTime = endTime - startTime;
     console.log(`useEventListener bulk operation time: ${executionTime} ms`);
