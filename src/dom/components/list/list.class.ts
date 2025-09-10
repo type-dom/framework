@@ -2,7 +2,7 @@
 import { isArray, isNumber } from '@type-dom/utils';
 import { isSignal, isComputed, toRaw, unref, watch } from '../../../reactivity';
 import { removeDom } from '../../../core/helpers/removeDom';
-import { ISlotRaw } from '../../../core/type-node/type-node.interface';
+import { IChild } from '../../../core/type-node/type-node.interface';
 import { TypeFragment } from '../../../core/components/type-fragment/type-fragment.abstract';
 import { mountDom } from '../../../core/helpers/mountDom';
 import { createDom } from '../../../core/helpers/createDom';
@@ -185,7 +185,7 @@ export class List extends TypeFragment implements IList {
         // console.warn('diff is ', diff);
         if (diff > 0) {
           for (let i = oldData; i < data; i++) {
-            let child: ISlotRaw;
+            let child: IChild;
             if (getter) {
               child = getter(i)
               // this.addChild(getter(i) as TypeNode);
