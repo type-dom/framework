@@ -9,9 +9,9 @@ export class UL extends TypeUL implements IUL {
   override isBasic = true;
 
   constructor(params: TypeULProps = {}) {
+    // console.warn('UL constructor . ');
     super();
     this.className = 'UL';
-
     transformSlot(this, params.slot);
     this.useParams(params);
   }

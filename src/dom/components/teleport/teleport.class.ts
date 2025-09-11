@@ -11,12 +11,12 @@ export class Teleport extends TypeFragment implements ITeleport {
   disabled?: boolean;
 
   constructor(params: TeleportProps = {}) {
-    console.warn('Teleport constructor . ');
+    // console.warn('Teleport constructor . ');
     super();
     this.className = 'Teleport';
     this.to = params.to;
     this.disabled = params?.disabled;
-    console.error('then transform . ');
+    // console.error('then transform . ');
     transformSlot(this, params.slot ?? params.slots?.default);
     this.useParams(params);
   }

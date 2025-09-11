@@ -10,6 +10,7 @@ export class Div extends TypeDiv implements IDiv {
 
   constructor(params: TypeDivProps = {}) {
     super();
+    // console.warn('Div constructor . ');
     this.className = 'Div';
     transformSlot(this, params.slot);
     this.useParams(params);

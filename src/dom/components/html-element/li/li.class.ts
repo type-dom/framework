@@ -23,7 +23,7 @@ export class LI extends TypeLI implements ILI {
     //   boxSizing: 'border-box',
     // });
     // addAttrName(this, 'list-item');
-    console.warn('then transformSlot . ');
+    // console.warn('then transformSlot . ');
     transformSlot(this, params.slot);
     this.useParams(params);
   }

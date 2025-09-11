@@ -8,7 +8,7 @@ export class A extends TypeA implements IA {
   override isBasic = true;
 
   constructor(params: TypeAProps = {}) {
-    super();
+    super(params);
     this.className = 'A';
     transformSlot(this, params.slot);
     this.useParams(params);

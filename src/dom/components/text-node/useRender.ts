@@ -24,5 +24,5 @@ export function useTextRender(element: TextNode) {
   } else {
     element.dom.textContent = text ?? ''; // '\u200b'; // &zwnj; \u200c &zwsp;
   }
-  element.rendered = true;
+  element.isRendered = true;
 }

@@ -12,21 +12,20 @@ import {ICommentNode} from "./comment-node.interface";
  */
 export class CommentNode extends TypeNode implements ICommentNode {
   className: 'CommentNode';
-  /**
-   * 节点名称，值为 'comment'
-   */
-  nodeName = NodeName.COMMENT;
   override props: TypeProps;
   childNodes: undefined;
-  rendered: boolean;
   dom?: Comment;
-  text: string;
+  // text: string;
   constructor(text: string, parent?: TypeElement) {
     super();
     this.className = 'CommentNode';
     this.props = this.baseProps;
-    this.text = text;
-    this.rendered = false;
+    // this.text = text;
+    // if (text === 'input') {
+    //   console.error('text is input . ');
+    // }
+    this.props.nodeName = NodeName.COMMENT;
+    this.props.nodeValue = text;
     if (parent) {
       this.parent = parent;
     }
@@ -39,8 +38,8 @@ export class CommentNode extends TypeNode implements ICommentNode {
   }
 
   render() {
-    this.dom = document.createComment(this.text);
-    this.rendered = true;
+    this.dom = document.createComment(String(this.props.nodeValue ?? ''));
+    this.isRendered = true;
   }
 
   mount(el?: TypeEl) {

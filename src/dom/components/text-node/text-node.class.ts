@@ -40,7 +40,7 @@ export class TextNode extends TypeNode implements ITextNode {
    */
   childNodes: undefined;
 
-  rendered: boolean;
+  // rendered: boolean;
 
   /**
    * 构造函数，创建文本节点
@@ -53,7 +53,7 @@ export class TextNode extends TypeNode implements ITextNode {
     parent?: TypeElement
   ) {
     super();
-    this.rendered = false;
+    this.isRendered = false;
     this.className = 'TextNode';
     this.nodeName = NodeName.TEXT;
     this.props = this.baseProps;
