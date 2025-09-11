@@ -36,7 +36,7 @@
 /**
  * This is a stub implementation to prevent the need to use dom types.
  *
- * To enable proper types, add `"dom"` to `"lib"` in your `tsconfig.json`.
+ * To enable proper types, add `"dom"` to `"libs"` in your `tsconfig.json`.
  */
 // type DomStub = {}
 // type DomType<T> = typeof globalThis extends { window: unknown } ? T : DomStub
@@ -308,6 +308,7 @@ export { vShow } from '../core/helpers/vShow'
 //
 // export * from './jsx'
 
+export * from './modules/attribute';
 export * from './modules/style';
 export * from './modules/class';
 
