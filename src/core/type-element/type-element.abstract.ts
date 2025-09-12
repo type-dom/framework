@@ -1,4 +1,3 @@
-import { Dayjs } from 'dayjs';
 import { isString, isNumber } from '@type-dom/utils';
 import { TextNode } from '../../dom/components/text-node/text-node.class';
 import {
@@ -15,11 +14,15 @@ import { mountElement } from '../helpers/mountElement';
 import { useRecurseRender } from '../helpers/useRecurseRender';
 import { useParams } from '../helpers/useParams';
 import { transformSlot } from '../helpers/transformSlot';
-import type { ISlotItem, ISlotRaw, TypeProps, } from '../type-node/type-node.interface';
+import type { ISlotItem, IChild, TypeProps, } from '../type-node/type-node.interface';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { currentInstance } from '../component';
 import { NodeName } from '../enums';
-import type { IBoundBox, ITypeElement, TypeEl } from './type-element.interface';
+import type {
+  IBoundBox,
+  ITypeElement,
+  RawDom,
+} from './type-element.interface';
 
 // export let uid = 0;
 // export let componentId = 0;
@@ -37,15 +40,15 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
   // abstract nodeName: NodeName.FRAGMENT | string; // 必然有； 且不为 #text
   childNodes: TypeNode[];
   // routerView?: any;
-  rendered: boolean;
+  // isRendered: boolean;
   // componentId: number;
 
-  constructor() {
-    super();
+  constructor(params: TypeProps = {}) {
+    super(params);
     // this.componentId = componentId++;
     this.attributes = [];
     this.childNodes = [];
-    this.rendered = false;
+    this.isRendered = false;
   }
 
   // 向上获取真实的 element ;
@@ -161,7 +164,7 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
    * 从前面添加子元素
    * @param newChild
    */
-  unshiftChild(newChild: string | number | boolean | undefined | Dayjs | TypeNode): void {
+  unshiftChild(newChild: IChild): void {
     if (newChild instanceof TypeNode) {
       newChild.setParent(this); // 如果不是子类，是其它地方的对象加过来，要重设其父类。 一个对象挂载到不同的父类中，可能会造成混乱。
       if (this.scopedId) {
@@ -190,12 +193,25 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
   /**
    * 后面添加子元素
    * new 时，也就是创建时，可以不设置parent；但是addChild时，需要设置parent。
+   * 注： 如果多次添加同一个元素，则会复制这个元素，而不是直接添加到子节点上。
    * todo List 动态添加子元素时，新元素的scopedId会丢失。
    * @param newChild
    */
-  addChild(newChild: string | number | boolean | undefined | Dayjs | TypeNode): void {
+  addChild(newChild: IChild): void {
     if (newChild instanceof TypeNode) {
+      // if (newChild.className === 'TdMenuItem') {
+      //   console.error('newChild is TdMenuItem');
+      // }
+      // if (newChild.className === 'UL') {
+      //   console.error('newChild is UL . this is ', this);
+      // }
       // 如果不是子类，是其它地方的对象加过来，要重设其父类。 一个对象挂载到不同的父类中，可能会造成混乱。
+      // 如果两个不同的组件的添加了newChild 会被加载两次，parent会被重置。如 vIf vElse 时，props.slot会在两个不同的分支组件中加载；
+      //   todo newChild 是否要改为 类 本身， 然后 new Constructor(params).  ----> 无法解决 vIf,vElse
+      if (newChild.parent) { // add by me 2025/09/02 11:11
+        // console.warn('newChild has been added . ');
+        newChild = new (newChild.constructor as any)(newChild.params) as TypeNode; // todo newChild是否会被做其它处理 ？？？？
+      }
       newChild.setParent(this);
       this.scopedId = this.scopedId ?? this.parent?.scopedId;
       if (this.scopedId) {
@@ -220,7 +236,7 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
    * 新增子元素，并设定parent
    * @param newChildren
    */
-  addChildren(...newChildren: (TypeNode | undefined)[]): void {
+  addChildren(...newChildren: IChild[]): void {
     newChildren.forEach((child) => child && this.addChild(child));
   }
 
@@ -229,7 +245,7 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
    * @param child
    * @param index 要插入的目标位置
    */
-  insertChild(child: ISlotRaw, index: number): void {
+  insertChild(child: IChild, index: number): void {
     // console.log('insertChild . ');
     if (child instanceof TypeNode) {
       this.childNodes.splice(index, 0, child);
@@ -378,6 +394,7 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
   }
   // 清理子节点
   clearChildNodes(): void {
+    // console.warn('clearChildNodes . ');
     // this.childNodes.forEach(child => child.unmount());
     this.childNodes = [];
   }
@@ -458,7 +475,7 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
    * 使用fragment要优化
    * @param el 是DocumentFragment时，和HTMLElement一样处理。层层 appendChild
    */
-  mount(el?: TypeEl) {
+  mount(el?: RawDom | string) {
     return mountElement(this, el);
   }
 
@@ -515,6 +532,6 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
       // console.log('fragment render .'); // todo
     }
     // console.log('this.dom is ', this.dom);
-    this.rendered = true;
+    this.isRendered = true;
   }
 }

@@ -21,5 +21,5 @@ export interface IBoundBox {
   height:  Property.Left<string | number>;
 }
 
-export type RawDom = HTMLElement | SVGElement | ShadowRoot | DocumentFragment | Document;
-export type TypeEl =  RawDom | string | null | undefined;
+export type RawDom = HTMLElement | SVGElement | ShadowRoot | DocumentFragment;
+export type TypeEl =  RawDom  | Document | string | null | undefined;
