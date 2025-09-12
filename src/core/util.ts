@@ -4,7 +4,7 @@ import { castArray as ensureArray } from 'lodash-es';
 import { isRef, toRaw } from '../reactivity';
 import type { IJsonData, IJsonDataProp } from '../interface';
 import { TypeNode } from './type-node/type-node.abstract';
-import type { ISlotItem, ISlotRaw, ISlotRef, ITypeNode } from './type-node/type-node.interface';
+import type { ISlotItem, IChild, ISlotRef, ITypeNode } from './type-node/type-node.interface';
 import type { ITextNode } from '../dom/components/text-node/text-node.interface';
 import type { ITypeElement } from './type-element/type-element.interface';
 import { TypeHtml } from './components/type-html/type-html.abstract';
@@ -156,7 +156,7 @@ export function defineNodeProperty(
   });
 }
 
-export function arraySlot<T extends ISlotRaw = ISlotRaw>(slot?: ISlotItem<T>): (T | ISlotRef<T>)[] {
+export function arraySlot<T extends IChild = IChild>(slot?: ISlotItem<T>): (T | ISlotRef<T>)[] {
   if (slot === undefined) {
     return [];
   }
@@ -167,8 +167,8 @@ export function arraySlot<T extends ISlotRaw = ISlotRaw>(slot?: ISlotItem<T>): (
   }
 }
 
-export function rawSlot<T extends ISlotRaw>(item: ISlotItem<T>): ISlotRaw[] {
-  const result: ISlotRaw[] = [];
+export function rawSlot<T extends IChild>(item: ISlotItem<T>): IChild[] {
+  const result: IChild[] = [];
 
   function processItem(item?: ISlotItem<T>): void {
     if (isFunction(item)) {
@@ -176,10 +176,10 @@ export function rawSlot<T extends ISlotRaw>(item: ISlotItem<T>): ISlotRaw[] {
       if (isArray(rawItem)) {
         rawItem.forEach(subItem => processItem(subItem));
       } else if (isRef(rawItem)) {
-        result.push(toRaw(rawItem) as ISlotRaw);
+        result.push(toRaw(rawItem) as IChild);
       } else {
         if (rawItem !== undefined) {
-          result.push(rawItem as ISlotRaw);
+          result.push(rawItem as IChild);
         }
       }
     } else if (isArray(item)) {
@@ -188,7 +188,7 @@ export function rawSlot<T extends ISlotRaw>(item: ISlotItem<T>): ISlotRaw[] {
       result.push(...ensureArray(toRaw(item)));
     } else {
       if (item !== undefined) {
-        result.push(item as ISlotRaw);
+        result.push(item as IChild);
       }
     }
   }
