@@ -42,7 +42,7 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
   styleObj?: RawStyle = {};
   // abstract nodeValue?: string | number | undefined;
   abstract childNodes?: TypeNode[] | undefined;
-  abstract rendered: boolean;
+  refs: Record<string, Element> = {};
   config?: any;
   isBasic?: boolean;
   createdIn?: 'setup';
@@ -174,6 +174,7 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
   propsDefaults?: Data
 
   // lifecycle
+  isRendered?: boolean;
   isMounted?: boolean
   isUnmounted?: boolean
   isDeactivated?: boolean
@@ -194,11 +195,12 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
     | null
     | undefined;
 
-  constructor() {
+  constructor(params: TypeProps = {}) {
     // this.eventObservers = {};
     // this.emitObservers = {};
     this.uid = uid++;
-    // this.params = {}; // Object.freeze({}) as TypeProps;
+    this.params = Object.freeze(params);
+    this.params = params;
     this.props = this.baseProps = {};
     this.lifeCycles = {} as Record<LifecycleHooks, AnyFn[]>;
     this.lifeCycles[LifecycleHooks.BEFORE_CREATE]?.forEach((fn) => fn());
@@ -223,7 +225,6 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
    */
   abstract render(): void;
 
-  // abstract attrObj?: ITypeAttribute | undefined; // 合并到 this.props中
   isRoot?: boolean; // 是否是根节点 只有TypeRoot才为true
   attributes?: IAttr[] | undefined;
   settings?: ISettings;
@@ -559,7 +560,6 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
       props: this.props, // todo 可能有问题
       // nodeName: this.props.nodeName,
       // nodeValue: this.props.nodeValue,
-      attributes: this.attributes,
       items: this.items,
       // transitionConfig: this.transitionConfig,
       childNodes: this.children.map((child) => {

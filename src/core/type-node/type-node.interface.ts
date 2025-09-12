@@ -181,6 +181,7 @@ export interface TypeProps extends ITypeBase {
    * 与anchor无关
    */
   refDom?: Ref<Element | DocumentFragment | undefined>;
+  refs?: Record<string, Element>;
   /**
    * 绑定的refId对象，用于父级查找到当前对象；
    */
@@ -250,9 +251,14 @@ export interface TypeProps extends ITypeBase {
   // [propName: string]: any; // todo should be removed
 }
 
-export type ISlotRaw = string | number | boolean | undefined | Dayjs | TypeNode;
-export type ISlotRef<T extends ISlotRaw = ISlotRaw> = Signal<T> | Computed<T>;
-export type ISlotItem<T extends ISlotRaw = ISlotRaw> = MaybeRef<T | T[]> | MaybeRef<T>[]
+export type IChild = string | number | boolean | undefined | Dayjs | TypeNode;
+export type ISlotRef<T extends IChild = IChild> = Signal<T> | Computed<T>;
+/**
+ * 插槽
+ *
+ * () => new Class 多个组件调用时，会创建新的对象。
+ */
+export type ISlotItem<T extends IChild = IChild> = MaybeRef<T | T[]> | MaybeRef<T>[]
   | ((...args: any[]) => ISlotItem<T>);
 
 export interface ISlots {
