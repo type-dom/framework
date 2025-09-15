@@ -28,7 +28,7 @@ export function mountComment(element: TypeNode, el?: TypeEl) {
     // console.log('element.dom is ', element.dom);
     element.lifeCycles[LifecycleHooks.MOUNTED]?.forEach((cb) => cb());
   } else {
-    console.warn('element is not CommentNode')
+    console.warn('element is not CommentNode, but is ', element);
   }
   return element;
 }

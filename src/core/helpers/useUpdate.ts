@@ -1,6 +1,6 @@
 import { unref } from '../../reactivity';
 import { LifecycleHooks } from '../enums';
-import { TypeEl } from '../type-element/type-element.interface';
+import { RawDom } from '../type-element/type-element.interface';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { insertDomAndAnchor, anchorReplaceDom } from './anchorAndDom';
 import { getToDom } from './mountDom';
@@ -19,7 +19,7 @@ import { resetDom } from './resetDom';
  * @param element 要渲染的 TypeNode 实例。
  * @param el
  */
-export function useUpdate(element: TypeNode, el?: TypeEl): void {
+export function useUpdate(element: TypeNode, el?: RawDom): void {
   // console.warn('then update element.className is ' + element.className);
   if (!element) {
     console.error('element does not exist . ');
@@ -29,7 +29,7 @@ export function useUpdate(element: TypeNode, el?: TypeEl): void {
   element.lifeCycles[LifecycleHooks.BEFORE_UPDATE]?.forEach((cb) => cb());
   resetDom(element);
 
-  let appEl: Exclude<TypeEl, string>;
+  let appEl: RawDom | undefined | null;
   if (
     element?.to // 显式验证 to 属性存在且为真值
     && !(

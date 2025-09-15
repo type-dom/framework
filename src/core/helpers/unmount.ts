@@ -2,7 +2,7 @@ import { setCurrentInstance } from '../component';
 import { LifecycleHooks } from '../enums';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { TypeNode } from '../type-node/type-node.abstract';
-import {clearEvents} from "../event-emitter/event-emitter";
+import { clearEvents } from '../event-emitter/event-emitter';
 
 export function unmount(element: TypeNode, root?: TypeElement) {
   element.lifeCycles[LifecycleHooks.BEFORE_UNMOUNT]?.forEach(fn => fn());

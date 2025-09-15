@@ -2,7 +2,7 @@ import { isString } from '@type-dom/utils';
 import { unref } from '../../reactivity';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { NodeName } from '../enums';
-import { TypeEl } from '../type-element/type-element.interface';
+import { RawDom } from '../type-element/type-element.interface';
 
 /**
  * 获取组件挂载的dom
@@ -22,14 +22,14 @@ export function mountDom(element: TypeNode) {
   }
 }
 
-export function getToDom(element: TypeNode): Exclude<TypeEl, string> {
+export function getToDom(element: TypeNode): RawDom | undefined {
     const to = unref(element.to);
     if (!to) return;
     if (element.className === 'TdTeleport' && unref(element.baseProps.disabled)) { // todo refine
       return element.parent?.dom;
     }
     if (isString(to)) {
-      return document.querySelector(to) as Exclude<TypeEl, string>;
+      return document.querySelector(to) as RawDom;
     } else {
       return to;
     }

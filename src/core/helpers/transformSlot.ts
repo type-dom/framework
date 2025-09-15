@@ -19,6 +19,12 @@ export function transformSlot(element: TypeElement, slot?: ISlotItem, type: 'add
   if (slot === undefined) {
     return;
   }
+  // if ((slot as any).countAdd) { // todo error
+  //   (slot as any).countAdd = (slot as any).countAdd + 1
+  // } {
+  //   (slot as any).countAdd = 1;
+  // }
+  // console.warn('slot add ', (slot as any).countAdd);
   /**
    * 如果slot是响应式数据，则意味着会重置childNodes，要对dom 进行清理和添加，会导致dom结构会动态化；需要慎用。
    * slot 需要根据不同条件，渲染不同的组件时还是要用到的。
@@ -79,7 +85,7 @@ export function transformSlot(element: TypeElement, slot?: ISlotItem, type: 'add
           // when element is TdIcon, element.dom is Icon; need not to upDom appendChild again .
           if (element.dom instanceof DocumentFragment) { // todo why add this condition
             // maybe comment replace
-            console.error('element.dom is DocumentFragment . ');
+            // console.error('element.dom is DocumentFragment . ');
             insertDomAndAnchor(element, upDom);
           }
         } else {
@@ -126,8 +132,19 @@ export function transformSlot(element: TypeElement, slot?: ISlotItem, type: 'add
       // }
       element.unshiftChild(slot);
     } else {
-      // if (slot instanceof TypeNode) {
+      // if (slot instanceof TypeNode) { // todo error 会有 引入错误。
+      //   if (slot.className === 'TdMenuItem') {
+      //     console.error('newChild is TdMenuItem');
+      //   }
+      //   if (slot.className === 'UL') {
+      //     console.error('newChild is UL . this is ', element);
+      //   }
       //   // 如果不是子类，是其它地方的对象加过来，要重设其父类。 一个对象挂载到不同的父类中，可能会造成混乱。
+      //   // 如果两个不同的组件的添加了newChild 会被加载两次，parent会被重置。如 vIf vElse 时，props.slot会在两个不同的分支组件中加载；
+      //   //   todo newChild 是否要改为 类 本身， 然后 new Constructor(params).  ----> 无法解决 vIf,vElse
+      //   // if (slot.parent) {
+      //   //   slot = new (slot.constructor as any)(slot.params) as TypeNode;
+      //   // }
       //   slot.setParent(element);
       //   element.scopedId = element.scopedId ?? element.parent?.scopedId;
       //   if (element.scopedId) {
@@ -139,12 +156,23 @@ export function transformSlot(element: TypeElement, slot?: ISlotItem, type: 'add
       //     element.createdIn = 'setup';
       //   }
       //   element.childNodes.push(slot);
-      // } else if (typeof slot === 'string' || typeof slot === 'number') {
-      //   // const text = new TextNode(slot);
-      //   // text.setParent(element);
-      //   // element.childNodes.push(text);
+      // } else if (isNumber(slot) || isString(slot)) {
+      //   const text = new TextNode(slot);
+      //   text.setParent(element);
+      //   element.childNodes.push(text);
       // } else {
-      //   console.error('type is ', type, 'useSlotChild: slot is not TypeNode or string or number, it is ', slot);
+      //   console.error('newChild  is ', slot);
+      // }
+      // todo vIf vElse slot中引用了相同的 props.slot 会改变 props.slot 的 parent；导致 inject 失效。
+      // if (Object.hasOwnProperty.call(element.baseProps, 'vIf')) {
+      //   if (!unref(element.baseProps.vIf)) {
+      //   //   不要重置 parent
+      //     element.addChildWithoutParent(slot);
+      //     return;
+      //   }
+      //   element.addChild(slot);
+      // } else {
+      //   element.addChild(slot);
       // }
       element.addChild(slot);
     }

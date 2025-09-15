@@ -17,5 +17,5 @@ export function useRender(element: TypeElement): void {
     // console.log('fragment render .'); // todo
   }
   // console.log('element.dom is ', element.dom);
-  element.rendered = true;
+  element.isRendered = true;
 }

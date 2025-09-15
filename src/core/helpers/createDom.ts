@@ -15,8 +15,10 @@ export function createDom<T extends TypeNode = TypeNode>(node: T) {
       node.dom = document.createDocumentFragment();
     } else if (nodeName === NodeName.TEXT) {
       node.dom = document.createTextNode(
-        node.baseProps.nodeValue?.toString() || ''
+        String(node.baseProps.nodeValue ?? '')
       ); // todo content
+    } else if (nodeName === NodeName.COMMENT) {
+      node.dom = document.createComment(String(node.baseProps.nodeValue ?? ''))
     } else {
       node.dom = document.createElement(nodeName || 'div');
     }

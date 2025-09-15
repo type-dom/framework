@@ -3,7 +3,7 @@ import { TypeEl } from '../type-element/type-element.interface';
 import { LifecycleHooks } from '../enums';
 
 export function mountText(element: TypeNode, el?: TypeEl) {
-  console.warn('mountText . ');
+  // console.warn('mountText . ');
   if (element.dom instanceof Text) {
     element.dom?.remove();
     element.lifeCycles[LifecycleHooks.CREATED]?.forEach((cb) => cb());

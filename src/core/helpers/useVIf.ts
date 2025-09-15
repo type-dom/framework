@@ -20,13 +20,13 @@ export function useVIf(element: TypeNode) {
       // console.warn('this.baseProps.vIf is ref， ', condition);
       // 添加 监听
       watch(condition, (newValue, oldValue) => {
-        // console.warn('watch useVIf . newValue and oldValue is ', newValue, oldValue);
+        console.warn('watch useVIf . newValue and oldValue and element is ', newValue, oldValue, element);
         useRawIf(newValue, element, oldValue);
       },
         // { immediate: true, } // todo 加载就触发有问题
       ); // 加载组件时就要触发
     } else { // 静态判断 todo mount 时会单独处理的啊。是否要注释掉呢？
-      useRawIf(condition, element);
+      // useRawIf(condition, element);
     }
   }
 }
@@ -41,12 +41,13 @@ export function useVIf(element: TypeNode) {
  */
 function useRawIf(condition: boolean | unknown, element: TypeNode, oldValue?: unknown) {
   if (!Object.prototype.hasOwnProperty.call(element.baseProps, 'vIf')) {
-    throw new Error('element.baseProps has no vIf， ');
+    console.error('element.baseProps has no vIf， ');
+    return;
   }
     // todo element 可能还没有被渲染过
     const dom = createDom(element);
     if (condition) { // 挂载 dom
-      console.warn('vIf is true, not false or undefined .  ');
+      // console.warn('vIf is true, not false or undefined .  ');
       // this.update(); // 会死循环 todo
       // todo anchor 还需要upDom appendChild 吗 ？？
       // const upDom = mountDom(element);

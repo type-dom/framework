@@ -4,7 +4,7 @@ import { LifecycleHooks } from '../enums';
 import { setCurrentInstance } from '../component';
 import { listenEvents } from '../event-emitter/event-emitter';
 import { TypeElement } from '../type-element/type-element.abstract';
-import { TypeEl } from '../type-element/type-element.interface';
+import { RawDom, TypeEl } from '../type-element/type-element.interface';
 import { useVIf } from './useVIf';
 import { useVShow } from './useVShow';
 import { useVModel } from './useVModel';
@@ -12,18 +12,20 @@ import { getToDom } from './mountDom';
 import {
   setFragmentAnchorWithDom,
   setElementAnchor,
-  setFragmentAnchorWithoutDom,
   replaceElementAnchorWithDom,
+  // setFragmentAnchorWithoutDom,
 } from './anchorAndDom';
 import { createDom } from './createDom';
+// import { removeDom } from './removeDom';
+import { TypeNode } from '../type-node/type-node.abstract';
 
 /**
  *
  * @param element
  * @param el
  */
-export function mountElement<T extends TypeElement>(element: T, el?: TypeEl) {
-  console.warn('mountElement .');
+export function mountElement<T extends TypeElement>(element: T, el?: RawDom | string) {
+  // console.warn('mountElement .');
   if (element.dom instanceof Text || element.dom instanceof Comment) {
     console.error('element.dom is Text or Comment . ');
     return;
@@ -39,7 +41,7 @@ export function mountElement<T extends TypeElement>(element: T, el?: TypeEl) {
     // element.clearChildren(); // 空白了 todo why ???? 清理子节点，包括DOM  todo ??? 不能加 ？？？？没有加载子节点。 useParams
   //   todo 有了 anchor 后， 这一步要重新写；setup中添加的节点不需要清理和重新添加了。
   if (element?.setup) { // 基础组件没有setup
-      if (element.rendered) {
+      if (element.isRendered) {
         // throw new Error('element has rendered , should not setup again . ') // 在 ui-doc 中没有打印错误。
         console.error('element has rendered , should not setup again . ');
         element.clearSetupChildren(); // 在setup 中添加的子节点， 清理监听事件 element.clearEvents()
@@ -74,13 +76,13 @@ export function mountElement<T extends TypeElement>(element: T, el?: TypeEl) {
      * 为了保持一致， 标记基础组件 区别 自定义组件，
      */
     if (isRef(element.baseProps.refDom)) { // 语义更明确
-      element.baseProps.refDom.set(element.dom as  HTMLElement | SVGElement | DocumentFragment); // todo 如果 element.dom 是 DocumentFragment, 有什么影响 ？
+      element.baseProps.refDom.set(element.dom as RawDom); // todo 如果 element.dom 是 DocumentFragment, 有什么影响 ？
     }
     if (isRef(element.baseProps.refEl)) {
       element.baseProps.refEl.set(element);
     }
 
-    let appEl: Exclude<TypeEl, string>;
+    let appEl: RawDom | undefined | null;
     if (
       element?.to // 显式验证 to 属性存在且为真值
       && !(
@@ -111,7 +113,9 @@ export function mountElement<T extends TypeElement>(element: T, el?: TypeEl) {
     useVIf(element); // drawer 弹框的头部关闭按钮显示到前面了。原因时 useVIf 在子节点mount前执行的，会导致useRecurseRender执行时找不到对应的子节点， 移除useVIf中useRecurseRender。
     useVShow(element);
     useVModel(element);
-
+    // if (element.className === 'TdPopperContent') {
+    //   console.warn('element is TdPopperContent . ');
+    // }
     // todo 是否需要根据 vIf 的值拦截 子元素加载 ？？？
     // 如CollapsibleBox中，contents重新赋值后，children会变，而childNodes是不变的。
   // if (unref(element?.baseProps?.vIf)) { // todo error 不显示页面了。 add by me 2025/08/29 16:28
@@ -121,30 +125,32 @@ export function mountElement<T extends TypeElement>(element: T, el?: TypeEl) {
       // } else {
       // todo vIf vElse 的情况；
       const to = getToDom(child); // 这样不是挂载到跳转的dom上了吗？
-      if (Object.hasOwnProperty.call(element.baseProps, 'vIf')) {
-        if (unref(element.baseProps.vIf)) {
-          child.mount(to ?? element.dom as TypeEl);
-        } else {
-        //   todo nothing
-        //       child 会没有 mounted
-        //   child.mount(to ?? element.dom as TypeEl);
-          // todo  应该添加占位 anchor
-          if (child.props.nodeName === 'fragment') {
-            setFragmentAnchorWithoutDom(child, dom);
-          } else {
-            setElementAnchor(child, dom);
-          }
-        }
-      } else {
-        // if (to) {
-        //   console.error('to is ', to);
-        // }
-        // todo v-if v-else 时，如果两种情况下的slot引用了有一个传入的props.slot对象。
-        //    v-else 中再挂载 props.slot对象，会导致v-if中的对象被转移了。
-        child.mount(to ?? element.dom as TypeEl);
-        // useMount(child, to ?? element.dom as TypeEl)
-        // }
-      }
+      child.mount(to ?? element.dom as TypeEl); // 不需要了。 child 不会是在多个组件中。
+      // if (Object.hasOwnProperty.call(element.baseProps, 'vIf')) {
+      //   if (unref(element.baseProps.vIf)) {
+      //     child.mount(to ?? element.dom as TypeEl);
+      //   } else {
+      //   //   todo nothing
+      //   //       child 会没有 mounted
+      //   //   child.mount(to ?? element.dom as TypeEl);
+      //     //  应该添加占位 anchor , 不插入 child.dom
+      //     if (child.props.nodeName === 'fragment') {
+      //       // child 会 mounted， 而 child.childNode会没有 mounted  todo
+      //       setFragmentAnchorWithoutDom(child, dom);
+      //     } else {
+      //       setElementAnchor(child, dom);
+      //     }
+      //   }
+      // } else {
+      //   // if (to) {
+      //   //   console.error('to is ', to);
+      //   // }
+      //   // todo v-if v-else 时，如果两种情况下的slot引用了有一个传入的props.slot对象。
+      //   //    v-else 中再挂载 props.slot对象，会导致v-if中的对象被转移了。
+      //   child.mount(to ?? element.dom as TypeEl);
+      //   // useMount(child, to ?? element.dom as TypeEl)
+      //   // }
+      // }
     }
   // }
 
@@ -161,19 +167,41 @@ export function mountElement<T extends TypeElement>(element: T, el?: TypeEl) {
       //       todo 与 useRawVIf
       if (Object.hasOwnProperty.call(element.baseProps, 'vIf')) { // todo 是否于上的useVIf重复了？
         // console.error('element.baseProps.vIf is ', element.baseProps.vIf);
-        if (unref(element.baseProps.vIf)) {
+        const condition = unref(element.baseProps.vIf);
+        if (condition) {
           // console.error('element.baseProps.vIf is  true');
           // insertDomAndAnchor(element, appEl); // todo ？？？
           if (element.dom instanceof DocumentFragment) {
-            setFragmentAnchorWithDom(element, appEl);
+            setFragmentAnchorWithDom(element, appEl); // 真实dom上渲染；
           } else {
             setElementAnchor(element, appEl);
             replaceElementAnchorWithDom(element, appEl);
             // appEl.appendChild(element.dom);
           }
         } else {
-          if (element.dom instanceof DocumentFragment) {
-            setFragmentAnchorWithoutDom(element, appEl);
+          if (element.dom instanceof DocumentFragment) { // dom.childNodes 此时不为空。
+            // setFragmentAnchorWithoutDom(element, appEl); // 加到 DocumentFragment，值要没有appendChild到上级真实dom，都不会渲染的；
+            element.anchorStart = element.anchorStart ?? document.createComment('[--' + element.className + '' + element.uid);
+            if (!isDescendant(appEl, element.anchorStart)) {
+              appEl.appendChild(element.anchorStart);
+            }
+            //   todo tooltip， 会挂载提示内容，没有删除。所以还是要 removeDom。
+            //      sub-menu 切换是 子菜单 collapse 切换加载会跑到上面。
+            element.anchor = element.anchor ?? document.createComment(element.className + '' + element.uid + '--]');
+            if (!isDescendant(appEl, element.anchor)) {
+              appEl.appendChild(element.anchor);
+            }
+            clearDescendantDom(element, appEl)
+            // element.childNodes.forEach((child) => {
+            //   if (child.dom instanceof DocumentFragment) {
+            //   //   nothing 会自动添加锚点，anchor,anchorStart
+            //     setFragmentAnchorWithoutDom(child, appEl);
+            //   } else {
+            //     setElementAnchor(child, appEl);
+            //   }
+            // })
+            // // 也应该给删除的dom 添加 锚点
+            // removeDom(element); // 这里不需要删除，因为 element.dom 是 DocumentFragment，不会被渲染到真实dom。
           } else {
             setElementAnchor(element, appEl);
           }
@@ -193,9 +221,16 @@ export function mountElement<T extends TypeElement>(element: T, el?: TypeEl) {
           setFragmentAnchorWithDom(element, appEl);
         } else {
           if (isDescendant(appEl, element.dom)) {
-            console.error('appEl has include element.dom')
+            // console.error('appEl has include element.dom')
           } else {
-            appEl.appendChild(element.dom);
+            // vIf vElse 时， element.anchor 可能会被创建了，只是没有 dom.childNodes；
+            //   现在应该不会了。应该同一 props.slot 挂载的不同的组件时，会创建新的对象。
+            if (element.anchor && isDescendant(appEl, element.anchor)) {
+              // console.error('element.anchor is descendant in appEl, it is error');
+              appEl.replaceChild(dom, element.anchor);
+            } else {
+              appEl.appendChild(element.dom);
+            }
           }
         }
       }
@@ -214,4 +249,31 @@ export function mountElement<T extends TypeElement>(element: T, el?: TypeEl) {
     setCurrentInstance(null);
 
     return element;
+}
+
+/**
+ * vIf 的值是 false | undefined 时， 会删除所有子节点的dom，这是，删除的dom需要添加锚点，以便恢复时定位。
+ * 此时 Fragment 的dom 的childNodes 还没有被挂载出去不会删除。子元素的子元素呢？？？
+ * todo
+ * @param element
+ * @param appEl
+ */
+export function clearDescendantDom(element: TypeNode, appEl: Exclude<RawDom, Document>) {
+  const dom = createDom(element);
+  if (dom) {
+    if (dom instanceof DocumentFragment) {
+      element.childNodes?.forEach((child) => {
+        if (child.dom instanceof DocumentFragment) {
+          // setFragmentAnchorWithoutDom(child, appEl);
+          clearDescendantDom(child, dom);
+        } else {
+          setElementAnchor(child, dom);
+          replaceElementAnchorWithDom(child, dom)
+        }
+      })
+    } else {
+      setElementAnchor(element, appEl);
+      dom.remove();
+    }
+  }
 }
