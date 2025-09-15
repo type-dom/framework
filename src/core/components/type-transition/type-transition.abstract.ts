@@ -19,7 +19,7 @@ import {
 import {
   ITypeTransition,
   TransitionElement,
-  // TypeTransitionProps,
+  TypeTransitionProps,
 } from './type-transition.interface';
 import { transformSlot } from '../../helpers/transformSlot';
 
@@ -33,25 +33,27 @@ export abstract class TypeTransition
   // 唯一子节点
   private content?: TypeHtml;
 
-  // constructor(params: TypeTransitionProps<Element> = {}) {
-  //   super();
-  //   // console.warn('TypeTransition constructor. params is ', params);
-  //   // this.mode = params?.mode || 'in-out';
-  //   // this.parent = params?.parent;
-  //   // if (params.slot instanceof TypeHtml) {
-  //   //   transformSlot(this, params.slot);
-  //   //   this.content = params.slot;
-  //   //   // this.addChild(this.content);
-  //   //   // 处理 params, to props
-  //   //   // todo 如果是多个子节点，transition本身要成为一个 div 。
-  //   //   //   现在只能有一个子节点。
-  //   //   this.props = resolveTransitionProps(params);
-  //   //   console.log('props is ', this.props);
-  //   //   params.slot.setTransitionProps(this.props as TransitionProps);
-  //   // }
-  //   // this.props = this.useParams(params);
-  //   // this.props = resolveTransitionProps(params);
-  // }
+  constructor(params: TypeTransitionProps<Element> = {}) {
+    super();
+    // console.warn('TypeTransition constructor. params is ', params);
+    // this.mode = params?.mode || 'in-out';
+    // this.parent = params?.parent;
+    // if (params.slot instanceof TypeHtml) {
+    //   transformSlot(this, params.slot);
+    //   this.content = params.slot;
+    //   // this.addChild(this.content);
+    //   // 处理 params, to props
+    //   // todo 如果是多个子节点，transition本身要成为一个 div 。
+    //   //   现在只能有一个子节点。
+    //   this.props = resolveTransitionProps(params);
+    //   console.log('props is ', this.props);
+    //   params.slot.setTransitionProps(this.props as TransitionProps);
+    // }
+    // this.props = this.useParams(params);
+    // this.props = resolveTransitionProps(params);
+
+    transformSlot(this, params.slot ?? params.slots?.default);
+  }
 
   override setup() {
     // console.warn('TypeTransition setup.');
@@ -61,7 +63,7 @@ export abstract class TypeTransition
     const state = useTransitionState();
 
     // transformSlot(this, props.slot ?? slots?.default);
-    transformSlot(this, props.slot ?? slots?.default);
+
     const children =
       (props.slot ?? slots?.default) &&
       getTransitionRawChildren(this.childNodes, true); // 获取真实dom子节点，过滤Fragment等节点
