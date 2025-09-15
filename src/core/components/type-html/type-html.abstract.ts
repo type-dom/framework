@@ -5,7 +5,7 @@
  */
 import { addStyleObj, setStyleObj } from '../../../dom/modules/style/style';
 import { StyleValue } from '../../../dom/modules/style/style.interface';
-import { addAttrId, HTMLAttributes } from '../../../dom/modules/attribute';
+import { HTMLAttributes } from '../../../dom/modules/attribute';
 import { ToMaybeRefs } from '../../../reactivity';
 import { TypeElement, } from '../../type-element/type-element.abstract';
 import type { ITypeHtml, HtmlProps } from './type-html.interface';
@@ -22,9 +22,9 @@ export abstract class TypeHtml<T extends HTMLElement = HTMLElement, A extends To
   // private timer?: ReturnType<typeof rAF> | undefined;
   // transitionTimer?: NodeJS.Timeout;
 
-  constructor() {
-    super();
-    addAttrId(this, this.uid);
+  constructor(params: HtmlProps = {}) {
+    super(params);
+    // addAttrId(this, this.uid);
     // addAttrObj(this, {
     //   ['data-v-' + vHash]: '',
     // })
