@@ -42,7 +42,6 @@ export abstract class TypeFragment extends TypeElement implements ITypeFragment 
   //       setStyleObj(child, styleObj);
   //   });
   // }
-
   // addAttrObj(attrObj?: Attributes) {
   //   onBeforeMount(() => {
   //     this.childNodes.forEach(child => {
@@ -51,7 +50,6 @@ export abstract class TypeFragment extends TypeElement implements ITypeFragment 
   //     });
   //   }, this);
   // }
-
   // setAttrObj(attrObj?: Attributes) {
   //   this.childNodes.forEach(child => {
   //     if (child instanceof TypeFragment) {
@@ -65,6 +63,8 @@ export abstract class TypeFragment extends TypeElement implements ITypeFragment 
 
   // 向下传递 styleObj attrObj;
   override useParams<Props extends TypeProps>(params = {} as Props): Props {
+    this.anchorStart = this.anchorStart ?? document.createComment('[--' + this.className + '' + this.uid);
+    this.anchor = this.anchor ?? document.createComment(this.className + '' + this.uid + '--]');
     super.useParams(params);
     // todo mount 时， vIf为 false 时，要添加 this.anchor
     // if (this.className === undefined) {
@@ -74,8 +74,6 @@ export abstract class TypeFragment extends TypeElement implements ITypeFragment 
     //   console.error('element.uid === 50 , element is ', this);
     // }
     // this.anchor = document.createComment('fragment-' + this.className);
-    this.anchorStart = this.anchorStart ?? document.createComment('[--' + this.className + '' + this.uid);
-    this.anchor = this.anchor ?? document.createComment(this.className + '' + this.uid + '--]');
     // 子元素可能是 setup中新增的，这时 this.childNodes可能没有或不全；
     //   todo 渲染时，判断一下，先添加parent.styleObj
     // onBeforeMount(() => { // 还是有可能 childNodes 没有加全
