@@ -192,14 +192,18 @@ export function renderAttrProp(el: TypeNode | undefined, key: string, value?: Ma
         } else if (raw === true) {
           // if (key === 'disabled') {
           //   console.warn('key is disabled . ')
+          //   console.warn('raw is true . ')
           // }
           // console.warn('key is ' + key + ' . ')
-          // console.warn('raw is true . ')
           if (dom?.hasAttribute(key)) {
             return;
           }
           (dom as any)[key] = true;
           dom.setAttribute(key, '');
+          // if (key === 'disabled') {
+          //   // console.log('dom.disabled is ', dom.disabled)
+          //   console.log('dom.disabled is ', dom.getAttribute(key))
+          // }
         } else if (raw === false) {
           // console.warn('key is ' + key + ' . ');
           // console.warn('raw is false . ');
