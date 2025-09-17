@@ -33,8 +33,8 @@ export type RawStyleValue =
  * Record<string, MaybeRef<string | number>>
  *   例如：
  * {
- *    '--el-switch-on-color': '#13ce66',
- *    '--el-switch-off-color': '#ff4949',
+ *    '--td-switch-on-color': '#13ce66',
+ *    '--td-switch-off-color': '#ff4949',
  *  }
  */
 // export type RawStyle = CSSProperties | Record<string, MaybeRef<string | number | undefined>>
