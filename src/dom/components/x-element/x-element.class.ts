@@ -19,6 +19,7 @@ import { transformSlot } from '../../../core/helpers/transformSlot';
 export class XElement extends TypeElement implements IXElement {
   className: 'XElement';
   override props: TypeProps;
+  override isBasic = true;
   // parent?: XElement; // 在解析时，onEndElement时，重新赋值。
   // override childNodes: (XElement | TextNode)[];
   // style: Style;
