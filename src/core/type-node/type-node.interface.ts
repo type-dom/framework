@@ -6,7 +6,7 @@ import { type IJsonDataProp } from '../../interface';
 import { StyleValue } from '../../dom/modules/style/style.interface';
 import { Attributes, ClassValue } from '../../dom/modules/attribute/attribute.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
-// import { IEmits, IEvents } from '../event-emitter/event-emitter.interface';
+import { IEmits } from '../event-emitter/event-emitter.interface';
 import { TransitionElement, TransitionHooks } from '../components/type-transition/type-transition.interface';
 import { NodeName } from '../enums';
 import { TypeNode } from './type-node.abstract';
@@ -182,6 +182,7 @@ export interface TypeProps extends ITypeBase {
    */
   refDom?: Ref<Element | DocumentFragment | undefined>;
   refs?: Record<string, Element>;
+  ref?: string;
   /**
    * 绑定的refId对象，用于父级查找到当前对象；
    */
@@ -211,7 +212,7 @@ export interface TypeProps extends ITypeBase {
    * 与 addEmits 方法配合；
    * emit 方法 触发时，会调用挂载的方法；
    */
-  // emits?: IEmits;
+  emits?: IEmits | string[];
   /**
    * 绑定的事件集合,转化为 Subscription; fromEvent
    * 一般在构造函数的参数（params）中传入；
@@ -251,7 +252,7 @@ export interface TypeProps extends ITypeBase {
   // [propName: string]: any; // todo should be removed
 }
 
-export type IChild = string | number | boolean | undefined | Dayjs | TypeNode;
+export type IChild = string | number | boolean | symbol | undefined | Dayjs | TypeNode;
 export type ISlotRef<T extends IChild = IChild> = Signal<T> | Computed<T>;
 /**
  * 插槽

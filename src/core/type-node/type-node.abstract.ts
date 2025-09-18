@@ -42,7 +42,7 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
   styleObj?: RawStyle = {};
   // abstract nodeValue?: string | number | undefined;
   abstract childNodes?: TypeNode[] | undefined;
-  refs: Record<string, Element> = {};
+  refs: Record<string, TypeNode> = {};
   config?: any;
   isBasic?: boolean;
   createdIn?: 'setup';
