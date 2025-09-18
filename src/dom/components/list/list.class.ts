@@ -42,7 +42,7 @@ export class List extends TypeFragment implements IList {
           // 确定scopedId
           if (this.parent?.scopedId) this.scopedId = this.scopedId ?? this.parent.scopedId;
           // todo 判断数据变化
-          const start = performance.now();
+          // const start = performance.now();
           if (newData) {
             this.slotRawData(newData, oldData);
           }
@@ -76,8 +76,8 @@ export class List extends TypeFragment implements IList {
             // 应该将新增的元素放入 this.dom (DocumentFragment), 然后插入。
             upDom.insertBefore(this.dom!, this.anchor);
 
-            const end = performance.now();
-            console.warn(`异步耗时: ${end - start} 毫秒`);
+            // const end = performance.now();
+            // console.warn(`异步耗时: ${end - start} 毫秒`);
             // console.log('this.index is ', this.index);
             // todo 插入位置，有哪些不同的情况 ？？？
             // if (this.index !== -1 && upDom.childNodes[this.index]) {
@@ -112,7 +112,7 @@ export class List extends TypeFragment implements IList {
     // console.warn('slotRawData . ');
     const getter = this.props.getter;
     if (isArray(data)) {
-      console.warn('data is array , and is ', data);
+      // console.warn('data is array , and is ', data);
       if (oldData === undefined) {
         data.forEach((item, index) => {
           if (getter) {
@@ -134,7 +134,7 @@ export class List extends TypeFragment implements IList {
         //   }
         // })
         const result = compareMixedArrays(oldData as any[], data);
-        console.warn('result is ', result);
+        // console.warn('result is ', result);
         // 新增
         if (result.added.length > 0 && result.modified.length === 0 && result.removed.length === 0) {
           result.added.forEach((child) => {
@@ -180,7 +180,7 @@ export class List extends TypeFragment implements IList {
           }
         }
       } else if (isNumber(oldData)) {
-        console.warn('oldData is number . ');
+        // console.warn('oldData is number . ');
         const diff = data - oldData;
         // console.warn('diff is ', diff);
         if (diff > 0) {
