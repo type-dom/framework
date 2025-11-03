@@ -6,7 +6,7 @@
 import { convertEventName, isEventKey, AnyFn } from '@type-dom/utils';
 import { addAttrObj } from '../../dom/modules/attribute';
 import { addStyleObj } from '../../dom/modules/style/style';
-import { on } from '../event-emitter/event-emitter';
+import { addEmits, on } from '../event-emitter/event-emitter';
 import { TypeNode } from '../type-node/type-node.abstract';
 import { TypeProps } from '../type-node/type-node.interface';
 
@@ -29,7 +29,11 @@ export function assignProps<T extends TypeProps>(element: TypeNode, params = {} 
     } else if (key === 'attrObj') {
       // element.attr?.addObj(params.attrObj);
       addAttrObj(element, params.attrObj); // todo 弹出框error
-    } else if (isEventKey(key)) {
+    } else if (key === 'emits') {
+      element.baseProps.emits = params['emits'];
+      addEmits(element, params['emits'])
+    }
+    else if (isEventKey(key)) {
       if (element.isBasic) {
         // console.warn('element isBasic . event key is ', key);
         on(element, convertEventName(key), params[key] as AnyFn);

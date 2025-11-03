@@ -1,8 +1,9 @@
 import { isRef, MaybeRef, unref, watch } from '../../reactivity';
-import { removeStyleProp, setStyleObj } from '../../dom/modules/style/style';
+import { removeStyleProp } from '../../dom/modules/style/style';
 import { TransitionElement } from '../components/type-transition/type-transition.interface';
 import { vShow, VShowElement, vShowOriginalDisplay } from './vShow';
 import { TypeNode } from '../type-node/type-node.abstract';
+import { setDomStyle } from '@type-dom/utils';
 
 export function useVShow(element: TypeNode) {
   if (Object.prototype.hasOwnProperty.call(element.baseProps, 'vShow')) {
@@ -40,18 +41,14 @@ function useRawVShow(condition: boolean | unknown, element: TypeNode, oldValue?:
       // 注： 现在这样必须 vShow绑定真实dom才有意义，fragment 的vShow没有意义。
       transition.beforeEnter(element.dom as TransitionElement);
       if (display && display !== 'none') { // todo TdCollapse can not open
-        setStyleObj(element,{
-          display: display,
-        });
+        setDomStyle(element.dom as HTMLElement, 'display', display);
       } else {
         removeStyleProp(element,'display'); // todo optimize
       }
       transition.enter(element.dom as TransitionElement);
     } else {
       if (display && display !== 'none') { // todo TdCollapse can not open
-       setStyleObj(element, {
-          display: display,
-        });
+       setDomStyle(element.dom as HTMLElement, 'display', display);
       } else {
         removeStyleProp(element, 'display'); // todo optimize
       }
@@ -60,14 +57,10 @@ function useRawVShow(condition: boolean | unknown, element: TypeNode, oldValue?:
     if (element.transition && oldValue) {
       // console.warn('element.transition is existed . ');
       element.transition.leave(element.dom as TransitionElement, () => {
-        setStyleObj(element, {
-          display: 'none',
-        });
+        setDomStyle(element.dom as HTMLElement, 'display', 'none')
       });
     } else {
-      setStyleObj(element, {
-        display: 'none',
-      });
+      setDomStyle(element.dom as HTMLElement, 'display', 'none');
     }
   }
 

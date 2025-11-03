@@ -20,7 +20,8 @@ export function useVIf(element: TypeNode) {
       // console.warn('this.baseProps.vIf is ref， ', condition);
       // 添加 监听
       watch(condition, (newValue, oldValue) => {
-        console.warn('watch useVIf . newValue and oldValue and element is ', newValue, oldValue, element);
+        // console.warn('watch useVIf . newValue and oldValue is ', newValue, oldValue);
+        // console.warn('watch useVIf . element is ', element);
         useRawIf(newValue, element, oldValue);
       },
         // { immediate: true, } // todo 加载就触发有问题

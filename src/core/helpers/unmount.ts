@@ -20,6 +20,7 @@ export function unmount(element: TypeNode, root?: TypeElement) {
       }
     } else {
       // 删除DOM
+      element.dom.parentElement?.removeChild?.(element.dom)
       element.dom.remove();
       element.dom = undefined;
     }

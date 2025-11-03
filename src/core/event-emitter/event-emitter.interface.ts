@@ -298,3 +298,10 @@ export interface IEmits extends EventHandlers<AnyFn> {
   //   ? E[K]
   //   : AnyFn
 }
+
+export type ObjectEmitsOptions = Record<
+  string,
+  ((...args: any[]) => any) | null
+>
+
+export type EmitsOptions = ObjectEmitsOptions | string[]

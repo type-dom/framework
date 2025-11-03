@@ -123,3 +123,4 @@ export * from './enums';
 export { assignProps } from './helpers/assignProps';
 export { useRecurseRender } from './helpers/useRecurseRender';
 export { transformSlot } from './helpers/transformSlot';
+export { findDown, findAll } from './helpers/findDown';
