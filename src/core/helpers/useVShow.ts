@@ -18,7 +18,7 @@ export function useVShow(element: TypeNode) {
       //    todo 要触发 updated 才生效
       watch(() => condition.get(), (newValue, oldValue) => {
         // console.warn('newValue', newValue);
-        useRawVShow(newValue, element, oldValue);
+        useRawVShow(!!newValue, element, oldValue); // newValue is undefine时，要赋值 false
         // showUpdate(element, newValue, oldValue);
       }, {
         immediate: true

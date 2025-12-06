@@ -179,15 +179,16 @@ export function mountElement<T extends TypeElement>(element: T, el?: RawDom | st
             // appEl.appendChild(element.dom);
           }
         } else {
+          // console.warn('element.baseProps.vIf is false or undefined . ');
           if (element.dom instanceof DocumentFragment) { // dom.childNodes 此时不为空。
             // setFragmentAnchorWithoutDom(element, appEl); // 加到 DocumentFragment，值要没有appendChild到上级真实dom，都不会渲染的；
-            element.anchorStart = element.anchorStart ?? document.createComment('[--' + element.className + '' + element.uid);
+            element.anchorStart = element.anchorStart ?? document.createComment('[' + element.className + '' + element.uid);
             if (!isDescendant(appEl, element.anchorStart)) {
               appEl.appendChild(element.anchorStart);
             }
             //   todo tooltip， 会挂载提示内容，没有删除。所以还是要 removeDom。
             //      sub-menu 切换是 子菜单 collapse 切换加载会跑到上面。
-            element.anchor = element.anchor ?? document.createComment(element.className + '' + element.uid + '--]');
+            element.anchor = element.anchor ?? document.createComment(element.className + '' + element.uid + ']');
             if (!isDescendant(appEl, element.anchor)) {
               appEl.appendChild(element.anchor);
             }
@@ -252,7 +253,7 @@ export function mountElement<T extends TypeElement>(element: T, el?: RawDom | st
 }
 
 /**
- * vIf 的值是 false | undefined 时， 会删除所有子节点的dom，这是，删除的dom需要添加锚点，以便恢复时定位。
+ * vIf 的值是 false | undefined 时， 会删除所有子节点的dom，这时，删除的dom需要添加锚点，以便恢复时定位。
  * 此时 Fragment 的dom 的childNodes 还没有被挂载出去不会删除。子元素的子元素呢？？？
  * todo
  * @param element

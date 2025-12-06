@@ -1,4 +1,4 @@
-import { Queue } from './queue.class'; // Update with the correct path to your Queue implementation
+import { Queue } from '../../../src/structure/queue/queue.class'; // Update with the correct path to your Queue implementation
 
 describe('Queue', () => {
   it('should create an instance of Queue', () => {

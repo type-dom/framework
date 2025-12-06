@@ -13,6 +13,7 @@ export {
   // proxyRefs,
   // customRef,
   triggerRef,
+  unwrapRef,
   type Ref,
   type MaybeRef,
   type MaybeRefOrGetter,
@@ -49,7 +50,7 @@ export { TrackOpTypes, TriggerOpTypes, ReactiveFlags } from './constants'
 export {
   watch,
   // getCurrentWatcher,
-  traverse,
+  // traverse,
   // onWatcherCleanup,
   // WatchErrorCodes,
   type WatchOptions,

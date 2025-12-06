@@ -1,15 +1,46 @@
-import { computed, effect, setCurrentSub } from '@type-dom/signals';
-import { isFunction, isMap, isSet, isArray, isObject, isPlainObject } from '@type-dom/utils';
+import { computed, effect, setActiveSub } from '@type-dom/signals';
+import {
+  isFunction,
+  isMap,
+  isSet,
+  isArray,
+  isObject,
+  isPlainObject,
+  // shallowEqual,
+} from '@type-dom/utils';
+import { cloneDeep, } from 'lodash-es';
 import { MaybeRef, Ref, isRef } from '../reactivity/index';
+import { isTypeNode } from '../core/type-node/vnode';
 import { warn } from './warning.js';
 
 export type WatchSource<T = any> = Ref<T> | (() => T | undefined) | (MaybeRef<T> | (() => T | undefined))[];
-export type WatchCallback<T> = (newValue: T, oldValue?: T) => void;
+export type WatchCallback<T> = (newValue: T, oldValue: T) => void;
 export type WatchStopHandle = () => void;
 
 export interface WatchOptions<T = unknown, Immediate = boolean> {
+  /**
+   * 功能：控制是否在侦听器创建时立即执行回调函数
+   * 默认值：false
+   * 效果：
+   * 设置为 true 时，侦听器会在初始化时立即触发一次回调
+   * 设置为 false 时，只有当被侦听的数据发生变化时才会触发回调
+   */
   immediate?: Immediate;
+  /**
+   * 功能：控制是否深度侦听对象内部值的变化
+   * 默认值：false
+   * 效果：
+   * 设置为 true 时，会递归侦听对象内部所有嵌套属性的变化
+   * 设置为 false 时，只侦听对象引用的变化，不关心内部属性变化
+   */
   deep?: boolean; // add by me
+  /**
+   * 功能：控制侦听器是否只执行一次
+   * 默认值：false
+   * 效果：
+   * true：回调执行一次后自动停止侦听
+   * false：持续侦听直到手动停止
+   */
   once?: boolean;
   onWarn?: (msg: string, ...args: any[]) => void
   /**
@@ -29,7 +60,14 @@ export interface WatchOptions<T = unknown, Immediate = boolean> {
     : (a: T, b: T) => boolean;   // relate deep
   onError?: (error: unknown) => void;
   scheduler?: (fn: () => void) => void;
-  flush?: 'pre' | 'post' | 'sync'; // post = after DOM update  scheduler
+  /**
+   * 功能：控制回调函数的刷新时机
+   * 可选值：
+   * pre（默认）：在组件更新前执行
+   * post：在组件更新后执行 after DOM update scheduler
+   * sync：同步执行，数据变化时立即触发
+   */
+  flush?: 'pre' | 'post' | 'sync';
 }
 
 export function watch<T>(
@@ -66,10 +104,22 @@ export function watch<T>(
   //   return traverse(source)
   // }
 
-  // const equals = Object.is;
   let dataFn: () => T | undefined;
   if (isRef(source)) {
-    dataFn = () => source.get()
+    dataFn = () => {
+      if (isArray(source.get())) {
+        return (source.get() as any[]).map(item => {
+          if (isRef(item)) {
+            return item.get();
+          } else if (isFunction(item)) {
+            return item();
+          } else {
+            return item;
+          }
+        }) as T
+      }
+      return source.get();
+    };
   } else if (isArray(source)) {
     dataFn = () => source.map(s => {
       if (isRef(s)) {
@@ -77,7 +127,6 @@ export function watch<T>(
       } else if (isFunction(s)) {
         return s();
       } else {
-        warnInvalidSource(s);
         return s;
       }
     }) as T;
@@ -89,6 +138,9 @@ export function watch<T>(
   }
 
   let prevValue: T | undefined;
+  if (isArray(source)) {
+    prevValue = new Array(source.length).fill(undefined) as T;
+  }
   let version = 0;
 
   const tracked = computed(() => {
@@ -105,26 +157,78 @@ export function watch<T>(
     const current = tracked.get();
     // console.warn('current is ', current);
     if (!immediate && !version) {
-      prevValue = (isArray(current) ? [...current] : current) as T;
+      prevValue = (
+        isTypeNode(current)
+          ? current
+          : isArray(current)
+            ? [...current]
+            : isObject(current)
+              ? { ...current }
+              : current) as T;
+    } else if (immediate && version === 0) {
+      // prevValue = current as T;
     }
-    version++;
     // immediate: true, current: undefined 时， 要执行一下dataFn
     // 当 current 未定义、immediate 为 true 且 version 为 0 时继续执行
-    const shouldProceed = current === undefined && immediate && version === 0;
+    const shouldProceed = immediate && version === 0;
+    version++;
     if (!shouldProceed) {
       // console.error('reaction current  preValue is ', current, prevValue);
       // todo
       if (equals(current, prevValue!)) {
         if (!deep) {
-          // if (equals(current, prevValue)) {
-          // console.warn('current equals prevValue');
-          // }
-          return;
+          //    应该在 set() 时触发 notify()，而不是set后，在触发 notify()， 这样watch 就会监听到新旧值是一样的。
+          if (isRef(current)) {
+            return;
+          } else if (isTypeNode(current)) {
+            return;
+          } else if (isArray(current)) {
+          //
+          } else if (isObject(current)) {
+          //
+          } else {
+            return;
+          }
         }
       }
     }
-    const oldValue = (isArray(prevValue) ? [...prevValue] : prevValue) as T;
-    prevValue = current;
+
+    // todo cloneDeep 需要考虑 Signals/TypeNode
+    // const oldValue = prevValue instanceof TypeNode ? prevValue : cloneDeep(prevValue) as T;
+    const oldValue = (
+      isTypeNode(prevValue)
+        ?  prevValue
+        : isRef(prevValue)
+          ? prevValue
+          : isArray(prevValue)
+            ? [...prevValue]
+            : isObject(prevValue)
+              ? { ...prevValue } // 浅拷贝
+              : prevValue
+    ) as T;
+    if (deep) {
+      // prevValue = cloneDeep(current); // todo loop 需要考虑 Signals/TypeNode
+      prevValue = (
+        isRef(current)
+          ? current
+          : isTypeNode(current)
+            ? current
+            : isArray(current)
+              ? [...current]
+              : isPlainObject(current)
+                ? cloneDeep(current) // 深拷贝
+                : current
+      ) as T;
+    } else {
+      prevValue = (
+        isArray(current)
+          ? [...current]
+          : isObject(current)
+            ? { ...current } // 浅拷贝
+            : current
+      ) as T;
+    }
+
     let scheduler: (fn: () => void) => void;
     if (options.scheduler) {
       scheduler = options.scheduler;
@@ -136,14 +240,43 @@ export function watch<T>(
     untracked(() =>
       scheduler(() => {
         try {
-          effectFn(current!, oldValue);
+          if (immediate && version === 1) {
+            effectFn(current!, oldValue);
+          } else {
+            if (version === 1 && immediate !== true) {
+              return;
+            }
+            if (once && dispose) {
+              if (immediate && version > 1) {
+                dispose();
+                return;
+              } else if (!immediate && version > 2) {
+                dispose();
+                return;
+              }
+            }
+            // if (deep) {
+            //   // notify 时 current oldValue 都是一样的。
+            //   // if (isEqual(current, oldValue)) {
+            //   //   return;
+            //   // }
+            // } else {
+            //   if (immediate && current === undefined && oldValue === undefined) {
+            //     // nothing
+            //   } else
+            //   if (shallowEqual(current, oldValue)) {
+            //     return;
+            //   }
+            // }
+            effectFn(current!, oldValue);
+          }
         } catch (error) {
           onError?.(error);
         } finally {
-          if (once) {
-            if (immediate && version > 1) dispose();
-            else if (!immediate && version > 0) dispose();
-          }
+          // if (once) {
+          //   if (immediate && version > 1) dispose();
+          //   else if (!immediate && version > 0) dispose();
+          // }
         }
       })
     );
@@ -153,11 +286,11 @@ export function watch<T>(
 }
 
 export function untracked<T>(callback: () => T): T {
-  const currentSub = setCurrentSub(undefined);
+  const currentSub = setActiveSub(undefined);
   try {
     return callback();
   } finally {
-    setCurrentSub(currentSub);
+    setActiveSub(currentSub);
   }
 }
 
@@ -177,7 +310,7 @@ export function traverse(
   seen.add(value)
   depth--
   if (isRef(value)) {
-    traverse(value.value, depth, seen)
+    traverse(value.get(), depth, seen)
   } else if (isArray(value)) {
     for (let i = 0; i < value.length; i++) {
       traverse(value[i], depth, seen)

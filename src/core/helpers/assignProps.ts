@@ -3,7 +3,7 @@
  * 根据提供的配置参数构建属性
  * @param config
  */
-import { convertEventName, isEventKey, AnyFn } from '@type-dom/utils';
+import { convertEventName, isEventKey, AnyFn, isArray } from '@type-dom/utils';
 import { addAttrObj } from '../../dom/modules/attribute';
 import { addStyleObj } from '../../dom/modules/style/style';
 import { addEmits, on } from '../event-emitter/event-emitter';
@@ -32,14 +32,25 @@ export function assignProps<T extends TypeProps>(element: TypeNode, params = {} 
     } else if (key === 'emits') {
       element.baseProps.emits = params['emits'];
       addEmits(element, params['emits'])
-    }
-    else if (isEventKey(key)) {
+    } else if (isEventKey(key)) {
       if (element.isBasic) {
         // console.warn('element isBasic . event key is ', key);
-        on(element, convertEventName(key), params[key] as AnyFn);
+        if (isArray(params[key])) {
+          params[key].forEach((listener) => {
+            on(element, convertEventName(key), listener as AnyFn);
+          });
+        } else {
+          on(element, convertEventName(key), params[key] as AnyFn);
+        }
       } else {
         // console.warn('element is component . event key is ', key);
-        on(element, convertEventName(key), params[key] as AnyFn, 'emit');
+        if (isArray(params[key])) {
+          params[key].forEach((listener) => {
+            on(element, convertEventName(key), listener as AnyFn, 'event');
+          });
+        } else {
+          on(element, convertEventName(key), params[key] as AnyFn, 'emit');
+        }
       }
       // (element.baseProps as T)[key] = params[key];
     } else {

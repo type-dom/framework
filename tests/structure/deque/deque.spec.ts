@@ -1,4 +1,4 @@
-import { Deque } from './deque.class';
+import { Deque } from '../../../src/structure/deque/deque.class';
 
 describe('Deque', () => {
   let deque: Deque<number>;

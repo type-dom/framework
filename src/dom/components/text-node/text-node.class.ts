@@ -22,11 +22,11 @@ export class TextNode extends TypeNode implements ITextNode {
   /**
    * 节点名称，值为 '#text'
    */
-  nodeName: NodeName.TEXT;
+  // nodeName: NodeName.TEXT;
   /**
    * 节点值，类型为字符串
    */
-  nodeValue: string;
+  // nodeValue: string;
   override props: TypeProps;
   // text: string;
   style: undefined;
@@ -55,25 +55,25 @@ export class TextNode extends TypeNode implements ITextNode {
     super();
     this.isRendered = false;
     this.className = 'TextNode';
-    this.nodeName = NodeName.TEXT;
     this.props = this.baseProps;
+    this.props.nodeName = NodeName.TEXT;
     this.dom = document.createTextNode(String(unref(text)) || '');
     if (parent) {
       this.parent = parent;
     }
     if (isRef(text)) {
       // console.warn('TextNode isRef text is ', text);
-      this.nodeValue = toRaw(text).toString();
-      setTimeout(() => { // todo 只有这样才生效 ？？？？？
+      this.props.nodeValue = toRaw(text).toString();
+      // setTimeout(() => { // todo 只有这样才生效 ？？？？？
         // transformSlot 在constructor中调用
         watch(() => toRaw(text), (newVal) => {
-          // console.warn('TextNode watch text is ', this.nodeValue);
-          this.nodeValue = newVal?.toString();
+          // console.warn('TextNode watch text is ', this.props.nodeValue);
+          this.props.nodeValue = newVal?.toString();
           this.setText(newVal);
         })
-      }, 0)
+      // }, 0)
     } else {
-      this.nodeValue = String(text);
+      this.props.nodeValue = String(text);
       if (isMustache(String(text))) {
         //   todo 订阅 字符串 + 变量
         // if (this.itemData) {
@@ -95,7 +95,7 @@ export class TextNode extends TypeNode implements ITextNode {
 
   // todo delete
   // get textContent(): string {
-  //   return this.nodeValue;
+  //   return this.props.nodeValue;
   // }
 
   /**
@@ -103,8 +103,8 @@ export class TextNode extends TypeNode implements ITextNode {
    *
    * @returns 节点长度
    */
-  override get length(): number {
-    return this.nodeValue.length;
+  override get length() {
+    return this.props.nodeValue?.toString().length ?? 0;
   }
 
   useParams<T extends TypeProps>(params = {} as T): T {
@@ -119,9 +119,9 @@ export class TextNode extends TypeNode implements ITextNode {
    * @param text 文本内容
    */
   setText(text: boolean | string | number): void {
-    this.nodeValue = String(text);
+    this.props.nodeValue = String(text);
     // this.mount();
-    this.dom.nodeValue = this.nodeValue;
+    this.dom.nodeValue = this.props.nodeValue;
   }
 
   /**
@@ -135,7 +135,7 @@ export class TextNode extends TypeNode implements ITextNode {
     if (content === '') {
       return;
     }
-    this.nodeValue = this.nodeValue.concat(content);
+    this.props.nodeValue = this.props.nodeValue?.toString().concat(content);
     // this.parent?.mount();
     mountText(this);
   }
@@ -152,7 +152,7 @@ export class TextNode extends TypeNode implements ITextNode {
     if (startOffset >= endOffset) {
       return '';
     }
-    return this.nodeValue.slice(startOffset, endOffset);
+    return this.props.nodeValue?.toString().slice(startOffset, endOffset) ?? '';
     // return this.textContent.substring(startIndex, endIndex);
   }
 
@@ -165,12 +165,12 @@ export class TextNode extends TypeNode implements ITextNode {
    * @param endOffset 结束位置
    */
   insertText(text: string, startOffset: number, endOffset = startOffset): void {
-    const content = this.nodeValue;
-    const preContent = content.substring(0, startOffset);
-    const endContent = content.substring(endOffset);
-    const newContent = preContent.concat(text, endContent);
+    const content = this.props.nodeValue?.toString();
+    const preContent = content?.substring(0, startOffset);
+    const endContent = content?.substring(endOffset);
+    const newContent = preContent?.concat(text, endContent ?? '');
     // this.childNodes = [newContent];
-    this.setText(newContent);
+    this.setText(newContent ?? '');
     // todo error 光标移到头部。 ??触发selectionchange??
     // this.mount(); //
     // this.parent?.mount();
@@ -195,23 +195,23 @@ export class TextNode extends TypeNode implements ITextNode {
     // 光标状态 删除光标前一个字符
     if (startOffset === endOffset) {
       // todo slice substring
-      preContent = this.nodeValue.slice(0, startOffset - 1);
-      endContent = this.nodeValue.slice(endOffset);
+      preContent = this.props.nodeValue?.toString().slice(0, startOffset - 1);
+      endContent = this.props.nodeValue?.toString().slice(endOffset);
       //  todo 直接设置editor.startOffset
       // startOffset -= 1;
       // endOffset -= 1;
     } else {
       // 选择状态 删除选中的文字
-      preContent = this.nodeValue.slice(0, startOffset);
+      preContent = this.props.nodeValue?.toString().slice(0, startOffset);
       // console.log('preContent is ', preContent);
       // console.log('endOffset is ', endOffset);
-      endContent = this.nodeValue.slice(endOffset);
+      endContent = this.props.nodeValue?.toString().slice(endOffset);
       // console.log('endContent is ', endContent);
       // endOffset = startOffset;
     }
-    const newContent = preContent.concat(endContent);
+    const newContent = preContent?.concat(endContent ?? '');
     // console.log('newContent is ', newContent);
-    this.setText(newContent);
+    this.setText(newContent ?? '');
     // TODO 不能直接用 this.mount(); 光标调到行程头部。
     mountText(this);
     // this.parent?.mount();

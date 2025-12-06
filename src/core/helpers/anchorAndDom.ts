@@ -26,7 +26,7 @@ export function replaceElementAnchorWithDom(element: TypeNode, upDom: RawDom) {
 }
 
 export function anchorReplaceDom(element: TypeNode, upDom?: RawDom) {
-  console.error('anchorReplaceDom ， upDom is ', upDom);
+  // console.error('anchorReplaceDom ， upDom is ', upDom);
   const dom = element.dom;
   // 真实父节点
   // if (upDom instanceof DocumentFragment) {
@@ -41,8 +41,8 @@ export function anchorReplaceDom(element: TypeNode, upDom?: RawDom) {
    * 当element.anchor不存在时创建新的注释节点
    */
   // if (element instanceof TypeFragment) {
-  //   element.anchorStart = element.anchorStart ?? document.createComment('[--' + element.className + element.uid);
-  //   element.anchor = element.anchor ?? document.createComment(element.className + element.uid + '--]');
+  //   element.anchorStart = element.anchorStart ?? document.createComment('[' + element.className + element.uid);
+  //   element.anchor = element.anchor ?? document.createComment(element.className + element.uid + ']');
   // } else {
   //   element.anchor = element.anchor ?? document.createComment('v-if ' + element.className + element.uid);
   // }
@@ -62,7 +62,7 @@ export function anchorReplaceDom(element: TypeNode, upDom?: RawDom) {
   if (dom && parentElement) {
     // 如果 dom 存在且 parentElement 存在，尝试替换
     try {
-      console.error('parentElement is ', parentElement);
+      // console.error('parentElement is ', parentElement);
       // if (dom instanceof DocumentFragment) {
       //   resetDom(element); // 子节点都挂载到 DocumentFragment 上；
         // element.childNodes?.forEach(child => {
@@ -105,7 +105,7 @@ export function anchorReplaceDom(element: TypeNode, upDom?: RawDom) {
       // element.dom?.remove();
       // removeDom(element); // todo 不是只要不挂载就行了吗？
     } catch (error) {
-      console.error('parentElement.replaceChild error is ', error);
+      // console.error('parentElement.replaceChild error is ', error);
       // 如果 dom 已被移除，replaceChild 会失败，此时尝试 appendChild
       // todo fragment 占位符 会一直保存。
       if (!isDescendant(parentElement, element.anchor)) { // 如果 element.anchor 不在 parentElement 中，则尝试 appendChild
@@ -172,7 +172,7 @@ export function insertDomAndAnchor(element: TypeNode, upDom?: RawDom | null) {
       // })
       resetDom(element); // 应该处理 upDom的在 anchorStart 何 anchor 之间的节点。
       // }
-      console.warn('dom is ', dom);
+      // console.warn('dom is ', dom);
     }
   // }
 
@@ -211,11 +211,11 @@ export function insertDomAndAnchor(element: TypeNode, upDom?: RawDom | null) {
  */
 export function setFragmentAnchor(element: TypeNode, upDom: RawDom) {
   if (element.dom instanceof DocumentFragment) {
-    element.anchorStart = element.anchorStart ?? document.createComment('[--' + element.className + '' + element.uid);
+    element.anchorStart = element.anchorStart ?? document.createComment('[' + element.className + '' + element.uid);
     if (!isDescendant(upDom, element.anchorStart)) {
       upDom.appendChild(element.anchorStart);
     }
-    element.anchor = element.anchor ?? document.createComment(element.className + '' + element.uid + '--]');
+    element.anchor = element.anchor ?? document.createComment(element.className + '' + element.uid + ']');
     if (!isDescendant(upDom, element.anchor)) {
       upDom.appendChild(element.anchor);
     }
@@ -267,7 +267,7 @@ export function setFragmentAnchorWithoutDom(element: TypeNode, upDom: RawDom | T
   let dom = element.dom;
   if (!dom) dom = createDom(element);
   if (dom instanceof DocumentFragment) {
-    element.anchorStart = element.anchorStart ?? document.createComment('[--' + element.className + '' + element.uid);
+    element.anchorStart = element.anchorStart ?? document.createComment('[' + element.className + '' + element.uid);
     if (!isDescendant(upDom, element.anchorStart)) {
       upDom.appendChild(element.anchorStart);
     }
@@ -275,7 +275,7 @@ export function setFragmentAnchorWithoutDom(element: TypeNode, upDom: RawDom | T
     // if (isDescendant(upDom, dom)) {
     //   upDom.removeChild(dom); // DocumentFragment 的子节点会被挂载到上级Element节点上；
     // }
-    element.anchor = element.anchor ?? document.createComment(element.className + '' + element.uid + '--]');
+    element.anchor = element.anchor ?? document.createComment(element.className + '' + element.uid + ']');
     if (!isDescendant(upDom, element.anchor)) {
       upDom.appendChild(element.anchor);
     }
@@ -296,6 +296,10 @@ export function setElementAnchor(element: TypeNode, upDom: RawDom) {
   }
   element.anchor = element.anchor ?? document.createComment('v-if' + element.className + '' + element.uid);
   if (!isDescendant(upDom, element.anchor)) {
-    upDom?.appendChild(element.anchor);
+    if (element.dom && isDescendant(upDom, element.dom)) {
+      upDom.insertBefore(element.anchor, element.dom); // TdSubMenu collapse切换时，子菜单加载到菜单上方。
+    } else {
+      upDom?.appendChild(element.anchor);
+    }
   }
 }

@@ -98,7 +98,7 @@ export type MaybeRefOrGetter<T = unknown> = MaybeRef<T> | (() => T);
  * @see {@link https://vuejs.org/api/reactivity-utilities.html#unref}
  */
 export function unref<T>(ref: MaybeRef<T>): T {
-  return isRef(ref) ? ref.get() : ref;
+  return isRef(ref) ? ref.get()! : ref;
 }
 
 /**
@@ -379,4 +379,26 @@ export function readonly<T extends object>(target: T): T {
   // )
   // todo 暂时不用
   return target;
+}
+
+export function unwrapRef<T>(ref: any): any {
+  if (isRef(ref)) {
+    return unwrapRef(ref.get());
+  } else if (Array.isArray(ref)) {
+    return ref.map((item) => {
+      if (isRef(item)) {
+        return unwrapRef(item.get());
+      } else {
+        return item
+      }
+    });
+  } else if (isObject(ref)){
+    const result: any = {};
+    for (const key in ref) {
+      result[key] = unwrapRef(ref[key]);
+    }
+    return result;
+  } else {
+    return ref;
+  }
 }

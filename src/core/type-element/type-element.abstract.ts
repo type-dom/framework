@@ -23,6 +23,7 @@ import type {
   ITypeElement,
   RawDom,
 } from './type-element.interface';
+import { isRef } from '../../reactivity';
 
 // export let uid = 0;
 // export let componentId = 0;
@@ -223,7 +224,14 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
         this.createdIn = 'setup';
       }
       this.childNodes.push(newChild);
-    } else if (isNumber(newChild) || isString(newChild)) {
+    } else if (isNumber(newChild) || isString(newChild) || isRef(newChild)) {
+      if (isRef(newChild)) {
+        const raw = newChild.get()
+        if (!isNumber(raw) && !isString(raw)) {
+          console.error(`newChild is not Ref<string | number>`)
+          return;
+        }
+      }
       const text = new TextNode(newChild);
       text.setParent(this);
       this.childNodes.push(text);

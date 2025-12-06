@@ -63,8 +63,8 @@ export abstract class TypeFragment extends TypeElement implements ITypeFragment 
 
   // 向下传递 styleObj attrObj;
   override useParams<Props extends TypeProps>(params = {} as Props): Props {
-    this.anchorStart = this.anchorStart ?? document.createComment('[--' + this.className + '' + this.uid);
-    this.anchor = this.anchor ?? document.createComment(this.className + '' + this.uid + '--]');
+    this.anchorStart = this.anchorStart ?? document.createComment('[' + this.className + '' + this.uid);
+    this.anchor = this.anchor ?? document.createComment(this.className + '' + this.uid + ']');
     super.useParams(params);
     // todo mount 时， vIf为 false 时，要添加 this.anchor
     // if (this.className === undefined) {

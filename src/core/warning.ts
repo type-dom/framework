@@ -1,5 +1,5 @@
 // import type { VNode } from './vnode'
-import { pauseTracking, resumeTracking } from '@type-dom/signals';
+import {  } from '@type-dom/signals';
 import { isFunction, isString } from '@type-dom/utils';
 import {
   // type ComponentInternalInstance,
@@ -42,7 +42,7 @@ export function warn(msg: string, ...args: any[]): void {
 
   // avoid props formatting or warn handler tracking deps that might be mutated
   // during patch, leading to infinite recursion.
-  pauseTracking()
+  // pauseTracking()
 
   const instance = stack.length ? stack[stack.length - 1] : null
   const appWarnHandler = instance && instance.config.warnHandler
@@ -79,7 +79,7 @@ export function warn(msg: string, ...args: any[]): void {
   }
 
   // resetTracking()
-  resumeTracking();
+  // resumeTracking();
   isWarning = false
 }
 
@@ -161,7 +161,7 @@ function formatProp(key: string, value: unknown, raw?: boolean): any {
   ) {
     return raw ? value : [`${key}=${value}`]
   } else if (isRef(value)) {
-    value = formatProp(key, toRaw(value.value), true)
+    value = formatProp(key, toRaw(value), true)
     return raw ? value : [`${key}=Ref<`, value, `>`]
   } else if (isFunction(value)) {
     return [`${key}=fn${value.name ? `<${value.name}>` : ``}`]

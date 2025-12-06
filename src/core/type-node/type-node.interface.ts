@@ -237,6 +237,7 @@ export interface TypeProps extends ITypeBase {
   /**
    * The other props of the element.
    */
+  [dataKey: `data-${string}`]: unknown;
   // [dataKey: `data-${string}` | `on${string}` | `td-${string}`]: unknown;
   [modifier: `${Uncapitalize<string>}Modifiers`]: Record<string, boolean> | undefined;
   [key: `on${Capitalize<string>}`]: AnyFn | AnyFn[] | undefined;
@@ -252,7 +253,7 @@ export interface TypeProps extends ITypeBase {
   // [propName: string]: any; // todo should be removed
 }
 
-export type IChild = string | number | boolean | symbol | undefined | Dayjs | TypeNode;
+export type IChild = string | number | Ref<string | number> | boolean | symbol | undefined | Dayjs | TypeNode;
 export type ISlotRef<T extends IChild = IChild> = Signal<T> | Computed<T>;
 /**
  * 插槽

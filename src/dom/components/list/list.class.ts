@@ -1,5 +1,5 @@
 // import { effect } from '@type-dom/signals';
-import { isArray, isNumber } from '@type-dom/utils';
+import { isArray, isDescendant, isNumber } from '@type-dom/utils';
 import { isSignal, isComputed, toRaw, unref, watch } from '../../../reactivity';
 import { removeDom } from '../../../core/helpers/removeDom';
 import { IChild } from '../../../core/type-node/type-node.interface';
@@ -73,7 +73,10 @@ export class List extends TypeFragment implements IList {
             // });
 
             this.anchor = this.anchor ?? document.createComment(this.uid + '--]');
-            // 应该将新增的元素放入 this.dom (DocumentFragment), 然后插入。
+            // 应该将新增的元素放入 this.dom (DocumentFragment), 然后插入。 insertBefore(newNode, referenceNode)
+            if (!isDescendant(upDom, this.anchor)) {
+              upDom.appendChild(this.anchor);
+            }
             upDom.insertBefore(this.dom!, this.anchor);
 
             // const end = performance.now();

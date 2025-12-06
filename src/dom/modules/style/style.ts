@@ -450,6 +450,7 @@ function getRawStyles(style: StyleValue, res: RawStyle = {}) {
     // return Object.fromEntries(
     //   Object.entries(record).map(([key, value]) => [key, toRaw(value)])
     // ) as CSSProperties;
+    // console.log('record is ', record);
     for (const key in record) {
       const value = toRaw(record[key as keyof RawStyle]);
       (res as any)[key] = value; // CSSProperties 的值类型太复杂了； todo optimize
@@ -469,6 +470,7 @@ function getRawStyles(style: StyleValue, res: RawStyle = {}) {
     });
     return res;
   } else if (isRef(style)) {
+    // console.log('toRaw(style) is ', toRaw(style))
     return getRawStyles(toRaw(style));
   } else {
     return convertRecordToIStyle(style as RawStyle);

@@ -1,11 +1,12 @@
-import { isArray, isFunction } from '@type-dom/utils';
+import { isArray, isFunction, isNumber, isString } from '@type-dom/utils';
 import { watch } from '../../reactivity/watch';
-import { isRef } from '../../reactivity/ref';
+import { isRef, Ref } from '../../reactivity/ref';
 import { ISlotItem } from '../type-node/type-node.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
 import { getToDom, mountDom } from './mountDom';
 import { insertDomAndAnchor } from './anchorAndDom';
 import { createDom } from './createDom';
+// import { TextNode } from '../../dom';
 
 /**
  * 此函数用于向slot的元素添加或前置插入到子元素。通过参数`type`来决定是添加（默认）还是前置插入子元素。
@@ -33,8 +34,17 @@ export function transformSlot(element: TypeElement, slot?: ISlotItem, type: 'add
    * 注：除了文本， 应该 避免使用
    */
   if (isRef(slot)) {
-    // console.warn('slot is ref . ');// const newRaw = toRaw(slot);
+    console.warn('slot is ref . ');// const newRaw = toRaw(slot);
     // 现在这里基本是监听 动态文本了。
+    if (element.childNodes.length > 1) {
+      console.error('element.childNodes.length > 1, but slot is Ref  . ')
+    }
+      const rawSlot = slot.get()
+      if (isNumber(rawSlot) || isString(rawSlot)) { // 动态文本要单独处理  slot: signal('sss')
+        // element.addChild(new TextNode(rawSlot));
+        element.addChild(slot as Ref<string | number>);
+        return; // Ref<string | number> 不需要在这里 watch 监听了。
+      }
     /**
      */
     watch(slot, (newRaw, oldRaw) => {
@@ -54,10 +64,14 @@ export function transformSlot(element: TypeElement, slot?: ISlotItem, type: 'add
         // element is not according to original propose.
         //   element then replace all children when reactivity;
         // element.clearEvents();
-        // todo
+        // todo  slot: [ TypeNode, Ref<string> ]
+        if (isString(newRaw) || isNumber(newRaw)) {
+          return
+        }
         element.clearChildren();
         transformSlot(element, newRaw); // 这里会addChild
-        if (oldRaw !== undefined) { // 非首次渲染，首次渲染会在mountElement中执行。
+        // todo oldRaw  [undefined, undefined, undefined] ... ...
+        if (oldRaw !== undefined || (isArray(oldRaw) && !isArrayAllUndefined(oldRaw))) { // 非首次渲染，首次渲染会在mountElement中执行。
         // console.warn('oldRaw is undefined . ');
         //   todo resetDom，  child 可能已经渲染过了，也可能没有挂载过；
         //        还有考虑 tooltip 这种特殊的对象，dom.childNodes 和 childNodes 不一致。
@@ -89,21 +103,29 @@ export function transformSlot(element: TypeElement, slot?: ISlotItem, type: 'add
             insertDomAndAnchor(element, upDom);
           }
         } else {
-        //   todo mounted
-        //        update
+          // todo oldRaw is undefined , 通常 mount 中会渲染
+          //  transformSlot(this, computed(() => toggle.get() ? p : undefined))
+          if (element.isMounted) {
+            element.childNodes.forEach(child => {
+              // console.warn('child then mount, it is ', child);
+              const to = getToDom(child);
+              child.mount(to ?? element.dom);
+            })
+            // when element is TdIcon, element.dom is Icon; need not to upDom appendChild again .
+            if (element.dom instanceof DocumentFragment) {
+              // maybe comment replace
+              // console.error('element.dom is DocumentFragment . ');
+              insertDomAndAnchor(element, upDom);
+            }
+          }
         }
+      } else {
+        console.warn('element.dom is undefined . ', element.dom);
       }
     }, {
       immediate: true
     })
   } else if (isArray(slot)) {
-    // slot.forEach((item) => { // todo 应该是递归调用
-    //   // if (isRef(item)) {
-    //   //   element.slotChild(item.get());
-    //   // } else {
-    //   //   element.slotChild(toRaw(item));
-    //   // }
-    // });
     for (const item of slot) {
       transformSlot(element, item)
     }
@@ -111,70 +133,12 @@ export function transformSlot(element: TypeElement, slot?: ISlotItem, type: 'add
     transformSlot(element, slot());
   } else {
     if (type === 'unshift') {
-      // if (slot instanceof TypeNode) {
-      //   slot.setParent(element); // 如果不是子类，是其它地方的对象加过来，要重设其父类。 一个对象挂载到不同的父类中，可能会造成混乱。
-      //   if (element.scopedId) {
-      //     element.scopedId = element.scopedId ?? element.parent?.scopedId;
-      //     slot.scopedId = slot.scopedId ?? element.scopedId;
-      //     addAttrProp(slot, slot.scopedId, '');
-      //   }
-      //   if (currentInstance === element) {
-      //     slot.createdIn = 'setup';
-      //     element.createdIn = 'setup';
-      //   }
-      //   element.childNodes.unshift(slot);
-      // } else if (typeof slot === 'string' || typeof slot === 'number') {
-      //   // const text = new TextNode(slot);
-      //   // text.setParent(element);
-      //   // element.childNodes.unshift(text);
-      // } else {
-      //   console.error('useSlotChild: slot is not TypeNode or string or number, it is ', slot);
-      // }
       element.unshiftChild(slot);
     } else {
-      // if (slot instanceof TypeNode) { // todo error 会有 引入错误。
-      //   if (slot.className === 'TdMenuItem') {
-      //     console.error('newChild is TdMenuItem');
-      //   }
-      //   if (slot.className === 'UL') {
-      //     console.error('newChild is UL . this is ', element);
-      //   }
-      //   // 如果不是子类，是其它地方的对象加过来，要重设其父类。 一个对象挂载到不同的父类中，可能会造成混乱。
-      //   // 如果两个不同的组件的添加了newChild 会被加载两次，parent会被重置。如 vIf vElse 时，props.slot会在两个不同的分支组件中加载；
-      //   //   todo newChild 是否要改为 类 本身， 然后 new Constructor(params).  ----> 无法解决 vIf,vElse
-      //   // if (slot.parent) {
-      //   //   slot = new (slot.constructor as any)(slot.params) as TypeNode;
-      //   // }
-      //   slot.setParent(element);
-      //   element.scopedId = element.scopedId ?? element.parent?.scopedId;
-      //   if (element.scopedId) {
-      //     slot.scopedId = slot.scopedId ?? element.scopedId;
-      //     addAttrProp(slot, slot.scopedId, '');
-      //   }
-      //   if (currentInstance === element) {
-      //     slot.createdIn = 'setup'; // todo why ???
-      //     element.createdIn = 'setup';
-      //   }
-      //   element.childNodes.push(slot);
-      // } else if (isNumber(slot) || isString(slot)) {
-      //   const text = new TextNode(slot);
-      //   text.setParent(element);
-      //   element.childNodes.push(text);
-      // } else {
-      //   console.error('newChild  is ', slot);
-      // }
-      // todo vIf vElse slot中引用了相同的 props.slot 会改变 props.slot 的 parent；导致 inject 失效。
-      // if (Object.hasOwnProperty.call(element.baseProps, 'vIf')) {
-      //   if (!unref(element.baseProps.vIf)) {
-      //   //   不要重置 parent
-      //     element.addChildWithoutParent(slot);
-      //     return;
-      //   }
-      //   element.addChild(slot);
-      // } else {
-      //   element.addChild(slot);
-      // }
       element.addChild(slot);
     }
   }
 }
+
+// 方法: 使用 every()
+const isArrayAllUndefined = (arr: any[]) => arr.every(item => item === undefined);

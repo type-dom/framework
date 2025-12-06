@@ -66,7 +66,7 @@ function useRawIf(condition: boolean | unknown, element: TypeNode, oldValue?: un
       }
     } else { // 卸载 dom
       // 正常挂载（mount)时，element.dom应该不会appendChild(child.dom);
-      console.warn('element.vIf is false , then replace dom witch comment . ');
+      // console.warn('element.vIf is false , then replace dom witch comment . ');
       element.anchor = element.anchor ?? document.createComment('v-if');
       if (element.transition && oldValue) {
         // console.warn('element.transition is existed . ');

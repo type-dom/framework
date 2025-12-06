@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest';
 // import { useEventListener } from '@type-dom/use';
-import { Div } from '../dist';
+import { Div } from '../src';
 // import { promiseTimeout, createSingletonPromise } from './yourModulePath'; // 请替换为实际的模块路径
 
 // 1. 测试异步操作的性能

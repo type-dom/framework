@@ -5,7 +5,7 @@ import { TextNode } from './text-node.class';
 export function useTextRender(element: TextNode) {
   // console.log('TextNode render is ', element.nodeValue);
   // 渲染出来的值，在 模板语法中需要转换的。
-  let text = element.nodeValue;
+  let text = element.props.nodeValue?.toString() ?? '';
   if (isMustache(text)) {
     // if (element.nodeValue === '基础用法 {{ title }}') {
     //   console.log('element is ', element);
