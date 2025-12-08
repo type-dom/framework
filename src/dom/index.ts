@@ -15,7 +15,7 @@
 //   isRuntimeOnly,
 //   warn,
 // } from '@vue/runtime-core'
-// import { nodeOps } from './nodeOps'
+// import * from './nodeOps';
 // import { patchProp } from './patchProp'
 // // Importing from the compiler, will be tree-shaken in prod
 // import {
@@ -32,6 +32,10 @@
 // import type { vShow } from './directives/vShow'
 // import type { VOnDirective } from './directives/vOn'
 // import type { VModelDirective } from './directives/vModel'
+
+import { isString } from '@type-dom/utils';
+import { warn } from '../core/warning';
+import { ElementNamespace, RendererElement } from '../core/renderer/renderer';
 
 /**
  * This is a stub implementation to prevent the need to use dom types.
@@ -70,14 +74,14 @@
 // let renderer: Renderer<Element | ShadowRoot> | HydrationRenderer
 //
 // let enabledHydration = false
-//
+
 // function ensureRenderer() {
 //   return (
 //     renderer ||
 //     (renderer = createRenderer<Node, Element | ShadowRoot>(rendererOptions))
 //   )
 // }
-//
+
 // function ensureHydrationRenderer() {
 //   renderer = enabledHydration
 //     ? renderer
@@ -85,7 +89,7 @@
 //   enabledHydration = true
 //   return renderer as HydrationRenderer
 // }
-//
+
 // use explicit type casts here to avoid import() calls in rolled-up d.ts
 // export const render = ((...args) => {
 //   ensureRenderer().render(...args)
@@ -94,7 +98,7 @@
 // export const hydrate = ((...args) => {
 //   ensureHydrationRenderer().hydrate(...args)
 // }) as RootHydrateFunction
-//
+
 // export const createApp = ((...args) => {
 //   const app = ensureRenderer().createApp(...args)
 //
@@ -164,19 +168,20 @@
 //   return app
 // }) as CreateAppFunction<Element>
 
-// function resolveRootNamespace(
-//   container: Element | ShadowRoot,
-// ): ElementNamespace {
-//   if (container instanceof SVGElement) {
-//     return 'svg'
-//   }
-//   if (
-//     typeof MathMLElement === 'function' &&
-//     container instanceof MathMLElement
-//   ) {
-//     return 'mathml'
-//   }
-// }
+export function resolveRootNamespace(
+  container: Element | ShadowRoot,
+): ElementNamespace {
+  if (container instanceof SVGElement) {
+    return 'svg'
+  }
+  if (
+    typeof MathMLElement === 'function' &&
+    container instanceof MathMLElement
+  ) {
+    return 'mathml'
+  }
+  return;
+}
 //
 // function injectNativeTagCheck(app: App) {
 //   // Inject `isNativeTag`
@@ -224,31 +229,30 @@
 //     })
 //   }
 // }
-//
-// function normalizeContainer(
-//   container: Element | ShadowRoot | string,
-// ): Element | ShadowRoot | null {
-//   if (isString(container)) {
-//     const res = document.querySelector(container)
-//     if (__DEV__ && !res) {
-//       warn(
-//         `Failed to mount app: mount target selector "${container}" returned null.`,
-//       )
-//     }
-//     return res
-//   }
-//   if (
-//     __DEV__ &&
-//     window.ShadowRoot &&
-//     container instanceof window.ShadowRoot &&
-//     container.mode === 'closed'
-//   ) {
-//     warn(
-//       `mounting on a ShadowRoot with \`{mode: "closed"}\` may lead to unpredictable bugs`,
-//     )
-//   }
-//   return container as any
-// }
+
+export function normalizeContainer(container: RendererElement) {
+  if (isString(container)) {
+    const res = document.querySelector(container)
+    if (// __DEV__ &&
+      !res) {
+      warn(
+        `Failed to mount app: mount target selector "${container}" returned null.`,
+      )
+    }
+    return res
+  }
+  if (
+    // __DEV__ &&
+    window.ShadowRoot &&
+    container instanceof window.ShadowRoot &&
+    container.mode === 'closed'
+  ) {
+    warn(
+      `mounting on a ShadowRoot with \`{mode: "closed"}\` may lead to unpredictable bugs`,
+    )
+  }
+  return container
+}
 
 // Custom element support
 // export {
@@ -313,3 +317,4 @@ export * from './modules/style';
 export * from './modules/class';
 
 export * from './components';
+export * from './patchProp';

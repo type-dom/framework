@@ -1,31 +1,48 @@
 import { isDescendant } from '@type-dom/utils';
 import { TypeNode } from '../type-node/type-node.abstract';
-import { RawDom } from '../type-element/type-element.interface';
-import { mountDom } from './mountDom';
-import { createDom } from './createDom';
+import { mountDom } from '../helpers/mountDom';
+import { createDom } from '../helpers/createDom';
+import { resetDom } from '../helpers/resetDom';
 import { removeDom } from './removeDom';
-import { resetDom } from './resetDom';
-/**
- * 处理元素的注释占位符初始化及DOM替换逻辑
- * @param element 待处理的元素对象，包含DOM节点及关联的注释节点
- * @param upDom
- * @returns void
- */
+// import { TypeElement } from '../type-element/type-element.abstract';
+// import { UnmountFn } from './unmount';
 
-// } else if (unref(element.baseProps.vIf) === false) {
-//   // 如果this.dom已经被在其它地方加载了，会在这里被移除的。
-//   // 所以同一对象被VIf多处使用时，会被移除。
-//   // element.removeDom(); // todo mount时可以不处理吗？ 默认应该时没有被挂载的，有问题的还是一个对象多处判断。
 
-export function replaceElementAnchorWithDom(element: TypeNode, upDom: RawDom) {
-  if (element.dom && element.anchor) {
-    upDom.replaceChild(element.dom, element.anchor);
-  } else {
-    console.error('dom or element.anchor is undefined . ')
-  }
-}
+export type ElementNamespace = 'svg' | 'mathml' | undefined
 
-export function anchorReplaceDom(element: TypeNode, upDom?: RawDom) {
+
+export type RealDom =  Element | ShadowRoot // HTMLElement | SVGElement | ShadowRoot; //
+export type RawDom = RealDom | DocumentFragment | Document;
+export type TypeEl =  RawDom | string | null | undefined;
+
+// Renderer Node can technically be any object in the context of core renderer
+// logic - they are never directly operated on and always passed to the node op
+// functions provided via options, so the internal constraint is really just
+// a generic object.
+export type RendererNode = (RawDom | Comment | Text) & { $node?: TypeNode; [key: string | symbol]: any};
+
+export type RendererElement = RendererNode;
+
+// An object exposing the internals of a renderer, passed to tree-shakeable
+// features so that they can be decoupled from this file. Keys are shortened
+// to optimize bundle size.
+// export interface RendererInternals<
+//   HostNode = RendererNode,
+//   HostElement = RendererElement,
+// > {
+//   p: PatchFn
+//   um: UnmountFn
+//   r: RemoveFn
+//   m: MoveFn
+//   mt: MountComponentFn
+//   mc: MountChildrenFn
+//   pc: PatchChildrenFn
+//   pbc: PatchBlockChildrenFn
+//   n: NextFn
+//   o: RendererOptions<HostNode, HostElement>
+// }
+
+export function anchorReplaceDom(element: TypeNode, container?: RendererElement) {
   // console.error('anchorReplaceDom ， upDom is ', upDom);
   const dom = element.dom;
   // 真实父节点
@@ -35,7 +52,7 @@ export function anchorReplaceDom(element: TypeNode, upDom?: RawDom) {
   // if (element.dom instanceof DocumentFragment) {
   //   console.error('element.dom is DocumentFragment. element is ', element);
   // }
-  const parentElement = upDom ?? mountDom(element);
+  const parentElement = container ?? mountDom(element);
   /**
    * 确保元素拥有注释节点作为占位符（用于v-if等条件渲染指令）
    * 当element.anchor不存在时创建新的注释节点
@@ -82,7 +99,7 @@ export function anchorReplaceDom(element: TypeNode, upDom?: RawDom) {
         // todo 子节点如果有 Teleport to 的没有清理。
         removeDom(element);
       } else { // 普通子元素
-        if (Object.prototype.hasOwnProperty.call(element.baseProps, 'vIf')) {
+        if (Object.prototype.hasOwnProperty.call(element.$options, 'vIf')) {
           if (isDescendant(parentElement, dom)) {
             parentElement.replaceChild(element.anchor, dom);
           } else {
@@ -132,17 +149,17 @@ export function anchorReplaceDom(element: TypeNode, upDom?: RawDom) {
  *   注： Fragment的 anchor占位，不能被替换，因为替换后是无法被找回的。
  *       应该 mount 时， 创建 element.anchor element.dom , 并且在 dom树上挂载了。
  * @param element
- * @param upDom
+ * @param container
  */
-export function insertDomAndAnchor(element: TypeNode, upDom?: RawDom | null) {
+export function insertDomAndAnchor(element: TypeNode, container?: RendererElement | null) {
   // if (upDom instanceof DocumentFragment) {
   //   console.warn('upDom is DocumentFragment . upDom is ', upDom);
   // }
   // if (element.dom instanceof DocumentFragment) {
   //   console.warn('element.dom is DocumentFragment. element is ', element);
   // }
-  upDom = upDom ?? mountDom(element);
-  if (!upDom) {
+  container = container ?? mountDom(element);
+  if (!container) {
     console.warn('upDom is undefined . ');
     return;
   }
@@ -159,7 +176,7 @@ export function insertDomAndAnchor(element: TypeNode, upDom?: RawDom | null) {
   //   });
   // } else {
     // 先判断子节点中是否已经包含 element.dom
-    if (dom && isDescendant(upDom, dom)) return;
+    if (dom && isDescendant(container, dom)) return;
     if (dom instanceof DocumentFragment) {
       // 要把子元素挂载上来
       //   mount 时，是挂载了的。
@@ -175,18 +192,68 @@ export function insertDomAndAnchor(element: TypeNode, upDom?: RawDom | null) {
       // console.warn('dom is ', dom);
     }
   // }
-
-  if (dom && element.anchor && isDescendant(upDom, element.anchor)) {
+  // Todo Teleport  element.anchor ---> element.parent.dom
+  //                element.dom ----->  toDom; element.targetAnchor
+  if (element.className === 'Teleport') {
+     if (dom && element.targetAnchor && element.targetStart) {
+       if (isDescendant(container, element.targetAnchor)) {
+         container?.insertBefore(dom, element.targetAnchor);
+       } else {
+         container.appendChild(element.targetStart);
+         container.appendChild(dom);
+         container.appendChild(element.targetAnchor);
+       }
+     }
+     const parentDom = element.parent?.dom;
+     if (parentDom && element.anchorStart && element.anchor) {
+       parentDom.appendChild(element.anchorStart);
+       parentDom.appendChild(element.anchor);
+     }
+  } else if (dom && element.anchor && isDescendant(container, element.anchor)) {
     // 应该在 mount 中创建，并添加
     // todo replaceChild ?? insertBefore
     if (dom instanceof DocumentFragment) {
-      upDom?.insertBefore(dom, element.anchor);
+      container?.insertBefore(dom, element.anchor);
     } else {
-      upDom?.replaceChild(dom, element.anchor);
+      container?.replaceChild(dom, element.anchor);
     }
   } else {
+    console.error('element.anchor not a child of upDom . element is ', element);
+    // tooltip examples error not show tooltip content;
+    // todo tooltip content error
+    if (element.isMounted) {
+      if (dom && element.anchor && !isDescendant(container, element.anchor) && !isDescendant(container, dom) ) {
+        if (dom instanceof DocumentFragment && element.anchorStart) {
+          if (element.anchorStart) {
+            container.appendChild(element.anchorStart);
+          } else {
+            console.error('Fragment not have anchorStart')
+          }
+          container?.appendChild(element.anchor);
+          container?.insertBefore(dom, element.anchor);
+        } else {
+          // todo tooltip content error upDom is DocumentFragment, not mount to dom;
+          if (element.className === 'TdPopperContent') {
+            console.warn('insertDomAndAnchor TdPopperContent render . ');
+            if (element.anchor.parentElement) {
+              element.anchor.parentElement.insertBefore(dom, element.anchor);
+            } else if (element.anchor.parentNode) {
+              element.anchor.parentNode.insertBefore(dom, element.anchor);
+              // todo element.anchor.parentNode 为什么没有mount时挂载。
+              if (element.anchor.parentNode instanceof DocumentFragment) {
+                container?.appendChild(element.anchor.parentNode);
+              }
+            } else {
+              console.error('element.anchor.parentElement and element.anchor.parentNode are null . element is ', element);
+              container?.appendChild(dom);
+            }
+          } else {
+            container?.appendChild(dom);
+          }
+        }
+      }
+    }
     // mount 时触发；
-    console.error('element.anchor not a child of upDom . ', element);
     // if (dom){
     //   if (dom instanceof DocumentFragment) {
     //     // if (element.className === undefined) {
@@ -204,60 +271,6 @@ export function insertDomAndAnchor(element: TypeNode, upDom?: RawDom | null) {
     // }
   }
 }
-/**
- *  添加 定位锚点
- * 确保元素拥有注释节点作为占位符）
- * 当element.anchor不存在时创建新的注释节点
- */
-export function setFragmentAnchor(element: TypeNode, upDom: RawDom) {
-  if (element.dom instanceof DocumentFragment) {
-    element.anchorStart = element.anchorStart ?? document.createComment('[' + element.className + '' + element.uid);
-    if (!isDescendant(upDom, element.anchorStart)) {
-      upDom.appendChild(element.anchorStart);
-    }
-    element.anchor = element.anchor ?? document.createComment(element.className + '' + element.uid + ']');
-    if (!isDescendant(upDom, element.anchor)) {
-      upDom.appendChild(element.anchor);
-    }
-  } else {
-    console.error('element.dom is not DocumentFragment . ');
-  }
-}
-
-export function appendFragmentAnchor(element: TypeNode, upDom: RawDom) {
-  if (!element.anchorStart || !element.anchor) {
-    console.error('element.anchorStart or element.anchor is undefined . ');
-    return;
-  }
-  if (element.dom instanceof DocumentFragment) {
-    if (!isDescendant(upDom, element.anchorStart)) {
-      upDom.appendChild(element.anchorStart);
-    }
-    if (!isDescendant(upDom, element.anchor)) {
-      upDom.appendChild(element.anchor);
-    }
-  } else {
-    console.error('element.dom is not DocumentFragment . ');
-  }
-}
-export function setFragmentAnchorWithDom(element: TypeNode, upDom: RawDom | Comment | Text) {
-    if (upDom instanceof Text || upDom instanceof Comment) {
-      console.error('setFragmentAnchorWithDom， upDom is Text or Comment . ');
-      return;
-    }
-    let dom = element.dom;
-    if (!dom) dom = createDom(element);
-    if (dom instanceof DocumentFragment) {
-      setFragmentAnchor(element, upDom); // fragment作为整体插入锚点位置；
-      if (!element.anchor) {
-        console.error('element.anchor is undefined . ');
-        return;
-      }
-      upDom.insertBefore(dom, element.anchor);
-    } else {
-      console.error('element.dom is not DocumentFragment . ');
-    }
-  }
 
 export function setFragmentAnchorWithoutDom(element: TypeNode, upDom: RawDom | Text | Comment) {
   if (upDom instanceof Text || upDom instanceof Comment) {
@@ -268,16 +281,24 @@ export function setFragmentAnchorWithoutDom(element: TypeNode, upDom: RawDom | T
   if (!dom) dom = createDom(element);
   if (dom instanceof DocumentFragment) {
     element.anchorStart = element.anchorStart ?? document.createComment('[' + element.className + '' + element.uid);
-    if (!isDescendant(upDom, element.anchorStart)) {
-      upDom.appendChild(element.anchorStart);
-    }
-    removeDom(element);
-    // if (isDescendant(upDom, dom)) {
-    //   upDom.removeChild(dom); // DocumentFragment 的子节点会被挂载到上级Element节点上；
-    // }
     element.anchor = element.anchor ?? document.createComment(element.className + '' + element.uid + ']');
-    if (!isDescendant(upDom, element.anchor)) {
-      upDom.appendChild(element.anchor);
+    if (element.className === 'Teleport') {
+      const parentDom = element.parent?.dom
+      if (parentDom && element.anchor && !isDescendant(parentDom, element.anchor)) {
+        parentDom.appendChild(element.anchorStart);
+        parentDom.appendChild(element.anchor);
+      }
+    } else {
+      if (!isDescendant(upDom, element.anchorStart)) {
+        upDom.appendChild(element.anchorStart);
+      }
+      removeDom(element);
+      // if (isDescendant(upDom, dom)) {
+      //   upDom.removeChild(dom); // DocumentFragment 的子节点会被挂载到上级Element节点上；
+      // }
+      if (!isDescendant(upDom, element.anchor)) {
+        upDom.appendChild(element.anchor);
+      }
     }
   } else {
     console.error('element.dom is not DocumentFragment . ');
@@ -288,18 +309,3 @@ export function setFragmentAnchorWithoutDom(element: TypeNode, upDom: RawDom | T
 //     removeDom(element);
 //   }
 // }
-
-export function setElementAnchor(element: TypeNode, upDom: RawDom) {
-  if (element.dom instanceof DocumentFragment) {
-    console.error('element.dom is DocumentFragment . ');
-    return;
-  }
-  element.anchor = element.anchor ?? document.createComment('v-if' + element.className + '' + element.uid);
-  if (!isDescendant(upDom, element.anchor)) {
-    if (element.dom && isDescendant(upDom, element.dom)) {
-      upDom.insertBefore(element.anchor, element.dom); // TdSubMenu collapse切换时，子菜单加载到菜单上方。
-    } else {
-      upDom?.appendChild(element.anchor);
-    }
-  }
-}

@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeFooter, TypeFooterProps } from './footer.interface';
+import { ITypeFooter, FooterProps } from './footer.interface';
 
-export abstract class TypeFooter extends TypeHtml implements ITypeFooter {
-  props: TypeFooterProps;
-  dom?: HTMLElement;
+export abstract class TypeFooter<Props extends FooterProps = FooterProps> extends TypeHtml<Props> implements ITypeFooter {
+  dom: HTMLElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'footer'
-    })
+    } as Props);
+    this.dom = document.createElement('footer');
   }
 }

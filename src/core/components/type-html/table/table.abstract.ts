@@ -1,14 +1,14 @@
+import { defaultProps } from '../../../helpers/defaultProps';
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeTable, TypeTableProps } from './table.interface';
+import { ITypeTable, TableProps } from './table.interface';
 
-export abstract class TypeTable extends TypeHtml implements ITypeTable {
-  props: TypeTableProps;
-  dom?: HTMLTableElement;
+export abstract class TypeTable<Props extends TableProps = TableProps> extends TypeHtml<Props> implements ITypeTable {
+  dom: HTMLTableElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(defaultProps(params, {
       nodeName: 'table'
-    })
+    } as Props));
+    this.dom = document.createElement('table');
   }
 }

@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeMenuItem, TypeMenuItemProps } from './menu-item.interface';
+import { ITypeMenuItem, MenuItemProps } from './menu-item.interface';
 
-export abstract class TypeMenuItem extends TypeHtml implements ITypeMenuItem {
-  props: TypeMenuItemProps;
-  dom?: HTMLElement;
+export abstract class TypeMenuItem<Props extends MenuItemProps = MenuItemProps> extends TypeHtml<Props> implements ITypeMenuItem {
+  dom: HTMLElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'menuitem'
-    })
+    } as Props);
+    this.dom = document.createElement('menuitem');
   }
 }

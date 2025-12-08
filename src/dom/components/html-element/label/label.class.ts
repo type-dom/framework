@@ -1,5 +1,5 @@
 import { TypeLabel } from '../../../../core/components/type-html/label/label.abstract';
-import { TypeLabelProps } from '../../../../core/components/type-html/label/label.interface';
+import { LabelProps } from '../../../../core/components/type-html/label/label.interface';
 import { transformSlot } from '../../../../core/helpers/transformSlot';
 import { addAttrName } from '../../../modules/attribute';
 import { TextNode } from '../../text-node/text-node.class';
@@ -12,13 +12,12 @@ export class Label extends TypeLabel implements ILabel {
 
   override isBasic = true;
 
-  constructor(params: TypeLabelProps = {}) {
-    super();
+  constructor(params: LabelProps = {}) {
+    super(params);
     this.className = 'Label';
     addAttrName(this, 'label');
     this.childNodes = [];
     transformSlot(this, params.slot);
-    this.useParams(params);
   }
 
   // createInstance(labelLiteral: ILabel): void {

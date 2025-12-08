@@ -2,11 +2,11 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeImg extends ITypeHtml {
-  props: TypeImgProps;
+  props: ImgProps;
   childNodes: [];
 }
 
-export interface TypeImgProps extends HtmlProps {
+export interface ImgProps extends HtmlProps {
   nodeName?: 'img';
   attrObj?: IntrinsicElementAttributes['img'];
 }

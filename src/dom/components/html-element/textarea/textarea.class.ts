@@ -1,6 +1,6 @@
 import { IPrimitive } from '@type-dom/utils';
 import { TypeTextarea } from '../../../../core/components/type-html/textarea/textarea.abstract';
-import { TypeTextareaProps } from '../../../../core/components/type-html/textarea/textarea.interface';
+import { TextareaProps } from '../../../../core/components/type-html/textarea/textarea.interface';
 import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { ITextarea } from './textarea.interface';
 
@@ -11,11 +11,10 @@ export class Textarea extends TypeTextarea implements ITextarea {
 
   override isBasic = true;
 
-  constructor(params: TypeTextareaProps = {}) {
-    super();
+  constructor(params: TextareaProps = {}) {
+    super(params);
     this.className = 'TextArea';
     transformSlot(this, params.slot);
-    this.useParams(params);
   }
 
   get value(): string | undefined {

@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeTrack extends ITypeHtml {
-  props: TypeTrackProps;
+  props: TrackProps;
 }
 
-export interface TypeTrackProps extends HtmlProps {
+export interface TrackProps extends HtmlProps {
   nodeName?: 'track';
   attrObj?: IntrinsicElementAttributes['track'];
 }

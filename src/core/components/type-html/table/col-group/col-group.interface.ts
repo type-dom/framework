@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../../dom/modules/attribute
 import type { ITypeHtml, HtmlProps } from '../../type-html.interface';
 
 export interface ITypeTableColGroup extends ITypeHtml {
-  props: TypeTableColGroupProps;
+  props: TableColGroupProps;
 }
 
-export interface TypeTableColGroupProps extends HtmlProps {
+export interface TableColGroupProps extends HtmlProps {
   nodeName?: 'colgroup';
   attrObj?: IntrinsicElementAttributes['colgroup'];
 }

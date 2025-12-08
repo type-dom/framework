@@ -1,29 +1,29 @@
 import { isString, isNumber } from '@type-dom/utils';
+import { Dayjs } from 'dayjs';
 import { TextNode } from '../../dom/components/text-node/text-node.class';
+import { createAppContext } from '../../dom/components/app/createAppContext';
 import {
-  addAttrProp,
   Attributes,
+  addAttrProp,
   renderAttrObj,
   resetAttrObj,
 } from '../../dom/modules/attribute';
 import { renderStyleObj, resetStyleObj } from '../../dom/modules/style/style';
-import { removeDom } from '../helpers/removeDom';
-import {createDom} from "../helpers/createDom";
+import { isRef, Ref } from '../../reactivity';
 import { findDown } from '../helpers/findDown';
-import { mountElement } from '../helpers/mountElement';
 import { useRecurseRender } from '../helpers/useRecurseRender';
-import { useParams } from '../helpers/useParams';
 import { transformSlot } from '../helpers/transformSlot';
 import type { ISlotItem, IChild, TypeProps, } from '../type-node/type-node.interface';
 import { TypeNode } from '../type-node/type-node.abstract';
+import { mountElement } from '../renderer/mountElement';
+import { removeDom } from '../renderer/removeDom';
 import { currentInstance } from '../component';
 import { NodeName } from '../enums';
 import type {
   IBoundBox,
   ITypeElement,
-  RawDom,
 } from './type-element.interface';
-import { isRef } from '../../reactivity';
+import { RawDom } from '../renderer/renderer';
 
 // export let uid = 0;
 // export let componentId = 0;
@@ -35,7 +35,11 @@ export const vHash = Math.round(Math.random() * 1000000);
  * 与对应的导出时的数据结构是不一样的。
  * 除了 TextNode 之外的其它类型的 Node 。
  */
-export abstract class TypeElement<A extends Attributes = Attributes> extends TypeNode<A> implements ITypeElement {
+export abstract class TypeElement<
+    Props extends TypeProps = TypeProps,
+    Attrs extends Attributes = Attributes
+  >
+  extends TypeNode<Props, Attrs> implements ITypeElement {
   abstract override dom?: HTMLElement | SVGElement | DocumentFragment; // 不会是Text；
   // 包括 fragment
   // abstract nodeName: NodeName.FRAGMENT | string; // 必然有； 且不为 #text
@@ -44,7 +48,7 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
   // isRendered: boolean;
   // componentId: number;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: Props) {
     super(params);
     // this.componentId = componentId++;
     this.attributes = [];
@@ -54,7 +58,7 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
 
   // 向上获取真实的 element ;
   get elementParent(): TypeElement | undefined {
-    if (this.baseProps.nodeName=== NodeName.FRAGMENT) {
+    if (this.$options.nodeName === NodeName.FRAGMENT) {
       return this.parent?.elementParent;
     } else {
       return this;
@@ -79,12 +83,16 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
   // }
 
   get boundBox(): IBoundBox {
-    if (this.dom === undefined || this.dom instanceof DocumentFragment || this.dom instanceof Comment) {
+    if (
+      this.dom === undefined ||
+      this.dom instanceof DocumentFragment ||
+      this.dom instanceof Comment
+    ) {
       return {
         left: 0,
         top: 0,
         width: 0,
-        height: 0
+        height: 0,
       };
     }
     const { left, top, width, height } = this.dom.getBoundingClientRect();
@@ -93,43 +101,22 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
       left: left + 'px',
       top: top + 'px',
       width: width + 'px',
-      height: height + 'px'
+      height: height + 'px',
     };
   }
 
   get(key: string) {
-    return this.baseProps[key as keyof TypeProps];
+    return this.$options[key as keyof Props];
   }
 
   set(key: string, value: any) {
-    // const propValue = this.baseProps[key];
-    this.baseProps[key as keyof TypeProps] = value;
+    // const propValue = this.$options[key];
+    this.$options[key as keyof Props] = value;
   }
 
   // setTransitionProps(props: TransitionProps) {
   //   this.transitionProps = props;
   // }
-
-  /**
-   * 配置参数
-   * 使用传入的参数，与节点结合
-   * @param params
-   */
-  useParams<T extends TypeProps>(params = {} as T): T {
-    // console.warn('type-element useParams . ');
-    // todo TdTimeline example custom-node.ts  属性是undefined的属性，应该被过滤掉的，但是目前没有过滤。
-    //    这样会把默认值给重置为undefined，与设计不符。
-    //    又没有场景就是给props的属性赋值 undefined ?????
-    //    TdInput 会多出前后缀， 有冲突。
-    // const param = removeUndefinedProps(params as any) as unknown as T;
-    // console.log('param is ', param);
-    // this.uid = uid++;
-    for (const key of Object.keys(params)) {
-      // 如果已经配置了默认值，则使用默认值
-      (params as any)[key] ??= (this.baseProps as any)?.[key];
-    }
-    return useParams(this, params);
-  }
 
   get textNode(): TextNode | undefined {
     // 如果 textNode 已经存在，直接返回
@@ -153,9 +140,9 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
    * @param newChild
    */
   appendChild(newChild: TypeNode): void {
-    newChild.appendParent(this); // 如果不是子类，是其它地方的对象加过来，要重设其父类。
+    newChild.appendParent(this as unknown as TypeElement); // 如果不是子类，是其它地方的对象加过来，要重设其父类。
     if (newChild instanceof TypeElement) {
-      useRecurseRender(newChild)
+      useRecurseRender(newChild);
     } else {
       newChild.render();
     }
@@ -198,7 +185,7 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
    * todo List 动态添加子元素时，新元素的scopedId会丢失。
    * @param newChild
    */
-  addChild(newChild: IChild): void {
+  addChild(newChild: IChild | Ref<string | number | Dayjs | undefined>): void {
     if (newChild instanceof TypeNode) {
       // if (newChild.className === 'TdMenuItem') {
       //   console.error('newChild is TdMenuItem');
@@ -209,9 +196,12 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
       // 如果不是子类，是其它地方的对象加过来，要重设其父类。 一个对象挂载到不同的父类中，可能会造成混乱。
       // 如果两个不同的组件的添加了newChild 会被加载两次，parent会被重置。如 vIf vElse 时，props.slot会在两个不同的分支组件中加载；
       //   todo newChild 是否要改为 类 本身， 然后 new Constructor(params).  ----> 无法解决 vIf,vElse
-      if (newChild.parent) { // add by me 2025/09/02 11:11
+      if (newChild.parent) {
+        // add by me 2025/09/02 11:11
         // console.warn('newChild has been added . ');
-        newChild = new (newChild.constructor as any)(newChild.params) as TypeNode; // todo newChild是否会被做其它处理 ？？？？
+        newChild = new (newChild.constructor as any)(
+          newChild.params
+        ) as TypeNode; // todo newChild是否会被做其它处理 ？？？？
       }
       newChild.setParent(this);
       this.scopedId = this.scopedId ?? this.parent?.scopedId;
@@ -223,17 +213,28 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
         newChild.createdIn = 'setup'; // todo why ???
         this.createdIn = 'setup';
       }
+      // todo appContext.app 在createApp创建的项目中，应该是 App而不是null
+      // inherit parent app context - or - if root, adopt from root vnode
+      // const parent = this.parent;
+      const appContext = newChild.appContext || this.appContext || createAppContext();
+      if (appContext.app === null) {
+        // console.error('addChild appContext.app is ', appContext.app);
+      } else {
+        newChild.appContext = appContext;
+        newChild.provides = newChild.provides ?? this?.provides ?? Object.create(appContext.provides);
+      }
+
       this.childNodes.push(newChild);
     } else if (isNumber(newChild) || isString(newChild) || isRef(newChild)) {
       if (isRef(newChild)) {
-        const raw = newChild.get()
+        const raw = newChild.get();
         if (!isNumber(raw) && !isString(raw)) {
-          console.error(`newChild is not Ref<string | number>`)
+          console.error(`newChild is not Ref<string | number>`);
           return;
         }
       }
-      const text = new TextNode(newChild);
-      text.setParent(this);
+      const text = new TextNode(newChild, this);
+      // text.setParent(this);
       this.childNodes.push(text);
     } else {
       console.error('newChild  is ', newChild);
@@ -337,7 +338,9 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
   }
   clearSetupChildNodes(): void {
     // this.childNodes.forEach(child => child.unmount());
-    this.childNodes = this.childNodes.filter(child => child.createdIn !== 'setup');
+    this.childNodes = this.childNodes.filter(
+      (child) => child.createdIn !== 'setup'
+    );
   }
 
   clearSetupChildrenDom(): void {
@@ -350,17 +353,17 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
     //     }
     //   });
     // } else {
-      // let first = this.dom?.firstElementChild;
-      // while (first) {
-      //   first.remove();
-      //   first = this.dom?.firstElementChild;
-      // }
-      this.childNodes.forEach(child => {
-        if (child?.createdIn === 'setup') {
-          // this.clearEvents(); // fix drawer with footer, button events emit thirdly
-          removeDom(child);
-        }
-      })
+    // let first = this.dom?.firstElementChild;
+    // while (first) {
+    //   first.remove();
+    //   first = this.dom?.firstElementChild;
+    // }
+    this.childNodes.forEach((child) => {
+      if (child?.createdIn === 'setup') {
+        // this.clearEvents(); // fix drawer with footer, button events emit thirdly
+        removeDom(child);
+      }
+    });
     // }
   }
 
@@ -383,8 +386,8 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
     if (this.dom instanceof DocumentFragment) {
       // if this is Fragment, this.childNodes is empty, and child dom up to parent real element;
       //   this parent dom 's childNodes has this child dom;
-      //   todo if this child dom be removed , then repalce new Child how to get original position .
-      //    so should remove dom after replaeced .
+      //   todo if this child dom be removed , then replace new Child how to get original position .
+      //    so should remove dom after replaced .
       this.childNodes.forEach((child) => {
         removeDom(child);
       });
@@ -428,7 +431,10 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
         this.childNodes.splice(index, 1, newNode);
         if (newNode.dom && oldNode?.dom) {
           // fragment处理
-          if (this.dom instanceof DocumentFragment && this.dom.childNodes.length === 0) {
+          if (
+            this.dom instanceof DocumentFragment &&
+            this.dom.childNodes.length === 0
+          ) {
             this.dom.appendChild(newNode.dom);
           } else {
             this.dom?.replaceChild(newNode.dom, oldNode.dom);
@@ -473,7 +479,6 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
   //   // }
   // }
 
-
   /**
    * 挂载到真实DOM；
    * 需要手动挂载组件时使用，一般是挂载到框架外的DOM元素时。
@@ -483,7 +488,7 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
    * 使用fragment要优化
    * @param el 是DocumentFragment时，和HTMLElement一样处理。层层 appendChild
    */
-  mount(el?: RawDom | string) {
+  mount(el?: RawDom) {
     return mountElement(this, el);
   }
 
@@ -500,7 +505,7 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
    * @param literal
    */
   createInstance(literal: ITypeElement): void {
-    resetAttrObj(this, literal.params?.attrObj)
+    resetAttrObj(this, literal.params?.attrObj);
     resetStyleObj(this, literal.params?.styleObj);
     const length = literal.childNodes.length;
     if (length < this.length) {
@@ -523,7 +528,6 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
    */
   preRender(): void {
     // console.log('this.className is ' + this.className + ', preRender . ');
-    createDom(this);
   }
 
   /**
@@ -533,7 +537,7 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
    */
   render(): void {
     this.preRender();
-    if (this.baseProps.nodeName !== NodeName.FRAGMENT) {
+    if (this.$options.nodeName !== NodeName.FRAGMENT) {
       renderStyleObj(this);
       renderAttrObj(this);
     } else {
@@ -543,3 +547,4 @@ export abstract class TypeElement<A extends Attributes = Attributes> extends Typ
     this.isRendered = true;
   }
 }
+// const emptyAppContext = createAppContext()

@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeBase, TypeBaseProps } from './base.interface';
+import { ITypeBase, BaseProps } from './base.interface';
 
-export abstract class TypeBase extends TypeHtml implements ITypeBase {
-  props: TypeBaseProps;
-  dom?: HTMLElement;
+export abstract class TypeBase<Props extends BaseProps = BaseProps> extends TypeHtml<Props> implements ITypeBase {
+  dom: HTMLElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'base'
-    });
+    } as Props);
+    this.dom = document.createElement('base');
   }
 }

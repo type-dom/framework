@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeU, TypeUProps } from './u.interface';
+import { ITypeU, UProps } from './u.interface';
+import { defaultProps } from '../../../helpers/defaultProps';
 
-export abstract class TypeU extends TypeHtml implements ITypeU {
-  props: TypeUProps;
-  dom?: HTMLElement;
+export abstract class TypeU<Props extends UProps = UProps> extends TypeHtml<Props> implements ITypeU {
+  dom: HTMLElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(defaultProps(params, {
       nodeName: 'u'
-    })
+    } as Props));
+    this.dom = document.createElement('u');
   }
 }

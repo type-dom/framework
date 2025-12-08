@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeIFrame, TypeIFrameProps } from './iframe.interface';
+import { ITypeIFrame, IFrameProps } from './iframe.interface';
 
-export abstract class TypeIFrame extends TypeHtml implements ITypeIFrame {
-  props: TypeIFrameProps;
-  dom?: HTMLIFrameElement;
+export abstract class TypeIFrame<Props extends IFrameProps = IFrameProps> extends TypeHtml<Props> implements ITypeIFrame {
+  dom: HTMLIFrameElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'iframe'
-    })
+    } as Props);
+    this.dom = document.createElement('iframe');
   }
 }

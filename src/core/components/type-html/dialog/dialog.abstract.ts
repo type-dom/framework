@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeDialog, TypeDialogProps } from './dialog.interface';
+import { ITypeDialog, DialogProps } from './dialog.interface';
 
-export abstract class TypeDialog extends TypeHtml implements ITypeDialog {
-  props: TypeDialogProps;
-  dom?: HTMLDialogElement;
+export abstract class TypeDialog<Props extends DialogProps = DialogProps> extends TypeHtml<Props> implements ITypeDialog {
+  dom: HTMLDialogElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'dialog'
-    })
+    } as Props);
+    this.dom = document.createElement('dialog');
   }
 }

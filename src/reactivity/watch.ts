@@ -10,11 +10,11 @@ import {
 } from '@type-dom/utils';
 import { cloneDeep, } from 'lodash-es';
 import { MaybeRef, Ref, isRef } from '../reactivity/index';
-import { isTypeNode } from '../core/type-node/vnode';
+import { isTypeNode } from '../core';
 import { warn } from './warning.js';
 
 export type WatchSource<T = any> = Ref<T> | (() => T | undefined) | (MaybeRef<T> | (() => T | undefined))[];
-export type WatchCallback<T> = (newValue: T, oldValue: T) => void;
+export type WatchCallback<T = any> = (newValue: T, oldValue: T) => void;
 export type WatchStopHandle = () => void;
 
 export interface WatchOptions<T = unknown, Immediate = boolean> {

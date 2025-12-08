@@ -44,3 +44,13 @@
 //     insert(anchor!, container, parentAnchor)
 //   }
 // }
+
+import { RendererElement } from '../../../core/renderer/renderer';
+
+export const TeleportEndKey: unique symbol = Symbol('_vte')
+
+export const isTargetSVG = (target: RendererElement): boolean =>
+  typeof SVGElement !== 'undefined' && target instanceof SVGElement
+
+export const isTargetMathML = (target: RendererElement): boolean =>
+  typeof MathMLElement === 'function' && target instanceof MathMLElement

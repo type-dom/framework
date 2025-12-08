@@ -15,7 +15,7 @@ export const ANIMATION = 'animation';
 
 export type AnimationTypes = typeof TransitionUtil | typeof ANIMATION;
 
-export interface TransitionProps extends TypeTransitionProps<Element> {
+export interface TransitionProps extends TypeTransitionProps {
   name?: string;
   type?: AnimationTypes;
   css?: boolean;
@@ -44,7 +44,7 @@ export type StylePropertiesKey =
   | `${AnimationTypes}${AnimationProperties}`
   | `${typeof TransitionUtil}Property`;
 
-export const vtcKey: unique symbol = Symbol('_vtc')
+export const vtcKey = Symbol('_vtc')
 
 export interface ElementWithTransition extends HTMLElement {
   // _vtc = Vue Transition Classes.

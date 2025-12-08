@@ -1,12 +1,12 @@
-
+import { ToMaybeRefs } from '../../../reactivity';
 import type { ITextNode } from '../../../dom/components/text-node/text-node.interface';
-import type { ITypeElement } from '../../type-element/type-element.interface';
 import { SVGAttributes } from '../../../dom/modules/attribute';
 import { TypeProps } from '../../type-node/type-node.interface';
-import { ToMaybeRefs } from '../../../reactivity';
+import type { ITypeElement } from '../../type-element/type-element.interface';
 
 export interface ITypeSvg extends ITypeElement {
   // attrObj?: SVGAttributes;
+  props?: SvgProps;
   childNodes: (ITypeSvg | ITextNode)[];
 }
 

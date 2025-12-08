@@ -1,5 +1,5 @@
 import { TypeFigure } from '../../../../core/components/type-html/figure/figure.abstract';
-import { TypeFigureProps } from '../../../../core/components/type-html/figure/figure.interface';
+import { FigureProps } from '../../../../core/components/type-html/figure/figure.interface';
 import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IFigure } from './figure.interface';
 
@@ -8,10 +8,9 @@ export class Figure extends TypeFigure implements IFigure {
 
   override isBasic = true;
 
-  constructor(params: TypeFigureProps = {}) {
-    super();
+  constructor(params: FigureProps = {}) {
+    super(params);
     this.className = 'Figure';
     transformSlot(this, params.slot);
-    this.useParams(params);
   }
 }

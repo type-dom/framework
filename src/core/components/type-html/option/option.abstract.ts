@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeOption, TypeOptionProps } from './option.interface';
+import { ITypeOption, OptionProps } from './option.interface';
 
-export abstract class TypeOption extends TypeHtml implements ITypeOption {
-  props: TypeOptionProps;
-  dom?: HTMLOptionElement;
+export abstract class TypeOption<Props extends OptionProps = OptionProps> extends TypeHtml<Props> implements ITypeOption {
+  dom: HTMLOptionElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'option'
-    })
+    } as Props);
+    this.dom = document.createElement('option');
   }
 }

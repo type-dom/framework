@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeStrong, TypeStrongProps } from './strong.interface';
+import { ITypeStrong, StrongProps } from './strong.interface';
 
-export abstract class TypeStrong extends TypeHtml implements ITypeStrong {
-  props: TypeStrongProps;
-  dom?: HTMLElement;
+export abstract class TypeStrong<Props extends StrongProps = StrongProps> extends TypeHtml<Props> implements ITypeStrong {
+  dom: HTMLElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'strong'
-    })
+    } as Props);
+    this.dom = document.createElement('strong');
   }
 }

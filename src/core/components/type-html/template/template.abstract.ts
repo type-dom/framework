@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeTemplate, TypeTemplateProps } from './template.interface';
+import { ITypeTemplate, TemplateProps } from './template.interface';
+import { defaultProps } from '../../../helpers/defaultProps';
 
-export abstract class TypeTemplate extends TypeHtml implements ITypeTemplate {
-  props: TypeTemplateProps;
-  dom?: HTMLTemplateElement;
+export abstract class TypeTemplate<Props extends TemplateProps = TemplateProps> extends TypeHtml<Props> implements ITypeTemplate {
+  dom: HTMLTemplateElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(defaultProps(params, {
       nodeName: 'template'
-    })
+    } as Props));
+    this.dom = document.createElement('template');
   }
 }

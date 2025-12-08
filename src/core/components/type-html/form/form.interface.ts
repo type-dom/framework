@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeForm extends ITypeHtml {
-  props: TypeFormProps;
+  props: FormProps;
 }
 
-export interface TypeFormProps extends HtmlProps {
+export interface FormProps extends HtmlProps {
   nodeName?: 'form';
   attrObj?: IntrinsicElementAttributes['form'];
 }

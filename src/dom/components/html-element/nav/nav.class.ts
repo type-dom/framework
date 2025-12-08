@@ -1,5 +1,5 @@
 import { TypeNav } from '../../../../core/components/type-html/nav/nav.abstract';
-import { TypeNavProps } from '../../../../core/components/type-html/nav/nav.interface';
+import { NavProps } from '../../../../core/components/type-html/nav/nav.interface';
 import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { INav } from './nav.interface';
 
@@ -8,10 +8,9 @@ export class Nav extends TypeNav implements INav {
 
   override isBasic = true;
 
-  constructor(params: TypeNavProps = {}) {
-    super();
+  constructor(params: NavProps = {}) {
+    super(params);
     this.className = 'Nav';
     transformSlot(this, params.slot);
-    this.useParams(params);
   }
 }

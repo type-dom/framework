@@ -50,7 +50,7 @@ export function vShow(node: TypeNode, value: any, oldValue?: any) {
     } else {
       setDisplay(el, value)
     }
-  })
+  }, node)
   onBeforeUnmount(()=> {
     const el = node?.dom as VShowElement;
     setDisplay(el, value)

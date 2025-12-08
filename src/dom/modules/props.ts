@@ -1,10 +1,10 @@
 // import { DeprecationTypes, compatUtils, warn } from '@vue/runtime-core'
 // import { includeBooleanAttr } from '@vue/shared'
-// import { unsafeToTrustedHTML } from '../nodeOps'
+import { includeBooleanAttr } from '@type-dom/utils';
+import { unsafeToTrustedHTML } from '../nodeOps'
 
 // functions. The user is responsible for using them with only trusted content.
-// import { warn } from '../../core';
-import { includeBooleanAttr } from '@type-dom/utils';
+import { warn } from '../../core';
 
 export function patchDOMProp(
   el: any,
@@ -20,7 +20,7 @@ export function patchDOMProp(
     // null value case is handled in renderer patchElement before patching
     // children
     if (value != null) {
-      // el[key] = key === 'innerHTML' ? unsafeToTrustedHTML(value) : value
+      el[key] = key === 'innerHTML' ? unsafeToTrustedHTML(value) : value
     }
     return
   }
@@ -102,13 +102,14 @@ export function patchDOMProp(
     el[key] = value
   } catch (e: any) {
     // do not warn if value is auto-coerced from nullish values
-    // if (__DEV__ && !needRemove) {
-    //   warn(
-    //     `Failed setting prop "${key}" on <${tag.toLowerCase()}>: ` +
-    //       `value ${value} is invalid.`,
-    //     e,
-    //   )
-    // }
+    if (// __DEV__ &&
+      !needRemove) {
+      warn(
+        `Failed setting prop "${key}" on <${tag.toLowerCase()}>: ` +
+          `value ${value} is invalid.`,
+        e,
+      )
+    }
   }
   if (needRemove) el.removeAttribute(attrName || key)
 }

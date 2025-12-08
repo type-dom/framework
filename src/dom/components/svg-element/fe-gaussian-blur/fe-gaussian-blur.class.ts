@@ -9,21 +9,19 @@ export class SvgFeGaussianBlur extends TypeSvg implements ISvgFeGaussianBlur {
   nodeName: 'feGaussianBlur';
   className: 'SvgFeGaussianBlur';
   dom: SVGFEGaussianBlurElement;
-  override props: SvgProps;
   override childNodes: [];
 
   override isBasic = true;
 
-  constructor(params?: SvgProps) {
-    super();
+  constructor(params: SvgProps = {}) {
+    super(params);
     this.nodeName = 'feGaussianBlur';
     this.className = 'SvgFeGaussianBlur';
     this.dom = document.createElementNS(
       'http://www.w3.org/2000/svg',
-      this.nodeName
+      'feGaussianBlur'
     );
     this.childNodes = [];
     transformSlot(this, params?.slot);
-    this.props = this.useParams(params);
   }
 }

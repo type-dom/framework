@@ -44,6 +44,11 @@ import {
   EMPTY_OBJ,
   hyphenate,
   isFunction,
+  extend,
+  EMPTY_ARR,
+  isString,
+  isOn,
+  PatchFlags,
 } from '@type-dom/utils';
 import { warn } from './warning'
 // // import {
@@ -54,26 +59,30 @@ import { warn } from './warning'
 // //   setCurrentInstance,
 // // } from './component'
 // // import { isEmitListener } from './componentEmits'
-// // import type { AppContext } from './apiCreateApp'
+
 // // import { createPropsDefaultThis } from './compat/props'
 // // import { isCompatEnabled, softAssertCompatEnabled } from './compat/compatConfig'
 // // import { DeprecationTypes } from './compat/compatConfig'
 // // import { shouldSkipAttr } from './compat/attrsFallthrough'
 import { createInternalObject } from './internalObject'
 
-// export type ComponentPropsOptions<P = Data> =
-//   | ComponentObjectPropsOptions<P>
-//   | string[]
-//
-// export type ComponentObjectPropsOptions<P = Data> = {
-//   [K in keyof P]: Prop<P[K]> | null
-// }
-//
+export type ComponentPropsOptions<P = Data> =
+  | ComponentObjectPropsOptions<P>
+  | string[]
+
+export type ComponentObjectPropsOptions<P = Data> = {
+  [K in keyof P]: Prop<P[K]> | null
+}
+
 
 import { toRaw } from '../reactivity';
 import { TypeNode } from './type-node/type-node.abstract';
 import { setCurrentInstance } from './component';
 import { isEmitListener } from './componentEmits';
+// import { TriggerOpTypes } from '../operations';
+import { shouldSkipAttr } from './compat/attrsFallthrough';
+import { AppContext } from '../dom/components/app/app.interface';
+// import { ComponentOptions } from './componentOptions';
 
 type Data = Record<string, unknown>
 
@@ -231,7 +240,7 @@ export function initProps(
   setFullProps(instance, rawProps, props, attrs)
 
   // ensure all declared prop keys are present
-  for (const key in instance.propsOptions[0]) {
+  for (const key in instance.propsOptions?.[0]) {
     if (!(key in props)) {
       props[key] = undefined
     }
@@ -257,146 +266,147 @@ export function initProps(
   // instance.attrs = attrs
 }
 
-// function isInHmrContext(instance: ComponentInternalInstance | null) {
-//   while (instance) {
-//     if (instance.type.__hmrId) return true
-//     instance = instance.parent
-//   }
-// }
+function isInHmrContext(instance: TypeNode | null) {
+  // while (instance) {
+  //   // if (instance.type.__hmrId) return true
+  //   instance = instance.parent
+  // }
+}
 
-// export function updateProps(
-//   instance: ComponentInternalInstance,
-//   rawProps: Data | null,
-//   rawPrevProps: Data | null,
-//   optimized: boolean,
-// ): void {
-//   const {
-//     props,
-//     attrs,
-//     vnode: { patchFlag },
-//   } = instance
-//   const rawCurrentProps = toRaw(props)
-//   const [options] = instance.propsOptions
-//   let hasAttrsChanged = false
-//
-//   if (
-//     // always force full diff in dev
-//     // - #1942 if hmr is enabled with sfc component
-//     // - vite#872 non-sfc component used by sfc component
-//     !(__DEV__ && isInHmrContext(instance)) &&
-//     (optimized || patchFlag > 0) &&
-//     !(patchFlag & PatchFlags.FULL_PROPS)
-//   ) {
-//     if (patchFlag & PatchFlags.PROPS) {
-//       // Compiler-generated props & no keys change, just set the updated
-//       // the props.
-//       const propsToUpdate = instance.vnode.dynamicProps!
-//       for (let i = 0; i < propsToUpdate.length; i++) {
-//         let key = propsToUpdate[i]
-//         // skip if the prop key is a declared emit event listener
-//         if (isEmitListener(instance.emitsOptions, key)) {
-//           continue
-//         }
-//         // PROPS flag guarantees rawProps to be non-null
-//         const value = rawProps![key]
-//         if (options) {
-//           // attr / props separation was done on init and will be consistent
-//           // in this code path, so just check if attrs have it.
-//           if (hasOwn(attrs, key)) {
-//             if (value !== attrs[key]) {
-//               attrs[key] = value
-//               hasAttrsChanged = true
-//             }
-//           } else {
-//             const camelizedKey = camelize(key)
-//             props[camelizedKey] = resolvePropValue(
-//               options,
-//               rawCurrentProps,
-//               camelizedKey,
-//               value,
-//               instance,
-//               false /* isAbsent */,
-//             )
-//           }
-//         } else {
-//           if (__COMPAT__) {
-//             if (isOn(key) && key.endsWith('Native')) {
-//               key = key.slice(0, -6) // remove Native postfix
-//             } else if (shouldSkipAttr(key, instance)) {
-//               continue
-//             }
-//           }
-//           if (value !== attrs[key]) {
-//             attrs[key] = value
-//             hasAttrsChanged = true
-//           }
-//         }
-//       }
-//     }
-//   } else {
-//     // full props update.
-//     if (setFullProps(instance, rawProps, props, attrs)) {
-//       hasAttrsChanged = true
-//     }
-//     // in case of dynamic props, check if we need to delete keys from
-//     // the props object
-//     let kebabKey: string
-//     for (const key in rawCurrentProps) {
-//       if (
-//         !rawProps ||
-//         // for camelCase
-//         (!hasOwn(rawProps, key) &&
-//           // it's possible the original props was passed in as kebab-case
-//           // and converted to camelCase (#955)
-//           ((kebabKey = hyphenate(key)) === key || !hasOwn(rawProps, kebabKey)))
-//       ) {
-//         if (options) {
-//           if (
-//             rawPrevProps &&
-//             // for camelCase
-//             (rawPrevProps[key] !== undefined ||
-//               // for kebab-case
-//               rawPrevProps[kebabKey!] !== undefined)
-//           ) {
-//             props[key] = resolvePropValue(
-//               options,
-//               rawCurrentProps,
-//               key,
-//               undefined,
-//               instance,
-//               true /* isAbsent */,
-//             )
-//           }
-//         } else {
-//           delete props[key]
-//         }
-//       }
-//     }
-//     // in the case of functional component w/o props declaration, props and
-//     // attrs point to the same object so it should already have been updated.
-//     if (attrs !== rawCurrentProps) {
-//       for (const key in attrs) {
-//         if (
-//           !rawProps ||
-//           (!hasOwn(rawProps, key) &&
-//             (!__COMPAT__ || !hasOwn(rawProps, key + 'Native')))
-//         ) {
-//           delete attrs[key]
-//           hasAttrsChanged = true
-//         }
-//       }
-//     }
-//   }
-//
-//   // trigger updates for $attrs in case it's used in component slots
-//   if (hasAttrsChanged) {
-//     trigger(instance.attrs, TriggerOpTypes.SET, '')
-//   }
-//
-//   if (__DEV__) {
-//     validateProps(rawProps || {}, props, instance)
-//   }
-// }
+export function updateProps(
+  instance: TypeNode,
+  rawProps: Data | null,
+  rawPrevProps: Data | null,
+  optimized: boolean,
+): void {
+  const {
+    props,
+    attrs,
+    // vnode: { patchFlag },
+    patchFlag
+  } = instance
+  const rawCurrentProps = toRaw(props)
+  const [options] = instance.propsOptions
+  // let hasAttrsChanged = false
+
+  if (
+    // always force full diff in dev
+    // - #1942 if hmr is enabled with sfc component
+    // - vite#872 non-sfc component used by sfc component
+    !(__DEV__ && isInHmrContext(instance)) &&
+    (optimized || patchFlag! > 0) &&
+    !(patchFlag! & PatchFlags.FULL_PROPS)
+  ) {
+    if (patchFlag! & PatchFlags.PROPS) {
+      // Compiler-generated props & no keys change, just set the updated
+      // the props.
+      const propsToUpdate = instance.dynamicProps!
+      for (let i = 0; i < propsToUpdate.length; i++) {
+        let key = propsToUpdate[i]
+        // skip if the prop key is a declared emit event listener
+        if (isEmitListener(instance.emitsOptions, key)) {
+          continue
+        }
+        // PROPS flag guarantees rawProps to be non-null
+        const value = rawProps![key]
+        if (options) {
+          // attr / props separation was done on init and will be consistent
+          // in this code path, so just check if attrs have it.
+          if (hasOwn(attrs!, key)) {
+            if (value !== attrs?.[key]) {
+              attrs![key] = value
+              // hasAttrsChanged = true
+            }
+          } else {
+            const camelizedKey = camelize(key) as string;
+            (props as any)[camelizedKey] = resolvePropValue(
+              options,
+              rawCurrentProps,
+              camelizedKey,
+              value,
+              instance,
+              false /* isAbsent */,
+            )
+          }
+        } else {
+          if (__COMPAT__) {
+            if (isOn(key) && key.endsWith('Native')) {
+              key = key.slice(0, -6) // remove Native postfix
+            } else if (shouldSkipAttr(key, instance)) {
+              continue
+            }
+          }
+          if (value !== attrs?.[key]) {
+            (attrs as any)[key] = value
+            // hasAttrsChanged = true
+          }
+        }
+      }
+    }
+  } else {
+    // full props update.
+    // if (setFullProps(instance, rawProps, props, attrs)) {
+    //   hasAttrsChanged = true
+    // }
+    // in case of dynamic props, check if we need to delete keys from
+    // the props object
+    let kebabKey: string
+    for (const key in rawCurrentProps) {
+      if (
+        !rawProps ||
+        // for camelCase
+        (!hasOwn(rawProps, key) &&
+          // it's possible the original props was passed in as kebab-case
+          // and converted to camelCase (#955)
+          ((kebabKey = hyphenate(key)) === key || !hasOwn(rawProps, kebabKey)))
+      ) {
+        if (options) {
+          if (
+            rawPrevProps &&
+            // for camelCase
+            (rawPrevProps[key] !== undefined ||
+              // for kebab-case
+              rawPrevProps[kebabKey!] !== undefined)
+          ) {
+            (props as any)[key] = resolvePropValue(
+              options,
+              rawCurrentProps,
+              key,
+              undefined,
+              instance,
+              true /* isAbsent */,
+            )
+          }
+        } else {
+          delete (props as any)[key]
+        }
+      }
+    }
+    // in the case of functional component w/o props declaration, props and
+    // attrs point to the same object so it should already have been updated.
+    if (attrs !== rawCurrentProps) {
+      for (const key in attrs) {
+        if (
+          !rawProps ||
+          (!hasOwn(rawProps, key) &&
+            (!__COMPAT__ || !hasOwn(rawProps, key + 'Native')))
+        ) {
+          delete attrs[key]
+          // hasAttrsChanged = true
+        }
+      }
+    }
+  }
+
+  // trigger updates for $attrs in case it's used in component slots
+  // if (hasAttrsChanged) {
+  //   // trigger(instance.attrs, TriggerOpTypes.SET, '')
+  // }
+  //
+  // if (__DEV__) {
+  //   validateProps(rawProps || {}, props, instance)
+  // }
+}
 
 function setFullProps(
   instance: TypeNode,
@@ -494,7 +504,7 @@ function resolvePropValue(
         !opt.skipFactory &&
         isFunction(defaultValue)
       ) {
-        const { baseProps: propsDefaults } = instance
+        const { $options: propsDefaults } = instance
         if (key in propsDefaults) {
           value = propsDefaults[key as keyof typeof propsDefaults]
         } else {
@@ -533,122 +543,124 @@ function resolvePropValue(
 
 // const mixinPropsCache = new WeakMap<ConcreteComponent, NormalizedPropsOptions>()
 //
-// export function normalizePropsOptions(
-//   comp: ConcreteComponent,
-//   appContext: AppContext,
-//   asMixin = false,
-// ): NormalizedPropsOptions {
-//   const cache =
-//     __FEATURE_OPTIONS_API__ && asMixin ? mixinPropsCache : appContext.propsCache
-//   const cached = cache.get(comp)
-//   if (cached) {
-//     return cached
-//   }
-//
-//   const raw = comp.props
-//   const normalized: NormalizedPropsOptions[0] = {}
-//   const needCastKeys: NormalizedPropsOptions[1] = []
-//
-//   // apply mixin/extends props
-//   let hasExtends = false
-//   if (__FEATURE_OPTIONS_API__ && !isFunction(comp)) {
-//     const extendProps = (raw: ComponentOptions) => {
-//       if (__COMPAT__ && isFunction(raw)) {
-//         raw = raw.options
-//       }
-//       hasExtends = true
-//       const [props, keys] = normalizePropsOptions(raw, appContext, true)
-//       extend(normalized, props)
-//       if (keys) needCastKeys.push(...keys)
-//     }
-//     if (!asMixin && appContext.mixins.length) {
-//       appContext.mixins.forEach(extendProps)
-//     }
-//     if (comp.extends) {
-//       extendProps(comp.extends)
-//     }
-//     if (comp.mixins) {
-//       comp.mixins.forEach(extendProps)
-//     }
-//   }
-//
-//   if (!raw && !hasExtends) {
-//     if (isObject(comp)) {
-//       cache.set(comp, EMPTY_ARR as any)
-//     }
-//     return EMPTY_ARR as any
-//   }
-//
-//   if (isArray(raw)) {
-//     for (let i = 0; i < raw.length; i++) {
-//       if (__DEV__ && !isString(raw[i])) {
-//         warn(`props must be strings when using array syntax.`, raw[i])
-//       }
-//       const normalizedKey = camelize(raw[i])
-//       if (validatePropName(normalizedKey)) {
-//         normalized[normalizedKey] = EMPTY_OBJ
-//       }
-//     }
-//   } else if (raw) {
-//     if (__DEV__ && !isObject(raw)) {
-//       warn(`invalid props options`, raw)
-//     }
-//     for (const key in raw) {
-//       const normalizedKey = camelize(key)
-//       if (validatePropName(normalizedKey)) {
-//         const opt = raw[key]
-//         const prop: NormalizedProp = (normalized[normalizedKey] =
-//           isArray(opt) || isFunction(opt) ? { type: opt } : extend({}, opt))
-//         const propType = prop.type
-//         let shouldCast = false
-//         let shouldCastTrue = true
-//
-//         if (isArray(propType)) {
-//           for (let index = 0; index < propType.length; ++index) {
-//             const type = propType[index]
-//             const typeName = isFunction(type) && type.name
-//
-//             if (typeName === 'Boolean') {
-//               shouldCast = true
-//               break
-//             } else if (typeName === 'String') {
-//               // If we find `String` before `Boolean`, e.g. `[String, Boolean]`,
-//               // we need to handle the casting slightly differently. Props
-//               // passed as `<Comp checked="">` or `<Comp checked="checked">`
-//               // will either be treated as strings or converted to a boolean
-//               // `true`, depending on the order of the types.
-//               shouldCastTrue = false
-//             }
-//           }
-//         } else {
-//           shouldCast = isFunction(propType) && propType.name === 'Boolean'
-//         }
-//
-//         prop[BooleanFlags.shouldCast] = shouldCast
-//         prop[BooleanFlags.shouldCastTrue] = shouldCastTrue
-//         // if the prop needs boolean casting or default value
-//         if (shouldCast || hasOwn(prop, 'default')) {
-//           needCastKeys.push(normalizedKey)
-//         }
-//       }
-//     }
-//   }
-//
-//   const res: NormalizedPropsOptions = [normalized, needCastKeys]
-//   if (isObject(comp)) {
-//     cache.set(comp, res)
-//   }
-//   return res
-// }
+export function normalizePropsOptions(
+  comp: TypeNode,
+  appContext: AppContext,
+  // asMixin = false,
+): NormalizedPropsOptions {
+  const cache =
+    // __FEATURE_OPTIONS_API__ && // asMixin ? mixinPropsCache :
+      appContext.propsCache
+  const cached = cache.get(comp)
+  if (cached) {
+    return cached
+  }
 
-// function validatePropName(key: string) {
-//   if (key[0] !== '$' && !isReservedProp(key)) {
-//     return true
-//   } else if (__DEV__) {
-//     warn(`Invalid prop name: "${key}" is a reserved property.`)
-//   }
-//   return false
-// }
+  const raw = comp.props
+  const normalized: NormalizedPropsOptions[0] = {}
+  const needCastKeys: NormalizedPropsOptions[1] = []
+
+  // apply mixin/extends props
+  const hasExtends = false
+  if (__FEATURE_OPTIONS_API__ && !isFunction(comp)) {
+    // const extendProps = (raw: ComponentOptions) => {
+    //   if (__COMPAT__ && isFunction(raw)) {
+    //     raw = raw.options
+    //   }
+    //   hasExtends = true
+    //   const [props, keys] = normalizePropsOptions(raw, appContext, true)
+    //   extend(normalized, props)
+    //   if (keys) needCastKeys.push(...keys)
+    // }
+    // if (!asMixin && appContext.mixins.length) {
+    //   appContext.mixins.forEach(extendProps)
+    // }
+    // if (comp.extends) {
+    //   extendProps(comp.extends)
+    // }
+    // if (comp.mixins) {
+    //   comp.mixins.forEach(extendProps)
+    // }
+  }
+
+  if (!raw && !hasExtends) {
+    if (isObject(comp)) {
+      cache.set(comp, EMPTY_ARR as any)
+    }
+    return EMPTY_ARR as any
+  }
+
+  if (isArray(raw)) {
+    for (let i = 0; i < raw.length; i++) {
+      if (__DEV__ && !isString(raw[i])) {
+        warn(`props must be strings when using array syntax.`, raw[i])
+      }
+      const normalizedKey = camelize(raw[i])
+      if (validatePropName(normalizedKey)) {
+        normalized[normalizedKey] = EMPTY_OBJ
+      }
+    }
+  } else if (raw) {
+    if (// __DEV__ &&
+      !isObject(raw)) {
+      warn(`invalid props options`, raw)
+    }
+    for (const key in raw) {
+      const normalizedKey = camelize(key)
+      if (validatePropName(normalizedKey)) {
+        const opt = (raw as any)[key]
+        const prop: NormalizedProp = (normalized[normalizedKey] =
+          isArray(opt) || isFunction(opt) ? { type: opt } : extend({}, opt))
+        const propType = prop.type
+        let shouldCast = false
+        let shouldCastTrue = true
+
+        if (isArray(propType)) {
+          for (let index = 0; index < propType.length; ++index) {
+            const type = propType[index]
+            const typeName = isFunction(type) && type.name
+
+            if (typeName === 'Boolean') {
+              shouldCast = true
+              break
+            } else if (typeName === 'String') {
+              // If we find `String` before `Boolean`, e.g. `[String, Boolean]`,
+              // we need to handle the casting slightly differently. Props
+              // passed as `<Comp checked="">` or `<Comp checked="checked">`
+              // will either be treated as strings or converted to a boolean
+              // `true`, depending on the order of the types.
+              shouldCastTrue = false
+            }
+          }
+        } else {
+          shouldCast = isFunction(propType) && propType.name === 'Boolean'
+        }
+
+        prop[BooleanFlags.shouldCast] = shouldCast
+        prop[BooleanFlags.shouldCastTrue] = shouldCastTrue
+        // if the prop needs boolean casting or default value
+        if (shouldCast || hasOwn(prop, 'default')) {
+          needCastKeys.push(normalizedKey)
+        }
+      }
+    }
+  }
+
+  const res: NormalizedPropsOptions = [normalized, needCastKeys]
+  if (isObject(comp)) {
+    cache.set(comp, res)
+  }
+  return res
+}
+
+function validatePropName(key: string) {
+  if (key[0] !== '$' && !isReservedProp(key)) {
+    return true
+  } else { // if (__DEV__) {
+    warn(`Invalid prop name: "${key}" is a reserved property.`)
+  }
+  return false
+}
 
 // dev only
 // use function string name to check type constructors

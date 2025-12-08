@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeDataList extends ITypeHtml {
-  props: TypeDataListProps;
+  props: DataListProps;
 }
 
-export interface TypeDataListProps extends HtmlProps {
+export interface DataListProps extends HtmlProps {
   nodeName?: 'datalist';
   attrObj?: IntrinsicElementAttributes['datalist'];
 }

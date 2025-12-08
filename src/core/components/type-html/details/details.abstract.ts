@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeDetails, TypeDetailsProps } from './details.interface';
+import { ITypeDetails, DetailsProps } from './details.interface';
 
-export abstract class TypeDetails extends TypeHtml implements ITypeDetails {
-  props: TypeDetailsProps;
-  dom?: HTMLDetailsElement;
+export abstract class TypeDetails<Props extends DetailsProps = DetailsProps> extends TypeHtml<Props> implements ITypeDetails {
+  dom: HTMLDetailsElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'details'
-    })
+    } as Props);
+    this.dom = document.createElement('details');
   }
 }

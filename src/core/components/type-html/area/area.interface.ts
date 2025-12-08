@@ -2,9 +2,9 @@ import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute';
 
 export interface ITypeArea extends ITypeHtml {
-  props: TypeAreaProps;
+  props: AreaProps;
 }
-export interface TypeAreaProps extends HtmlProps {
+export interface AreaProps extends HtmlProps {
   nodeName?: 'area';
   attrObj?: IntrinsicElementAttributes['area'];
 }

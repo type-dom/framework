@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeIFrame extends ITypeHtml {
-  props: TypeIFrameProps;
+  props: IFrameProps;
 }
 
-export interface TypeIFrameProps extends HtmlProps {
+export interface IFrameProps extends HtmlProps {
   nodeName?: 'iframe';
   attrObj?: IntrinsicElementAttributes['iframe'];
 }

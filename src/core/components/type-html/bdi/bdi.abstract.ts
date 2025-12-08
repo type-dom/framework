@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeBdi, TypeBdiProps } from './bdi.interface';
+import { ITypeBdi, BdiProps } from './bdi.interface';
 
-export abstract class TypeBdi extends TypeHtml implements ITypeBdi {
-  props: TypeBdiProps;
-  dom?: HTMLElement;
+export abstract class TypeBdi<Props extends BdiProps = BdiProps> extends TypeHtml<Props> implements ITypeBdi {
+  dom: HTMLElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'bdi',
-    })
+    } as Props);
+    this.dom = document.createElement('bdi');
   }
 }

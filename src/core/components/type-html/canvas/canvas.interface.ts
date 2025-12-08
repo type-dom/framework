@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeCanvas extends ITypeHtml {
-  props: TypeCanvasProps;
+  props: CanvasProps;
 }
 
-export interface TypeCanvasProps extends HtmlProps {
+export interface CanvasProps extends HtmlProps {
   nodeName?: 'canvas';
   attrObj?: IntrinsicElementAttributes['canvas'];
 }

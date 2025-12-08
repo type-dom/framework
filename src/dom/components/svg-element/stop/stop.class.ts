@@ -8,19 +8,18 @@ export class SvgStop extends TypeSvg implements ISvgStop {
   nodeName: 'stop';
   className: 'SvgStop';
   dom: SVGStopElement;
-  override props: SvgProps;
   // override attrObj: ISvgStopAttribute;
   override childNodes: [];
 
   override isBasic = true;
 
-  constructor(params: SvgProps) {
-    super();
+  constructor(params: SvgProps = {}) {
+    super(params);
     this.nodeName = 'stop';
     this.className = 'SvgStop';
     this.dom = document.createElementNS(
       'http://www.w3.org/2000/svg',
-      this.nodeName
+      'stop'
     );
     this.childNodes = [];
     addAttrObj(this, {
@@ -28,7 +27,6 @@ export class SvgStop extends TypeSvg implements ISvgStop {
       stopColor: '#000',
     });
     transformSlot(this, params.slot);
-    this.props = this.useParams(params);
   }
 
   reset(offset: number, stopColor: string): void {

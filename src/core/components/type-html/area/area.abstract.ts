@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import type { ITypeArea, TypeAreaProps } from './area.interface';
+import type { ITypeArea, AreaProps } from './area.interface';
 
-export abstract class TypeArea extends TypeHtml implements ITypeArea {
-  props: TypeAreaProps;
-  dom?: HTMLAreaElement;
+export abstract class TypeArea<Props extends AreaProps = AreaProps> extends TypeHtml<Props> implements ITypeArea {
+  dom: HTMLAreaElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'area'
-    })
+    } as Props);
+    this.dom = document.createElement('area');
   }
 }

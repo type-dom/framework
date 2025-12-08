@@ -1,5 +1,5 @@
 import { TypeTableBody } from '../../../../../core/components/type-html/table/body/body.abstract';
-import { TypeTableBodyProps } from '../../../../../core/components/type-html/table/body/body.interface';
+import { TableBodyProps } from '../../../../../core/components/type-html/table/body/body.interface';
 import { transformSlot } from '../../../../../core/helpers/transformSlot';
 import type { ITableBody } from './body.interface';
 
@@ -8,10 +8,9 @@ export class TableBody extends TypeTableBody implements ITableBody {
 
   override isBasic = true;
 
-  constructor(params: TypeTableBodyProps) {
-    super();
+  constructor(params: TableBodyProps) {
+    super(params);
     this.className = 'TableBody';
     transformSlot(this, params.slot);
-    this.useParams(params);
   }
 }

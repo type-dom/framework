@@ -1,5 +1,5 @@
 import { TypeP } from '../../../../core/components/type-html/p/p.abstract';
-import { TypePProps } from '../../../../core/components/type-html/p/p.interface';
+import { PProps } from '../../../../core/components/type-html/p/p.interface';
 import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IP } from './p.interface';
 
@@ -8,10 +8,9 @@ export class P extends TypeP implements IP {
 
   override isBasic = true;
 
-  constructor(params: TypePProps = {}) {
-    super();
+  constructor(params: PProps = {}) {
+    super(params);
     this.className = 'P';
     transformSlot(this, params.slot);
-    this.useParams(params);
   }
 }

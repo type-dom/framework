@@ -1,8 +1,7 @@
 import { unref } from '../../reactivity';
-import { LifecycleHooks } from '../enums';
-import { RawDom } from '../type-element/type-element.interface';
 import { TypeNode } from '../type-node/type-node.abstract';
-import { insertDomAndAnchor, anchorReplaceDom } from './anchorAndDom';
+import { anchorReplaceDom, RawDom } from '../renderer/renderer';
+import { insertDom } from '../renderer/insertDom';
 import { getToDom } from './mountDom';
 import { resetDom } from './resetDom';
 
@@ -26,7 +25,7 @@ export function useUpdate(element: TypeNode, el?: RawDom): void {
     return;
   }
 
-  element.lifeCycles[LifecycleHooks.BEFORE_UPDATE]?.forEach((cb) => cb());
+  element.beforeUpdate();
   resetDom(element);
 
   let appEl: RawDom | undefined | null;
@@ -34,7 +33,7 @@ export function useUpdate(element: TypeNode, el?: RawDom): void {
     element?.to // 显式验证 to 属性存在且为真值
     && !(
       element.className === 'TdTeleport'   // todo why ?
-      && Boolean(unref(element.baseProps.disabled))
+      && Boolean(unref(element.$options.disabled))
     )
   ) {
     appEl = getToDom(element);
@@ -51,11 +50,11 @@ export function useUpdate(element: TypeNode, el?: RawDom): void {
     // 如果注释了， drawer body会跑到footer下面； messagebox的title会不渲染；
     //   原因时， useIf的watch不是立即执行的。
     //   todo 注释后， menu 子菜单没渲染 useVIf 在 子组件加载前执行了。
-    if (Object.hasOwnProperty.call(element.baseProps, 'vIf')) { // todo 是否于上的useVIf重复了？
-      // console.error('element.baseProps.vIf is ', element.baseProps.vIf);
-      if (unref(element.baseProps.vIf)) {
-        // console.error('element.baseProps.vIf is  true');
-        insertDomAndAnchor(element, appEl); // todo ？？？
+    if (Object.hasOwnProperty.call(element.$options, 'vIf')) { // todo 是否于上的useVIf重复了？
+      // console.error('element.$options.vIf is ', element.$options.vIf);
+      if (unref(element.$options.vIf)) {
+        // console.error('element.$options.vIf is  true');
+        insertDom(element, appEl); // todo ？？？
       } else {
         anchorReplaceDom(element, appEl);
       }
@@ -63,5 +62,5 @@ export function useUpdate(element: TypeNode, el?: RawDom): void {
       appEl.appendChild(element.dom);
     }
   }
-  element.lifeCycles[LifecycleHooks.UPDATED]?.forEach((cb) => cb());
+  element.updated();
 }

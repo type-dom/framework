@@ -1,5 +1,4 @@
 import {
-  camelize,
   isFunction,
   isModelListener,
   isOn,
@@ -27,8 +26,8 @@ export const patchProp = (
   key: string,
   prevValue: any,
   nextValue: any,
-  namespace: string,
-  parentComponent: any,
+  namespace?: string,
+  parentComponent?: any,
 ) => {
   const isSVG = namespace === 'svg'
   if (key === 'class') {
@@ -57,12 +56,12 @@ export const patchProp = (
     ) {
       patchAttr(el, key, nextValue, isSVG, parentComponent, key !== 'value')
     }
-  } else if (
-    // #11081 force set props for possible async custom element
-    // (el as VueElement)._isVueCE &&
-    (/[A-Z]/.test(key) || !isString(nextValue))
-  ) {
-    patchDOMProp(el, camelize(key), nextValue, parentComponent, key)
+  // } else if (
+  //   // #11081 force set props for possible async custom element
+  //   (el as VueElement)._isVueCE && // todo _isVueCE what ??
+  //   (/[A-Z]/.test(key) || !isString(nextValue))
+  // ) {
+  //   patchDOMProp(el, camelize(key), nextValue, parentComponent, key)
   } else {
     // special case for <input v-model type="checkbox"> with
     // :true-value & :false-value

@@ -8,7 +8,6 @@ export class SvgLine extends TypeSvg implements ISvgLine {
   nodeName: 'line';
   className: 'SvgLine';
   dom: SVGLineElement;
-  override props: SvgProps;
   // override attrObj: ISvgLineAttribute;
   override childNodes: [];
   x1 = 0;
@@ -18,13 +17,13 @@ export class SvgLine extends TypeSvg implements ISvgLine {
 
   override isBasic = true;
 
-  constructor(params?: SvgProps) {
-    super();
+  constructor(params: SvgProps = {}) {
+    super(params);
     this.nodeName = 'line';
     this.className = 'SvgLine';
     this.dom = document.createElementNS(
       'http://www.w3.org/2000/svg',
-      this.nodeName
+      'line'
     );
     this.childNodes = [];
     addAttrObj(this, {
@@ -36,7 +35,6 @@ export class SvgLine extends TypeSvg implements ISvgLine {
       y2: this.y2,
     });
     transformSlot(this, params?.slot);
-    this.props = this.useParams(params);
   }
 
   reset(x1: number, y1: number, x2: number, y2: number): SvgLine {

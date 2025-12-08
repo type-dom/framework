@@ -1,5 +1,5 @@
 import { TypeB } from '../../../../core/components/type-html/b/b.abstract';
-import { TypeBProps } from '../../../../core/components/type-html/b/b.interface';
+import { BProps } from '../../../../core/components/type-html/b/b.interface';
 import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IB } from './b.interface';
 
@@ -8,10 +8,9 @@ export class B extends TypeB implements IB {
 
   override isBasic = true;
 
-  constructor(params: TypeBProps = {}) {
-    super();
+  constructor(params: BProps = {}) {
+    super(params);
     this.className = 'B';
     transformSlot(this, params.slot);
-    this.useParams(params);
   }
 }

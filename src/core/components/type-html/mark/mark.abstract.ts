@@ -1,14 +1,13 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeMark, TypeMarkProps } from './mark.interface';
+import { ITypeMark, MarkProps } from './mark.interface';
 
-export abstract class TypeMark extends TypeHtml implements ITypeMark {
-  props: TypeMarkProps;
-  dom?: HTMLElement;
-
-  constructor()  {
-    super();
-    this.props = this.useParams({
+export abstract class TypeMark<Props extends MarkProps = MarkProps> extends TypeHtml<Props> implements ITypeMark {
+  dom: HTMLElement;
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'mark'
-    })
+    } as Props);
+    this.dom = document.createElement('mark');
   }
 }

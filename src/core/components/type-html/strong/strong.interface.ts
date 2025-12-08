@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeStrong extends ITypeHtml {
-  props: TypeStrongProps;
+  props: StrongProps;
 }
 
-export interface TypeStrongProps extends HtmlProps {
+export interface StrongProps extends HtmlProps {
   nodeName?: 'strong';
   attrObj?: IntrinsicElementAttributes['strong'];
 }

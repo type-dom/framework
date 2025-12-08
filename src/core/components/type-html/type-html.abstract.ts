@@ -7,22 +7,27 @@ import { addStyleObj, setStyleObj } from '../../../dom/modules/style/style';
 import { StyleValue } from '../../../dom/modules/style/style.interface';
 import { HTMLAttributes } from '../../../dom/modules/attribute';
 import { ToMaybeRefs } from '../../../reactivity';
-import { TypeElement, } from '../../type-element/type-element.abstract';
+import { TypeElement } from '../../type-element/type-element.abstract';
 import type { ITypeHtml, HtmlProps } from './type-html.interface';
 
-export abstract class TypeHtml<T extends HTMLElement = HTMLElement, A extends ToMaybeRefs<HTMLAttributes> = ToMaybeRefs<HTMLAttributes>>
-  extends TypeElement<A> implements ITypeHtml {
+export abstract class TypeHtml<
+    Props extends HtmlProps = HtmlProps,
+    Attrs extends ToMaybeRefs<HTMLAttributes> = ToMaybeRefs<HTMLAttributes>,
+    D extends HTMLElement = HTMLElement,
+  >
+  extends TypeElement<Props, Attrs>
+  implements ITypeHtml
+{
   /**
    * 代表HTML元素的抽象属性。
    * 该属性应为一个`HTMLElement`类型，是具体实现中必须提供的。
    * 子类需要实现这个属性，以提供对具体HTML元素的访问。
    */
-  abstract override dom?: T; // 构造阶段不创建dom
-  abstract override props: HtmlProps;
-  // private timer?: ReturnType<typeof rAF> | undefined;
+  abstract override dom?: D; // 具体类构造阶段创建dom
+  // timer?: ReturnType<typeof rAF> | undefined;
   // transitionTimer?: NodeJS.Timeout;
 
-  constructor(params: HtmlProps = {}) {
+  constructor(params: Props = {} as Props) {
     super(params);
     // addAttrId(this, this.uid);
     // addAttrObj(this, {

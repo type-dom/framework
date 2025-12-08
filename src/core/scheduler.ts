@@ -1,8 +1,11 @@
-import { AnyFn, isArray } from '@type-dom/utils';
-import { ErrorCodes, callWithErrorHandling } from './errorHandling'
-// import { NOOP } from '../constants';
-import type { ITypeNode } from './type-node/type-node.interface';
+import {
+  ErrorCodes,
+  callWithErrorHandling,
+  handleError,
+} from './errorHandling';
 // import { NOOP, isArray } from '@vue/shared'
+import { AnyFn, isArray } from '@type-dom/utils';
+import { TypeNode } from './type-node/type-node.abstract';
 // import { type ComponentInternalInstance, getComponentName } from './component'
 
 export enum SchedulerJobFlags {
@@ -39,7 +42,7 @@ export interface SchedulerJob extends Function {
    * Attached by renderer.ts when setting up a component's render effect
    * Used to obtain component information when reporting max recursive updates.
    */
-  i?: ITypeNode, // ComponentInternalInstance
+  i?: TypeNode | null, // ComponentInternalInstance
 }
 
 export type SchedulerJobs = SchedulerJob | SchedulerJob[]
@@ -54,13 +57,18 @@ let postFlushIndex = 0
 const resolvedPromise = /*@__PURE__*/ Promise.resolve() as Promise<any>
 let currentFlushPromise: Promise<void> | null = null
 
-// const RECURSION_LIMIT = 100
+const RECURSION_LIMIT = 100
 type CountMap = Map<SchedulerJob, number>
 
-export function nextTick<T = void, R = void>(
+export function nextTick(): Promise<void>
+export function nextTick<T, R>(
   this: T,
-  fn?: (this: T) => R,
-): Promise<R | Awaited<R>> {
+  fn: (this: T) => R | Promise<R>,
+): Promise<R>
+export function nextTick<T, R>(
+  this: T,
+  fn?: (this: T) => R | Promise<R>,
+): Promise<void | R> {
   const p = currentFlushPromise || resolvedPromise
   return fn ? p.then(this ? fn.bind(this) : fn) : p
 }
@@ -139,13 +147,13 @@ export function queuePostFlushCb(cb: SchedulerJobs): void {
 }
 
 export function flushPreFlushCbs(
-  instance?: ITypeNode, // ComponentInternalInstance,
-  // seen?: CountMap,
+  instance?: TypeNode, // ComponentInternalInstance,
+  seen?: CountMap,
   // skip the current job
   i: number = flushIndex + 1,
 ): void {
   // if (__DEV__) {
-  //   seen = seen || new Map()
+    seen = seen || new Map()
   // }
   for (; i < queue.length; i++) {
     const cb = queue[i]
@@ -156,6 +164,9 @@ export function flushPreFlushCbs(
       // if (__DEV__ && checkRecursiveUpdates(seen!, cb)) {
       //   continue
       // }
+      if (checkRecursiveUpdates(seen!, cb)) {
+        continue
+      }
       queue.splice(i, 1)
       i--
       if (cb.flags! & SchedulerJobFlags.ALLOW_RECURSE) {
@@ -184,7 +195,7 @@ export function flushPostFlushCbs(seen?: CountMap): void {
 
     activePostFlushCbs = deduped
     // if (__DEV__) {
-    //   seen = seen || new Map()
+      seen = seen || new Map()
     // }
 
     for (
@@ -196,6 +207,9 @@ export function flushPostFlushCbs(seen?: CountMap): void {
       // if (__DEV__ && checkRecursiveUpdates(seen!, cb)) {
       //   continue
       // }
+      if (checkRecursiveUpdates(seen!, cb)) {
+        continue
+      }
       if (cb.flags! & SchedulerJobFlags.ALLOW_RECURSE) {
         cb.flags! &= ~SchedulerJobFlags.QUEUED
       }
@@ -212,7 +226,7 @@ const getId = (job: SchedulerJob): number =>
 
 function flushJobs(seen?: CountMap) {
   // if (__DEV__) {
-  //   seen = seen || new Map()
+    seen = seen || new Map()
   // }
 
   // conditional usage of checkRecursiveUpdate must be determined out of
@@ -223,6 +237,7 @@ function flushJobs(seen?: CountMap) {
   // const check = __DEV__
   //   ? (job: SchedulerJob) => checkRecursiveUpdates(seen!, job)
   //   : NOOP
+  const check = (job: SchedulerJob) => checkRecursiveUpdates(seen!, job)
 
   try {
     for (flushIndex = 0; flushIndex < queue.length; flushIndex++) {
@@ -231,6 +246,9 @@ function flushJobs(seen?: CountMap) {
         // if (__DEV__ && check(job)) {
         //   continue
         // }
+        if (check(job)) {
+          continue
+        }
         if (job.flags! & SchedulerJobFlags.ALLOW_RECURSE) {
           job.flags! &= ~SchedulerJobFlags.QUEUED
         }
@@ -266,24 +284,24 @@ function flushJobs(seen?: CountMap) {
   }
 }
 
-// function checkRecursiveUpdates(seen: CountMap, fn: SchedulerJob) {
-//   const count = seen.get(fn) || 0
-//   if (count > RECURSION_LIMIT) {
-//     const instance = fn.i
-//     const componentName = instance && instance.className; // getComponentName(instance.type)
-//     handleError(
-//       `Maximum recursive updates exceeded${
-//         componentName ? ` in component <${componentName}>` : ``
-//       }. ` +
-//         `This means you have a reactive effect that is mutating its own ` +
-//         `dependencies and thus recursively triggering itself. Possible sources ` +
-//         `include component template, render function, updated hook or ` +
-//         `watcher source function.`,
-//       null,
-//       ErrorCodes.APP_ERROR_HANDLER,
-//     )
-//     return true
-//   }
-//   seen.set(fn, count + 1)
-//   return false
-// }
+function checkRecursiveUpdates(seen: CountMap, fn: SchedulerJob) {
+  const count = seen?.get(fn) || 0
+  if (count > RECURSION_LIMIT) {
+    const instance = fn.i
+    const componentName = instance && instance.className; // getComponentName(instance.type)
+    handleError(
+      `Maximum recursive updates exceeded${
+        componentName ? ` in component <${componentName}>` : ``
+      }. ` +
+        `This means you have a reactive effect that is mutating its own ` +
+        `dependencies and thus recursively triggering itself. Possible sources ` +
+        `include component template, render function, updated hook or ` +
+        `watcher source function.`,
+      null,
+      ErrorCodes.APP_ERROR_HANDLER,
+    )
+    return true
+  }
+  seen?.set(fn, count + 1)
+  return false
+}

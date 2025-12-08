@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeFigCaption extends ITypeHtml {
-  props: TypeFigCaptionProps;
+  props: FigCaptionProps;
 }
 
-export interface TypeFigCaptionProps extends HtmlProps {
+export interface FigCaptionProps extends HtmlProps {
   nodeName?: 'figcaption';
   attrObj?: IntrinsicElementAttributes['figcaption'];
 }

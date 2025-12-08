@@ -3,6 +3,7 @@ import { warn } from '../../warning';
 import { getCurrentInstance } from '../../component';
 import { TypeNode } from '../../type-node/type-node.abstract';
 import { isSameNodeType } from '../../helpers/isSameVNodeType';
+import { transformSlot } from '../../helpers/transformSlot';
 import { TypeFragment } from '../type-fragment/type-fragment.abstract';
 import { TypeHtml } from '../type-html/type-html.abstract';
 import {
@@ -21,10 +22,9 @@ import {
   TransitionElement,
   TypeTransitionProps,
 } from './type-transition.interface';
-import { transformSlot } from '../../helpers/transformSlot';
 
-export abstract class TypeTransition
-  extends TypeFragment
+export abstract class TypeTransition<Props extends TypeTransitionProps = TypeTransitionProps>
+  extends TypeFragment<Props>
   implements ITypeTransition
 {
   // mode: 'in-out' | 'out-in' | 'default';
@@ -33,8 +33,8 @@ export abstract class TypeTransition
   // 唯一子节点
   private content?: TypeHtml;
 
-  constructor(params: TypeTransitionProps<Element> = {}) {
-    super();
+  constructor(params: Props = {} as Props) {
+    super(params);
     // console.warn('TypeTransition constructor. params is ', params);
     // this.mode = params?.mode || 'in-out';
     // this.parent = params?.parent;
@@ -49,7 +49,6 @@ export abstract class TypeTransition
     //   console.log('props is ', this.props);
     //   params.slot.setTransitionProps(this.props as TransitionProps);
     // }
-    // this.props = this.useParams(params);
     // this.props = resolveTransitionProps(params);
 
     transformSlot(this, params.slot ?? params.slots?.default);
@@ -110,7 +109,7 @@ export abstract class TypeTransition
       (hooks) => (enterHooks = hooks)
     );
 
-    if (innerChild.baseProps.nodeName !== '#comment') {
+    if (innerChild.$options.nodeName !== '#comment') {
       setTransitionHooks(innerChild, enterHooks);
     }
 
@@ -119,7 +118,7 @@ export abstract class TypeTransition
     // handle mode
     if (
       oldInnerChild &&
-      oldInnerChild.baseProps.nodeName !== '#comment' &&
+      oldInnerChild.$options.nodeName !== '#comment' &&
       !isSameNodeType(innerChild, oldInnerChild)
       // &&
       // recursiveGetSubtree(instance).props.nodeName !== '#comment'
@@ -133,7 +132,7 @@ export abstract class TypeTransition
       // update old tree's hooks in case of dynamic transition
       setTransitionHooks(oldInnerChild, leavingHooks);
       // switching between different views
-      if (mode === 'out-in' && innerChild.baseProps.nodeName !== '#comment') {
+      if (mode === 'out-in' && innerChild.$options.nodeName !== '#comment') {
         // console.warn('mode is out-in ');
         state.isLeaving = true;
         // return placeholder node and queue update when leave finishes
@@ -151,7 +150,7 @@ export abstract class TypeTransition
         return;
       } else if (
         mode === 'in-out' &&
-        innerChild.baseProps.nodeName !== '#comment'
+        innerChild.$options.nodeName !== '#comment'
       ) {
         // console.warn('mode is in-out ');
         leavingHooks.delayLeave = (
@@ -254,8 +253,8 @@ export abstract class TypeTransition
   // }
 
   // beforeEnter(el: TypeHtml) {
-  //   if (this.baseProps.onBeforeEnter) {
-  //     this.baseProps.onBeforeEnter(el.dom);
+  //   if (this.$options.onBeforeEnter) {
+  //     this.$options.onBeforeEnter(el.dom);
   //   } else {
   //     el.style?.setObj({
   //       opacity: 0,
@@ -265,8 +264,8 @@ export abstract class TypeTransition
   // }
   //
   // enter(el: TypeHtml) {
-  //   if (this.baseProps.onEnter) {
-  //     this.baseProps.onEnter(el.dom, () => {
+  //   if (this.$options.onEnter) {
+  //     this.$options.onEnter(el.dom, () => {
   //       console.log('enter , done . ');
   //     });
   //   } else {

@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeButton extends ITypeHtml {
-  props: TypeButtonProps;
+  props: ButtonProps;
 }
 
-export interface TypeButtonProps extends HtmlProps {
+export interface ButtonProps extends HtmlProps {
   nodeName?: 'button';
   attrObj?: IntrinsicElementAttributes['button'];
 }

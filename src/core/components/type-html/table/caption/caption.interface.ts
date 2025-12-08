@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../../dom/modules/attribute
 import type { ITypeHtml, HtmlProps } from '../../type-html.interface';
 
 export interface ITypeTableCaption extends ITypeHtml {
-  props: TypeTableCaptionProps;
+  props: TableCaptionProps;
 }
 
-export interface TypeTableCaptionProps extends HtmlProps {
+export interface TableCaptionProps extends HtmlProps {
   nodeName?: 'caption';
   attrObj?: IntrinsicElementAttributes['caption'];
 }

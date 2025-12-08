@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeDataList, TypeDataListProps } from './data-list.interface';
+import { ITypeDataList, DataListProps } from './data-list.interface';
 
-export abstract class TypeDataList extends TypeHtml implements ITypeDataList {
-  props: TypeDataListProps;
-  dom?: HTMLDataListElement;
+export abstract class TypeDataList<Props extends DataListProps = DataListProps> extends TypeHtml<Props> implements ITypeDataList {
+  dom: HTMLDataListElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'datalist'
-    })
+    } as Props);
+    this.dom = document.createElement('datalist');
   }
 }

@@ -1,16 +1,18 @@
 import { Dayjs } from 'dayjs';
-import { Computed, Signal } from '@type-dom/signals';
 import { AnyFn, IPrimitive } from '@type-dom/utils';
 import { MaybeRef, Ref } from '../../reactivity';
 import { type IJsonDataProp } from '../../interface';
 import { StyleValue } from '../../dom/modules/style/style.interface';
 import { Attributes, ClassValue } from '../../dom/modules/attribute/attribute.interface';
-import { TypeElement } from '../type-element/type-element.abstract';
+// import { TypeElement } from '../type-element/type-element.abstract';
 import { IEmits } from '../event-emitter/event-emitter.interface';
 import { TransitionElement, TransitionHooks } from '../components/type-transition/type-transition.interface';
 import { NodeName } from '../enums';
 import { TypeNode } from './type-node.abstract';
-import { ITypeBase } from './type-base.interface';
+// import type { AppContext } from '../apiCreateApp';
+import { TypeElement } from '../type-element/type-element.abstract';
+import { AppContext } from '../../dom/components/app/app.interface';
+import { RealDom } from '../renderer/renderer';
 
 export interface IAttr {
   name: string;
@@ -52,6 +54,45 @@ export interface IPath {
   pos: number;
 }
 
+/**
+ * TypeDom 最基础的接口，所有接口都继承了这个接口。
+ *
+ * 同时可以对应json格式的接口，也是json存储的数据结构（除去parent/TypeClass）
+ */
+interface ITypeBase {
+  /**
+   * 移动到 DOM 中 app 之外的其他位置的方式。
+   * 该节点不是当前位置的组件的子节点；要避免加入到组件的子节点中；要挂载到指定的组件的DOM,甚至直接指向 body；
+   * string 类型，可以指定一个选择器；
+   * 挂载到指定的组件的DOM,可以直接指向 body
+   * todo Teleport execute mount to outer dom, so need not to property.
+   */
+  to?: MaybeRef<string | RealDom | TypeElement>;
+
+  /**
+   * parent 可选
+   * 且为 TypeElement
+   */
+  parent?: TypeElement;
+  /**
+   * 上下文，用于查找上下文。
+   * 对应于创建该对象的类对象。
+   * 在setConfig时，对所有子对象进行设置。
+   */
+  // context?: TypeNode;
+  /**
+   * 节点类型
+   * 是否根节点；
+   * root()方法返回的节点，就是根节点。
+   */
+  isRoot?: boolean; // 是否是根节点 一般TypeRoot才为true，其他为false。也可以自定义。
+
+  // TextNode 肯定没有 childNodes， Element 可以没有 childNodes;
+  // childNodes?: ITypeNode[] | undefined;
+
+  settings?: ISettings;
+}
+
 // type Data = Record<string, unknown>
 
 /**
@@ -72,11 +113,47 @@ export interface IPath {
  * 同时可以对应json格式的接口，也是json存储的数据结构（除去parent/TypeClass）
  */
 export interface ITypeNode extends ITypeBase {
-  className?: string;
+  className: string;
   uid?: number; // 自增id uid: uid++
   params?: TypeProps; // 传入参数, TypeProps 中是undefined
   createdIn?: 'setup'; //  constructor
   transition?: TransitionHooks<TransitionElement>;
+  // DOM
+  // el?: HostNode | null
+  // placeholder?: HostNode | null // async component el placeholder
+  // anchor?: HostNode | null // fragment anchor
+  // target?: HostElement | null // teleport target
+  // targetStart?: HostNode | null // teleport target start anchor
+  // targetAnchor?: HostNode | null // teleport target anchor
+
+  // optimization only
+  shapeFlag?: number
+  patchFlag?: number
+  /**
+   * @internal
+   */
+  dynamicProps?: string[] | null
+  /**
+   * @internal
+   */
+  dynamicChildren?: (TypeNode[] & { hasOnce?: boolean }) | null
+
+  // application root node only
+  appContext?: AppContext
+
+  /**
+   * @internal lexical scope owner instance
+   */
+  ctx?: TypeNode | null
+
+  /**
+   * @internal __COMPAT__ only
+   */
+  isCompatRoot?: true
+  /**
+   * @internal custom element interception hook
+   */
+  ce?: (instance: TypeNode) => void
 }
 
 export interface IMethods {
@@ -131,8 +208,8 @@ export interface IPropSetting {
 // 参数接口
 export interface TypeProps extends ITypeBase {
   name?: string | number; // 节点名称, 转化为 attrObj.name;
-  tag?: keyof HTMLElementTagNameMap | NodeName.FRAGMENT | NodeName.TEXT | string; // 转为 nodeName
-  nodeName?: keyof HTMLElementTagNameMap | NodeName.FRAGMENT | NodeName.TEXT | string;
+  tag?: MaybeRef<keyof HTMLElementTagNameMap | NodeName.FRAGMENT | NodeName.COMMENT | NodeName.TEXT | string>; // 转为 nodeName
+  nodeName?: keyof HTMLElementTagNameMap | NodeName.FRAGMENT | NodeName.COMMENT | NodeName.TEXT | string;
   config?: any; // 全局配置属性；
   /**
    * nodeValue只在 TextNode中才有。
@@ -200,13 +277,17 @@ export interface TypeProps extends ITypeBase {
 
   // 设置子元素的属性，并根据属性创建子元素；是json对象；指定的元素类型；
   items?: TypeProps[];
-  // 多个插槽 ———— 对应的 是 TypeNode | TypeNode[], 不同于一般的属性；需要组件本身单独处理的。setConfig方法中没有默认处理方法；
+  /**
+   *  多个插槽 ———— 对应的 是 TypeNode | TypeNode[], 不同于一般的属性；需要组件本身单独处理的。setConfig方法中没有默认处理方法；
+   */
   slots?: ISlots; // 指定多个不同位置的插槽，需要有插槽名称的；需要在类中添加插槽的位置；
-  // 默认插槽  同 slots.default  组件没有插槽时，为undefined。这时子元素只能用 childNodes 属性；
-  //  可以是单个元素，也可以是多个元素，即数组；如何直接插入当前元素，则直接添加到 childNodes；
+  /**
+   * 默认插槽  同 slots.default  组件没有插槽时，为undefined。这时子元素只能用 childNodes 属性；
+   * 可以是单个元素，也可以是多个元素，即数组；如何直接插入当前元素，则直接添加到 childNodes；
+   */
   slot?: ISlotItem;
   // todo slot可以是方法， init方法可以没有
-  init?: (element: TypeElement) => void;
+  init?: <Comp extends TypeNode>(element: Comp) => void;
   /**
    * 自定义的事件监听器，与 events 不同，events 是绑定在基础组件上的事件，而 emits 是在自定义组件上的事件；
    * 与 addEmits 方法配合；
@@ -234,6 +315,23 @@ export interface TypeProps extends ITypeBase {
   // todo defaultOptions
   defaults?: ISettings; // 同 Extjs 中的defaults
   // type?: string;
+
+  // inject / provides
+  inject?: Record<string | symbol, unknown>;
+  provide?: () => Record<string | symbol, unknown>;
+
+  // lifecycle
+  beforeCreate?(): any;
+  created?(this: TypeNode): any;
+  beforeMount?():  any;
+  mounted?():  any;
+  beforeUpdate?():  any;
+  updated?():  any;
+  activated?(): any
+  deactivated?(): any
+  beforeUnmount?():  any;
+  unmounted?():  any;
+
   /**
    * The other props of the element.
    */
@@ -253,21 +351,21 @@ export interface TypeProps extends ITypeBase {
   // [propName: string]: any; // todo should be removed
 }
 
-export type IChild = string | number | Ref<string | number> | boolean | symbol | undefined | Dayjs | TypeNode;
-export type ISlotRef<T extends IChild = IChild> = Signal<T> | Computed<T>;
+export type IChild = string | number | boolean | symbol | null | undefined | Dayjs | TypeNode | Ref<string | number | Dayjs | undefined>;
+// export type ISlotRef<T extends IChild = IChild> = Signal<T> | Computed<T>;
 /**
  * 插槽
  *
  * () => new Class 多个组件调用时，会创建新的对象。
  */
-export type ISlotItem<T extends IChild = IChild> = MaybeRef<T | T[]> | MaybeRef<T>[]
+export type ISlotItem<T extends IChild = IChild> = T | T[]
   | ((...args: any[]) => ISlotItem<T>);
 
 export interface ISlots {
   [propName: 'default' | string]: ISlotItem | undefined;
 }
 
-export interface OptionProps extends TypeProps {
+export interface OptProps extends TypeProps {
   label: string;
   value: string;
   checked?: boolean;

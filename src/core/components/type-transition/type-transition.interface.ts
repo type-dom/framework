@@ -1,14 +1,14 @@
 // 对应 BaseTransition
-import { RendererElement } from '../../../interface';
 import { TypeNode } from '../../type-node/type-node.abstract';
+import { RendererElement } from '../../renderer/renderer';
 import {
   ITypeFragment,
-  TypeFragmentProps,
+  FragmentProps,
 } from '../type-fragment/type-fragment.interface';
 import { enterCbKey, leaveCbKey } from './type-transition.use';
 
 export interface ITypeTransition extends ITypeFragment {
-  className: string;
+  props: TypeTransitionProps;
 }
 
 export type Hook<T = () => void> = T | T[];
@@ -19,8 +19,8 @@ export type Hook<T = () => void> = T | T[];
  * 这个接口包括了进入（enter）、离开（leave）和出现（appear）三个阶段的各个时刻的事件。
  * 每个阶段都有before、after和cancelled（取消）四个时刻，供用户在不同的时刻插入自定义逻辑。
  */
-export interface TypeTransitionProps<HostElement = RendererElement>
-  extends TypeFragmentProps {
+export interface TypeTransitionProps
+  extends FragmentProps {
   mode?: 'in-out' | 'out-in' | 'default';
   appear?: boolean;
 
@@ -35,31 +35,31 @@ export interface TypeTransitionProps<HostElement = RendererElement>
   // In templates these can be written as @before-enter="xxx" as prop names
   // are camelized.
   // 在进入阶段之前触发的事件
-  onBeforeEnter?: Hook<(el?: HostElement) => void>;
+  onBeforeEnter?: Hook<(el?: Element) => void>;
   // 在进入阶段完成时触发的事件
-  onEnter?: Hook<(el?: HostElement, done?: () => void) => void>;
+  onEnter?: Hook<(el?: Element, done?: () => void) => void>;
   // 在进入阶段之后触发的事件
-  onAfterEnter?: Hook<(el?: HostElement) => void>;
+  onAfterEnter?: Hook<(el?: Element) => void>;
   // 在进入阶段被取消时触发的事件
-  onEnterCancelled?: Hook<(el?: HostElement) => void>;
+  onEnterCancelled?: Hook<(el?: Element) => void>;
   // leave
   // 在离开阶段之前触发的事件
-  onBeforeLeave?: Hook<(el?: HostElement) => void>;
+  onBeforeLeave?: Hook<(el?: Element) => void>;
   // 在离开阶段完成时触发的事件
-  onLeave?: Hook<(el?: HostElement, done?: () => void) => void>;
+  onLeave?: Hook<(el?: Element, done?: () => void) => void>;
   // 在离开阶段之后触发的事件
-  onAfterLeave?: Hook<(el?: HostElement) => void>;
+  onAfterLeave?: Hook<(el?: Element) => void>;
   // 在离开阶段被取消时触发的事件
-  onLeaveCancelled?: Hook<(el?: HostElement) => void>; // only fired in persisted mode
+  onLeaveCancelled?: Hook<(el?: Element) => void>; // only fired in persisted mode
   // appear
   // 在出现阶段之前触发的事件
-  onBeforeAppear?: Hook<(el?: HostElement) => void>;
+  onBeforeAppear?: Hook<(el?: Element) => void>;
   // 在出现阶段完成时触发的事件
-  onAppear?: Hook<(el?: HostElement, done?: () => void) => void>;
+  onAppear?: Hook<(el?: Element, done?: () => void) => void>;
   // 在出现阶段之后触发的事件
-  onAfterAppear?: Hook<(el?: HostElement) => void>;
+  onAfterAppear?: Hook<(el?: Element) => void>;
   // 在出现阶段被取消时触发的事件
-  onAppearCancelled?: Hook<(el?: HostElement) => void>;
+  onAppearCancelled?: Hook<(el?: Element) => void>;
 }
 
 export interface TransitionHooks<HostElement = RendererElement> {

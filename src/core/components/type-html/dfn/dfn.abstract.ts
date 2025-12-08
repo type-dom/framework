@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeDfn, TypeDfnProps } from './dfn.interface';
+import { ITypeDfn, DfnProps } from './dfn.interface';
 
-export abstract class TypeDfn extends TypeHtml implements ITypeDfn {
-  props: TypeDfnProps;
-  dom?: HTMLElement;
+export abstract class TypeDfn<Props extends DfnProps = DfnProps> extends TypeHtml<Props> implements ITypeDfn {
+  dom: HTMLElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'dfn'
-    });
+    } as Props);
+    this.dom = document.createElement('dfn');
   }
 }

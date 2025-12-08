@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import type { ITypeVideo } from './video.interface';
+import type { ITypeVideo, VideoProps } from './video.interface';
+import { defaultProps } from '../../../helpers/defaultProps';
 
-export abstract class TypeVideo extends TypeHtml implements ITypeVideo {
-  props: ITypeVideo['props'];
-  dom?: HTMLVideoElement;
+export abstract class TypeVideo<Props extends VideoProps = VideoProps> extends TypeHtml<Props> implements ITypeVideo {
+  dom: HTMLVideoElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(defaultProps(params, {
       nodeName: 'video'
-    })
+    } as Props));
+    this.dom = document.createElement('video');
   }
 }

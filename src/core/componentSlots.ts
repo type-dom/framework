@@ -5,6 +5,7 @@
 //   type VNodeNormalizedChildren,
 //   normalizeVNode,
 // } from './vnode'
+import { TypeNode } from './type-node/type-node.abstract';
 // import {
 //   EMPTY_OBJ,
 //   type IfAny,
@@ -15,6 +16,7 @@
 //   isArray,
 //   isFunction,
 // } from '@vue/shared'
+import { type IfAny, type Prettify } from '@type-dom/utils';
 // import { warn } from './warning'
 // import { isKeepAlive } from './components/KeepAlive'
 // import {
@@ -27,39 +29,40 @@
 // import { TriggerOpTypes, trigger } from '@vue/reactivity'
 // import { createInternalObject } from './internalObject'
 //
-// export type Slot<T extends any = any> = (
-//   ...args: IfAny<T, any[], [T] | (T extends undefined ? [] : never)>
-// ) => VNode[]
-//
-// export type InternalSlots = {
-//   [name: string]: Slot | undefined
-// }
-//
-// export type Slots = Readonly<InternalSlots>
-//
-// declare const SlotSymbol: unique symbol
-// export type SlotsType<T extends Record<string, any> = Record<string, any>> = {
-//   [SlotSymbol]?: T
-// }
-//
+
+export type Slot<T = any> = (
+  ...args: IfAny<T, any[], [T] | (T extends undefined ? [] : never)>
+) => TypeNode[]
+
+export type InternalSlots = {
+  [name: string]: Slot | undefined
+}
+
+export type Slots = Readonly<InternalSlots>
+
+declare const SlotSymbol: unique symbol
+export type SlotsType<T extends Record<string, any> = Record<string, any>> = {
+  [SlotSymbol]?: T
+}
+
 // export type StrictUnwrapSlotsType<
 //   S extends SlotsType,
 //   T = NonNullable<S[typeof SlotSymbol]>,
 // > = [keyof S] extends [never] ? Slots : Readonly<T> & T
-//
-// export type UnwrapSlotsType<
-//   S extends SlotsType,
-//   T = NonNullable<S[typeof SlotSymbol]>,
-// > = [keyof S] extends [never]
-//   ? Slots
-//   : Readonly<
-//       Prettify<{
-//         [K in keyof T]: NonNullable<T[K]> extends (...args: any[]) => any
-//           ? T[K]
-//           : Slot<T[K]>
-//       }>
-//     >
-//
+
+export type UnwrapSlotsType<
+  S extends SlotsType,
+  T = NonNullable<S[typeof SlotSymbol]>,
+> = [keyof S] extends [never]
+  ? Slots
+  : Readonly<
+      Prettify<{
+        [K in keyof T]: NonNullable<T[K]> extends (...args: any[]) => any
+          ? T[K]
+          : Slot<T[K]>
+      }>
+    >
+
 // export type RawSlots = {
 //   [name: string]: unknown
 //   // manual render fn hint to skip forced children updates

@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeLabel, TypeLabelProps } from './label.interface';
+import { ITypeLabel, LabelProps } from './label.interface';
 
-export abstract class TypeLabel extends TypeHtml implements ITypeLabel {
-  props: TypeLabelProps;
-  dom?: HTMLLabelElement;
+export abstract class TypeLabel<Props extends LabelProps = LabelProps> extends TypeHtml<Props> implements ITypeLabel {
+  dom: HTMLLabelElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'label'
-    })
+    } as Props);
+    this.dom = document.createElement('label');
   }
 }

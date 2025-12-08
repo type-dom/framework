@@ -1,32 +1,25 @@
-import { unref } from '../../reactivity';
-import { Parser } from '../../parser/parser.class';
-import { addAttrClass, addAttrName } from '../../dom/modules/attribute';
+import {
+  addAttrClass,
+  addAttrName,
+  Attributes,
+} from '../../dom/modules/attribute';
 import { TypeProps } from '../type-node/type-node.interface';
-import { TypeElement } from '../type-element/type-element.abstract';
+import { TypeNode } from '../type-node/type-node.abstract';
 import { assignProps } from './assignProps';
-export function useParams<Props extends TypeProps>(element: TypeElement, params = {} as Props): Props {
-  if (params?.init) {
-    params.init(element);
-  }
+export function useParams<Props extends TypeProps = TypeProps, A extends Attributes = Attributes>(element: TypeNode<Props, A>, params = {} as Props): Props {
   if (params?.name) {
     addAttrName(element, params.name);
   }
-  if (params?.class) { // todo TdIcon 的 class td-icon样式会被后加载。
+  if (params?.class) {
+    // todo TdIcon 的 class td-icon样式会被后加载。
     addAttrClass(element, params.class);
   }
-  element.params = params;
   if (params.parent) {
     element.parent = params.parent;
   }
-  if (params?.html) {
-    const parser = new Parser();
-    const xElement = parser.parseFromString(unref(params.html)!);
-    element.addChild(xElement);
-  }
+
   // if (params?.data) {
-  //   // element.setDataObservable(params.data);
   //   element.data = reactive(params.data);
-  //   // console.log('element.data$ is ', element.data$);
   // }
   // todo 是否要单独处理。因为 parent 链是依赖addChild的。
   // 组件库中的组件 是没有 params.childNodes 的；
@@ -48,6 +41,21 @@ export function useParams<Props extends TypeProps>(element: TypeElement, params 
   // if (params.events) {
   //   addEvents(element, params.events);
   // }
-  assignProps(element, params);
-  return element.baseProps as Props;
+  // todo TdTimeline example custom-node.ts  属性是undefined的属性，应该被过滤掉的，但是目前没有过滤。
+  //    这样会把默认值给重置为undefined，与设计不符。
+  //    又没有场景就是给props的属性赋值 undefined ?????
+  //    TdInput 会多出前后缀， 有冲突。
+  // const param = removeUndefinedProps(params as any) as unknown as T;
+  // console.log('param is ', param);
+  // this.uid = uid++;
+
+  // todo 默认值如何设置；先设置默认值，再 params 覆盖。
+  // for (const key of Object.keys(params)) {
+  //   // 如果已经配置了默认值，则使用默认值
+  //   // (params as any)[key] ??= (this.$options as any)?.[key];
+  // }
+  // onCreated(() => { // element.isBasic 是super(params)后赋值的。 error constructor中有其它操做的。
+    assignProps(element, params);
+  // });
+  return element.$options as unknown as Props;
 }

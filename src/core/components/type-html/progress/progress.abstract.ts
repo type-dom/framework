@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeProgress, TypeProgressProps } from './progress.interface';
+import { ITypeProgress, ProgressProps } from './progress.interface';
 
-export abstract class TypeProgress extends TypeHtml implements ITypeProgress {
-  props: TypeProgressProps;
-  dom?: HTMLProgressElement;
+export abstract class TypeProgress<Props extends ProgressProps = ProgressProps> extends TypeHtml<Props> implements ITypeProgress {
+  dom: HTMLProgressElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'progress'
-    })
+    } as Props);
+    this.dom = document.createElement('progress');
   }
 }

@@ -1,14 +1,13 @@
 import { TypeFragment } from '../../../core/components/type-fragment/type-fragment.abstract';
+import { FragmentProps } from '../../../core/components/type-fragment/type-fragment.interface';
 import { transformSlot } from '../../../core/helpers/transformSlot';
-import { IFragment, FragmentProps } from './fragment.interface';
+import { IFragment } from './fragment.interface';
 
 export class Fragment extends TypeFragment implements IFragment {
-  className: 'Fragment';
+  override className = 'Fragment';
 
   constructor(params: FragmentProps = {}) {
-    super();
-    this.className = 'Fragment';
+    super(params);
     transformSlot(this, params.slot ?? params.slots?.default);
-    this.useParams(params);
   }
 }

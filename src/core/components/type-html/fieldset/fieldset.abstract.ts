@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeFieldset, TypeFieldsetProps } from './fieldset.interface';
+import { ITypeFieldset, FieldsetProps } from './fieldset.interface';
 
-export abstract class TypeFieldset extends TypeHtml implements ITypeFieldset {
-  props: TypeFieldsetProps;
-  dom?: HTMLFieldSetElement;
+export abstract class TypeFieldset<Props extends FieldsetProps = FieldsetProps> extends TypeHtml<Props> implements ITypeFieldset {
+  dom: HTMLFieldSetElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'fieldset'
-    })
+    } as Props);
+    this.dom = document.createElement('fieldset');
   }
 }

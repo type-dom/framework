@@ -7,21 +7,19 @@ export class SvgG extends TypeSvg implements ISvgG {
   nodeName: 'g';
   className: 'SvgG';
   dom: SVGGElement;
-  override props: SvgProps;
   override childNodes: TypeSvg[];
 
   override isBasic = true;
 
   constructor(params: SvgProps = {}) {
-    super();
+    super(params);
     this.nodeName = 'g';
     this.className = 'SvgG';
     this.dom = document.createElementNS(
       'http://www.w3.org/2000/svg',
-      this.nodeName
+      'g'
     );
     this.childNodes = [];
     transformSlot(this, params.slot);
-    this.props = this.useParams(params);
   }
 }

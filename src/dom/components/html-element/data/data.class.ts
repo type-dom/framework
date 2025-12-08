@@ -1,5 +1,5 @@
 import { TypeData } from '../../../../core/components/type-html/data/data.abstract';
-import { TypeDataProps } from '../../../../core/components/type-html/data/data.interface';
+import { DataProps } from '../../../../core/components/type-html/data/data.interface';
 import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IData } from './data.interface';
 
@@ -8,10 +8,9 @@ export class Data extends TypeData implements IData {
 
   override isBasic = true;
 
-  constructor(params: TypeDataProps = {}) {
-    super();
+  constructor(params: DataProps = {}) {
+    super(params);
     this.className = 'Data';
     transformSlot(this, params.slot);
-    this.useParams(params);
   }
 }

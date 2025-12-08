@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import type { ITypeSup } from './sup.interface';
+import type { ITypeSup, SupProps } from './sup.interface';
 
-export abstract class TypeSup extends TypeHtml implements ITypeSup {
-  props: ITypeSup['props'];
-  dom?: HTMLElement;
+export abstract class TypeSup<Props extends SupProps = SupProps> extends TypeHtml<Props> implements ITypeSup {
+  dom: HTMLElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'sup'
-    })
+    } as Props);
+    this.dom = document.createElement('sup');
   }
 }

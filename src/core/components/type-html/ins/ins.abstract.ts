@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeIns, TypeInsProps } from './ins.interface';
+import { ITypeIns, InsProps } from './ins.interface';
 
-export abstract class TypeIns extends TypeHtml implements ITypeIns {
-  props: TypeInsProps;
-  dom?: HTMLModElement;
+export abstract class TypeIns<Props extends InsProps = InsProps> extends TypeHtml<Props> implements ITypeIns {
+  dom: HTMLModElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'ins'
-    })
+    } as Props);
+    this.dom = document.createElement('ins');
   }
 }

@@ -1,6 +1,5 @@
 // import type { VNode } from './vnode'
-import {  } from '@type-dom/signals';
-import { isFunction, isString } from '@type-dom/utils';
+import { AnyFn, isFunction, isString } from '@type-dom/utils';
 import {
   // type ComponentInternalInstance,
   // type ConcreteComponent,
@@ -45,7 +44,7 @@ export function warn(msg: string, ...args: any[]): void {
   // pauseTracking()
 
   const instance = stack.length ? stack[stack.length - 1] : null
-  const appWarnHandler = instance && instance.config.warnHandler
+  const appWarnHandler = instance && instance.config?.warnHandler as AnyFn;
   const trace = getComponentTrace()
 
   if (appWarnHandler) {

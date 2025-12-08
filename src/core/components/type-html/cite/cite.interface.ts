@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeCite extends ITypeHtml {
-  props: TypeCiteProps;
+  props: CiteProps;
 }
 
-export interface TypeCiteProps extends HtmlProps {
+export interface CiteProps extends HtmlProps {
   nodeName?: 'cite';
   attrObj?: IntrinsicElementAttributes['cite'];
 }

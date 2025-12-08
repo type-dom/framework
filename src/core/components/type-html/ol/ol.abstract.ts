@@ -1,7 +1,5 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeOL, TypeOLProps } from './ol.interface';
-import { TypeLI } from '../li/li.abstract';
-import { TypeUL } from '../ul/ul.abstract';
+import { ITypeOL, OLProps } from './ol.interface';
 
 /**
  * 有序列表，ordered list
@@ -13,17 +11,15 @@ import { TypeUL } from '../ul/ul.abstract';
  *    I 表示大写罗马数字编号
  *    1 表示数字编号（默认）编号类型适用于整个列表，除非在 <ol> 元素的 <li> 元素中使用不同的 type 属性。
  */
-export abstract class TypeOL extends TypeHtml implements ITypeOL {
-  props: TypeOLProps;
-  dom?: HTMLOListElement;
-  override childNodes: (TypeLI | TypeUL)[];
+export abstract class TypeOL<Props extends OLProps = OLProps> extends TypeHtml<Props> implements ITypeOL {
+  dom: HTMLOListElement;
 
   // type, start 在属性中单独配置，不需要在构造函数中传参
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'ol'
-    });
-    this.childNodes = [];
+    } as Props);
+    this.dom = document.createElement('ol');
   }
 }

@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import type { ITypeSub } from './sub.interface';
+import type { ITypeSub, SubProps } from './sub.interface';
 
-export abstract class TypeSub extends TypeHtml implements ITypeSub {
-  props: ITypeSub['props'];
-  dom?: HTMLElement;
+export abstract class TypeSub<Props extends SubProps = SubProps> extends TypeHtml<Props> implements ITypeSub {
+  dom: HTMLElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'sub',
-    })
+    } as Props);
+    this.dom = document.createElement('sub');
   }
 }

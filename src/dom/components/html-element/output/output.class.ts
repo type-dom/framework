@@ -1,5 +1,5 @@
 import { TypeOutput } from '../../../../core/components/type-html/output/output.abstract';
-import { TypeOutputProps } from '../../../../core/components/type-html/output/output.interface';
+import { OutputProps } from '../../../../core/components/type-html/output/output.interface';
 import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IOutput } from './output.interface';
 
@@ -8,10 +8,9 @@ export class Output extends TypeOutput implements IOutput {
 
   override isBasic = true;
 
-  constructor(params: TypeOutputProps = {}) {
-    super();
+  constructor(params: OutputProps = {}) {
+    super(params);
     this.className = 'Output';
     transformSlot(this, params.slot);
-    this.useParams(params);
   }
 }

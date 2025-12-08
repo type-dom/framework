@@ -9,19 +9,18 @@ export class SvgText extends TypeSvg implements ISvgText {
   className: 'SvgText';
   nodeName: 'text';
   dom: SVGTextElement;
-  override props: SvgProps;
   // override attrObj: ISvgTextAttribute;
   override childNodes: TextNode[];
   // override textNode: TextNode;
 
   override isBasic = true;
 
-  constructor(params: SvgProps) {
-    super();
+  constructor(params: SvgProps = {}) {
+    super(params);
     this.nodeName = 'text';
     this.dom = document.createElementNS(
       'http://www.w3.org/2000/svg',
-      this.nodeName
+      'text'
     );
     this.className = 'SvgText';
     addAttrObj(this, {
@@ -30,6 +29,5 @@ export class SvgText extends TypeSvg implements ISvgText {
     });
     this.childNodes = [];
     transformSlot(this, params.slot);
-    this.props = this.useParams(params);
   }
 }

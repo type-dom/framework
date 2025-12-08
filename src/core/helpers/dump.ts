@@ -11,11 +11,11 @@ import { TypeNode } from '../type-node/type-node.abstract';
  */
 export function dump(buffer: string[], element: TypeNode) {
   // console.log('type-node dump . ');
-  if (element.baseProps.nodeName === NodeName.TEXT) {
-    buffer.push(encodeToXmlString(element.baseProps.nodeValue));
+  if (element.$options.nodeName === NodeName.TEXT) {
+    buffer.push(encodeToXmlString(element.$options.nodeValue));
     return;
   }
-  buffer.push(`<${element.baseProps.nodeName}`);
+  buffer.push(`<${element.$options.nodeName}`);
   // 下面组装 属性 和 样式
   if (element.attrObj) {
     for (let key in element.attrObj as any) {
@@ -62,10 +62,10 @@ export function dump(buffer: string[], element: TypeNode) {
         dump(buffer, child);
       }
     }
-    buffer.push(`</${element.baseProps.nodeName}>`);
-  } else if (element.baseProps.nodeValue !== undefined) {
+    buffer.push(`</${element.$options.nodeName}>`);
+  } else if (element.$options.nodeValue !== undefined) {
     buffer.push(
-      `>${encodeToXmlString(element.baseProps.nodeValue.toString())}</${element.baseProps.nodeName}>`
+      `>${encodeToXmlString(element.$options.nodeValue.toString())}</${element.$options.nodeName}>`
     );
   } else {
     buffer.push('/>');

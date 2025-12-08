@@ -1,8 +1,9 @@
 import { isRef, watch } from '../../reactivity';
 import { TransitionElement } from '../components/type-transition/type-transition.interface';
 import { TypeNode } from '../type-node/type-node.abstract';
-import { insertDomAndAnchor, anchorReplaceDom } from './anchorAndDom';
+import { anchorReplaceDom } from '../renderer/renderer';
 import { createDom } from './createDom';
+import { insertDom } from '../renderer/insertDom';
 
 /**
  * 处理基于条件的DOM挂载与卸载逻辑，用于实现类似vIf的指令功能。
@@ -11,13 +12,13 @@ import { createDom } from './createDom';
  * @param element
  */
 export function useVIf(element: TypeNode) {
-  if (Object.prototype.hasOwnProperty.call(element.baseProps, 'vIf')) {
-    // console.warn('element.baseProps has vIf， element is ', element);
+  if (Object.prototype.hasOwnProperty.call(element.$options, 'vIf')) {
+    // console.warn('element.$options has vIf， element is ', element);
     // if (upDom) element.to = upDom; // todo why  这一步有很多潜在风险的。
-    const condition = element.baseProps.vIf;
+    const condition = element.$options.vIf;
     // console.warn('condition is ', condition);
     if (isRef(condition)) {
-      // console.warn('this.baseProps.vIf is ref， ', condition);
+      // console.warn('this.$options.vIf is ref， ', condition);
       // 添加 监听
       watch(condition, (newValue, oldValue) => {
         // console.warn('watch useVIf . newValue and oldValue is ', newValue, oldValue);
@@ -41,8 +42,8 @@ export function useVIf(element: TypeNode) {
  * @returns void
  */
 function useRawIf(condition: boolean | unknown, element: TypeNode, oldValue?: unknown) {
-  if (!Object.prototype.hasOwnProperty.call(element.baseProps, 'vIf')) {
-    console.error('element.baseProps has no vIf， ');
+  if (!Object.prototype.hasOwnProperty.call(element.$options, 'vIf')) {
+    console.error('element.$options has no vIf， ');
     return;
   }
     // todo element 可能还没有被渲染过
@@ -56,7 +57,7 @@ function useRawIf(condition: boolean | unknown, element: TypeNode, oldValue?: un
         // todo useVIf 在子节点mount前执行的，会导致useRecurseRender执行时找不到对应的子节点。
         // useRecurseRender(element); // ?? todo why add it
         // todo 先判断子节点中是否已经包含 element.dom
-      insertDomAndAnchor(element);
+      insertDom(element);
       // }
       if (element.transition && oldValue === false) {
         // console.warn('element.transition is existed . ');

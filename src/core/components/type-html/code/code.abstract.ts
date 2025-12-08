@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeCode, TypeCodeProps } from './code.interface';
+import { ITypeCode, CodeProps } from './code.interface';
 
-export abstract class TypeCode extends TypeHtml implements ITypeCode {
-  props: TypeCodeProps;
-  dom?: HTMLElement;
+export abstract class TypeCode<Props extends CodeProps = CodeProps> extends TypeHtml<Props> implements ITypeCode {
+  dom: HTMLElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'code'
-    })
+    } as Props);
+    this.dom = document.createElement('code');
   }
 }

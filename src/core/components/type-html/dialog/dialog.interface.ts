@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeDialog extends ITypeHtml {
-  props: TypeDialogProps;
+  props: DialogProps;
 }
 
-export interface TypeDialogProps extends HtmlProps {
+export interface DialogProps extends HtmlProps {
   nodeName?: 'dialog';
   attrObj?: IntrinsicElementAttributes['dialog'];
 }

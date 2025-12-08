@@ -16,7 +16,7 @@ import { TypeNode } from '../type-node/type-node.abstract';
 // import { invokeArrayFns, isArray, looseToNumber } from '@type-dom/utils';
 
 export function useVModel(element: TypeNode) {
-  if (Object.prototype.hasOwnProperty.call(element.baseProps, 'vModel')) {
+  if (Object.prototype.hasOwnProperty.call(element.$options, 'vModel')) {
     // console.warn('useVModel baseProps has vModel. ');
     // const el = element.dom as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
     // resolveDynamicModel(el.tagName, el.type);
@@ -26,8 +26,8 @@ export function useVModel(element: TypeNode) {
     //
     // const getModelAssigner = (vnode: TypeElement): AssignerFn => {
     //   const fn =
-    //     vnode.baseProps!['onUpdate:modelValue'] ||
-    //     (__COMPAT__ && vnode.baseProps!['onModelCompat:input']) as AssignerFn;
+    //     vnode.$options!['onUpdate:modelValue'] ||
+    //     (__COMPAT__ && vnode.$options!['onModelCompat:input']) as AssignerFn;
     //   return isArray(fn) ? value => invokeArrayFns(fn, value) : fn;
     // }
     //
@@ -35,11 +35,11 @@ export function useVModel(element: TypeNode) {
     //   const el = element.dom as HTMLInputElement | HTMLTextAreaElement;
     //   (el as any)[assignKey] = getModelAssigner(element); // todo import TypeHtml error
     //
-    //   // const number = element.baseProps?.['vModel.number'];
-    //   const trim = element.baseProps?.['vModel.trim'];
-    //   const lazy = element.baseProps && element.baseProps['vModel.lazy'];
+    //   // const number = element.$options?.['vModel.number'];
+    //   const trim = element.$options?.['vModel.trim'];
+    //   const lazy = element.$options && element.$options['vModel.lazy'];
     //   // const castToNumber =
-    //   //   number || (element.baseProps && el.type === 'number')
+    //   //   number || (element.$options && el.type === 'number')
     //   // addEventListener(el, lazy ? 'change' : 'input', e => {
     //   //   if ((e.target as any).composing) return
     //   //   let domValue: string | number = el.value
@@ -68,38 +68,38 @@ export function useVModel(element: TypeNode) {
     // }, element);
     // onMounted(() => {
     //   console.warn('useVModel onMounted . ');
-    //   const value = element.baseProps.vModel?.get() as string;
+    //   const value = element.$options.vModel?.get() as string;
     //   const el = element.dom as HTMLInputElement | HTMLTextAreaElement;
     //   el.value = value == null ? '' : value
     // }, element);
 
-    if (element.baseProps.vModel !== undefined) {
-      element.baseProps.modelValue = element.baseProps.vModel.get();
+    if (element.$options.vModel !== undefined) {
+      element.$options.modelValue = element.$options.vModel.get();
 
       addEmits(element, {
         ['update:modelValue']: (newValue) => {
           // console.warn('element.className is ', element.className + ', update:modelValue emit , newVal is ', newValue);
         // todo 节流
-          if (element.baseProps.vModelModifiers?.number) {
+          if (element.$options.vModelModifiers?.number) {
             const n = parseFloat(newValue);
             newValue = isNaN(n) ? newValue : n;
           }
-          if (element.baseProps.vModelModifiers?.trim) {
+          if (element.$options.vModelModifiers?.trim) {
             if (typeof newValue === 'string') {
               newValue = newValue.trim();
             }
           }
-          element.baseProps.vModel?.set(newValue)
-          // console.warn('element.baseProps.vModel?.get() is ', element.baseProps.vModel?.get());
+          element.$options.vModel?.set(newValue)
+          // console.warn('element.$options.vModel?.get() is ', element.$options.vModel?.get());
         },
         // change: (newValue) => {
         //   console.warn('change emit , newValue is ', newValue);
         //   // const isChecked  = evt.checked;
-        //     element.baseProps.vModel?.set(newValue)
+        //     element.$options.vModel?.set(newValue)
         // },
         // input: (newValue) => {
         //   console.warn('input emit , evt is ', newValue);
-        //   element.baseProps.vModel?.set(newValue);
+        //   element.$options.vModel?.set(newValue);
         // },
       });
       if (element.className === 'Input') { // todo
@@ -113,12 +113,12 @@ export function useVModel(element: TypeNode) {
           //     // radio-group 中的 radio组件的vModel是没有值的。
           //     //    其中的input绑定的是 radio-group的vModel。
           //     //    这与checkbox-group中的选中逻辑是不一样的。
-          //     // element.baseProps.vModel?.set((evt?.target as HTMLInputElement).checked);
+          //     // element.$options.vModel?.set((evt?.target as HTMLInputElement).checked);
           //   },
           // });
           // onMounted(() => {
           //   // console.warn('useVModel onMounted . ');
-          //   const value = !!element.baseProps.vModel?.get();
+          //   const value = !!element.$options.vModel?.get();
           //   const el = element.dom as HTMLInputElement | HTMLTextAreaElement;
           //   (el as any).checked = value
           // }, element);
@@ -130,31 +130,31 @@ export function useVModel(element: TypeNode) {
               // console.warn('text input event , evt is ', evt);
               const value = (evt?.target as HTMLInputElement)?.value;
               // // todo 节流
-              // if (element.baseProps.vModelModifiers?.number) {
+              // if (element.$options.vModelModifiers?.number) {
               //   const n = parseFloat(value);
-              //   element.baseProps.vModel?.set(isNaN(n) ? value : n);
+              //   element.$options.vModel?.set(isNaN(n) ? value : n);
               // }
-              // if (element.baseProps.vModelModifiers?.trim) {
+              // if (element.$options.vModelModifiers?.trim) {
               //   if (typeof value === 'string') {
-              //     element.baseProps.vModel?.set(value.trim());
+              //     element.$options.vModel?.set(value.trim());
               //   }
               // }
-              element.baseProps.vModel?.set(value);
+              element.$options.vModel?.set(value);
             },
             // change: (evt) => {
             //   // console.warn('text input event , evt is ', evt);
             //   const value = (evt?.target as HTMLInputElement)?.value;
             //   // // todo 节流
-            //   // if (element.baseProps.vModelModifiers?.number) {
+            //   // if (element.$options.vModelModifiers?.number) {
             //   //   const n = parseFloat(value);
-            //   //   element.baseProps.vModel?.set(isNaN(n) ? value : n);
+            //   //   element.$options.vModel?.set(isNaN(n) ? value : n);
             //   // }
-            //   // if (element.baseProps.vModelModifiers?.trim) {
+            //   // if (element.$options.vModelModifiers?.trim) {
             //   //   if (typeof value === 'string') {
-            //   //     element.baseProps.vModel?.set(value.trim());
+            //   //     element.$options.vModel?.set(value.trim());
             //   //   }
             //   // }
-            //   element.baseProps.vModel?.set(value);
+            //   element.$options.vModel?.set(value);
             // },
           });
         }
@@ -163,16 +163,16 @@ export function useVModel(element: TypeNode) {
           input: (evt) => {
             // console.warn('textarea event , evt is ', evt);
             let value: string | number = (evt?.target as HTMLInputElement)?.value;
-            if (element.baseProps.vModelModifiers?.number) {
+            if (element.$options.vModelModifiers?.number) {
               const n = parseFloat(value);
               value = isNaN(n) ? value : n;
             }
-            if (element.baseProps.vModelModifiers?.trim) {
+            if (element.$options.vModelModifiers?.trim) {
               if (typeof value === 'string') {
                 value = value.trim();
               }
             }
-            element.baseProps.vModel?.set(value);
+            element.$options.vModel?.set(value);
           },
         });
       } else if (element.className === 'Select') {
@@ -180,22 +180,22 @@ export function useVModel(element: TypeNode) {
           change: (evt) => {
             // console.warn('select change , evt is ', evt);
             // const isChecked  = evt.checked;
-            element.baseProps.vModel?.set((evt?.target as HTMLSelectElement).value);
+            element.$options.vModel?.set((evt?.target as HTMLSelectElement).value);
           },
         });
       }
       // todo 监听 vModel,vIf,vShow
-      watch(() => element.baseProps.vModel?.get(), (newValue: any)=> {
+      watch(() => element.$options.vModel?.get(), (newValue: any)=> {
         // console.warn('element.className is ' + element.className + ', watch vModel change value , newValue is ', newValue);
-        element.baseProps.modelValue = newValue;
-        // if (element.baseProps.vModelModifiers) {
-        //   if (element.baseProps.vModelModifiers.number) {
+        element.$options.modelValue = newValue;
+        // if (element.$options.vModelModifiers) {
+        //   if (element.$options.vModelModifiers.number) {
         //     const n = parseFloat(newValue);
-        //     element.baseProps.vModel?.set(isNaN(n) ? newValue : n);
+        //     element.$options.vModel?.set(isNaN(n) ? newValue : n);
         //   }
-        //   if (element.baseProps.vModelModifiers.trim) {
+        //   if (element.$options.vModelModifiers.trim) {
         //     if (typeof newValue === 'string') {
-        //       element.baseProps.vModel?.set(newValue.trim());
+        //       element.$options.vModel?.set(newValue.trim());
         //     }
         //   }
         // }

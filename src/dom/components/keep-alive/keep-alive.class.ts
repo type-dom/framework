@@ -55,13 +55,12 @@ import {
   KeepAliveProps,
 } from './keep-alive.interface';
 
-export class KeepAlive extends TypeFragment implements IKeepAlive {
+export class KeepAlive<Props extends KeepAliveProps = KeepAliveProps> extends TypeFragment<Props> implements IKeepAlive {
   className: 'KeepAlive';
 
-  constructor(params: KeepAliveProps) {
-    super();
+  constructor(params: Props = {} as Props) {
+    super(params);
     this.className = 'KeepAlive';
-    this.props = this.useParams(params);
   }
 
   override setup() {

@@ -9,19 +9,18 @@ export class SvgLinearGradient extends TypeSvg implements ISvgLinearGradient {
   nodeName: 'linearGradient';
   dom: SVGLinearGradientElement;
   className: 'SvgLinearGradient';
-  override props: SvgProps;
   // override attrObj: ISvgLinearGradientAttribute;
   override childNodes: SvgStop[];
 
   override isBasic = true;
 
   constructor(params: SvgProps = {}) {
-    super();
+    super(params);
     this.nodeName = 'linearGradient';
     this.className = 'SvgLinearGradient';
     this.dom = document.createElementNS(
       'http://www.w3.org/2000/svg',
-      this.nodeName
+      'linearGradient'
     );
     addAttrObj(this, {
       id: 'linear-1',
@@ -32,7 +31,6 @@ export class SvgLinearGradient extends TypeSvg implements ISvgLinearGradient {
     });
     this.childNodes = [];
     transformSlot(this, params.slot);
-    this.props = this.useParams(params);
   }
 
   reset(id: string): void {

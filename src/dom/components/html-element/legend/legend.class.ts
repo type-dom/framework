@@ -1,5 +1,5 @@
 import { TypeLegend } from '../../../../core/components/type-html/legend/legend.abstract';
-import { TypeLegendProps } from '../../../../core/components/type-html/legend/legend.interface';
+import { LegendProps } from '../../../../core/components/type-html/legend/legend.interface';
 import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { ILegend } from './legend.interface';
 
@@ -8,10 +8,9 @@ export class Legend extends TypeLegend implements ILegend {
 
   override isBasic = true;
 
-  constructor(params: TypeLegendProps = {}) {
-    super();
+  constructor(params: LegendProps = {}) {
+    super(params);
     this.className = 'Legend';
     transformSlot(this, params.slot);
-    this.useParams(params);
   }
 }

@@ -2,10 +2,12 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeFooter extends ITypeHtml {
-  props: TypeFooterProps;
+  props: FooterProps;
 }
 
-export interface TypeFooterProps extends HtmlProps {
+export interface FooterProps extends HtmlProps {
   nodeName?: 'footer';
   attrObj?: IntrinsicElementAttributes['footer'];
+  height?: string | number;
+  backgroundColor?: string;
 }

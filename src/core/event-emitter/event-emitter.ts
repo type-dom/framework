@@ -60,7 +60,6 @@ export const on = <T = Event>(node: TypeNode, event: string | string[], listener
       }
       // const numListeners = node.observers[event].get(listener!) || 0;
       // // 将监听器添加到对应事件的Map中
-      // node.observers[event].set(listener!, numListeners + 1);
       const numListeners = node.emitObservers[event].get(listener) || 0;
       // 将监听器添加到对应事件的Map中
       node.emitObservers[event].set(listener, numListeners + 1);

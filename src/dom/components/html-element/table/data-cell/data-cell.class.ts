@@ -1,5 +1,5 @@
 import { TypeTableDataCell } from '../../../../../core/components/type-html/table/data-cell/data-cell.abstract';
-import { TypeTableDataCellProps } from '../../../../../core/components/type-html/table/data-cell/data-cell.interface';
+import { TableDataCellProps } from '../../../../../core/components/type-html/table/data-cell/data-cell.interface';
 import { transformSlot } from '../../../../../core/helpers/transformSlot';
 import type { ITableDataCell } from './data-cell.interface';
 
@@ -8,10 +8,9 @@ export class TableDataCell extends TypeTableDataCell implements ITableDataCell {
 
   override isBasic = true;
 
-  constructor(params: TypeTableDataCellProps = {}) {
-    super();
+  constructor(params: TableDataCellProps = {}) {
+    super(params);
     this.className = 'TableDataCell';
     transformSlot(this, params.slot);
-    this.useParams(params);
   }
 }

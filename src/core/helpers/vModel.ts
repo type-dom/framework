@@ -22,8 +22,8 @@ type AssignerFn = (value: any) => void
 
 export const getModelAssigner = (vnode: TypeElement): AssignerFn => {
   const fn =
-    vnode.baseProps['onUpdate:modelValue'] as AssignerFn; // ||
-    // (__COMPAT__ && vnode.baseProps['onModelCompat:input']) as AssignerFn;
+    vnode.$options['onUpdate:modelValue'] as AssignerFn; // ||
+    // (__COMPAT__ && vnode.$options['onModelCompat:input']) as AssignerFn;
   return isArray(fn) ? value => invokeArrayFns(fn, value) : fn;
 }
 
@@ -56,11 +56,11 @@ export const vModelText = (vnode: TypeElement) => {
       const el = vnode.dom as HTMLInputElement | HTMLTextAreaElement;
       (el as any)[assignKey] = getModelAssigner(vnode);
 
-      const number = vnode.baseProps?.modelModifiers?.number;
-      const trim = vnode.baseProps?.modelModifiers?.trim;
-      const lazy = vnode.baseProps && vnode.baseProps?.modelModifiers?.lazy;
+      const number = vnode.$options?.modelModifiers?.number;
+      const trim = vnode.$options?.modelModifiers?.trim;
+      const lazy = vnode.$options && vnode.$options?.modelModifiers?.lazy;
       const castToNumber =
-        number || (vnode.baseProps && el.type === 'number')
+        number || (vnode.$options && el.type === 'number')
       addEventListener(el, lazy ? 'change' : 'input', e => {
         if ((e.target as any).composing) return
         let domValue: string | number = el.value
@@ -89,7 +89,7 @@ export const vModelText = (vnode: TypeElement) => {
     }, vnode);
     // set value on mounted so it's after min/max for type="range"
     onMounted(() => {
-      // const value = vnode.baseProps.vModel?.get() as string;
+      // const value = vnode.$options.vModel?.get() as string;
       // const el = vnode.dom as HTMLInputElement | HTMLTextAreaElement;
       // el.value = value == null ? '' : value
     }, vnode); //   todo a.abstract.ts import TypeHtml error;
@@ -180,9 +180,9 @@ function setChecked(
   let checked: boolean
 
   if (isArray(value)) {
-    checked = looseIndexOf(value, vnode.baseProps.value) > -1
+    checked = looseIndexOf(value, vnode.$options.value) > -1
   } else if (isSet(value)) {
-    checked = value.has(vnode.baseProps.value)
+    checked = value.has(vnode.$options.value)
   } else {
     if (value === oldValue) return
     checked = looseEqual(value, getCheckboxValue(el, true))
@@ -197,8 +197,8 @@ function setChecked(
 export function vModelRadio(vnode: TypeElement) {
   onBeforeMount(() => {
     const el = vnode.dom as HTMLInputElement;
-    const value = vnode.baseProps.vModel?.get();
-    el.checked = looseEqual(value, vnode.baseProps?.value);
+    const value = vnode.$options.vModel?.get();
+    el.checked = looseEqual(value, vnode.$options?.value);
     (el as any)[assignKey] = getModelAssigner(vnode)
     addEventListener(el, 'change', () => {
       (el as any)[assignKey](getValue(el))
@@ -207,7 +207,7 @@ export function vModelRadio(vnode: TypeElement) {
   // beforeUpdate(el, { value, oldValue }, vnode) {
   //   el[assignKey] = getModelAssigner(vnode)
   //   if (value !== oldValue) {
-  //     el.checked = looseEqual(value, vnode.baseProps!.value)
+  //     el.checked = looseEqual(value, vnode.$options!.value)
   //   }
   // }
 }
@@ -217,8 +217,8 @@ export function vModelSelect(vnode: TypeElement) {
   // deep: true
   onBeforeMount(() => {
     const el = vnode.dom as HTMLSelectElement;
-    const value = vnode.baseProps.vModel?.get();
-    const number = vnode.baseProps?.modelModifiers?.number;
+    const value = vnode.$options.vModel?.get();
+    const number = vnode.$options?.modelModifiers?.number;
     const isSetModel = isSet(value);
     addEventListener(el, 'change', () => {
       const selectedVal = Array.prototype.filter
@@ -244,7 +244,7 @@ export function vModelSelect(vnode: TypeElement) {
   // <option>s.
   onMounted(() => {
     const el = vnode.dom as HTMLSelectElement;
-    const value = vnode.baseProps.vModel?.get();
+    const value = vnode.$options.vModel?.get();
     setSelected(el, value)
   })
   // beforeUpdate(el, _binding, vnode) {

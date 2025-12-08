@@ -1,14 +1,14 @@
+import { defaultProps } from '../../../helpers/defaultProps';
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeI, TypeIProps } from './i.interface';
+import { ITypeI, IProps } from './i.interface';
 
-export abstract class TypeI extends TypeHtml implements ITypeI {
-  props: TypeIProps;
-  dom?: HTMLElement;
+export abstract class TypeI<Props extends IProps = IProps> extends TypeHtml<Props> implements ITypeI {
+  dom: HTMLElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
-      nodeName: 'i'
-    })
+  constructor(params: Props = {} as Props) {
+    super(defaultProps(params, {
+      nodeName: 'i' // todo error ？？？？？
+    } as Props));
+    this.dom = document.createElement('i');
   }
 }

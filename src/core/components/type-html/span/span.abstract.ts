@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeSpan, TypeSpanProps } from './span.interface';
+import { ITypeSpan, SpanProps } from './span.interface';
 
-export abstract class TypeSpan extends TypeHtml implements ITypeSpan {
-  props: TypeSpanProps;
-  dom?: HTMLSpanElement;
+export abstract class TypeSpan<Props extends SpanProps = SpanProps> extends TypeHtml<Props> implements ITypeSpan {
+  dom: HTMLSpanElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'span'
-    })
+    } as Props);
+    this.dom = document.createElement('span');
   }
 }

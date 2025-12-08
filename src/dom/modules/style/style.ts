@@ -14,15 +14,18 @@ import {
   addUnit,
 } from '@type-dom/utils';
 import { effect } from '@type-dom/signals';
-import { toRaw, isRef, MaybeRef } from '../../../reactivity';
 import { createDom } from '../../../core/helpers/createDom';
+import { toRaw } from '../../../reactivity/reactive';
+import { isRef, MaybeRef, } from '../../../reactivity/ref';
 import { TypeElement } from '../../../core/type-element/type-element.abstract';
 import { TypeNode } from '../../../core/type-node/type-node.abstract';
 import { TypeSvg } from '../../../core/components/type-svg/type-svg.abstract';
 import { TypeHtml } from '../../../core/components/type-html/type-html.abstract';
-import { XElement } from '../../components';
+import { TypeFragment } from '../../../core/components/type-fragment/type-fragment.abstract';
+import { onBeforeMount } from '../../../core/apiLifecycle';
+import { XElement } from '../../components/x-element/x-element.class';
 import { CSSProperties, RawStyle, StyleValue } from './style.interface';
-import { onBeforeMount, TypeFragment } from '../../../core';
+import { Attributes, TypeProps } from '../../../core';
 
 // get clientHeight(): string {
 //   if ( el.dom) {
@@ -83,18 +86,17 @@ export function addStyleObj<Node extends TypeNode>(el: Node | undefined, styleOb
   }
   let rawObj: RawStyle = {};
   if (isRef(styleObj)) {
-    // rawObj = rawStyles(styleObj);
     effect(() => {
       // console.warn('styleObj effect . ');
       // console.warn('element is ', el);
-      const newStyleObj = getRawStyles(styleObj);
+      rawObj = getRawStyles(styleObj) as RawStyle;
       // console.warn('newStyleObj is  ', newStyleObj);
-      if (isUndefined(newStyleObj)) {
-        clearStyleObj(el);
+      if (isUndefined(rawObj)) {
+        // clearStyleObj(el); // todo 如何清理样式。
       } else {
         // console.error('newStyleObj.height is ', newStyleObj.height);
         // if (newStyleObj !== rawObj) {  // 引用对象怎么会变呢？？
-        renderStyleObj(el, newStyleObj);
+        renderStyleObj(el, rawObj);
         // }
       }
     });
@@ -158,6 +160,20 @@ export function renderStyleProp(
   value: MaybeRef<string | number | undefined>
 ) {
   if (!el) return;
+  if (!el.styleObj) {
+    // console.error('style el.styleObj is undefined .');
+    return;
+  }
+  if (value === undefined) {
+    delete el.styleObj[key];
+  } else {
+    (el.styleObj as any)[key] = value;
+    // if (key === 'objectFit') {
+    //   console.warn('style key is objectFit');
+    // }
+    // Object.assign(el.styleObj, { [key]: value });
+  }
+
   let dom = el.dom;
   if (!dom) {
     createDom(el); // 保证dom存在
@@ -375,8 +391,8 @@ export function setCursor(el: TypeNode, cursor: Property.Cursor) {
  * @param el
  * @param styleObj
  */
-export function resetStyleObj(
-  el: TypeElement,
+export function resetStyleObj<Props extends TypeProps = TypeProps, Attrs extends Attributes = Attributes>(
+  el: TypeElement<Props, Attrs>,
   styleObj?: StyleValue
 ) {
   if (!el) return;
@@ -443,7 +459,8 @@ export function hide(el: TypeHtml | TypeSvg | XElement): void {
 }
 
 // 应该在style类的render中使用
-function getRawStyles(style: StyleValue, res: RawStyle = {}) {
+function getRawStyles(style: StyleValue | undefined, res: RawStyle = {}) {
+  if (!style) return undefined;
   // const raw = {} as CSSProperties;
   // Helper function to convert a Record<keyof CSSProperties, MaybeRef<string | number>> to CSSProperties
   function convertRecordToIStyle(record: RawStyle): RawStyle {

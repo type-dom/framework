@@ -1,14 +1,15 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeMeter, TypeMeterProps } from './meter.interface';
+import { ITypeMeter, MeterProps } from './meter.interface';
 
-export abstract class TypeMeter extends TypeHtml implements ITypeMeter {
-  props: TypeMeterProps;
-  dom?: HTMLMeterElement;
+export abstract class TypeMeter<Props extends MeterProps = MeterProps>
+  extends TypeHtml<Props> implements ITypeMeter {
+  dom: HTMLMeterElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'meter'
-    })
+    } as Props);
+    this.dom = document.createElement('meter');
   }
 }

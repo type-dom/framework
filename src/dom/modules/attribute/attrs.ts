@@ -28,9 +28,9 @@ export function patchAttr(
       el.setAttributeNS(xlinkNS, key, value)
     }
   } else {
-    if (compatCoerceAttr(el, key, value, instance)) {
-      return
-    }
+    // if (__COMPAT__ && compatCoerceAttr(el, key, value, instance)) {
+    //   return
+    // }
 
     // note we are only checking boolean attributes that don't have a
     // corresponding dom prop of the same name here.
@@ -47,7 +47,7 @@ export function patchAttr(
 }
 
 // 2.x compat
-const isEnumeratedAttr =
+const isEnumeratedAttr = // __COMPAT__
    /*@__PURE__*/ makeMap('contenteditable,draggable,spellcheck')
   // NOOP
 

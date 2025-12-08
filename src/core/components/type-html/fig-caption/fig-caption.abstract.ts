@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeFigCaption, TypeFigCaptionProps } from './fig-caption.interface';
+import { ITypeFigCaption, FigCaptionProps } from './fig-caption.interface';
 
-export abstract class TypeFigCaption extends TypeHtml implements ITypeFigCaption {
-  props: TypeFigCaptionProps;
-  dom?: HTMLElement;
+export abstract class TypeFigCaption<Props extends FigCaptionProps = FigCaptionProps> extends TypeHtml<Props> implements ITypeFigCaption {
+  dom: HTMLElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'figcaption'
-    })
+    } as Props);
+    this.dom = document.createElement('figcaption');
   }
 }

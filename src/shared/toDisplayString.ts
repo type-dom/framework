@@ -1,5 +1,5 @@
 // enums are compiled away via custom transform so no real dependency here
-import { ReactiveFlags } from '../reactivity'
+// import { ReactiveFlags } from '../reactivity'
 import {
   isArray,
   isFunction,
@@ -11,11 +11,12 @@ import {
   isSymbol,
   objectToString,
 } from '@type-dom/utils'
+import { isRef } from '../reactivity';
 
 // can't use isRef here since @vue/shared has no deps
-const isRef = (val: any): val is { value: unknown } => {
-  return !!(val && val[ReactiveFlags.IS_REF] === true)
-}
+// const isRef = (val: any): val is { value: unknown } => {
+//   return !!(val && val[ReactiveFlags.IS_REF] === true)
+// }
 
 /**
  * For converting {{ interpolation }} values to displayed strings.
@@ -30,14 +31,14 @@ export const toDisplayString = (val: unknown): string => {
           (isObject(val) &&
             (val.toString === objectToString || !isFunction(val.toString)))
         ? isRef(val)
-          ? toDisplayString(val.value)
+          ? toDisplayString(val.get())
           : JSON.stringify(val, replacer, 2)
         : String(val)
 }
 
 const replacer = (_key: string, val: unknown): any => {
   if (isRef(val)) {
-    return replacer(_key, val.value)
+    return replacer(_key, (val).get())
   } else if (isMap(val)) {
     return {
       [`Map(${val.size})`]: [...val.entries()].reduce(

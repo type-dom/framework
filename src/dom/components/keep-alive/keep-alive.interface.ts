@@ -1,4 +1,4 @@
-import { ITypeFragment, TypeFragmentProps } from '../../../core/components/type-fragment/type-fragment.interface';
+import { ITypeFragment, FragmentProps } from '../../../core/components/type-fragment/type-fragment.interface';
 import { TypeNode } from '../../../core/type-node/type-node.abstract';
 
 export interface IKeepAlive extends ITypeFragment {
@@ -8,7 +8,7 @@ export interface IKeepAlive extends ITypeFragment {
 
 type MatchPattern = string | RegExp | (string | RegExp)[]
 
-export interface KeepAliveProps extends TypeFragmentProps {
+export interface KeepAliveProps extends FragmentProps {
   include?: MatchPattern
   exclude?: MatchPattern
   max?: number | string

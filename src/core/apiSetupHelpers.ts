@@ -3,6 +3,12 @@ import { getCurrentInstance } from './component';
 import { ISlots } from './type-node/type-node.interface';
 import { TypeNode } from './type-node/type-node.abstract';
 import { type Attributes   } from '../dom/modules/attribute/attribute.interface';
+import { EmitsOptions, ObjectEmitsOptions } from './componentEmits';
+import { isArray } from '@type-dom/utils';
+import {
+  ComponentObjectPropsOptions,
+  ComponentPropsOptions,
+} from './componentProps';
 
 // dev only
 // const warnRuntimeUsage = (method: string) =>
@@ -354,11 +360,11 @@ export type ComponentTypeEmits = ((...args: any[]) => any) | Record<string, any>
 // }
 
 export function useSlots<T extends ISlots>(): T | undefined {
-  return getContext().baseProps.slots as T
+  return getContext().$options.slots as T
 }
 
 export function useAttrs(): Attributes | undefined {
-  return getContext().baseProps.attrObj;
+  return getContext().$options.attrObj;
 }
 
 function getContext(): TypeNode {
@@ -372,16 +378,16 @@ function getContext(): TypeNode {
 /**
  * @internal
  */
-// export function normalizePropsOrEmits(
-//   props: ComponentPropsOptions | EmitsOptions,
-// ): ComponentObjectPropsOptions | ObjectEmitsOptions {
-//   return isArray(props)
-//     ? props.reduce(
-//         (normalized, p) => ((normalized[p] = null), normalized),
-//         {} as ComponentObjectPropsOptions | ObjectEmitsOptions,
-//       )
-//     : props
-// }
+export function normalizePropsOrEmits(
+  props: ComponentPropsOptions | EmitsOptions,
+): ComponentObjectPropsOptions | ObjectEmitsOptions {
+  return isArray(props)
+    ? props.reduce(
+        (normalized, p) => ((normalized[p] = null), normalized),
+        {} as ComponentObjectPropsOptions | ObjectEmitsOptions,
+      )
+    : props
+}
 
 /**
  * Runtime helper for merging default declarations. Imported by compiled code

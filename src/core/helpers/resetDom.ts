@@ -1,8 +1,9 @@
 import { isDescendant } from '@type-dom/utils';
 import { unref } from '../../reactivity';
-import { RawDom, TypeFragment } from '../components';
+import { TypeFragment } from '../components';
 import { TypeNode } from '../type-node/type-node.abstract';
-import { setFragmentAnchorWithDom, setFragmentAnchorWithoutDom } from './anchorAndDom';
+import { processFragment } from '../renderer/processFragment';
+import { RawDom, setFragmentAnchorWithoutDom } from '../renderer/renderer';
 import { createDom } from './createDom';
 import { getToDom } from './mountDom';
 
@@ -28,27 +29,27 @@ export function resetDom(node: TypeNode): void {
       const upDom = to ?? dom;
       if (childDom instanceof DocumentFragment) {
         //  vIf 处理
-        if (Object.prototype.hasOwnProperty.call(child.baseProps, 'vIf')) {
-          const condition = unref(child.baseProps.vIf);
+        if (Object.prototype.hasOwnProperty.call(child.$options, 'vIf')) {
+          const condition = unref(child.$options.vIf);
           if (condition) {
-            setFragmentAnchorWithDom(child as TypeFragment, upDom);
+            processFragment(child as TypeFragment, upDom);
           } else {
             setFragmentAnchorWithoutDom(child as TypeFragment, upDom);
           }
         } else {
           // childDom 时 DocumentFragment时，必然有 anchor/anchorStart, 所以不需要判断 vIf
-          setFragmentAnchorWithDom(child as TypeFragment, upDom);
+          processFragment(child as TypeFragment, upDom);
         }
         if (!child.anchor) {
           console.error('child is DocumentFragment, but child.anchor is undefined . ');
         }
       } else { // 普通元素
-        if (Object.prototype.hasOwnProperty.call(child.baseProps, 'vIf')) {
+        if (Object.prototype.hasOwnProperty.call(child.$options, 'vIf')) {
           if (!child.anchor) {
             console.error('child.anchor is undefined . ');
             return;
           }
-          const condition = unref(child.baseProps.vIf);
+          const condition = unref(child.$options.vIf);
           if (condition) { // replace dom
             // if (!isDescendant(upDom, childDom)) {
             //   upDom.replaceChild(childDom, child.anchor);
@@ -61,7 +62,6 @@ export function resetDom(node: TypeNode): void {
           } else { // without dom
             if (isDescendant(upDom, childDom)) { // todo
               // if (upDom instanceof DocumentFragment) {
-              //   //
               //   upDom.replaceChild(child.anchor, childDom);
               // } else {
               //   upDom.replaceChild(child.anchor, childDom);

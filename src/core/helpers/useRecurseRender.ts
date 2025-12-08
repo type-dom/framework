@@ -1,6 +1,7 @@
 import { toRaw } from '../../reactivity';
 import { TypeElement } from '../type-element/type-element.abstract';
-import { insertDomAndAnchor, anchorReplaceDom } from './anchorAndDom';
+import { anchorReplaceDom } from '../renderer/renderer';
+import { insertDom } from '../renderer/insertDom';
 
 /**
  * 递归渲染元素本身及所有后代元素
@@ -22,9 +23,9 @@ export function useRecurseRender(element: TypeElement) {
     if (child instanceof TypeElement) {
       // props.vIf存在，且不为true时，不渲染。
       useRecurseRender(child);
-      if (Object.hasOwnProperty.call(child.baseProps, 'vIf')) {
-        if (toRaw(child.baseProps.vIf)) {
-          insertDomAndAnchor(child);
+      if (Object.hasOwnProperty.call(child.$options, 'vIf')) {
+        if (toRaw(child.$options.vIf)) {
+          insertDom(child);
         } else {
           anchorReplaceDom(child);
         }

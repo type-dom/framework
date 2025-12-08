@@ -2,10 +2,10 @@ import { Attributes } from '../../../../dom/modules/attribute/attribute.interfac
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeSlot extends ITypeHtml {
-  props: TypeSlotProps;
+  props: SlotProps;
 }
 
-export interface TypeSlotProps extends HtmlProps {
+export interface SlotProps extends HtmlProps {
   nodeName?: 'slot';
   attrObj?: Attributes;
 }

@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeBdi extends ITypeHtml {
-  props: TypeBdiProps;
+  props: BdiProps;
 }
 
-export interface TypeBdiProps extends HtmlProps {
+export interface BdiProps extends HtmlProps {
   nodeName?: 'bdi';
   attrObj?: IntrinsicElementAttributes['bdi'];
 }

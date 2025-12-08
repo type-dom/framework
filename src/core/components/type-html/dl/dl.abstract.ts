@@ -1,20 +1,18 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeDL, TypeDLProps } from './dl.interface';
+import { ITypeDL, DLProps } from './dl.interface';
 
 /**
  * 定义列表（definition list）
  * <dl> 元素 （或 HTML 描述列表元素）是一个包含术语定义以及描述的列表，通常用于展示词汇表或者元数据 (键 - 值对列表)。
  */
-export abstract class TypeDL extends TypeHtml implements ITypeDL {
-  props: TypeDLProps;
-  dom?: HTMLDListElement;
-  // childNodes: (TypeLI | TypeUL)[];
+export abstract class TypeDL<Props extends DLProps = DLProps> extends TypeHtml<Props> implements ITypeDL {
+  dom: HTMLDListElement;
   // type, start 在属性中单独配置，不需要在构造函数中传参
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'dl'
-    });
-    this.childNodes = [];
+    } as Props);
+    this.dom = document.createElement('dl');
   }
 }

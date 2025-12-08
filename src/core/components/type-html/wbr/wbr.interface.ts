@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeWbr extends ITypeHtml {
-  props: TypeWbrProps;
+  props: WbrProps;
 }
 
-export interface TypeWbrProps extends HtmlProps {
+export interface WbrProps extends HtmlProps {
   nodeName?: 'wbr';
   attrObj?: IntrinsicElementAttributes['wbr'];
 }

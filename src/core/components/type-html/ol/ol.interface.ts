@@ -1,15 +1,11 @@
 import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/attribute.interface';
-// import { ITypeAttribute } from '../../attribute/attribute.interface';
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
-import type { ITypeLI } from '../li/li.interface';
-import type { ITypeUL } from '../ul/ul.interface';
 
 export interface ITypeOL extends ITypeHtml {
-  props: TypeOLProps;
-  childNodes: (ITypeUL | ITypeLI)[];
+  props: OLProps
 }
 
-export interface TypeOLProps extends HtmlProps {
+export interface OLProps extends HtmlProps {
   nodeName?: 'ol';
   attrObj?: IntrinsicElementAttributes['ol'];
 }

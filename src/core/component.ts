@@ -27,13 +27,13 @@
 //   initProps,
 //   normalizePropsOptions,
 // } from './componentProps'
-// import {
-//   type InternalSlots,
-//   type Slots,
-//   type SlotsType,
-//   type UnwrapSlotsType,
-//   initSlots,
-// } from './componentSlots'
+import {
+  // type InternalSlots,
+  // type Slots,
+  type SlotsType,
+  type UnwrapSlotsType,
+  // initSlots,
+} from './componentSlots'
 // import { warn } from './warning'
 // import { ErrorCodes, callWithErrorHandling, handleError } from './errorHandling'
 // import {
@@ -42,23 +42,23 @@
 //   createAppContext,
 // } from './apiCreateApp'
 // import { type Directive, validateDirectiveName } from './directives'
-// import {
-//   type ComponentOptions,
-//   type ComputedOptions,
-//   type MergedComponentOptions,
-//   type MethodOptions,
-//   applyOptions,
-//   resolveMergedOptions,
-// } from './componentOptions'
-// import {
-//   type EmitFn,
-//   type EmitsOptions,
-//   type EmitsToProps,
-//   type ObjectEmitsOptions,
-//   type ShortEmitsToObject,
-//   emit,
-//   normalizeEmitsOptions,
-// } from './componentEmits'
+import {
+  type ComponentOptions,
+  // type ComputedOptions,
+  // type MergedComponentOptions,
+  // type MethodOptions,
+  // applyOptions,
+  // resolveMergedOptions,
+} from './componentOptions'
+import {
+  type EmitFn,
+  type EmitsOptions,
+  // type EmitsToProps,
+  // type ObjectEmitsOptions,
+  // type ShortEmitsToObject,
+  // emit,
+  // normalizeEmitsOptions,
+} from './componentEmits'
 // import {
 //   EMPTY_OBJ,
 //   type IfAny,
@@ -98,6 +98,9 @@
 
 import { TypeNode } from './type-node/type-node.abstract';
 import { TypeElement } from './type-element/type-element.abstract';
+import { warn } from './warning';
+import { makeMap } from '@type-dom/utils';
+import { AppConfig } from '../dom/components/app/app.interface';
 
 export type Data = Record<string, unknown>
 
@@ -275,25 +278,25 @@ export type Data = Record<string, unknown>
 // > =
 //   | ConcreteComponent<PropsOrInstance, RawBindings, D, C, M, E, S>
 //   | ComponentPublicInstanceConstructor<PropsOrInstance>
-//
-// export type { ComponentOptions }
-//
+
+export type { ComponentOptions }
+
 // export type LifecycleHook<TFn = Function> = (TFn & SchedulerJob)[] | null
 //
-// // use `E extends any` to force evaluating type to fix #2362
-// export type SetupContext<
-//   E = EmitsOptions,
-//   S extends SlotsType = {},
-// > = E extends any
-//   ? {
-//       attrs: Data
-//       slots: UnwrapSlotsType<S>
-//       emit: EmitFn<E>
-//       expose: <Exposed extends Record<string, any> = Record<string, any>>(
-//         exposed?: Exposed,
-//       ) => void
-//     }
-//   : never
+// use `E extends any` to force evaluating type to fix #2362
+export type SetupContext<
+  E = EmitsOptions,
+  S extends SlotsType = object,
+> = E extends any
+  ? {
+      attrs?: Data
+      slots?: UnwrapSlotsType<S>
+      emit: EmitFn<E>
+      // expose: <Exposed extends Record<string, any> = Record<string, any>>(
+      //   exposed?: Exposed,
+      // ) => void
+    }
+  : never
 //
 // /**
 //  * @internal
@@ -783,19 +786,19 @@ export const unsetCurrentInstance = (): void => {
   // currentInstance && currentInstance.scope.off();
   internalSetCurrentInstance(null);
 };
-//
-// const isBuiltInTag = /*@__PURE__*/ makeMap('slot,component')
-//
-// export function validateComponentName(
-//   name: string,
-//   { isNativeTag }: AppConfig,
-// ): void {
-//   if (isBuiltInTag(name) || isNativeTag(name)) {
-//     warn(
-//       'Do not use built-in or reserved HTML elements as component id: ' + name,
-//     )
-//   }
-// }
+
+const isBuiltInTag = /*@__PURE__*/ makeMap('slot,component')
+
+export function validateComponentName(
+  name: string,
+  { isNativeTag }: AppConfig,
+): void {
+  if (isBuiltInTag(name) || isNativeTag(name)) {
+    warn(
+      'Do not use built-in or reserved HTML elements as component id: ' + name,
+    )
+  }
+}
 //
 // export function isStatefulComponent(
 //   instance: ComponentInternalInstance,
@@ -1127,87 +1130,89 @@ export const unsetCurrentInstance = (): void => {
 //     },
 //   })
 // }
-//
-// export function createSetupContext(
-//   instance: ComponentInternalInstance,
-// ): SetupContext {
-//   const expose: SetupContext['expose'] = exposed => {
-//     if (__DEV__) {
-//       if (instance.exposed) {
-//         warn(`expose() should be called only once per setup().`)
-//       }
-//       if (exposed != null) {
-//         let exposedType: string = typeof exposed
-//         if (exposedType === 'object') {
-//           if (isArray(exposed)) {
-//             exposedType = 'array'
-//           } else if (isRef(exposed)) {
-//             exposedType = 'ref'
-//           }
-//         }
-//         if (exposedType !== 'object') {
-//           warn(
-//             `expose() should be passed a plain object, received ${exposedType}.`,
-//           )
-//         }
-//       }
-//     }
-//     instance.exposed = exposed || {}
-//   }
-//
-//   if (__DEV__) {
-//     // We use getters in dev in case libs like test-utils overwrite instance
-//     // properties (overwrites should not be done in prod)
-//     let attrsProxy: Data
-//     let slotsProxy: Slots
-//     return Object.freeze({
-//       get attrs() {
-//         return (
-//           attrsProxy ||
-//           (attrsProxy = new Proxy(instance.attrs, attrsProxyHandlers))
-//         )
-//       },
-//       get slots() {
-//         return slotsProxy || (slotsProxy = getSlotsProxy(instance))
-//       },
-//       get emit() {
-//         return (event: string, ...args: any[]) => instance.emit(event, ...args)
-//       },
-//       expose,
-//     })
-//   } else {
-//     return {
-//       attrs: new Proxy(instance.attrs, attrsProxyHandlers),
-//       slots: instance.slots,
-//       emit: instance.emit,
-//       expose,
-//     }
-//   }
-// }
-//
-// export function getComponentPublicInstance(
-//   instance: ComponentInternalInstance,
-// ): ComponentPublicInstance | ComponentInternalInstance['exposed'] | null {
-//   if (instance.exposed) {
-//     return (
-//       instance.exposeProxy ||
-//       (instance.exposeProxy = new Proxy(proxyRefs(markRaw(instance.exposed)), {
-//         get(target, key: string) {
-//           if (key in target) {
-//             return target[key]
-//           } else if (key in publicPropertiesMap) {
-//             return publicPropertiesMap[key](instance)
-//           }
-//         },
-//         has(target, key: string) {
-//           return key in target || key in publicPropertiesMap
-//         },
-//       }))
-//     )
-//   } else {
-//     return instance.proxy
-//   }
-// }
+
+export function createSetupContext(
+  instance: TypeNode,
+): SetupContext {
+  // const expose: SetupContext['expose'] = exposed => {
+  //   if (__DEV__) {
+  //     if (instance.exposed) {
+  //       warn(`expose() should be called only once per setup().`)
+  //     }
+  //     if (exposed != null) {
+  //       let exposedType: string = typeof exposed
+  //       if (exposedType === 'object') {
+  //         if (isArray(exposed)) {
+  //           exposedType = 'array'
+  //         } else if (isRef(exposed)) {
+  //           exposedType = 'ref'
+  //         }
+  //       }
+  //       if (exposedType !== 'object') {
+  //         warn(
+  //           `expose() should be passed a plain object, received ${exposedType}.`,
+  //         )
+  //       }
+  //     }
+  //   }
+  //   instance.exposed = exposed || {}
+  // }
+
+  // if (__DEV__) {
+  //   // We use getters in dev in case libs like test-utils overwrite instance
+  //   // properties (overwrites should not be done in prod)
+  //   let attrsProxy: Data
+  //   let slotsProxy: Slots
+  //   return Object.freeze({
+  //     get attrs() {
+  //       return (
+  //         attrsProxy ||
+  //         (attrsProxy = new Proxy(instance.attrs, attrsProxyHandlers))
+  //       )
+  //     },
+  //     get slots() {
+  //       return slotsProxy || (slotsProxy = getSlotsProxy(instance))
+  //     },
+  //     get emit() {
+  //       return (event: string, ...args: any[]) => instance.emit(event, ...args)
+  //     },
+  //     expose,
+  //   })
+  // } else {
+    return {
+      // attrs: new Proxy(instance.attrs, attrsProxyHandlers),
+      attrs: instance.attrs,
+      slots: instance.slots,
+      emit: instance.emit,
+      // expose,
+    }
+  // }
+}
+
+export function getComponentPublicInstance(
+  instance: TypeNode,
+): TypeNode | null {
+  // if (instance.exposed) {
+  //   return (
+  //     instance.exposeProxy ||
+  //     (instance.exposeProxy = new Proxy(proxyRefs(markRaw(instance.exposed)), {
+  //       get(target, key: string) {
+  //         if (key in target) {
+  //           return target[key]
+  //         } else if (key in publicPropertiesMap) {
+  //           return publicPropertiesMap[key](instance)
+  //         }
+  //       },
+  //       has(target, key: string) {
+  //         return key in target || key in publicPropertiesMap
+  //       },
+  //     }))
+  //   )
+  // } else {
+  //   return instance.proxy
+  // }
+  return instance;
+}
 
 // const classifyRE = /(?:^|[-_])(\w)/g
 // const classify = (str: string): string =>

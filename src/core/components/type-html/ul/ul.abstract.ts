@@ -1,17 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { TypeLI } from '../li/li.abstract';
-import type { ITypeUL, TypeULProps } from './ul.interface';
+import type { ITypeUL, ULProps } from './ul.interface';
+import { defaultProps } from '../../../helpers/defaultProps';
 
-export abstract class TypeUL extends TypeHtml implements ITypeUL {
-  props: TypeULProps;
-  dom?: HTMLUListElement;
-  override childNodes: TypeLI[];
+export abstract class TypeUL<Props extends ULProps = ULProps> extends TypeHtml<Props> implements ITypeUL {
+  dom: HTMLUListElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(defaultProps(params, {
       nodeName: 'ul',
-    });
-    this.childNodes = [];
+    } as Props));
+    this.dom = document.createElement('ul');
   }
 }

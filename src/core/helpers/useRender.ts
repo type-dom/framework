@@ -10,7 +10,7 @@ import { TypeElement } from '../type-element/type-element.abstract';
 
 export function useRender(element: TypeElement): void {
   element.preRender();
-  if (element.baseProps.nodeName !== NodeName.FRAGMENT) {
+  if (element.$options.nodeName !== NodeName.FRAGMENT) {
     renderStyleObj(element);
     renderAttrObj(element);
   } else {

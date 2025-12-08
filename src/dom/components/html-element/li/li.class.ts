@@ -1,5 +1,5 @@
 import { TypeLI } from '../../../../core/components/type-html/li/li.abstract';
-import { TypeLIProps } from '../../../../core/components/type-html/li/li.interface';
+import { LIProps } from '../../../../core/components/type-html/li/li.interface';
 import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { ILI } from './li.interface';
 
@@ -9,8 +9,8 @@ export class LI extends TypeLI implements ILI {
 
   override isBasic = true;
 
-  constructor(params: TypeLIProps = {}) {
-    super();
+  constructor(params: LIProps = {}) {
+    super(params);
     this.className = 'LI';
     // this.childNodes = [];
     // this.style.addObj({
@@ -25,6 +25,5 @@ export class LI extends TypeLI implements ILI {
     // addAttrName(this, 'list-item');
     // console.warn('then transformSlot . ');
     transformSlot(this, params.slot);
-    this.useParams(params);
   }
 }

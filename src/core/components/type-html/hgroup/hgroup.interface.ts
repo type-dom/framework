@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeHGroup extends ITypeHtml {
-  props: TypeHGroupProps;
+  props: HGroupProps;
 }
 
-export interface TypeHGroupProps extends HtmlProps {
+export interface HGroupProps extends HtmlProps {
   nodeName?: 'hgroup';
   attrObj?: IntrinsicElementAttributes['hgroup'];
 }

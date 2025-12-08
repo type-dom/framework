@@ -1,14 +1,15 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeSummary, TypeSummaryProps } from './summary.interface';
+import { ITypeSummary, SummaryProps } from './summary.interface';
 
-export abstract class TypeSummary extends TypeHtml implements ITypeSummary {
-  props: TypeSummaryProps;
-  dom?: HTMLElement;
+export abstract class TypeSummary<Props extends SummaryProps = SummaryProps>
+  extends TypeHtml<Props> implements ITypeSummary {
+  dom: HTMLElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'summary'
-    })
+    } as Props);
+    this.dom = document.createElement('summary');
   }
 }

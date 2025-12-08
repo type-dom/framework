@@ -69,7 +69,7 @@ export function findNonCommentChild(children: TypeNode[]): TypeNode {
     let hasFound = false;
     // locate first non-comment child
     for (const c of children) {
-      if (c.baseProps.nodeName !== '#comment') {
+      if (c.$options.nodeName !== '#comment') {
         if (/*__DEV__ && */ hasFound) {
           // warn more than one non-comment child
           warn(
@@ -93,10 +93,10 @@ export function getLeavingNodesForType(
   vnode: TypeNode
 ): Record<string, TypeNode> {
   const { leavingVNodes } = state;
-  let leavingVNodesCache = leavingVNodes.get(vnode.baseProps.nodeName)!;
+  let leavingVNodesCache = leavingVNodes.get(vnode.$options.nodeName)!;
   if (!leavingVNodesCache) {
     leavingVNodesCache = Object.create(null);
-    leavingVNodes.set(vnode.baseProps.nodeName, leavingVNodesCache);
+    leavingVNodes.set(vnode.$options.nodeName, leavingVNodesCache);
   }
   return leavingVNodesCache;
 }
@@ -105,7 +105,7 @@ export function getLeavingNodesForType(
 // and will be called at appropriate timing in the renderer.
 export function resolveTransitionHooks(
   vnode: TypeNode,
-  props: TypeTransitionProps<Element>,
+  props: TypeTransitionProps,
   state: TransitionState,
   instance: TypeNode,
   postClone?: (hooks: TransitionHooks) => void
@@ -346,17 +346,17 @@ export function getTransitionRawChildren(
     //     ? child.key
     //     : String(parentKey) + String(child.key != null ? child.key : i)
     // // handle fragment children case, e.g. v-for
-    // if (child.baseProps.nodeName === NodeName.FRAGMENT) {
+    // if (child.$options.nodeName === NodeName.FRAGMENT) {
     //   // if (child.patchFlag & PatchFlags.KEYED_FRAGMENT) keyedFragmentCount++
     //   ret = ret.concat(
     //     getTransitionRawChildren(child.children as TypeNode[], keepComment, key),
     //   )
     // }
     // // comment placeholders should be skipped, e.g. v-if
-    // else if (keepComment || child.baseProps.nodeName !== 'comment') {
+    // else if (keepComment || child.$options.nodeName !== 'comment') {
     //   // ret.push(key != null ? cloneVNode(child, { key }) : child)
     // }
-    if (child.baseProps.nodeName === NodeName.FRAGMENT) {
+    if (child.$options.nodeName === NodeName.FRAGMENT) {
       ret = ret.concat(getTransitionRawChildren(child.children as TypeNode[]));
     } else {
       ret.push(child);

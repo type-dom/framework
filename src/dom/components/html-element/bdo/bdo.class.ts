@@ -1,5 +1,5 @@
 import { TypeBdo } from '../../../../core/components/type-html/bdo/bdo.abstract';
-import { TypeBdoProps } from '../../../../core/components/type-html/bdo/bdo.interface';
+import { BdoProps } from '../../../../core/components/type-html/bdo/bdo.interface';
 import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IBdo } from './bdo.interface';
 
@@ -8,10 +8,9 @@ export class Bdo extends TypeBdo implements IBdo {
 
   override isBasic = true;
 
-  constructor(params: TypeBdoProps = {}) {
-    super();
+  constructor(params: BdoProps = {}) {
+    super(params);
     this.className = 'Bdo';
     transformSlot(this, params.slot);
-    this.useParams(params);
   }
 }

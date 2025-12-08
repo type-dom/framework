@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeEmbed extends ITypeHtml {
-  props: TypeEmbedProps;
+  props: EmbedProps;
 }
 
-export interface TypeEmbedProps extends HtmlProps {
+export interface EmbedProps extends HtmlProps {
   nodeName?: 'embed';
   attrObj?: IntrinsicElementAttributes['embed'];
 }

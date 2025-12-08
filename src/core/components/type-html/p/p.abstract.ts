@@ -1,14 +1,15 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeP, TypePProps } from './p.interface';
+import { ITypeP, PProps } from './p.interface';
 
-export abstract class TypeP extends TypeHtml implements ITypeP {
-  props: TypePProps;
-  dom?: HTMLParagraphElement;
+export abstract class TypeP<Props extends PProps = PProps>
+  extends TypeHtml<Props> implements ITypeP {
+  dom: HTMLParagraphElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'p'
-    })
+    } as Props);
+    this.dom = document.createElement('p');
   }
 }

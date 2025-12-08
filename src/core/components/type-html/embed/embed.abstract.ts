@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeEmbed, TypeEmbedProps } from './embed.interface';
+import { ITypeEmbed, EmbedProps } from './embed.interface';
 
-export abstract class TypeEmbed extends TypeHtml implements ITypeEmbed {
-  props: TypeEmbedProps;
-  dom?: HTMLEmbedElement;
+export abstract class TypeEmbed<Props extends EmbedProps = EmbedProps> extends TypeHtml<Props> implements ITypeEmbed {
+  dom: HTMLEmbedElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'embed'
-    })
+    } as Props);
+    this.dom = document.createElement('embed');
   }
 }

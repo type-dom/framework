@@ -357,7 +357,7 @@ export class Parser {
     if (this.hasAttributes) {
       node.attributes = attributes;
     }
-    this.currentFragment.push(node);
+    this.currentFragment.push(node as XElement);
     if (isEmpty) {
       return;
     }

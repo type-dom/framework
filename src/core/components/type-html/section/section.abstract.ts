@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import type { ITypeSection, TypeSectionProps } from './section.interface';
+import type { ITypeSection, SectionProps } from './section.interface';
 
-export abstract class TypeSection extends TypeHtml implements ITypeSection {
-  props: TypeSectionProps;
-  dom?: HTMLElement;
+export abstract class TypeSection<Props extends SectionProps = SectionProps> extends TypeHtml<Props> implements ITypeSection {
+  dom: HTMLElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'section'
-    })
+    } as Props);
+    this.dom = document.createElement('section');
   }
 }

@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeMenuItem extends ITypeHtml {
-  props: TypeMenuItemProps;
+  props: MenuItemProps;
 }
 
-export interface TypeMenuItemProps extends HtmlProps {
+export interface MenuItemProps extends HtmlProps {
   nodeName?: 'menuitem';
   attrObj?: IntrinsicElementAttributes['menu'];
 }

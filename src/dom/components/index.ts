@@ -1,3 +1,6 @@
+export { App } from './app/app.class';
+export type * from './app/app.interface';
+
 export { CommentNode } from './comment-node/comment-node.class';
 export type * from './comment-node/comment-node.interface';
 
@@ -15,7 +18,7 @@ export { Teleport } from './teleport/teleport.class';
 export type * from './teleport/teleport.interface';
 
 export { Transition } from './transition/transition.class';
-export type * from './transition/transition.interface';
+export * from './transition/transition.interface';
 export * from './transition/transition.util';
 export { TransitionGroup } from './transition-group/transition-group.class';
 export type * from './transition-group/transition-group.interface';

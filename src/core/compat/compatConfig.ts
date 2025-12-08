@@ -5,7 +5,7 @@ import {
   // type ComponentOptions,
   // formatComponentName,
   getComponentName,
-  // getCurrentInstance,
+  getCurrentInstance,
   // isRuntimeOnly,
 } from '../component'
 import { warn } from '../warning'
@@ -427,71 +427,71 @@ export const deprecationData: Record<DeprecationTypes, DeprecationData> = {
 }
 
 // const instanceWarned: Record<string, true> = Object.create(null)
-// const warnCount: Record<string, number> = Object.create(null)
+const warnCount: Record<string, number> = Object.create(null)
 //
 // // test only
-// let warningEnabled = true
+let warningEnabled = true
 
-// export function toggleDeprecationWarning(flag: boolean): void {
-//   warningEnabled = flag
-// }
+export function toggleDeprecationWarning(flag: boolean): void {
+  warningEnabled = flag
+}
 
-// export function warnDeprecation(
-//   key: DeprecationTypes,
-//   instance: TypeNode | null,
-//   ...args: any[]
-// ): void {
-//   if (!__DEV__) {
-//     return
-//   }
-//   if (__TEST__ && !warningEnabled) {
-//     return
-//   }
-//
-//   instance = instance || getCurrentInstance()
-//
-//   // check user config
-//   // const config = getCompatConfigForKey(key, instance)
-//   // if (config === 'suppress-warning') {
-//   //   return
-//   // }
-//
-//   const dupKey = key + args.join('')
-//   // let compId: string | number | null =
-//   //   instance && formatComponentName(instance, instance.type)
-//   // if (compId === 'Anonymous' && instance) {
-//   //   compId = instance.uid
-//   // }
-//
-//   // skip if the same warning is emitted for the same component type
-//   // const componentDupKey = dupKey + compId
-//   // if (!__TEST__ && componentDupKey in instanceWarned) {
-//   //   return
-//   // }
-//   // instanceWarned[componentDupKey] = true
-//
-//   // same warning, but different component. skip the long message and just
-//   // log the key and count.
-//   if (!__TEST__ && dupKey in warnCount) {
-//     warn(`(deprecation ${key}) (${++warnCount[dupKey] + 1})`)
-//     return
-//   }
-//
-//   warnCount[dupKey] = 0
-//
-//   const { message, link } = deprecationData[key]
-//   warn(
-//     `(deprecation ${key}) ${
-//       typeof message === 'function' ? message(...args) : message
-//     }${link ? `\n  Details: ${link}` : ``}`,
-//   )
-//   // if (!isCompatEnabled(key, instance, true)) {
-//   //   console.error(
-//   //     `^ The above deprecation's compat behavior is disabled and will likely ` +
-//   //       `lead to runtime errors.`,
-//   //   )
-//   // }
-// }
+export function warnDeprecation(
+  key: DeprecationTypes,
+  instance: TypeNode | null,
+  ...args: any[]
+): void {
+  if (!__DEV__) {
+    return
+  }
+  if (__TEST__ && !warningEnabled) {
+    return
+  }
+
+  instance = instance || getCurrentInstance()
+
+  // check user config
+  // const config = getCompatConfigForKey(key, instance)
+  // if (config === 'suppress-warning') {
+  //   return
+  // }
+
+  const dupKey = key + args.join('')
+  // let compId: string | number | null =
+  //   instance && formatComponentName(instance, instance.type)
+  // if (compId === 'Anonymous' && instance) {
+  //   compId = instance.uid
+  // }
+
+  // skip if the same warning is emitted for the same component type
+  // const componentDupKey = dupKey + compId
+  // if (!__TEST__ && componentDupKey in instanceWarned) {
+  //   return
+  // }
+  // instanceWarned[componentDupKey] = true
+
+  // same warning, but different component. skip the long message and just
+  // log the key and count.
+  if (!__TEST__ && dupKey in warnCount) {
+    warn(`(deprecation ${key}) (${++warnCount[dupKey] + 1})`)
+    return
+  }
+
+  warnCount[dupKey] = 0
+
+  const { message, link } = deprecationData[key]
+  warn(
+    `(deprecation ${key}) ${
+      typeof message === 'function' ? message(...args) : message
+    }${link ? `\n  Details: ${link}` : ``}`,
+  )
+  // if (!isCompatEnabled(key, instance, true)) {
+  //   console.error(
+  //     `^ The above deprecation's compat behavior is disabled and will likely ` +
+  //       `lead to runtime errors.`,
+  //   )
+  // }
+}
 
 export type CompatConfig = Partial<
   Record<DeprecationTypes, boolean | 'suppress-warning'>
@@ -591,49 +591,49 @@ export function isCompatEnabled(
 /**
  * Use this for features that are completely removed in non-compat build.
  */
-// export function assertCompatEnabled(
-//   key: DeprecationTypes,
-//   instance: TypeNode | null,
-//   ...args: any[]
-// ): void {
-//   if (!isCompatEnabled(key, instance)) {
-//     throw new Error(`${key} compat has been disabled.`)
-//   } else if (__DEV__) {
-//     warnDeprecation(key, instance, ...args)
-//   }
-// }
+export function assertCompatEnabled(
+  key: DeprecationTypes,
+  instance: TypeNode | null,
+  ...args: any[]
+): void {
+  if (!isCompatEnabled(key, instance)) {
+    throw new Error(`${key} compat has been disabled.`)
+  } else { // if (__DEV__) {
+    warnDeprecation(key, instance, ...args)
+  }
+}
 
 /**
  * Use this for features where legacy usage is still possible, but will likely
  * lead to runtime error if compat is disabled. (warn in all cases)
  */
-// export function softAssertCompatEnabled(
-//   key: DeprecationTypes,
-//   instance: TypeNode | null,
-//   ...args: any[]
-// ): boolean {
-//   if (__DEV__) {
-//     warnDeprecation(key, instance, ...args)
-//   }
-//   return isCompatEnabled(key, instance)
-// }
+export function softAssertCompatEnabled(
+  key: DeprecationTypes,
+  instance: TypeNode | null,
+  ...args: any[]
+): boolean {
+  // if (__DEV__) {
+    warnDeprecation(key, instance, ...args)
+  // }
+  return isCompatEnabled(key, instance)
+}
 
 /**
  * Use this for features with the same syntax but with mutually exclusive
  * behavior in 2 vs 3. Only warn if compat is enabled.
  * e.g. render function
  */
-// export function checkCompatEnabled(
-//   key: DeprecationTypes,
-//   instance: TypeNode | null,
-//   ...args: any[]
-// ): boolean {
-//   const enabled = isCompatEnabled(key, instance)
-//   if (__DEV__ && enabled) {
-//     warnDeprecation(key, instance, ...args)
-//   }
-//   return enabled
-// }
+export function checkCompatEnabled(
+  key: DeprecationTypes,
+  instance: TypeNode | null,
+  ...args: any[]
+): boolean {
+  const enabled = isCompatEnabled(key, instance)
+  if (/*__DEV__ && */enabled) {
+    warnDeprecation(key, instance, ...args)
+  }
+  return enabled
+}
 
 // run tests in v3 mode by default
 // if (__TEST__) {

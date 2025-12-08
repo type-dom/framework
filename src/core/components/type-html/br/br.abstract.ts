@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeBr, TypeBrProps } from './br.interface';
+import { ITypeBr, BrProps } from './br.interface';
 
-export abstract class TypeBr extends TypeHtml implements ITypeBr {
-  props: TypeBrProps;
-  dom?: HTMLBRElement;
+export abstract class TypeBr<Props extends BrProps = BrProps> extends TypeHtml<Props> implements ITypeBr {
+  dom: HTMLBRElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'br'
-    })
+    } as Props);
+    this.dom = document.createElement('br');
   }
 }

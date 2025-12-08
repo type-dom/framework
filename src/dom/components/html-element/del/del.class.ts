@@ -1,5 +1,5 @@
 import { TypeDel } from '../../../../core/components/type-html/del/del.abstract';
-import { TypeDelProps } from '../../../../core/components/type-html/del/del.interface';
+import { DelProps } from '../../../../core/components/type-html/del/del.interface';
 import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IDel } from './del.interface';
 
@@ -8,10 +8,9 @@ export class Del extends TypeDel implements IDel {
 
   override isBasic = true;
 
-  constructor(params: TypeDelProps = {}) {
-    super();
+  constructor(params: DelProps = {}) {
+    super(params);
     this.className = 'Del';
     transformSlot(this, params.slot);
-    this.useParams(params);
   }
 }

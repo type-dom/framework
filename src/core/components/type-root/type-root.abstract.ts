@@ -11,16 +11,12 @@ import type { ITypeRoot } from './type-root.interface';
  * 根节点抽象类
  * isRoot: true
  */
-export abstract class TypeRoot extends TypeHtml implements ITypeRoot {
+export abstract class TypeRoot extends TypeHtml<HtmlProps> implements ITypeRoot {
   dom?: HTMLElement;
   override isRoot: true;
-  override props: HtmlProps;
 
   constructor(nodeName?: string) {
-    super();
+    super({ nodeName: nodeName || 'div' });
     this.isRoot = true; // 根节点
-    this.props = this.useParams({
-      nodeName: nodeName || 'div'
-    })
   }
 }

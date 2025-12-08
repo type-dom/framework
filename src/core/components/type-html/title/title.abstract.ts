@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeTitle, TypeTitleProps } from './title.interface';
+import { ITypeTitle, TitleProps } from './title.interface';
+import { defaultProps } from '../../../helpers/defaultProps';
 
-export abstract class TypeTitle extends TypeHtml implements ITypeTitle {
-  props: TypeTitleProps;
-  dom?: HTMLTitleElement;
+export abstract class TypeTitle<Props extends TitleProps = TitleProps> extends TypeHtml<Props> implements ITypeTitle {
+  dom: HTMLTitleElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(defaultProps(params, {
       nodeName: 'title'
-    })
+    } as Props));
+    this.dom = document.createElement('title');
   }
 }

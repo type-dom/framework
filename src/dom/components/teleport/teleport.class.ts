@@ -1,26 +1,54 @@
+import { effect } from '@type-dom/signals';
 import { MaybeRef } from '../../../reactivity';
 import { TypeFragment } from '../../../core/components/type-fragment/type-fragment.abstract';
-import { RawDom } from '../../../core/type-element/type-element.interface';
-import { ITeleport, TeleportProps } from './teleport.interface';
+// import { RawDom } from '../../../core/type-element/type-element.interface';
 import { transformSlot } from '../../../core/helpers/transformSlot';
+import { onMounted } from '../../../core/apiLifecycle';
+import { processTeleport } from '../../../core/renderer/processTeleport';
+// import { nextFrame } from '../transition/transition.util';
+import { ITeleport, TeleportProps } from './teleport.interface';
+import { TypeElement, TypeNode } from '../../../core';
+// import { remove as hostRemove } from '../../../core/renderer/remove'
+// import { ShapeFlags } from '@type-dom/utils';
+// import { unmount } from '../../../core/renderer/unmount';
 
-export class Teleport extends TypeFragment implements ITeleport {
+export class Teleport extends TypeFragment<TeleportProps> implements ITeleport {
   className: 'Teleport';
   // __isTeleport = true;
-  override to?: MaybeRef<string | RawDom>;
-  disabled?: boolean;
+  // override to?: MaybeRef<string | RawDom | TypeElement>;
+
+  disabled?: MaybeRef<boolean | undefined>;
 
   constructor(params: TeleportProps = {}) {
     // console.warn('Teleport constructor . ');
-    super();
+    super(params);
     this.className = 'Teleport';
     this.to = params.to;
     this.disabled = params?.disabled;
     // console.error('then transform . ');
+    this.anchorStart = document.createComment('teleport start');
+    this.anchor = document.createComment('teleport end');
+    this.targetStart = document.createComment('target start');
+    this.targetAnchor = document.createComment('target anchor');
     transformSlot(this, params.slot ?? params.slots?.default);
-    this.useParams(params);
   }
 
+  override setup() {
+    console.warn('Teleport setup . ');
+    onMounted(() => {
+      console.warn('Teleport mounted . this is ', this);
+      // nextTick(() => {
+      //   console.warn('Teleport nextFrame . ');
+        // watch((): [string | TypeElement | RawDom | undefined, boolean | undefined] => [unref(this.to), unref(this.disabled)], ([to, disabled], oldValue) => {
+        // await nextTick();
+        effect(() => {
+          console.warn('Teleport effect . ');
+          processTeleport(this);
+        })
+        // }, { immediate: true });
+      // })
+    }, this.root);
+  }
   // process(
   //   n1: TypeNode | null,
   //   n2: TypeNode,
@@ -198,36 +226,36 @@ export class Teleport extends TypeFragment implements ITeleport {
   //
   //   updateCssVars(n2)
   // }
-  //
-  // remove(
-  //   vnode: TypeNode,
-  //   parentComponent: ComponentInternalInstance | null,
-  //   parentSuspense: SuspenseBoundary | null,
-  //   { um: unmount, o: { remove: hostRemove } }: RendererInternals,
-  //   doRemove: boolean,
-  // ) {
-  //   const { shapeFlag, children, anchor, targetAnchor, target, props } = vnode
-  //
-  //   if (target) {
-  //     hostRemove(targetAnchor!)
-  //   }
-  //
-  //   // an unmounted teleport should always unmount its children whether it's disabled or not
-  //   doRemove && hostRemove(anchor!)
-  //   if (shapeFlag & ShapeFlags.ARRAY_CHILDREN) {
-  //     const shouldRemove = doRemove || !isTeleportDisabled(props)
-  //     for (let i = 0; i < (children as VNode[]).length; i++) {
-  //       const child = (children as VNode[])[i]
-  //       unmount(
-  //         child,
-  //         parentComponent,
-  //         parentSuspense,
-  //         shouldRemove,
-  //         !!child.dynamicChildren,
-  //       )
-  //     }
-  //   }
-  // }
+
+  remove(
+    vnode: TypeNode,
+    parentComponent: TypeElement | undefined,
+    // parentSuspense: SuspenseBoundary | null,
+    // { um: unmount, o: { remove: hostRemove } }: RendererInternals,
+    doRemove: boolean,
+  ) { // todo
+    // const { shapeFlag, children, anchor, targetAnchor, target, props } = vnode
+
+    // if (target) {
+    //   hostRemove(targetAnchor!)
+    // }
+    //
+    // // an unmounted teleport should always unmount its children whether it's disabled or not
+    // if (doRemove) hostRemove(anchor!)
+    // if (shapeFlag & ShapeFlags.ARRAY_CHILDREN) {
+    //   const shouldRemove = doRemove || !isTeleportDisabled(props)
+    //   for (let i = 0; i < children.length; i++) {
+    //     const child = children[i]
+    //     unmount(
+    //       child,
+    //       parentComponent,
+    //       // parentSuspense,
+    //       shouldRemove,
+    //       !!child.dynamicChildren,
+    //     )
+    //   }
+    // }
+  }
   //
   // move: moveTeleport
   // hydrate: hydrateTeleport

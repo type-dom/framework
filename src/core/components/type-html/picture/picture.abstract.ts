@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypePicture, TypePictureProps } from './picture.interface';
+import { ITypePicture, PictureProps } from './picture.interface';
 
-export abstract class TypePicture extends TypeHtml implements ITypePicture {
-  props: TypePictureProps;
-  dom?: HTMLPictureElement;
+export abstract class TypePicture<Props extends PictureProps = PictureProps> extends TypeHtml<Props> implements ITypePicture {
+  dom: HTMLPictureElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'picture'
-    })
+    } as Props);
+    this.dom = document.createElement('picture');
   }
 }

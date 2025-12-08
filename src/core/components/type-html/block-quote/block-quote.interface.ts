@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeBlockQuote extends ITypeHtml {
-  props: TypeBlockQuoteProps;
+  props: BlockQuoteProps;
 }
 
-export interface TypeBlockQuoteProps extends HtmlProps {
+export interface BlockQuoteProps extends HtmlProps {
   nodeName?: 'blockquote';
   attrObj?: IntrinsicElementAttributes['blockquote'];
 }

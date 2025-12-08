@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeArticle, TypeArticleProps } from './article.interface';
+import { ITypeArticle, ArticleProps } from './article.interface';
 
-export abstract class TypeArticle extends TypeHtml implements ITypeArticle {
-  props: TypeArticleProps;
-  dom?: HTMLElement;
+export abstract class TypeArticle<Props extends ArticleProps = ArticleProps> extends TypeHtml<Props> implements ITypeArticle {
+  dom: HTMLElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'article'
-    })
+    } as Props);
+    this.dom = document.createElement('article');
   }
 }

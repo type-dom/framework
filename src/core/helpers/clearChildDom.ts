@@ -1,4 +1,4 @@
-import {TypeNode} from "../type-node/type-node.abstract";
+import { TypeNode } from "../type-node/type-node.abstract";
 
 // clear node.dom.childNodes
 export function clearChildDom(node: TypeNode) {

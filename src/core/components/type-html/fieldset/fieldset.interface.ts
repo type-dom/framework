@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeFieldset extends ITypeHtml {
-  props: TypeFieldsetProps;
+  props: FieldsetProps;
 }
 
-export interface TypeFieldsetProps extends HtmlProps {
+export interface FieldsetProps extends HtmlProps {
   nodeName?: 'fieldset';
   attrObj?: IntrinsicElementAttributes['fieldset'];
 }

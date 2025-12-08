@@ -1,14 +1,14 @@
 import { TypeHtml } from '../../type-html.abstract';
-import { ITypeTableCaption, TypeTableCaptionProps } from './caption.interface';
+import { ITypeTableCaption, TableCaptionProps } from './caption.interface';
 
-export abstract class TypeTableCaption extends TypeHtml implements ITypeTableCaption {
-  props: TypeTableCaptionProps;
-  dom?: HTMLTableCaptionElement;
+export abstract class TypeTableCaption<Props extends TableCaptionProps = TableCaptionProps> extends TypeHtml<Props> implements ITypeTableCaption {
+  dom: HTMLTableCaptionElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'caption'
-    })
+    } as Props);
+    this.dom = document.createElement('caption');
   }
 }

@@ -1,5 +1,5 @@
 import { TypeSelect } from '../../../../core/components/type-html/select/select.abstract';
-import { TypeSelectProps } from '../../../../core/components/type-html/select/select.interface';
+import { SelectProps } from '../../../../core/components/type-html/select/select.interface';
 import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { ISelect } from './select.interface';
 
@@ -9,10 +9,9 @@ export class Select extends TypeSelect implements ISelect {
 
   override isBasic = true;
 
-  constructor(params: TypeSelectProps = {}) {
-    super();
+  constructor(params: SelectProps = {}) {
+    super(params);
     this.className = 'Select';
     transformSlot(this, params.slot);
-    this.useParams(params);
   }
 }

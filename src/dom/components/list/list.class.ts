@@ -1,12 +1,11 @@
 // import { effect } from '@type-dom/signals';
 import { isArray, isDescendant, isNumber } from '@type-dom/utils';
 import { isSignal, isComputed, toRaw, unref, watch } from '../../../reactivity';
-import { removeDom } from '../../../core/helpers/removeDom';
+import { removeDom } from '../../../core/renderer/removeDom';
 import { IChild } from '../../../core/type-node/type-node.interface';
 import { TypeFragment } from '../../../core/components/type-fragment/type-fragment.abstract';
 import { mountDom } from '../../../core/helpers/mountDom';
 import { createDom } from '../../../core/helpers/createDom';
-import { LifecycleHooks } from '../../../core/enums';
 import { setAttrProp } from '../../modules/attribute';
 import { IList, ListProps } from './list.interface';
 import { compareMixedArrays } from './compareArrays';
@@ -17,14 +16,12 @@ import { compareMixedArrays } from './compareArrays';
  *
  * 只需要观察 data 的变化，而不需要考虑其它的复杂的情况
  */
-export class List extends TypeFragment implements IList {
+export class List<Props extends ListProps = ListProps> extends TypeFragment<Props> implements IList {
   className: 'List';
-  override props: ListProps;
 
-  constructor(params: ListProps = {}) {
-    super();
+  constructor(params: Props = {} as Props) {
+    super(params);
     this.className = 'List';
-    this.props = this.useParams(params);
   }
 
   override setup() {
@@ -91,7 +88,7 @@ export class List extends TypeFragment implements IList {
             // }
           }
           // transformSlot(this, this.getRawSlot());
-          this.parent?.lifeCycles[LifecycleHooks.UPDATED]?.forEach((fn) => fn());
+          this.parent?.updated();
         }, {
           immediate: true,
           deep: true,
@@ -101,7 +98,7 @@ export class List extends TypeFragment implements IList {
         // transformSlot(this, this.getRawSlot());
       }
     } else {
-      console.error('props.data is undefined . ');
+      // console.error('props.data is undefined . ');
     }
   }
 

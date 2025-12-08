@@ -1,14 +1,13 @@
 import { TypeNode } from '../type-node/type-node.abstract';
-import { TypeEl } from '../type-element/type-element.interface';
-import { LifecycleHooks } from '../enums';
+import { TypeEl } from './renderer';
 
 export function mountText(element: TypeNode, el?: TypeEl) {
   // console.warn('mountText . ');
   if (element.dom instanceof Text) {
     element.dom?.remove();
-    element.lifeCycles[LifecycleHooks.CREATED]?.forEach((cb) => cb());
+    element.created();
     element.render();
-    element.lifeCycles[LifecycleHooks.BEFORE_MOUNT]?.forEach((cb) => cb());
+    element.beforeMount();
     if (element.dom) {
       let appEl: Exclude<TypeEl, string>;
       if (typeof el === 'string') {
@@ -21,7 +20,7 @@ export function mountText(element: TypeNode, el?: TypeEl) {
       appEl?.appendChild(element.dom);
     }
     // console.log('element.dom is ', element.dom);
-    element.lifeCycles[LifecycleHooks.MOUNTED]?.forEach((cb) => cb());
+    element.mounted();
   } else {
     console.error('element is not TextNode .');
   }

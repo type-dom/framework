@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeEm, TypeEmProps } from './em.interface';
+import { ITypeEm, EmProps } from './em.interface';
 
-export abstract class TypeEm extends TypeHtml implements ITypeEm {
-  props: TypeEmProps;
-  dom?: HTMLElement;
+export abstract class TypeEm<Props extends EmProps = EmProps> extends TypeHtml<Props> implements ITypeEm {
+  dom: HTMLElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'em'
-    })
+    } as Props);
+    this.dom = document.createElement('em');
   }
 }

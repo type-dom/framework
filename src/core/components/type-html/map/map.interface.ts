@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeMap extends ITypeHtml {
-  props: TypeMapProps;
+  props: MapProps;
 }
 
-export interface TypeMapProps extends HtmlProps {
+export interface MapProps extends HtmlProps {
   nodeName?: 'map';
   attrObj?: IntrinsicElementAttributes['map'];
 }

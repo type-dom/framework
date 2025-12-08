@@ -1,14 +1,14 @@
 import { TypeHtml } from '../../type-html.abstract';
-import { ITypeTableDataCell, TypeTableDataCellProps } from './data-cell.interface';
+import { ITypeTableDataCell, TableDataCellProps } from './data-cell.interface';
 
-export abstract class TypeTableDataCell extends TypeHtml implements ITypeTableDataCell {
-  props: TypeTableDataCellProps;
-  dom?: HTMLTableCellElement;
+export abstract class TypeTableDataCell<Props extends TableDataCellProps = TableDataCellProps> extends TypeHtml<Props> implements ITypeTableDataCell {
+  dom: HTMLTableCellElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'td'
-    })
+    } as Props);
+    this.dom = document.createElement('td');
   }
 }

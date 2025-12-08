@@ -5,10 +5,10 @@ import type { ITypeHtml, HtmlProps } from '../type-html.interface';
  * Horizontal Rule
  */
 export interface ITypeHr extends ITypeHtml {
-  props: TypeHrProps;
+  props: HrProps;
 }
 
-export interface TypeHrProps extends HtmlProps {
+export interface HrProps extends HtmlProps {
   nodeName?: 'hr';
   attrObj?: IntrinsicElementAttributes['hr'];
 }

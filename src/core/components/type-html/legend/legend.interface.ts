@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeLegend extends ITypeHtml {
-  props: TypeLegendProps;
+  props: LegendProps;
 }
 
-export interface TypeLegendProps extends HtmlProps {
+export interface LegendProps extends HtmlProps {
   nodeName?: 'legend';
   attrObj?: IntrinsicElementAttributes['legend'];
 }

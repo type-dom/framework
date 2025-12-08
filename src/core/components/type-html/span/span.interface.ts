@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeSpan extends ITypeHtml {
-  props: TypeSpanProps;
+  props: SpanProps;
 }
 
-export interface TypeSpanProps extends HtmlProps {
+export interface SpanProps extends HtmlProps {
   nodeName?: 'span';
   attrObj?: IntrinsicElementAttributes['span'];
 }

@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeVideo extends ITypeHtml {
-  props: TypeVideoProps;
+  props: VideoProps;
 }
 
-export interface TypeVideoProps extends HtmlProps {
+export interface VideoProps extends HtmlProps {
   nodeName?: 'video';
   attrObj?: IntrinsicElementAttributes['video'];
 }

@@ -1,39 +1,30 @@
 import { TextNode } from '../../../dom/components/text-node/text-node.class';
-import { addAttrObj, SVGAttributes } from '../../../dom/modules/attribute';
-import type { TypeProps } from '../../type-node/type-node.interface';
-import { TypeElement, vHash } from '../../type-element/type-element.abstract';
-import { transformSlot } from '../../helpers/transformSlot';
-import type { ITypeSvg } from './type-svg.interface';
+import { SVGAttributes } from '../../../dom/modules/attribute';
+import { TypeElement } from '../../type-element/type-element.abstract';
+import type { ITypeSvg, SvgProps } from './type-svg.interface';
 
 /**
  * TypeSvg类是TypeElement的抽象子类，实现了ITypeSvg接口，用于定义SVG类型元素的基本行为和属性。
  */
-export abstract class TypeSvg<T extends SVGElement = SVGElement, A extends SVGAttributes = SVGAttributes> extends TypeElement<A> implements ITypeSvg {
+
+export abstract class TypeSvg<Props extends SvgProps = SvgProps, Attrs extends SVGAttributes = SVGAttributes, D extends SVGElement = SVGElement>
+  extends TypeElement<Props, Attrs> implements ITypeSvg {
+
   /**
    * DOM元素，需由子类覆盖提供具体的SVG DOM元素。
    */
-  abstract override dom?: T;
+  abstract override dom?: D;
   /**
    * 子节点数组，包含TypeSvg实例或TextNode实例。
    */
   override childNodes: (TypeSvg | TextNode)[];
 
-  constructor()  {
-    super();
+  constructor(params: Props)  {
+    super(params);
     this.childNodes = []; // 初始化子节点数组为空
-    addAttrObj(this, {
-      ['data-v-' + vHash]: '',
-    });
-  }
-
-  override useParams<T extends TypeProps>(params = {} as T): T {
-    // 插槽默认替换子节点；
-    if (params.slot) { // todo why
-      // transformSlot(this, params.slot);
-      transformSlot(this, params.slot);
-    }
-    super.useParams(params);
-    return this.baseProps as T;
+    // addAttrObj(this, {
+    //   ['data-v-' + vHash]: '',
+    // });
   }
 
   /**

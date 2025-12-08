@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypePre, TypePreProps } from './pre.interface';
+import { ITypePre, PreProps } from './pre.interface';
 
-export abstract class TypePre extends TypeHtml implements ITypePre {
-  props: TypePreProps;
-  dom?: HTMLPreElement;
+export abstract class TypePre<Props extends PreProps = PreProps> extends TypeHtml<Props> implements ITypePre {
+  dom: HTMLPreElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'pre'
-    })
+    } as Props);
+    this.dom = document.createElement('pre');
   }
 }

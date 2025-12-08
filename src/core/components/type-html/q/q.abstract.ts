@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeQ, TypeQProps } from './q.interface';
+import { ITypeQ, QProps } from './q.interface';
 
-export abstract class TypeQ extends TypeHtml implements ITypeQ {
-  props: TypeQProps;
-  dom?: HTMLQuoteElement;
+export abstract class TypeQ<Props extends QProps = QProps> extends TypeHtml<Props> implements ITypeQ {
+  dom: HTMLQuoteElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'q'
-    });
+    } as Props);
+    this.dom = document.createElement('q');
   }
 }

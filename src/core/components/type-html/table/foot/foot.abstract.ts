@@ -1,15 +1,14 @@
 import { TypeHtml } from '../../type-html.abstract';
-import { ITypeTableFoot, TypeTableFootProps } from './foot.interface';
+import { ITypeTableFoot, TableFootProps } from './foot.interface';
 
-export abstract class TypeTableFoot extends TypeHtml implements ITypeTableFoot {
-  props: TypeTableFootProps;
-  dom?: HTMLElement;
+export abstract class TypeTableFoot<Props extends TableFootProps = TableFootProps> extends TypeHtml<Props> implements ITypeTableFoot {
+  dom: HTMLElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'tfoot'
-    })
-    // this.childNodes = [];
+    } as Props);
+    this.dom = document.createElement('tfoot');
   }
 }

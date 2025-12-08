@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeDel extends ITypeHtml {
-  props: TypeDelProps;
+  props: DelProps;
 }
 
-export interface TypeDelProps extends HtmlProps {
+export interface DelProps extends HtmlProps {
   nodeName?: 'del';
   attrObj?: IntrinsicElementAttributes['del'];
 }

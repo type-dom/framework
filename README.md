@@ -174,7 +174,7 @@
             - type-node 节点抽象类，最基础的类，其它抽象类或具体类的母类
             - type-root 根节点抽象类，项目根节点必须继承这个抽象类
             - x-node 通用节点类，创建虚拟节点
-            - anchorAndDom.ts 工具类
+            - renderer.ts 工具类
         - test 测试类
 
 ## Introduction
@@ -237,8 +237,8 @@ import  { RouterView } from '@type-dom/router';
 export class AppRoot extends TypeRoot {
   className: 'AppRoot';
   static el: HTMLElement | string;
-  constructor(option?: TypeProps) {
-    super();
+  constructor(params?: TypeProps) {
+    super(params);
     this.className = 'AppRoot';
     addAttrName(this, 'app-root');
     addStyleObj(this, {
@@ -246,7 +246,6 @@ export class AppRoot extends TypeRoot {
       flexDirection: 'column',
     });
     this.addChild(new RouterView());
-    this.useParams(option);
   }
 }
 ```

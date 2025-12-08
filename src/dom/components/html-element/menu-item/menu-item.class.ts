@@ -1,5 +1,5 @@
 import { TypeMenuItem } from '../../../../core/components/type-html/menu-item/menu-item.abstract';
-import { TypeMenuItemProps } from '../../../../core/components/type-html/menu-item/menu-item.interface';
+import { MenuItemProps } from '../../../../core/components/type-html/menu-item/menu-item.interface';
 import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IMenuItem } from './menu-item.interface';
 
@@ -14,10 +14,9 @@ export class MenuItem extends TypeMenuItem implements IMenuItem {
 
   override isBasic = true;
 
-  constructor(params: TypeMenuItemProps = {}) {
-    super();
+  constructor(params: MenuItemProps = {}) {
+    super(params);
     this.className = 'MenuItem';
     transformSlot(this, params.slot);
-    this.useParams(params);
   }
 }

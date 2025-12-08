@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeLegend, TypeLegendProps } from './legend.interface';
+import { ITypeLegend, LegendProps } from './legend.interface';
 
-export abstract class TypeLegend extends TypeHtml implements ITypeLegend {
-  props: TypeLegendProps;
-  dom?: HTMLLegendElement;
+export abstract class TypeLegend<Props extends LegendProps = LegendProps> extends TypeHtml<Props> implements ITypeLegend {
+  dom: HTMLLegendElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'legend'
-    })
+    } as Props);
+    this.dom = document.createElement('legend');
   }
 }

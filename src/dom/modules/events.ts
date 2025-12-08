@@ -41,7 +41,7 @@ export function patchEvent(
   rawName: string,
   prevValue: EventValue | null,
   nextValue: EventValue | unknown,
-  instance: TypeElement | null = null,
+  instance: TypeElement | undefined  = undefined,
 ): void {
   // vei = vue event invokers
   const invokers = el[veiKey] || (el[veiKey] = {})
@@ -96,7 +96,7 @@ const getNow = () =>
 
 function createInvoker(
   initialValue: EventValue,
-  instance: TypeElement | null,
+  instance?: TypeElement,
 ) {
   const invoker: Invoker = (e: Event & { _vts?: number }) => {
     // async edge case vuejs/vue#6566

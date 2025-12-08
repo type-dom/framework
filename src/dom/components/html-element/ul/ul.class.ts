@@ -1,5 +1,5 @@
 import { TypeUL } from '../../../../core/components/type-html/ul/ul.abstract';
-import { TypeULProps } from '../../../../core/components/type-html/ul/ul.interface';
+import { ULProps } from '../../../../core/components/type-html/ul/ul.interface';
 import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IUL } from './ul.interface';
 
@@ -8,11 +8,10 @@ export class UL extends TypeUL implements IUL {
 
   override isBasic = true;
 
-  constructor(params: TypeULProps = {}) {
+  constructor(params: ULProps = {}) {
     // console.warn('UL constructor . ');
-    super();
+    super(params);
     this.className = 'UL';
     transformSlot(this, params.slot);
-    this.useParams(params);
   }
 }

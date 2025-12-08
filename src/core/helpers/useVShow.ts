@@ -1,18 +1,18 @@
+import { setDomStyle } from '@type-dom/utils';
 import { isRef, MaybeRef, unref, watch } from '../../reactivity';
 import { removeStyleProp } from '../../dom/modules/style/style';
 import { TransitionElement } from '../components/type-transition/type-transition.interface';
-import { vShow, VShowElement, vShowOriginalDisplay } from './vShow';
 import { TypeNode } from '../type-node/type-node.abstract';
-import { setDomStyle } from '@type-dom/utils';
+import { vShow, VShowElement, vShowOriginalDisplay } from './vShow';
 
 export function useVShow(element: TypeNode) {
-  if (Object.prototype.hasOwnProperty.call(element.baseProps, 'vShow')) {
-    // console.warn('element.baseProps has vShow');
-    const condition: MaybeRef<boolean | unknown> = element.baseProps.vShow;
+  if (Object.prototype.hasOwnProperty.call(element.$options, 'vShow')) {
+    // console.warn('element.$options has vShow');
+    const condition: MaybeRef<boolean | unknown> = element.$options.vShow;
     vShow(element, unref(condition));
     if (isRef(condition)) {
       // if (element.className === 'TdScrollbar') {
-      //   console.warn('this.baseProps.vShow is ', condition);
+      //   console.warn('this.$options.vShow is ', condition);
       // }
       // 添加 监听 todo watch 有问题；
       //    todo 要触发 updated 才生效

@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeDfn extends ITypeHtml {
-  props: TypeDfnProps;
+  props: DfnProps;
 }
 
-export interface TypeDfnProps extends HtmlProps {
+export interface DfnProps extends HtmlProps {
   nodeName?: 'dfn';
   attrObj?: IntrinsicElementAttributes['dfn'];
 }

@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeP extends ITypeHtml {
-  props: TypePProps
+  props: PProps
 }
 
-export interface TypePProps extends HtmlProps {
+export interface PProps extends HtmlProps {
   nodeName?: 'p';
   attrObj?: IntrinsicElementAttributes['p'];
 }

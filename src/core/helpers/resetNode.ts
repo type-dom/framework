@@ -1,11 +1,18 @@
 import { isDescendant } from '@type-dom/utils';
 import { unref } from '../../reactivity';
-import { RawDom, TypeFragment } from '../components';
+import { TypeFragment } from '../components';
 import { TypeNode } from '../type-node/type-node.abstract';
-import { anchorReplaceDom, setElementAnchor, setFragmentAnchorWithDom, setFragmentAnchorWithoutDom } from './anchorAndDom';
+import { removeDom } from '../renderer/removeDom';
+import { processFragment } from '../renderer/processFragment';
+import { processElement } from '../renderer/processElement';
+import {
+  RawDom,
+  anchorReplaceDom,
+  setFragmentAnchorWithoutDom,
+  RendererElement,
+} from '../renderer/renderer';
 import { createDom } from './createDom';
 import { mountDom } from './mountDom';
-import { removeDom } from './removeDom';
 
 /**
  * 重置dom树
@@ -16,7 +23,7 @@ export function resetNode(node: TypeNode): void {
     console.error('dom is undefined . ');
     return;
   }
-  const upDom = mountDom(node);
+  const upDom = mountDom(node) as RendererElement;
   if (!upDom) {
     console.error('upDom is undefined . ');
     return;
@@ -32,28 +39,28 @@ export function resetNode(node: TypeNode): void {
     }
   });
   //  vIf 处理
-  if (Object.prototype.hasOwnProperty.call(node.baseProps, 'vIf')) {
-    const condition = unref(node.baseProps.vIf);
+  if (Object.prototype.hasOwnProperty.call(node.$options, 'vIf')) {
+    const condition = unref(node.$options.vIf);
     if (condition) {
       if (dom instanceof DocumentFragment) {
         if (!node.anchor) {
           console.error('node.dom is DocumentFragment, but node.anchor is undefined . ');
           return;
         }
-            setFragmentAnchorWithDom(node as TypeFragment, upDom);
+        processFragment(node as TypeFragment, upDom);
       } else { // 普通元素
         if (isDescendant(upDom, dom)) {
           console.warn('dom has been  descendant of upDom . ');
         } else {
           console.error('dom is not descendant of upDom . ');
-          setFragmentAnchorWithDom(node as TypeFragment, upDom);
+          processFragment(node as TypeFragment, upDom);
         }
       }
     } else {
       if (dom instanceof DocumentFragment) {
         setFragmentAnchorWithoutDom(node as TypeFragment, upDom);
       } else {
-        setElementAnchor(node, upDom);
+        processElement(node, upDom);
         if (isDescendant(upDom, dom)) {
           console.warn('dom has been  descendant of upDom . ');
           anchorReplaceDom(node, upDom)
@@ -71,7 +78,7 @@ export function resetNode(node: TypeNode): void {
         return;
       }
         // childDom 时 DocumentFragment时，必然有 anchor/anchorStart, 所以不需要判断 vIf
-        setFragmentAnchorWithDom(node as TypeFragment, upDom);
+      processFragment(node as TypeFragment, upDom);
     } else {
       if (isDescendant(upDom, dom)) {
         console.warn('dom has been  descendant of upDom . ');

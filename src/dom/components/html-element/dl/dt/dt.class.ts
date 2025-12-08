@@ -1,5 +1,5 @@
 import { TypeDT } from '../../../../../core/components/type-html/dl/dt/dt.abstract';
-import { TypeDTProps } from '../../../../../core/components/type-html/dl/dt/dt.interface';
+import { DTProps } from '../../../../../core/components/type-html/dl/dt/dt.interface';
 import { transformSlot } from '../../../../../core/helpers/transformSlot';
 import type { IDT } from './dt.interface';
 
@@ -8,10 +8,9 @@ export class DT extends TypeDT implements IDT {
 
   override isBasic = true;
 
-  constructor(params: TypeDTProps = {}) {
-    super();
+  constructor(params: DTProps = {}) {
+    super(params);
     this.className = 'DT';
     transformSlot(this, params.slot);
-    this.useParams(params);
   }
 }

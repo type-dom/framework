@@ -1,18 +1,15 @@
 import { TypeHtml } from '../../type-html.abstract';
-import { TypeTableDataCell } from '../data-cell/data-cell.abstract';
-import { ITypeTableRow, TypeTableRowProps } from './row.interface';
+import { ITypeTableRow, TableRowProps } from './row.interface';
 
-export abstract class TypeTableRow extends TypeHtml implements ITypeTableRow {
-  props: TypeTableRowProps;
-  dom?: HTMLTableRowElement;
-  override childNodes: TypeTableDataCell[];
+export abstract class TypeTableRow<Props extends TableRowProps = TableRowProps> extends TypeHtml<Props> implements ITypeTableRow {
+  dom: HTMLTableRowElement;
 
-  constructor()  {
-    super();
+  constructor(params: Props = {} as Props)  {
+    super(params);
     // console.log('trData is ', trData);
-    this.props = this.useParams({
+    this.useParams({
       nodeName: 'tr'
-    })
-    this.childNodes = [];
+    } as Props);
+    this.dom = document.createElement('tr');
   }
 }

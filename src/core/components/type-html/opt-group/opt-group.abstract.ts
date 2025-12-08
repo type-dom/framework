@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeOptGroup, TypeOptGroupProps } from './opt-group.interface';
+import { ITypeOptGroup, OptGroupProps } from './opt-group.interface';
 
-export abstract class TypeOptGroup extends TypeHtml implements ITypeOptGroup {
-  props: TypeOptGroupProps;
-  dom?: HTMLOptGroupElement;
+export abstract class TypeOptGroup<Props extends OptGroupProps = OptGroupProps> extends TypeHtml<Props> implements ITypeOptGroup {
+  dom: HTMLOptGroupElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'optgroup'
-    })
+    } as Props);
+    this.dom = document.createElement('optgroup');
   }
 }

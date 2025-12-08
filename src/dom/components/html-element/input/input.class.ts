@@ -1,5 +1,5 @@
 import { TypeInput } from '../../../../core/components/type-html/input/input.abstract';
-import { TypeInputProps } from '../../../../core/components/type-html/input/input.interface';
+import { InputProps } from '../../../../core/components/type-html/input/input.interface';
 import { transformSlot } from '../../../../core/helpers/transformSlot';
 import { InputHTMLAttributes, setAttrProp } from '../../../modules/attribute';
 import type { IInput } from './input.interface';
@@ -11,12 +11,11 @@ export class Input extends TypeInput implements IInput {
   // value: string | number | boolean | undefined;
   override isBasic = true;
 
-  constructor(params: TypeInputProps = {}) {
-    super();
+  constructor(params: InputProps = {}) {
+    super(params);
     this.className = 'Input';
     this.childNodes = [];
     transformSlot(this, params.slot);
-    this.useParams(params);
   }
 
   /**

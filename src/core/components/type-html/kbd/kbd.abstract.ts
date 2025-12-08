@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeKbd, TypeKbdProps } from './kbd.interface';
+import { ITypeKbd, KbdProps } from './kbd.interface';
 
-export abstract class TypeKbd extends TypeHtml implements ITypeKbd {
-  props: TypeKbdProps;
-  dom?: HTMLElement;
+export abstract class TypeKbd<Props extends KbdProps = KbdProps> extends TypeHtml<Props> implements ITypeKbd {
+  dom: HTMLElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'kbd'
-    })
+    } as Props);
+    this.dom = document.createElement('kbd');
   }
 }

@@ -33,9 +33,9 @@ const DOMTransitionPropsValidators = {
 
 export function resolveTransitionProps(
   rawProps: TransitionProps
-): TypeTransitionProps<Element> {
+): TypeTransitionProps {
   // console.warn('resolveTransitionProps . ');
-  const baseProps = {} as TypeTransitionProps<Element>;
+  const baseProps = {} as TypeTransitionProps;
   for (const key in rawProps) {
     if (!(key in DOMTransitionPropsValidators)) {
       (baseProps as any)[key] = (rawProps as any)[key];
@@ -200,7 +200,7 @@ export function resolveTransitionProps(
       finishLeave(el);
       callHook(onLeaveCancelled, [el]);
     }
-  }) as TypeTransitionProps<Element>;
+  }) as TypeTransitionProps;
 }
 
 /**

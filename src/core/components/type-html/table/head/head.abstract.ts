@@ -1,18 +1,15 @@
 import { TypeHtml } from '../../type-html.abstract';
-import { TypeTableHeaderCell } from '../header-cell/header-cell.abstract';
-import { ITypeTableHead, TypeTableHeadProps } from './head.interface';
+import { ITypeTableHead, TableHeadProps } from './head.interface';
 
 // 表格页眉
-export abstract class TypeTableHead extends TypeHtml implements ITypeTableHead {
-  props: TypeTableHeadProps;
-  dom?: HTMLTableSectionElement;
-  override childNodes: TypeTableHeaderCell[];
+export abstract class TypeTableHead<Props extends TableHeadProps = TableHeadProps> extends TypeHtml<Props> implements ITypeTableHead {
+  dom: HTMLTableSectionElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'thead'
-    });
-    this.childNodes = [];
+    } as Props);
+    this.dom = document.createElement('thead');
   }
 }

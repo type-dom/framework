@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeRuby extends ITypeHtml {
-  props: TypeRubyProps;
+  props: RubyProps;
 }
 
-export interface TypeRubyProps extends HtmlProps {
+export interface RubyProps extends HtmlProps {
   nodeName?: 'ruby';
   attrObj?: IntrinsicElementAttributes['ruby'];
 }

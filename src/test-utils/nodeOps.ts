@@ -73,7 +73,7 @@ export function dumpOps(): NodeOp[] {
   return ops
 }
 
-function createElement(tag: string): TestElement {
+function createElement(tag: string) {
   const node: TestElement = {
     id: nodeId++,
     type: TestNodeTypes.ELEMENT,

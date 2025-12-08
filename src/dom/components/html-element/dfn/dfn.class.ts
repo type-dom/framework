@@ -1,5 +1,5 @@
 import { TypeDfn } from '../../../../core/components/type-html/dfn/dfn.abstract';
-import { TypeDfnProps } from '../../../../core/components/type-html/dfn/dfn.interface';
+import { DfnProps } from '../../../../core/components/type-html/dfn/dfn.interface';
 import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IDfn } from './dfn.interface';
 
@@ -8,10 +8,9 @@ export class Dfn extends TypeDfn implements IDfn {
 
   override isBasic = true;
 
-  constructor(params: TypeDfnProps = {}) {
-    super();
+  constructor(params: DfnProps = {}) {
+    super(params);
     this.className = 'Dfn';
     transformSlot(this, params.slot);
-    this.useParams(params);
   }
 }

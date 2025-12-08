@@ -1,5 +1,5 @@
 import { TypeForm } from '../../../../core/components/type-html/form/form.abstract';
-import { TypeFormProps } from '../../../../core/components/type-html/form/form.interface';
+import { FormProps } from '../../../../core/components/type-html/form/form.interface';
 import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IForm } from './form.interface';
 
@@ -8,10 +8,9 @@ export class Form extends TypeForm implements IForm {
 
   override isBasic = true;
 
-  constructor(params: TypeFormProps = {}) {
-    super();
+  constructor(params: FormProps = {}) {
+    super(params);
     this.className = 'Form';
     transformSlot(this, params.slot);
-    this.useParams(params);
   }
 }

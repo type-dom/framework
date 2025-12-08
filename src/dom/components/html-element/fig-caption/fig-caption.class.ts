@@ -1,5 +1,5 @@
 import { TypeFigCaption } from '../../../../core/components/type-html/fig-caption/fig-caption.abstract';
-import { TypeFigCaptionProps } from '../../../../core/components/type-html/fig-caption/fig-caption.interface';
+import { FigCaptionProps } from '../../../../core/components/type-html/fig-caption/fig-caption.interface';
 import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IFigCaption } from './fig-caption.interface';
 
@@ -8,10 +8,9 @@ export class FigCaption extends TypeFigCaption implements IFigCaption {
 
   override isBasic = true;
 
-  constructor(params: TypeFigCaptionProps = {}) {
-    super();
+  constructor(params: FigCaptionProps = {}) {
+    super(params);
     this.className = 'FigCaption';
     transformSlot(this, params.slot);
-    this.useParams(params);
   }
 }

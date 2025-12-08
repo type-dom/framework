@@ -1,12 +1,11 @@
 import { isString } from '@type-dom/utils';
-import { isTypeNode } from '../../../core/type-node/vnode';
+import { isTypeNode } from '../../../core/vnode';
 import { TypeElement } from '../../../core/type-element/type-element.abstract';
-import type { IAttr, TypeProps } from '../../../core/type-node/type-node.interface';
-import { assignProps } from '../../../core/helpers/assignProps'
+import type { IAttr } from '../../../core/type-node/type-node.interface';
 import { Parser } from '../../../parser/parser.class';
+import { transformSlot } from '../../../core/helpers/transformSlot';
 import { addAttrObj } from '../../modules/attribute';
 import { IXElement, XElementProps } from './x-element.interface';
-import { transformSlot } from '../../../core/helpers/transformSlot';
 
 /**
  * XElement是一个通用元素基础组件，是其它类组件的子节点,Html/Svg
@@ -16,9 +15,8 @@ import { transformSlot } from '../../../core/helpers/transformSlot';
  * 也要能转为 json 格式字符串或文本DOM。
  * 注：这其实也是一个特殊的组件
  */
-export class XElement extends TypeElement implements IXElement {
+export class XElement<Props extends XElementProps = XElementProps> extends TypeElement<Props> implements IXElement {
   className: 'XElement';
-  override props: TypeProps;
   override isBasic = true;
   // parent?: XElement; // 在解析时，onEndElement时，重新赋值。
   // override childNodes: (XElement | TextNode)[];
@@ -35,15 +33,10 @@ export class XElement extends TypeElement implements IXElement {
    * 加载自定义标签时也会用到；
    * @param params
    */
-  constructor(params: XElementProps = {}) {
-    super();
-    this.className = 'XElement';
-    assignProps(this, {
-      nodeName: params.tag || params.nodeName || 'div'
-    });
-
-    // this.useTag(params?.tag || params.nodeName)
+  constructor(params: Props = {} as Props) {
+    super(params);
     // console.log('x-element . ');
+    this.className = 'XElement';
     this.attributes = params?.attributes || [];
     // this.style = new Style(this);
     if (isString(params?.template)) {
@@ -80,13 +73,11 @@ export class XElement extends TypeElement implements IXElement {
     //       return new TextNode(child.nodeValue, this);
     //     }
     //   }) || [];
-    this.props = this.useParams(params);
   }
 
   override setup(): void {
     // console.log('XElement setup . ');
     const props = this.props;
-    // transformSlot(this, props.slot || props.slots?.default);
     transformSlot(this, props.slot ?? props.slots?.default)
     // todo nodejs下没有document，Parser可能会用到
     // 加载自定义属性
@@ -118,7 +109,6 @@ export class XElement extends TypeElement implements IXElement {
         });
       }
     }
-
   }
 
   //   绑定事件

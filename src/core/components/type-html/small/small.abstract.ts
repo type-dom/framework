@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeSmall, TypeSmallProps } from './small.interface';
+import { ITypeSmall, SmallProps } from './small.interface';
 
-export abstract class TypeSmall extends TypeHtml implements ITypeSmall {
-  props: TypeSmallProps;
-  dom?: HTMLElement;
+export abstract class TypeSmall<Props extends SmallProps = SmallProps> extends TypeHtml<Props> implements ITypeSmall {
+  dom: HTMLElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'small'
-    })
+    } as Props);
+    this.dom = document.createElement('small');
   }
 }

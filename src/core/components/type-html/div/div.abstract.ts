@@ -1,15 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeDiv, TypeDivProps } from './div.interface';
+import { ITypeDiv, DivProps } from './div.interface';
+import { defaultProps } from '../../../helpers/defaultProps';
 
-export abstract class TypeDiv extends TypeHtml implements ITypeDiv {
-  override props: TypeDivProps;
-  dom?: HTMLDivElement;
+export abstract class TypeDiv<Props extends DivProps = DivProps> extends TypeHtml<Props> implements ITypeDiv {
+  dom: HTMLDivElement;
 
-  constructor()  {
-    super();
-    // console.warn('this.props is ', this.props);
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(defaultProps(params, {
       nodeName: 'div'
-    });
+    } as Props));
+    this.dom = document.createElement('div');
   }
 }

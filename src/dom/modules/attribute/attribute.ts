@@ -12,11 +12,12 @@ import {
 } from '@type-dom/utils';
 import { effect, computed, Computed } from '@type-dom/signals';
 import { isRef, toRaw, isSignal, isComputed, unref, MaybeRef, Ref, } from '../../../reactivity';
-import { TypeNode } from '../../../core/type-node/type-node.abstract';
 import { createDom } from '../../../core/helpers/createDom';
+import { TypeNode } from '../../../core/type-node/type-node.abstract';
+import { onBeforeMount } from '../../../core/apiLifecycle';
+import { TypeFragment } from '../../../core/components/type-fragment/type-fragment.abstract';
 import { addDomClass, removeDomClass } from '../class';
 import type { Attributes, ClassValue } from './attribute.interface';
-import { onBeforeMount, TypeFragment } from '../../../core';
 
 export function getAttr<T>(el: TypeNode, key: string): T {
   return (el.attrObj as any)[key];
@@ -173,21 +174,90 @@ export function renderAttrProp(el: TypeNode | undefined, key: string, value?: Ma
   }
   if (dom) {
     // 非 class 属性
-    // if (isRef(value)) {
-    //   const oldRaw = toRaw(value);
-    //   console.warn('key is ', key, ' oldRaw is ', oldRaw)
-    // }
-    effect(() => {
-      const raw = toRaw(value as MaybeRef<IPrimitive>);
-      // if (isRef(value)) {
-      //   console.warn('key is ', key, ' value is ', value);
-      //   console.warn('raw is ', raw);
-      // }
+    if (isRef(value)) {
+      // const oldRaw = toRaw(value);
+      // console.warn('key is ', key, ' oldRaw is ', oldRaw)
+      effect(() => {
+        const raw = toRaw(value as MaybeRef<IPrimitive>);
+        // if (isRef(value)) {
+        //   console.warn('key is ', key, ' value is ', value);
+        //   console.warn('raw is ', raw);
+        // }
+        if (dom instanceof Element) {
+          if (String(raw) === dom?.getAttribute(key)) {
+            return;
+          } else if (isString(raw)) {
+            if (dom instanceof SVGElement) {
+              //   nothing;
+            } else {
+              (dom as any)[key] = raw; // SVGElement 中有问题；
+            }
+            dom?.setAttribute(key, raw);
+          } else if (raw === true) {
+            // if (key === 'disabled') {
+            //   console.warn('key is disabled . ')
+            //   console.warn('raw is true . ')
+            // }
+            // console.warn('key is ' + key + ' . ')
+            if (dom?.hasAttribute(key)) {
+              return;
+            }
+            (dom as any)[key] = true;
+            dom.setAttribute(key, '');
+            // if (key === 'disabled') {
+            //   // console.log('dom.disabled is ', dom.disabled)
+            //   console.log('dom.disabled is ', dom.getAttribute(key))
+            // }
+          } else if (raw === false) {
+            // console.warn('key is ' + key + ' . ');
+            // console.warn('raw is false . ');
+            // disabled dom?.getAttribute(key) result is ''
+            if (!dom?.hasAttribute(key)) {
+              return;
+            }
+            dom?.removeAttribute(key); // 同步 DOM 属性
+            (dom as any)[key] = false; // 修改元素状态
+          } else if (raw === undefined || raw === null) {
+            // console.log('value is ', value);
+            if (!dom?.hasAttribute(key)) {
+              return;
+            }
+            dom.removeAttribute(key);
+            (dom as any)[key] = raw;
+          } else if (isNumber(raw)) {
+            const val = raw.toString();
+            // (dom as any)[key] = val; // SVGElement 中有问题；
+            dom?.setAttribute(key, val);
+          } else {
+            // console.warn('raw is not normal, is ', raw);
+            const val = raw.toString();
+            if (dom?.getAttribute(key) === val) {
+              return;
+            }
+            (dom as any)[key] = val;
+            // dom.setAttribute(key, val);  // setAttribute方法存在问题
+          }
+        } else if (dom instanceof DocumentFragment) {
+          // console.warn('dom is DocumentFragment . ');
+        } else if (dom instanceof Text) {
+          // console.warn('dom is Text . ');
+        } else if (dom instanceof Comment) {
+          // console.warn('dom is Comment, and is ', dom);
+        } else  {
+          console.warn('dom is not Element or DocumentFragment or Text or Comment， is ', dom);
+        }
+      })
+    } else {
+      const raw = value;
       if (dom instanceof Element) {
         if (String(raw) === dom?.getAttribute(key)) {
           return;
         } else if (isString(raw)) {
-          // (dom as any)[key] = raw; // SVGElement 中有问题；
+          if (dom instanceof SVGElement) {
+            //   nothing;
+          } else {
+            (dom as any)[key] = raw; // SVGElement 中有问题；
+          }
           dom?.setAttribute(key, raw);
         } else if (raw === true) {
           // if (key === 'disabled') {
@@ -242,7 +312,7 @@ export function renderAttrProp(el: TypeNode | undefined, key: string, value?: Ma
       } else  {
         console.warn('dom is not Element or DocumentFragment or Text or Comment， is ', dom);
       }
-    })
+    }
   } else {
     throw Error('dom is undefined');
   }
@@ -295,7 +365,7 @@ export function setClass(el: TypeNode, className: string): void {
 // classValue如果是数组，则是累加样式；如果是字符串，则是替换样式。
 export function addAttrClass(el: TypeNode, classValue: ClassValue): void {
   if (!el) return;
-  // 要先判断className是否已经存在 todo el.baseProps.class need how to do
+  // 要先判断className是否已经存在 todo el.$options.class need how to do
   if (!el.attrObj) {
     console.warn('el.attrObj is undefined . ');
     el.attrObj = {};
@@ -373,7 +443,21 @@ export function addAttrClass(el: TypeNode, classValue: ClassValue): void {
 
 export function renderClass(el: TypeNode, classValue: ClassValue) {
   if (!el) return;
-  effect(() => {
+  if (isRef(classValue)) {
+    effect(() => {
+      const kls = flattenClass(classValue).join(' ');
+      // console.error('kls is ', kls);
+      // console.warn('watch attribute class , newValue is ', newValue);
+      const dom = el.dom;
+      if (!dom) {
+        createDom(el);
+      }
+      // const classList = dom?.classList;
+      // console.log('classList is ', classList);
+      // todo 已有的样式应该如何处理 ？？？？
+      if (dom instanceof Element) addDomClass(dom, kls); // 这里的addDomClass 是外部引入的
+    });
+  } else {
     const kls = flattenClass(classValue).join(' ');
     // console.error('kls is ', kls);
     // console.warn('watch attribute class , newValue is ', newValue);
@@ -385,7 +469,7 @@ export function renderClass(el: TypeNode, classValue: ClassValue) {
     // console.log('classList is ', classList);
     // todo 已有的样式应该如何处理 ？？？？
     if (dom instanceof Element) addDomClass(dom, kls); // 这里的addDomClass 是外部引入的
-  });
+  }
 }
 
 export function removeClass(el: TypeNode, className: string): void {

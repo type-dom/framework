@@ -43,7 +43,7 @@ export function findDown<T extends TypeNode>(expr: string, value: any, node = ge
         }
         // 返回下一层的对象或属性值
         return acc[curr];
-      }, child.baseProps);
+      }, child.$options);
     }
 
     // 如果属性值匹配目标值，返回当前子节点
@@ -91,7 +91,7 @@ export function find<T extends TypeNode>(expr: string, value: any, node = getCur
         }
         // 返回下一层的对象或属性值
         return acc[curr];
-      }, child.baseProps);
+      }, child.$options);
     }
 
     // 如果属性值匹配目标值，返回当前子节点
@@ -139,7 +139,7 @@ export function findAll<T extends TypeNode>(expr: string, value: any, node = get
         }
         // 返回下一层的对象或属性值
         return acc[curr];
-      }, child.baseProps);
+      }, child.$options);
     }
 
     // 如果属性值匹配目标值，返回当前子节点

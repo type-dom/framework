@@ -7,22 +7,20 @@ export class SvgPolygon extends TypeSvg implements ISvgPolygon {
   className: 'SvgPolygon';
   nodeName: 'polygon';
   dom: SVGPolygonElement;
-  override props: SvgProps;
   override childNodes: [];
 
   override isBasic = true;
 
   constructor(params: SvgProps = {}) {
-    super();
+    super(params);
     this.nodeName = 'polygon';
     this.className = 'SvgPolygon';
     this.dom = document.createElementNS(
       'http://www.w3.org/2000/svg',
-      this.nodeName
+      'polygon'
     );
     this.childNodes = [];
 
     transformSlot(this, params.slot);
-    this.props = this.useParams(params);
   }
 }

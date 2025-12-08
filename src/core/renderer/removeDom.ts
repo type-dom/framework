@@ -1,24 +1,30 @@
 import { TypeNode } from '../type-node/type-node.abstract';
-import { mountDom } from './mountDom';
 
 /**
  * 清除自有dom节点。对象自身还没有被删除。
  * 删除对象，要在父级中。
  * node.dom的值也没有变。
  * 注： 这样删除时，不会删除 node.anchor/node.anchorStart 等锚点。
+ * todo Teleport 删除时，锚点也要删除。
  */
 export function removeDom(node: TypeNode): void {
   // console.error('removeDom . ');
   if (node.dom) {
     if (node.dom instanceof DocumentFragment) {
-      const upDom = mountDom(node);
-      if (!upDom) {
-        console.warn('upDom is undefined . ');
-        return;
+      if (node.className ===  'Teleport') {
+        // node.anchorStart?.remove();
+        // node.anchor?.remove();
+        node.targetStart?.remove();
+        node.targetAnchor?.remove();
       }
+      // const upDom = mountDom(node);
+      // if (!upDom) {
+      //   console.warn('upDom is undefined . ');
+      //   return;
+      // }
       if (!node.anchor || !node.anchorStart) {
         console.warn('node.anchor or node.anchorStart is undefined . ');
-        return;
+        // return;
       }
       // removeNodesBetween(upDom, node.anchorStart, node.anchor);
       node.childNodes?.forEach((child) => removeDom(child));

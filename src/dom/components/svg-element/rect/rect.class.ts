@@ -8,7 +8,6 @@ export class SvgRect extends TypeSvg implements ISvgRect {
   nodeName: 'rect';
   className: 'SvgRect';
   dom: SVGRectElement;
-  override props: SvgProps;
   // override attrObj: ISvgRectAttribute;
   override childNodes: [];
   x: number | string = 0;
@@ -19,12 +18,12 @@ export class SvgRect extends TypeSvg implements ISvgRect {
   override isBasic = true;
 
   constructor(params: SvgProps = {}) {
-    super();
+    super(params);
     this.nodeName = 'rect';
     this.className = 'SvgRect';
     this.dom = document.createElementNS(
       'http://www.w3.org/2000/svg',
-      this.nodeName
+      'rect'
     );
     this.childNodes = [];
     addAttrObj(this, {
@@ -37,7 +36,6 @@ export class SvgRect extends TypeSvg implements ISvgRect {
       height: this.height,
     });
     transformSlot(this, params.slot);
-    this.props = this.useParams(params);
   }
 
   // 单位是px

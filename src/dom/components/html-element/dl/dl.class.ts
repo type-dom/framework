@@ -1,5 +1,5 @@
 import { TypeDL } from '../../../../core/components/type-html/dl/dl.abstract';
-import { TypeDLProps } from '../../../../core/components/type-html/dl/dl.interface';
+import { DLProps } from '../../../../core/components/type-html/dl/dl.interface';
 import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IDL } from './dl.interface';
 
@@ -8,10 +8,9 @@ export class DL extends TypeDL implements IDL {
 
   override isBasic = true;
 
-  constructor(params: TypeDLProps = {}) {
-    super();
+  constructor(params: DLProps = {}) {
+    super(params);
     this.className = 'DL';
     transformSlot(this, params.slot);
-    this.useParams(params);
   }
 }

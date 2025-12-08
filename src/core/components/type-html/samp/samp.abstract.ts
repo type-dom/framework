@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeSamp, TypeSampProps } from './samp.interface';
+import { ITypeSamp, SampProps } from './samp.interface';
 
-export abstract class TypeSamp extends TypeHtml implements ITypeSamp {
-  props: TypeSampProps;
-  dom?: HTMLElement;
+export abstract class TypeSamp<Props extends SampProps = SampProps> extends TypeHtml<Props> implements ITypeSamp {
+  dom: HTMLElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'samp'
-    })
+    } as Props);
+    this.dom = document.createElement('samp');
   }
 }

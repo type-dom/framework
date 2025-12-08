@@ -1,18 +1,15 @@
-import { TextNode } from '../../../../../dom/components/text-node/text-node.class';
 import { TypeHtml } from '../../type-html.abstract';
-import { ITypeTableHeaderCell, TypeTableHeaderCellProps } from './header-cell.interface';
+import { ITypeTableHeaderCell, TableHeaderCellProps } from './header-cell.interface';
 
 // 表格表头 table header cell
-export abstract class TypeTableHeaderCell extends TypeHtml implements ITypeTableHeaderCell {
-  props: TypeTableHeaderCellProps;
-  dom?: HTMLElement;
-  override childNodes: TextNode[];
+export abstract class TypeTableHeaderCell<Props extends TableHeaderCellProps = TableHeaderCellProps> extends TypeHtml<Props> implements ITypeTableHeaderCell {
+  dom: HTMLElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'th'
-    });
-    this.childNodes = [];
+    } as Props);
+    this.dom = document.createElement('');
   }
 }

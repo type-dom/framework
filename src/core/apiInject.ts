@@ -1,7 +1,8 @@
-import { warn } from './warning'
-import { currentInstance } from './component'
-import { TypeNode } from './type-node/type-node.abstract';
 import { isFunction } from '@type-dom/utils';
+import { currentApp } from '../dom/components/app/app.class';
+import { warn } from './warning'
+import { currentInstance } from './component';
+import { TypeNode } from './type-node/type-node.abstract';
 
 /**
  * 标记类型：用于唯一标识依赖注入的键
@@ -67,41 +68,44 @@ export function inject(
   // fallback to `currentRenderingInstance` so that this can be called in
   // a functional component
   const instance = currentInstance; // || currentRenderingInstance
-
-  // also support looking up from app-level provides w/ `app.runWithContext()`
-  if (instance /* || currentApp */) {
+  if (instance) {
     return useInject(instance, key, defaultValue, treatDefaultAsFactory);
-    // #2400
-    // to support `app.use` plugins,
-    // fallback to appContext's `provides` if the instance is at root
-    // #11488, in a nested createApp, prioritize using the provides from currentApp
-    // const provides = currentApp
-    //   ? currentApp._context.provides
-    //   : instance
-    //     ? instance.parent == null
-    //       ? instance.vnode.appContext && instance.vnode.appContext.provides
-    //       : instance.parent.provides
-    //     : undefined
-    // const provides = instance.upProvides;
-    // if (provides) {
-    //   if ((key as string | symbol) in provides) {
-    //     // TS doesn't allow symbol as index type
-    //     return provides[key]
-    //   } else {
-    //     // todo
-    //     return instance.parent?.inject(key, defaultValue);
-    //   }
-    //
-    // } else if (arguments.length > 1) { // todo 加入到 instance.inject 方法中
-    //   return treatDefaultAsFactory && isFunction(defaultValue)
-    //     ? defaultValue.call(instance && instance.proxy)
-    //     : defaultValue
-    // } else if (__DEV__) {
-    //   warn(`injection "${String(key)}" not found.`)
-    // }
   } else {
     warn(`inject() can only be used inside setup() or functional components.`)
   }
+  // todo currentApp
+  // // also support looking up from app-level provides w/ `app.runWithContext()`
+  // if (instance || currentApp) {
+  //   // #2400
+  //   // to support `app.use` plugins,
+  //   // fallback to appContext's `provides` if the instance is at root
+  //   // #11488, in a nested createApp, prioritize using the provides from currentApp
+  //   const provides = currentApp
+  //     ? currentApp.provides
+  //     : instance
+  //       ? instance.parent == null
+  //         ? instance.appContext && instance.appContext.provides
+  //         : instance.parent.provides
+  //       : undefined
+  //   // const provides = instance.upProvides;
+  //   if (provides && (key as string | symbol) in provides) {
+  //    // if () {
+  //       // TS doesn't allow symbol as index type
+  //       return provides[key]
+  //    // } else {
+  //     //  // todo
+  //     //  return instance?.parent?.inject?.(key, defaultValue);
+  //     //}
+  //   } else if (arguments.length > 1) { // todo 加入到 instance.inject 方法中
+  //     return treatDefaultAsFactory && isFunction(defaultValue)
+  //       ? defaultValue.call(instance) // && instance.proxy)
+  //       : defaultValue
+  //   } else {// if (__DEV__) {
+  //     warn(`injection "${String(key)}" not found.`)
+  //   }
+  // } else {
+  //   warn(`inject() can only be used inside setup() or functional components.`)
+  // }
 }
 
 /**
@@ -110,7 +114,7 @@ export function inject(
  * user. One example is `useRoute()` in `vue-router`.
  */
 export function hasInjectionContext(): boolean {
-  return !!currentInstance; // || currentRenderingInstance || currentApp)
+  return !!(currentInstance || currentApp); // || currentRenderingInstance || currentApp)
 }
 function useInject<T>(
   node: TypeNode | undefined,

@@ -1,20 +1,19 @@
 import { isMustache } from '@type-dom/utils';
-import { isRef, MaybeRef, toRaw, unref, watch, } from '../../../reactivity';
-import { LifecycleHooks, NodeName } from '../../../core/enums';
+import { Dayjs } from 'dayjs';
+import { MaybeRef, isRef, toRaw, unref, watch, } from '../../../reactivity';
+import { NodeName } from '../../../core/enums';
 import { TypeNode } from '../../../core/type-node/type-node.abstract';
-import type { TypeProps } from '../../../core/type-node/type-node.interface';
 import { TypeElement } from '../../../core/type-element/type-element.abstract';
-import { TypeEl } from '../../../core/type-element/type-element.interface';
-import { assignProps } from '../../../core/helpers/assignProps';
-import { mountText } from '../../../core/helpers/mountText';
+import { mountText } from '../../../core/renderer/mountText';
 import { useTextRender } from './useRender';
-import type { ITextNode } from './text-node.interface';
+import type { ITextNode, TextProps } from './text-node.interface';
+import { TypeEl } from '../../../core/renderer/renderer';
 
 /**
  * 文本节点类
  * 会渲染成Text。
  */
-export class TextNode extends TypeNode implements ITextNode {
+export class TextNode extends TypeNode<TextProps> implements ITextNode {
   /**
    * 节点类型标识，值为 'TextNode'
    */
@@ -27,7 +26,7 @@ export class TextNode extends TypeNode implements ITextNode {
    * 节点值，类型为字符串
    */
   // nodeValue: string;
-  override props: TypeProps;
+  // override props: TypeProps;
   // text: string;
   style: undefined;
   attr: undefined;
@@ -49,13 +48,13 @@ export class TextNode extends TypeNode implements ITextNode {
    * @param parent 父级节点
    */
   constructor(
-    text: MaybeRef<string | number> = '\u200c',
+    text: MaybeRef<string | number | Dayjs | undefined> = '\u200c',
     parent?: TypeElement
   ) {
-    super();
+    super({ nodeName: NodeName.TEXT, nodeValue: String(text) });
     this.isRendered = false;
     this.className = 'TextNode';
-    this.props = this.baseProps;
+    this.props = this.$options;
     this.props.nodeName = NodeName.TEXT;
     this.dom = document.createTextNode(String(unref(text)) || '');
     if (parent) {
@@ -69,7 +68,7 @@ export class TextNode extends TypeNode implements ITextNode {
         watch(() => toRaw(text), (newVal) => {
           // console.warn('TextNode watch text is ', this.props.nodeValue);
           this.props.nodeValue = newVal?.toString();
-          this.setText(newVal);
+          this.setText(String(newVal));
         })
       // }, 0)
     } else {
@@ -107,11 +106,10 @@ export class TextNode extends TypeNode implements ITextNode {
     return this.props.nodeValue?.toString().length ?? 0;
   }
 
-  useParams<T extends TypeProps>(params = {} as T): T {
-    this.params = params;
-    assignProps(this, params);
-    return this.props as T;
-  }
+  // useParams<T extends TypeProps>(params = {} as T): T {
+  //   assignProps(this, params);
+  //   return this.props as T;
+  // }
 
   /**
    * 设置节点文本内容
@@ -236,6 +234,6 @@ export class TextNode extends TypeNode implements ITextNode {
     if (appEl && this.dom) {
       appEl.appendChild(this.dom);
     }
-    this.lifeCycles[LifecycleHooks.UPDATED]?.forEach((cb) => cb());
+    this.updated();
   }
 }

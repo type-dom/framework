@@ -27,15 +27,13 @@ import {
 } from './transition-group.util';
 import { TransitionGroupProps } from './transition-group.interface';
 
-export class TransitionGroup extends TypeHtml {
+export class TransitionGroup<Props extends TransitionGroupProps> extends TypeHtml<Props> {
   className: 'TransitionGroup';
   dom?: HTMLElement;
-  override props: TransitionGroupProps;
 
-  constructor(params: TransitionGroupProps = {}) {
-    super();
+  constructor(params: Props = {} as Props) {
+    super(params);
     this.className = 'TransitionGroup';
-    this.props = this.useParams(params);
   }
 
   override setup() {

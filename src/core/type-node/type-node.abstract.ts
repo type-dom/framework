@@ -1,25 +1,39 @@
 import { AnyFn } from '@type-dom/utils';
+// import { logInstantiation, logMethod, logProperty } from '@type-dom/decorators';
+// import { logger } from '@type-dom/decorators';
 import { MaybeRef } from '../../reactivity';
 import { IJsonData } from '../../interface';
 import { Attributes } from '../../dom/modules/attribute';
 import { RawStyle } from '../../dom/modules/style/style.interface';
+import { AppConfig, AppContext } from '../../dom/components/app/app.interface';
+import { createAppContext } from '../../dom/components/app/createAppContext';
 import { TypeElement } from '../type-element/type-element.abstract';
-import { RawDom, TypeEl } from '../type-element/type-element.interface';
-import { unmount } from '../helpers/unmount';
+import { unmount } from '../renderer/unmount';
 import { findDown } from '../helpers/findDown';
+import { useParams } from '../helpers/useParams';
 import { ObjectEmitsOptions } from '../componentEmits';
-import { Data } from '../component';
+import { Data, SetupContext } from '../component';
 import { LifecycleHooks, NodeName } from '../enums';
-import { TransitionElement, TransitionHooks } from '../components/type-transition/type-transition.interface';
-import { NormalizedPropsOptions, } from '../componentProps';
+import {
+  TransitionElement,
+  TransitionHooks,
+} from '../components/type-transition/type-transition.interface';
+import { NormalizedPropsOptions } from '../componentProps';
 import { IEvent } from '../event-emitter/event-emitter.interface';
 import { emit } from '../event-emitter/event-emitter';
+import { Slots } from '../componentSlots';
+import {
+  ElementNamespace,
+  RawDom,
+  RealDom,
+  RendererElement,
+} from '../renderer/renderer';
 import {
   IAttr,
   IMethods,
   ISettings,
   ITypeNode,
-  TypeProps
+  TypeProps,
 } from './type-node.interface';
 
 let uid = 0;
@@ -30,24 +44,34 @@ let uid = 0;
  *    TypeElement
  *    TextNode
  */
-export abstract class TypeNode<A extends Attributes = Attributes> implements ITypeNode {
+// @logInstantiation
+// @logger.abstract()
+export abstract class TypeNode<
+  Props extends TypeProps = TypeProps,
+  Attrs extends Attributes = Attributes
+> implements ITypeNode
+{
   /**
    * 在生成dom字符串时，可以转为 attributes 的一个元素 { name: 'className', value: string }
    * 在定义ClassName时，要把当前类写入到TypeMap中；
    */
+  // @logProperty
   abstract className: string; // 最终实体类的名称，解析转换时需要创建对应的类； 必然有；
   // abstract style?: Style | undefined;
   // abstract attr?: Attribute | undefined;
-  attrObj?: A = {} as A; // unmount时，要能够被删除
+
+  // @logProperty
+  attrObj?: Attrs = {} as Attrs; // unmount时，要能够被删除
   styleObj?: RawStyle = {};
   // abstract nodeValue?: string | number | undefined;
   abstract childNodes?: TypeNode[] | undefined;
   refs: Record<string, TypeNode> = {};
-  config?: any;
+  config?: AppConfig; // Data
   isBasic?: boolean;
   createdIn?: 'setup';
 
   transition?: TransitionHooks<TransitionElement> | undefined;
+
   /**
    * anchor 是片段（Fragment）在真实 DOM 中的位置标记，用于标识该片段在 DOM 树中的插入点或边界点。
    * 它主要用于以下场景：
@@ -66,12 +90,18 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
    * 这样可以确保被传送的内容被正确插入到目标 DOM 节点的合适位置。
    * 注： this is Fragment , 片段的结束标记，用于标识片段的结束位置。
    */
-  anchor?: Comment; // fragment anchor  评论节点；vIf占位符使用，
-  // todo <!--[--> <!--]--> 片段的起始和结束标记，用于标识片段的起始和结束位置。
+  anchor?: Comment | Text; // fragment anchor  评论节点；vIf占位符使用，
   /**
    * 片段的起始标记，用于标识片段的起始位置。
+   *  todo <!--[--> <!--]--> 片段的起始和结束标记，用于标识片段的起始和结束位置。
    */
-  anchorStart?: Comment;
+  anchorStart?: Comment | Text;
+
+  /**
+   * 挂载到指定的组件的DOM,可以直接指向 body
+   * todo Teleport execute mount to outer dom, so need not to property.
+   */
+  to?: MaybeRef<string | RealDom | TypeElement>;
 
   /**
    * 作用：指向 Teleport 组件要将内容渲染到的目标 DOM 容器。
@@ -88,7 +118,7 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
    * 在 首次渲染 时，Vue 会在目标容器中插入一个注释节点作为 targetStart。
    * 在 更新/卸载 时，通过 targetStart 和 targetAnchor 定位并操作整个 Teleport 内容块。
    */
-  targetStart?: RawDom | null; // teleport target start anchor
+  targetStart?: Comment | Text; // teleport target start anchor
   /**
    * 作用：标记 Teleport 内容在目标容器中的结束插入点。
    * 场景：与 targetStart 配合使用，定义 Teleport 内容在目标容器中的边界。
@@ -96,7 +126,7 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
    * 在 首次渲染 时，Vue 会在目标容器中插入一个注释节点作为 targetAnchor。
    * 在 更新/卸载 时，通过 targetStart 和 targetAnchor 删除或替换整个 Teleport 内容块。
    */
-  targetAnchor?: RawDom | null; // teleport target anchor
+  targetAnchor?: Comment | Text; // teleport target anchor
   /**
    * 三者协作流程
    * 创建阶段：
@@ -110,23 +140,23 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
    * 通过 targetStart 和 targetAnchor 定位内容范围，删除整个 Teleport 内容及其占位符。
    */
 
-  /**
-   * 挂载到指定的组件的DOM,可以直接指向 body
-   * todo Teleport execute mount to outer dom, so need not to property.
-   */
-  to?: MaybeRef<string | RawDom>;
-
-  key?: string;
+  key?: PropertyKey | null;
   /**
    * 存储 传入的参数。 只需要到处json时有就行。
    */
-  params?: TypeProps;
+  // @logProperty
+  // @logger.property()
+  params: Props;
   /**
    * 属性项
    */
-  props: TypeProps;
+  // @logProperty
+  // @logger.property()
+  props: Props;
+  attrs?: Data;
+  slots?: Slots;
 
-  baseProps: TypeProps;
+  $options: Props; // & { [key: string]: unknown };
   /**
    * resolved props options
    * @internal
@@ -143,11 +173,14 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
    */
   emitted: Record<string, boolean> | null = null;
 
-  parent?: TypeElement | undefined;
+  parent?: TypeElement<any, any> | undefined;
   isContext?: boolean;
   items?: TypeProps[];
   // textNode?: TextNode;
-  lifeCycles: Record<LifecycleHooks, AnyFn[]>;
+  lifeCycles: Record<LifecycleHooks, AnyFn[]> = {} as Record<
+    LifecycleHooks,
+    AnyFn[]
+  >;
   uid: number;
   /**
    * 存储事件名称与事件监听器数组的映射
@@ -161,7 +194,7 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
    *    We keep track of numTimesAdded (the number of times it was added) because if you attach the same listener twice,
    *     we should actually call it twice for each emitted event.
    */
-    // observers: Record<string, AnyFn[]>;
+  // observers: Record<string, AnyFn[]>;
   eventObservers: Record<string, Map<AnyFn | undefined, IEvent>> = {};
   emitObservers: Record<string, Map<AnyFn | undefined, number>> = {};
   // abstract nodeName: NodeName.TEXT | NodeName.FRAGMENT | string;
@@ -171,18 +204,28 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
    * avoid unnecessary watcher trigger
    * @internal
    */
-  propsDefaults?: Data
+  propsDefaults?: Data;
 
   // lifecycle
   isRendered?: boolean;
-  isMounted?: boolean
-  isUnmounted?: boolean
-  isDeactivated?: boolean
-  // 是否触发样式作用域
+  isMounted?: boolean;
+  isUnmounted?: boolean;
+  isDeactivated?: boolean;
+
+  // 是否触发样式作用域 whether to apply CSS rules with scopeId
   scopedId?: string;
 
+  // optimization only
+  shapeFlag?: number; // = type === Fragment ? 0 : ShapeFlags.ELEMENT,
+  patchFlag?: number;
+  dynamicProps?: string[] | null;
+  dynamicChildren?: TypeNode[] | null;
+
+  // application root node only
+  appContext?: AppContext
+
   /**
-   * 废弃
+   * deprecated
    */
   initEvents?(): void;
 
@@ -194,31 +237,32 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
     | Comment
     | null
     | undefined;
+  parentDom?: RendererElement | null;
 
-  constructor(params: TypeProps = {}) {
+  constructor(params: Props) {
     // this.eventObservers = {};
     // this.emitObservers = {};
     this.uid = uid++;
-    this.params = Object.freeze(params);
-    this.params = params;
-    this.props = this.baseProps = {};
-    this.lifeCycles = {} as Record<LifecycleHooks, AnyFn[]>;
-    this.lifeCycles[LifecycleHooks.BEFORE_CREATE]?.forEach((fn) => fn());
-    this.beforeCreate?.(); // 挂载前，执行一些初始化操作。其实也就是操作 config本身。
+    this.params = Object.freeze({ ...params }) as Props;
+    // this.params = params;
+    this.props = this.$options = {} as Props;
+    this.beforeCreate(); // 挂载前，执行一些初始化操作。其实也就是操作 config本身。
+    useParams(this, params);
   }
   /**
    *
    */
-  setup?(): void;
+  setup?(props: Props, ctx?: SetupContext): void;
 
   /**
    * mount 才是组件对外的主方法
    * constructor 时，只是 this.props 赋值。
    * 子类 override props 时； props is undefined;
    * todo 要理顺与 render 方法的关系。 render 最终要私有化；
-   * @param el
+   * @param container
+   * @param namespace
    */
-  abstract mount(el?: TypeEl): void;
+  abstract mount(container?: RawDom, namespace?: boolean | ElementNamespace): TypeNode | void;
 
   /**
    * 渲染出真实DOM
@@ -250,7 +294,7 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
    * 问题： 无法获取应用项目主类的方法和属性；
    */
   get root(): TypeNode | undefined {
-    if (this?.isRoot) {
+    if (this?.isRoot || !this.parent) {
       return this;
     } else {
       // 要保证parent不为null，否则会报错。要保证应用项目中的parent都设置过了。
@@ -284,7 +328,7 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
 
   get textContent(): string | number | boolean {
     if (!this.childNodes) {
-      return this.baseProps.nodeValue ?? '';
+      return this.$options.nodeValue ?? '';
     }
     // 使用一个字符串变量迭代添加,而非递归来累积文本内容。
     let content = '';
@@ -316,47 +360,51 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
   }
   // 向下获取真实的 element ; TypeHtml TypeSvg
   get downRealElement(): TypeNode | undefined {
-    if (this.baseProps.nodeName === NodeName.FRAGMENT) {
+    if (this.$options.nodeName === NodeName.FRAGMENT) {
       for (const child of this.children) {
-        if (child.baseProps.nodeName === NodeName.FRAGMENT) {
+        if (child.$options.nodeName === NodeName.FRAGMENT) {
           return child.downRealElement;
-        } else if (child.baseProps.nodeName !== NodeName.TEXT) {
+        } else if (child.$options.nodeName !== NodeName.TEXT) {
           return child;
         }
       }
-    } else if (this.baseProps.nodeName !== NodeName.TEXT) {
+    } else if (this.$options.nodeName !== NodeName.TEXT) {
       return this;
     }
     return undefined;
   }
 
   // 向上获取真实的 element ;
+  //  todo type-element 中 elementParent 重复；
   get upRealElement(): TypeNode | undefined {
-    if (this.baseProps.nodeName === NodeName.FRAGMENT) {
+    if (this.$options.nodeName === NodeName.FRAGMENT) {
       return this.parent?.upRealElement;
-    } else if (this.baseProps.nodeName !== NodeName.TEXT) {
-      return this;
+    } else if (this.parent && this.parent.$options.nodeName !== NodeName.TEXT) {
+      return this.parent;
     }
     return undefined;
   }
 
   /**
-   * 配置设置项
+   * 配置参数
+   * 使用传入的参数，与节点结合
    * @param params
    */
-  abstract useParams<T extends TypeProps>(params?: T): T;
-
-  // 可重置config 的接口类型
-  getProps<T extends TypeProps>(): T {
-    return this.props as T;
+  useParams(params: Props) {
+    return useParams(this, params);
   }
 
-  getProp<T extends keyof TypeProps>(key: T) {
-    return this.baseProps[key];
+  // 可重置config 的接口类型
+  getProps(): Props {
+    return this.props as Props;
+  }
+
+  getProp<T extends keyof Props>(key: T) {
+    return this.props[key];
   }
 
   addProp(key: string, value: any) {
-    Object.defineProperty(this.baseProps, key, {
+    Object.defineProperty(this.props, key, {
       configurable: true,
       enumerable: true,
       get() {
@@ -368,20 +416,20 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
     });
   }
 
-  setProp<T extends TypeProps>(key: keyof T, value?: any) {
-    (this.baseProps as T)[key] = value;
+  setProp(key: keyof (Props & TypeProps), value?: any) {
+    this.props[key] = value;
     if (value === undefined) {
-      delete (this.baseProps as T)?.[key];
+      delete (this.props as Props)?.[key];
     }
   }
 
   // props.slots中添加slot的对象
   addPropSlot(name: string, slot: string | TypeNode | (string | TypeNode)[]) {
-    if (!this.baseProps?.slots) {
+    if (!this.props.slots) {
       // console.error('styleObj is not initialized.');
-      this.baseProps.slots = {};
+      this.props.slots = {};
     }
-    this.baseProps.slots[name] = slot;
+    this.props.slots[name] = slot;
   }
 
   setRoot(isRoot: boolean) {
@@ -427,12 +475,14 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
   //   console.log('TypeNode.typeMap is ', TypeNode.typeMap);
   // }
 
-  setParent(parent: TypeElement): void {
+  setParent<ParentProps extends TypeProps, Attrs extends Attributes>(
+    parent: TypeElement<ParentProps, Attrs>
+  ): void {
     this.parent = parent; // 单一原则
   }
 
   appendParent(parent: TypeElement): void {
-    this.parent = parent;
+    this.parent = parent as TypeElement<TypeProps, Attributes>;
     parent.addChild(this);
   }
 
@@ -472,7 +522,7 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
     if (node.parent) {
       return node.parent;
     } else {
-      for (const child of (parent?.childNodes || [])) {
+      for (const child of parent?.childNodes || []) {
         if (child === node) {
           return parent;
         } else {
@@ -582,9 +632,9 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
     // 创建类的新实例
     return new (this.constructor as any)(this.params) as T;
   }
-  emit = (event: string, ...args: any[])=> {
+  emit = (event: string, ...args: any[]) => {
     emit(this, event, ...args);
-  }
+  };
 
   /**
    * 生命周期
@@ -594,7 +644,81 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
    * afterRender 渲染后
    * mounted 挂载后
    */
-  beforeCreate?(): void;
+  beforeCreate() {
+    // console.error('beforeCreate . ');
+    this.lifeCycles[LifecycleHooks.BEFORE_CREATE]?.forEach((fn) => fn());
+  }
+
+  /**
+   * created函数用于在渲染TypeElement之前进行准备工作。
+   * 该函数不接受参数，也不返回任何值。
+   * 组件实例已经创建完成，数据观测和属性已初始化，但真实DOM尚未生成。
+   * 主要完成以下工作：
+   * 1. 打印日志说明当前处于created阶段。
+   * 2. 检查dom属性是否已存在，若不存在，则创建一个新的DOM元素。
+   * 3. 遍历当前Element的所有属性，对以':'和'@'开头的属性进行特殊处理。
+   */
+  created() {
+    // todo appContext.app 在createApp创建的项目中，应该是 App而不是null
+    // inherit parent app context - or - if root, adopt from root vnode
+    const parent = this.parent;
+    const appContext = parent?.appContext || this.appContext || emptyAppContext;
+    // if (appContext.app === null) {
+    //   console.error('created appContext.app is ', appContext.app);
+    // }
+    this.appContext = appContext;
+    // todo error ui-doc menus does not show
+    // this.provides = parent?.provides ?? Object.create(appContext.provides);
+
+    this.lifeCycles[LifecycleHooks.CREATED]?.forEach((fn) => fn());
+  }
+
+  /**
+   * 在挂载开始之前调用，相关的render函数首次被调用，此时组件的$el属性还不存在。
+   */
+  beforeMount() {
+    this.lifeCycles[LifecycleHooks.BEFORE_MOUNT]?.forEach((fn) => fn());
+  }
+  /**
+   * 可选的函数，无参数，无返回值。
+   * 组件实例被挂载到DOM上，$el属性现在可以访问，但子组件可能还未挂载。
+   * 该函数用于在挂载完成后执行一些额外的操作。
+   * 如果需要在特定条件下执行渲染完成后的操作，可以实现此函数。
+   * 在子类中覆写
+   */
+  mounted() {
+    this.lifeCycles[LifecycleHooks.MOUNTED]?.forEach((fn) => fn());
+  }
+  beforeUpdate() {
+    this.lifeCycles[LifecycleHooks.BEFORE_UPDATE]?.forEach((fn) => fn());
+  }
+  updated() {
+    this.lifeCycles[LifecycleHooks.UPDATED]?.forEach((fn) => fn());
+  }
+  beforeUnmount() {
+    this.lifeCycles[LifecycleHooks.BEFORE_UNMOUNT]?.forEach((fn) => fn());
+  }
+  unmounted() {
+    this.lifeCycles[LifecycleHooks.UNMOUNTED]?.forEach((fn) => fn());
+  }
+  activated() {
+    this.lifeCycles[LifecycleHooks.ACTIVATED]?.forEach((fn) => fn());
+  }
+  deactivated() {
+    this.lifeCycles[LifecycleHooks.DEACTIVATED]?.forEach((fn) => fn());
+  }
+  errorCaptured() {
+    this.lifeCycles[LifecycleHooks.ERROR_CAPTURED]?.forEach((fn) => fn());
+  }
+  renderTracked() {
+    this.lifeCycles[LifecycleHooks.RENDER_TRACKED]?.forEach((fn) => fn());
+  }
+  renderTriggered() {
+    this.lifeCycles[LifecycleHooks.RENDER_TRIGGERED]?.forEach((fn) => fn());
+  }
+  serverPrefetch() {
+    this.lifeCycles[LifecycleHooks.SERVER_PREFETCH]?.forEach((fn) => fn());
+  }
 
   /**
    * 原 destroy
@@ -604,7 +728,11 @@ export abstract class TypeNode<A extends Attributes = Attributes> implements ITy
    * 删除dom,
    * 要清理绑定的事件，  组件中绑定的事件时，有可能是 绑到 document,window的，必须清理，否则逻辑可能错误。
    */
+  // @logMethod
+  // @logger.method()
   unmount(root?: TypeElement): void {
     unmount(this, root);
   }
 }
+
+const emptyAppContext = createAppContext()

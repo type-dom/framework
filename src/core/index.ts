@@ -10,7 +10,8 @@ export type * from './event-emitter/event-emitter.interface';
 export * from '../dom/modules/style/index';
 export * from '../dom/modules/attribute/index';
 
-export * from './util';
+// export * from './util';
+export { createApp } from './apiCreateApp';
 export {
   onBeforeMount,
   onMounted,
@@ -26,7 +27,7 @@ export {
   onServerPrefetch,
 } from './apiLifecycle'
 export { provide, inject, hasInjectionContext } from './apiInject'
-export { nextTick } from './scheduler'
+export * from './scheduler'
 export { useAttrs, useSlots } from './apiSetupHelpers'
 // export { defineExpose } from './defineExpose';
 // export { useModel } from './helpers/useModel'
@@ -73,7 +74,7 @@ export { getCurrentInstance } from './component'
 
 // Advanced render function utilities
 export { // createVNode, cloneVNode,
-  mergeProps, isTypeNode } from './type-node/vnode'
+  mergeProps, isTypeNode } from './vnode'
 export type { InjectionKey } from './apiInject'
 // export type {
 //   ComponentOptions,
@@ -124,3 +125,5 @@ export { assignProps } from './helpers/assignProps';
 export { useRecurseRender } from './helpers/useRecurseRender';
 export { transformSlot } from './helpers/transformSlot';
 export { findDown, findAll } from './helpers/findDown';
+export { defaultProps } from './helpers/defaultProps';
+export * from './decorators/index';

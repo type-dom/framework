@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeTime, TypeTimeProps } from './time.interface';
+import { ITypeTime, TimeProps } from './time.interface';
+import { defaultProps } from '../../../helpers/defaultProps';
 
-export abstract class TypeTime extends TypeHtml implements ITypeTime {
-  props: TypeTimeProps;
-  dom?: HTMLTimeElement;
+export abstract class TypeTime<Props extends TimeProps = TimeProps> extends TypeHtml<Props> implements ITypeTime {
+  dom: HTMLTimeElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(defaultProps(params, {
       nodeName: 'time'
-    })
+    } as Props));
+    this.dom = document.createElement('time');
   }
 }

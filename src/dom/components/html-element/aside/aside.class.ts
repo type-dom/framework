@@ -1,5 +1,5 @@
 import { TypeAside } from '../../../../core/components/type-html/aside/aside.abstract';
-import { TypeAsideProps } from '../../../../core/components/type-html/aside/aside.interface';
+import { AsideProps } from '../../../../core/components/type-html/aside/aside.interface';
 import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IAside } from './aside.interface';
 
@@ -8,10 +8,9 @@ export class Aside extends TypeAside implements IAside {
 
   override isBasic = true;
 
-  constructor(params: TypeAsideProps = {}) {
-    super();
+  constructor(params: AsideProps = {}) {
+    super(params);
     this.className = 'Aside';
     transformSlot(this, params.slot);
-    this.useParams(params);
   }
 }

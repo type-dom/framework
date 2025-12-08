@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeSummary extends ITypeHtml {
-  props: TypeSummaryProps;
+  props: SummaryProps;
 }
 
-export interface TypeSummaryProps extends HtmlProps {
+export interface SummaryProps extends HtmlProps {
   nodeName?: 'summary';
   attrObj?: IntrinsicElementAttributes['summary'];
 }

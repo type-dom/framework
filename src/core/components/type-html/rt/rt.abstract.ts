@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeRt, TypeRtProps } from './rt.interface';
+import { ITypeRt, RtProps } from './rt.interface';
 
-export abstract class TypeRt extends TypeHtml implements ITypeRt {
-  props: TypeRtProps
-  dom?: HTMLElement;
+export abstract class TypeRt<Props extends RtProps = RtProps> extends TypeHtml<Props> implements ITypeRt {
+  dom: HTMLElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'rt'
-    })
+    } as Props);
+    this.dom = document.createElement('rt');
   }
 }

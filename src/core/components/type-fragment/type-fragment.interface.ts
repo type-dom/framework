@@ -3,9 +3,9 @@ import { TypeProps } from '../../type-node/type-node.interface';
 import { NodeName } from '../../enums';
 
 export interface ITypeFragment extends ITypeElement {
-  props: TypeFragmentProps;
+  props: FragmentProps;
 }
 
-export interface TypeFragmentProps extends TypeProps {
+export interface FragmentProps extends TypeProps {
   nodeName?: NodeName.FRAGMENT;
 }

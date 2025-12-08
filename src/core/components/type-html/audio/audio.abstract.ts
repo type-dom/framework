@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeAudio, TypeAudioProps } from './audio.interface';
+import { ITypeAudio, AudioProps } from './audio.interface';
 
-export abstract class TypeAudio extends TypeHtml implements ITypeAudio {
-  props: TypeAudioProps;
-  dom?: HTMLAudioElement;
+export abstract class TypeAudio<Props extends AudioProps = AudioProps> extends TypeHtml<Props> implements ITypeAudio {
+  dom: HTMLAudioElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'audio'
-    })
+    } as Props);
+    this.dom = document.createElement('audio');
   }
 }

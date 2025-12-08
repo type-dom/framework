@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypePre extends ITypeHtml {
-  props: TypePreProps;
+  props: PreProps;
 }
 
-export interface TypePreProps extends HtmlProps {
+export interface PreProps extends HtmlProps {
   nodeName?: 'pre';
   attrObj?: IntrinsicElementAttributes['pre'];
 }

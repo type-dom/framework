@@ -1,5 +1,5 @@
 import { TypeSamp } from '../../../../core/components/type-html/samp/samp.abstract';
-import { TypeSampProps } from '../../../../core/components/type-html/samp/samp.interface';
+import { SampProps } from '../../../../core/components/type-html/samp/samp.interface';
 import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { ISamp } from './samp.interface';
 
@@ -8,10 +8,9 @@ export class Samp extends TypeSamp implements ISamp {
 
   override isBasic = true;
 
-  constructor(params: TypeSampProps = {}) {
-    super();
+  constructor(params: SampProps = {}) {
+    super(params);
     this.className = 'Samp';
     transformSlot(this, params.slot);
-    this.useParams(params);
   }
 }

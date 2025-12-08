@@ -1,14 +1,14 @@
 import { deepClone, isArray, isFunction } from '@type-dom/utils';
 import { Computed, Signal } from '@type-dom/signals';
 import { castArray as ensureArray } from 'lodash-es';
-import { isRef, toRaw } from '../reactivity';
-import type { IJsonData, IJsonDataProp } from '../interface';
-import { TypeNode } from './type-node/type-node.abstract';
-import type { ISlotItem, IChild, ISlotRef, ITypeNode } from './type-node/type-node.interface';
-import type { ITextNode } from '../dom/components/text-node/text-node.interface';
-import type { ITypeElement } from './type-element/type-element.interface';
-import { TypeHtml } from './components/type-html/type-html.abstract';
-import { TypeSvg } from './components/type-svg/type-svg.abstract';
+import { isRef, toRaw } from './reactivity';
+import type { IJsonData, IJsonDataProp } from './interface';
+import { TypeNode } from './core/type-node/type-node.abstract';
+import type { ISlotItem, IChild, ITypeNode } from './core/type-node/type-node.interface';
+import type { ITextNode } from './dom/components/text-node/text-node.interface';
+import type { ITypeElement } from './core/type-element/type-element.interface';
+import { TypeHtml } from './core/components/type-html/type-html.abstract';
+import { TypeSvg } from './core/components/type-svg/type-svg.abstract';
 
 /**
  * 保存数据时使用。
@@ -18,7 +18,7 @@ import { TypeSvg } from './components/type-svg/type-svg.abstract';
 export function toJSON(element: TypeHtml | TypeSvg): ITypeElement {
   return {
     // nodeName: element.nodeName,
-    nodeName: element.baseProps.nodeName,
+    nodeName: element.$options.nodeName,
     className: element.className,
     params: {
       styleObj: deepClone(element.styleObj), // 深拷贝
@@ -32,7 +32,7 @@ export function toJSON(element: TypeHtml | TypeSvg): ITypeElement {
       } else {
         return {
           props: {
-            nodeValue: child.baseProps.nodeValue // textContent
+            nodeValue: child.$options.nodeValue // textContent
           }
         } as ITextNode;
       }
@@ -156,14 +156,14 @@ export function defineNodeProperty(
   });
 }
 
-export function arraySlot<T extends IChild = IChild>(slot?: ISlotItem<T>): (T | ISlotRef<T>)[] {
+export function arraySlot<T extends IChild = IChild>(slot?: ISlotItem<T>): T[] {
   if (slot === undefined) {
     return [];
   }
   if (isArray(slot)) {
-    return slot as (T | ISlotRef<T>)[];
+    return slot as T[];
   } else {
-    return [slot] as (T | ISlotRef<T>)[];
+    return [slot] as T[];
   }
 }
 

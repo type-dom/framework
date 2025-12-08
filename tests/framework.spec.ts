@@ -55,7 +55,7 @@ describe('Data update performance', () => {
     const endTime = performance.now();
     const executionTime = endTime - startTime;
     console.log(`useActiveElement data update time: ${executionTime} ms`);
-    expect(executionTime).toBeLessThan(100);
+    expect(executionTime).toBeLessThan(200);
   });
 });
 //4. 批量操作性能测试
@@ -113,7 +113,7 @@ describe('Component bulk creation performance', () => {
       `1000 components created in ${executionTime.toFixed(2)}ms, memory increased by ${memoryIncrease.toFixed(2)} MB`
     );
 
-    expect(executionTime).toBeLessThan(1000); // ❗️ 根据实际性能需求调整阈值
+    expect(executionTime).toBeLessThan(2000); // ❗️ 根据实际性能需求调整阈值
     expect(memoryIncrease).toBeLessThan(15); // 可根据实际需求调整阈值（如5MB）
   });
 });

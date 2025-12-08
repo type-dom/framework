@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeTextarea extends ITypeHtml {
-  props: TypeTextareaProps;
+  props: TextareaProps;
 }
 
-export interface TypeTextareaProps extends HtmlProps {
+export interface TextareaProps extends HtmlProps {
   nodeName?: 'textarea';
 
   attrObj?: IntrinsicElementAttributes['textarea'],

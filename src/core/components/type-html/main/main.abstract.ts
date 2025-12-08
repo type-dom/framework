@@ -1,14 +1,14 @@
+import { defaultProps } from '../../../helpers/defaultProps';
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeMain, TypeMainProps } from './main.interface';
+import { ITypeMain, MainProps } from './main.interface';
 
-export abstract class TypeMain extends TypeHtml implements ITypeMain {
-  props: TypeMainProps;
-  dom?: HTMLElement;
+export abstract class TypeMain<Props extends MainProps = MainProps> extends TypeHtml<Props> implements ITypeMain {
+  dom: HTMLElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(defaultProps(params, {
       nodeName: 'main'
-    })
+    } as Props));
+    this.dom = document.createElement('main');
   }
 }

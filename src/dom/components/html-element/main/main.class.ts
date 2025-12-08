@@ -1,5 +1,5 @@
 import { TypeMain } from '../../../../core/components/type-html/main/main.abstract';
-import { TypeMainProps } from '../../../../core/components/type-html/main/main.interface';
+import { MainProps } from '../../../../core/components/type-html/main/main.interface';
 import { transformSlot } from '../../../../core/helpers/transformSlot';
 import type { IMain } from './main.interface';
 
@@ -8,10 +8,9 @@ export class Main extends TypeMain implements IMain {
 
   override isBasic = true;
 
-  constructor(params: TypeMainProps = {}) {
-    super();
+  constructor(params: MainProps = {}) {
+    super(params);
     this.className = 'Main';
     transformSlot(this, params.slot);
-    this.useParams(params);
   }
 }

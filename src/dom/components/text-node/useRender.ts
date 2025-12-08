@@ -1,5 +1,5 @@
 import { isMustache } from '@type-dom/utils';
-import { mustacheNode } from '../../../core/util';
+import { mustacheNode } from '../../../util';
 import { TextNode } from './text-node.class';
 
 export function useTextRender(element: TextNode) {

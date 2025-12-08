@@ -75,6 +75,8 @@ type CreateHook<T = any> = (
 ) => void
 
 export const onBeforeCreate: CreateHook = createHook(LifecycleHooks.BEFORE_CREATE); // add by me
+export const onCreated: CreateHook = createHook(LifecycleHooks.CREATED); // add by me
+
 export const onBeforeMount: CreateHook = createHook(LifecycleHooks.BEFORE_MOUNT);
 export const onMounted: CreateHook = createHook(LifecycleHooks.MOUNTED);
 export const onBeforeUpdate: CreateHook = createHook(

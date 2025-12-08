@@ -1,14 +1,14 @@
 import { TypeHtml } from '../type-html.abstract';
-import { ITypeSelect, TypeSelectProps } from './select.interface';
+import { ITypeSelect, SelectProps } from './select.interface';
 
-export abstract class TypeSelect extends TypeHtml implements ITypeSelect {
-  props: TypeSelectProps;
-  dom?: HTMLSelectElement;
+export abstract class TypeSelect<Props extends SelectProps = SelectProps> extends TypeHtml<Props> implements ITypeSelect {
+  dom: HTMLSelectElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'select'
-    })
+    } as Props);
+    this.dom = document.createElement('select');
   }
 }

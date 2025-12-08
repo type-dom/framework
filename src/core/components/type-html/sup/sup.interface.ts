@@ -2,10 +2,10 @@ import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute/at
 import type { ITypeHtml, HtmlProps } from '../type-html.interface';
 
 export interface ITypeSup extends ITypeHtml {
-  props: TypeSupProps;
+  props: SupProps;
 }
 
-export interface TypeSupProps extends HtmlProps {
+export interface SupProps extends HtmlProps {
   nodeName?: 'sup';
   attrObj?: IntrinsicElementAttributes['sup'];
 }

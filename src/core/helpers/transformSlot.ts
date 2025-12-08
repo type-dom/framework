@@ -1,12 +1,15 @@
-import { isArray, isFunction, isNumber, isString } from '@type-dom/utils';
-import { watch } from '../../reactivity/watch';
-import { isRef, Ref } from '../../reactivity/ref';
-import { ISlotItem } from '../type-node/type-node.interface';
+import { isArray, isFunction, } from '@type-dom/utils';
+import { effect } from '@type-dom/signals';
+import { isRef } from '../../reactivity/ref';
+import { Attributes } from '../../dom/modules/attribute/attribute.interface';
+// import { Teleport } from '../../dom/components/teleport/teleport.class';
+import { ISlotItem, TypeProps } from '../type-node/type-node.interface';
 import { TypeElement } from '../type-element/type-element.abstract';
+// import { processTeleport } from '../renderer/processTeleport';
+import { insertDom } from '../renderer/insertDom';
+
 import { getToDom, mountDom } from './mountDom';
-import { insertDomAndAnchor } from './anchorAndDom';
 import { createDom } from './createDom';
-// import { TextNode } from '../../dom';
 
 /**
  * 此函数用于向slot的元素添加或前置插入到子元素。通过参数`type`来决定是添加（默认）还是前置插入子元素。
@@ -15,17 +18,11 @@ import { createDom } from './createDom';
  * @param slot 要添加或插入的子元素或子元素数组。
  * @param type
  */
-export function transformSlot(element: TypeElement, slot?: ISlotItem, type: 'add' | 'unshift' = 'add') {
+export function transformSlot<Props extends TypeProps = TypeProps, Attrs extends Attributes = Attributes>(element: TypeElement<Props, Attrs>, slot?: ISlotItem, type: 'add' | 'unshift' = 'add') {
   // console.warn('transformSlot is called . ');
   if (slot === undefined) {
     return;
   }
-  // if ((slot as any).countAdd) { // todo error
-  //   (slot as any).countAdd = (slot as any).countAdd + 1
-  // } {
-  //   (slot as any).countAdd = 1;
-  // }
-  // console.warn('slot add ', (slot as any).countAdd);
   /**
    * 如果slot是响应式数据，则意味着会重置childNodes，要对dom 进行清理和添加，会导致dom结构会动态化；需要慎用。
    * slot 需要根据不同条件，渲染不同的组件时还是要用到的。
@@ -34,30 +31,28 @@ export function transformSlot(element: TypeElement, slot?: ISlotItem, type: 'add
    * 注：除了文本， 应该 避免使用
    */
   if (isRef(slot)) {
-    console.warn('slot is ref . ');// const newRaw = toRaw(slot);
-    // 现在这里基本是监听 动态文本了。
-    if (element.childNodes.length > 1) {
-      console.error('element.childNodes.length > 1, but slot is Ref  . ')
+    // console.warn('slot is ref . ');
+    // const newRaw = toRaw(slot);
+    // 现在这里基本是监听 动态文本。
+    element.addChild(slot);
+  } else if (isArray(slot)) {
+    for (const item of slot) {
+      transformSlot(element, item)
     }
-      const rawSlot = slot.get()
-      if (isNumber(rawSlot) || isString(rawSlot)) { // 动态文本要单独处理  slot: signal('sss')
-        // element.addChild(new TextNode(rawSlot));
-        element.addChild(slot as Ref<string | number>);
-        return; // Ref<string | number> 不需要在这里 watch 监听了。
-      }
-    /**
-     */
-    watch(slot, (newRaw, oldRaw) => {
+  } else if (isFunction(slot)) {
+    // todo slot是方法时，加载好像有问题。
+    // todo [() => TypeNode, TypeNode, Ref<string> ]
+    //   () => { if T else N }  分支时如何处理 ？
+    // todo error 文本和TypeNode切换时，无法触发切换到TypeNode;
+    //   () => toggle.get() ? 'hello' : new Div()
+    //   error 如果没有响应式数据的获取，会有问题的吧？
+    effect(() => {
+      const rawSlot = slot();
       // console.error('transformSlot watch . slot is ', slot); // TdCountDown repeat loop .
       if (!element.dom) {
         createDom(element);
       }
-      // if (isString(newRaw) || isNumber(newRaw) && oldRaw === undefined ) { // 忽略 文本 监听
-      //   // const text = new TextNode(newRaw);
-      //   // text.setParent(element); // todo
-      //   // element.childNodes.push(newRaw); // oldRaw === undefined 避免 文本会被多次添加
-      //   return;
-      // }
+
       const upDom = mountDom(element);
       // console.warn('upDom is ', upDom);
       if (element.dom) {
@@ -65,17 +60,16 @@ export function transformSlot(element: TypeElement, slot?: ISlotItem, type: 'add
         //   element then replace all children when reactivity;
         // element.clearEvents();
         // todo  slot: [ TypeNode, Ref<string> ]
-        if (isString(newRaw) || isNumber(newRaw)) {
-          return
-        }
+        // todo unmount.
+        //  Teleport 在 slot: () => Teleport and Other
         element.clearChildren();
-        transformSlot(element, newRaw); // 这里会addChild
+        transformSlot(element, rawSlot); // 这里会addChild
         // todo oldRaw  [undefined, undefined, undefined] ... ...
-        if (oldRaw !== undefined || (isArray(oldRaw) && !isArrayAllUndefined(oldRaw))) { // 非首次渲染，首次渲染会在mountElement中执行。
-        // console.warn('oldRaw is undefined . ');
-        //   todo resetDom，  child 可能已经渲染过了，也可能没有挂载过；
-        //        还有考虑 tooltip 这种特殊的对象，dom.childNodes 和 childNodes 不一致。
-        //        还要考虑 element 是 Fragment 还是普通组件。
+        // if (oldRaw !== undefined || (isArray(oldRaw) && !isArrayAllUndefined(oldRaw))) { // 非首次渲染，首次渲染会在mountElement中执行。
+          // console.warn('oldRaw is undefined . ');
+          //   todo resetDom，  child 可能已经渲染过了，也可能没有挂载过；
+          //        还有考虑 tooltip 这种特殊的对象，dom.childNodes 和 childNodes 不一致。
+          //        还要考虑 element 是 Fragment 还是普通组件。
           element.childNodes.forEach(child => {
             // console.warn('child then mount, it is ', child);
             const to = getToDom(child);
@@ -94,43 +88,46 @@ export function transformSlot(element: TypeElement, slot?: ISlotItem, type: 'add
             child.mount(to ?? element.dom);
             // element.appendChild(child); // what different between mount and appendChild ?
             // }
+            // if (child.className === 'Teleport') {
+            //   element.dom?.appendChild(child.anchorStart!);
+            //   element.dom?.appendChild(child.dom!);
+            //   element.dom?.appendChild(child.anchor!);
+            // }
           })
-          // todo   if element is fragment, then add children to element.dom, but not up to parent real element.
+          // todo if element is fragment, then add children to element.dom, but not up to parent real element.
           // when element is TdIcon, element.dom is Icon; need not to upDom appendChild again .
           if (element.dom instanceof DocumentFragment) { // todo why add this condition
             // maybe comment replace
             // console.error('element.dom is DocumentFragment . ');
-            insertDomAndAnchor(element, upDom);
+            insertDom(element, upDom);
+            // todo child teleports
+            // const teleports = element.findDownNodes('Teleport') as Teleport[];
+            // teleports.forEach(teleport => {
+            //   console.warn('then teleport . ');
+            //   processTeleport((teleport));
+            // })
           }
-        } else {
-          // todo oldRaw is undefined , 通常 mount 中会渲染
-          //  transformSlot(this, computed(() => toggle.get() ? p : undefined))
-          if (element.isMounted) {
-            element.childNodes.forEach(child => {
-              // console.warn('child then mount, it is ', child);
-              const to = getToDom(child);
-              child.mount(to ?? element.dom);
-            })
-            // when element is TdIcon, element.dom is Icon; need not to upDom appendChild again .
-            if (element.dom instanceof DocumentFragment) {
-              // maybe comment replace
-              // console.error('element.dom is DocumentFragment . ');
-              insertDomAndAnchor(element, upDom);
-            }
-          }
-        }
+        // } else {
+        //   // todo oldRaw is undefined , 通常 mount 中会渲染
+        //   //  transformSlot(this, computed(() => toggle.get() ? p : undefined))
+        //   if (element.isMounted) {
+        //     element.childNodes.forEach(child => {
+        //       // console.warn('child then mount, it is ', child);
+        //       const to = getToDom(child);
+        //       child.mount(to ?? element.dom);
+        //     })
+        //     // when element is TdIcon, element.dom is Icon; need not to upDom appendChild again .
+        //     if (element.dom instanceof DocumentFragment) {
+        //       // maybe comment replace
+        //       // console.error('element.dom is DocumentFragment . ');
+        //       insertDomAndAnchor(element, upDom);
+        //     }
+        //   }
+        // }
       } else {
         console.warn('element.dom is undefined . ', element.dom);
       }
-    }, {
-      immediate: true
     })
-  } else if (isArray(slot)) {
-    for (const item of slot) {
-      transformSlot(element, item)
-    }
-  } else if (isFunction(slot)) { // todo slot是方法时，加载好像有问题。
-    transformSlot(element, slot());
   } else {
     if (type === 'unshift') {
       element.unshiftChild(slot);
@@ -141,4 +138,4 @@ export function transformSlot(element: TypeElement, slot?: ISlotItem, type: 'add
 }
 
 // 方法: 使用 every()
-const isArrayAllUndefined = (arr: any[]) => arr.every(item => item === undefined);
+// const isArrayAllUndefined = (arr: any[]) => arr.every(item => item === undefined);

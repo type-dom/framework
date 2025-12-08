@@ -8,7 +8,6 @@ export class SvgEllipse extends TypeSvg implements ISvgEllipse {
   nodeName: 'ellipse';
   className: 'SvgEllipse';
   dom: SVGEllipseElement;
-  override props: SvgProps;
   // override attrObj: ISvgEllipseAttribute;
   override childNodes: [];
   cx = 0;
@@ -18,13 +17,13 @@ export class SvgEllipse extends TypeSvg implements ISvgEllipse {
 
   override isBasic = true;
 
-  constructor(params?: SvgProps) {
-    super();
+  constructor(params: SvgProps = {}) {
+    super(params);
     this.nodeName = 'ellipse';
     this.className = 'SvgEllipse';
     this.dom = document.createElementNS(
       'http://www.w3.org/2000/svg',
-      this.nodeName
+      'ellipse'
     );
     this.childNodes = [];
     addAttrObj(this, {
@@ -37,7 +36,6 @@ export class SvgEllipse extends TypeSvg implements ISvgEllipse {
       ry: this.ry,
     });
     transformSlot(this, params?.slot);
-    this.props = this.useParams(params);
   }
 
   reset(cx: number, cy: number, rx: number, ry: number): SvgEllipse {

@@ -1,14 +1,14 @@
 import { TypeHtml } from '../../type-html.abstract';
-import { ITypeTableCol, TypeTableColProps } from './col.interface';
+import { ITypeTableCol, TableColProps } from './col.interface';
 
-export abstract class TypeTableCol extends TypeHtml implements ITypeTableCol {
-  props: TypeTableColProps;
-  dom?: HTMLTableColElement;
+export abstract class TypeTableCol<Props extends TableColProps = TableColProps> extends TypeHtml<Props> implements ITypeTableCol {
+  dom: HTMLTableColElement;
 
-  constructor()  {
-    super();
-    this.props = this.useParams({
+  constructor(params: Props = {} as Props)  {
+    super(params);
+    this.useParams({
       nodeName: 'col'
-    })
+    } as Props);
+    this.dom = document.createElement('col');
   }
 }
