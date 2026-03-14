@@ -1,0 +1,10 @@
+import type { ITypeHtml, HtmlProps } from '../type-html.interface';
+import { IntrinsicElementAttributes } from '../../../../dom/modules/attribute';
+
+export interface ITypeAudio extends ITypeHtml {
+  props: AudioProps;
+}
+
+export interface AudioProps extends HtmlProps {
+  attrObj?: IntrinsicElementAttributes['audio'];
+}

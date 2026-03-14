@@ -5,8 +5,8 @@ import {
 } from '@type-dom/utils';
 import { XElement } from '../index'; // todo type-element.abstract 中有引用。
 // import { XElement } from "../element/x-element/x-element.class"; // todo 这样会报错。上面引入没问题；
-import { TextNode } from '../core/text-node/text-node.class';
-import type { IAttr } from '../core/type-node/type-node.interface';
+import { TextNode } from '../dom/components/text-node/text-node.class';
+import type { IAttr } from '../core/abstracts/type-node/type-node.interface';
 import type { IContent, IInstruction, IParserParam } from './parser.interface';
 
 /**
@@ -288,15 +288,15 @@ export class Parser {
   }
 
   onPi(name: string, value: string): void {
-    console.log('onPi name is ' + name + ' value is ' + value);
+    console.warn('onPi name is ' + name + ' value is ' + value);
   }
 
   onComment(text: string): void {
-    console.log('onComment text is ', text);
+    console.warn('onComment text is ', text);
   }
 
   onDoctype(doctypeContent: string): void {
-    console.log('doctypeContent is ', doctypeContent);
+    console.warn('doctypeContent is ', doctypeContent);
   }
 
   /**
@@ -357,7 +357,7 @@ export class Parser {
     if (this.hasAttributes) {
       node.attributes = attributes;
     }
-    this.currentFragment.push(node);
+    this.currentFragment.push(node as XElement);
     if (isEmpty) {
       return;
     }

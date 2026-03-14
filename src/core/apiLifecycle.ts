@@ -1,8 +1,10 @@
 import { AnyFn } from '@type-dom/utils';
 import { DebuggerEvent } from '../debug';
 import { LifecycleHooks } from './enums';
-import { currentInstance } from './instance';
-import { TypeNode } from './type-node/type-node.abstract';
+import { currentInstance } from './component';
+import { TypeNode } from './abstracts/type-node/type-node.abstract';
+
+export { onActivated, onDeactivated } from '../dom/components/keep-alive/utils'
 
 export function injectHook(
   type: LifecycleHooks,
@@ -70,7 +72,10 @@ const createHook =
 type CreateHook<T = any> = (
   hook: T,
   target?: TypeNode | null
-) => void
+) => void;
+
+export const onBeforeCreate: CreateHook = createHook(LifecycleHooks.BEFORE_CREATE); // add by me
+export const onCreated: CreateHook = createHook(LifecycleHooks.CREATED); // add by me
 
 export const onBeforeMount: CreateHook = createHook(LifecycleHooks.BEFORE_MOUNT);
 export const onMounted: CreateHook = createHook(LifecycleHooks.MOUNTED);
@@ -86,7 +91,7 @@ export const onServerPrefetch: CreateHook = createHook(
   LifecycleHooks.SERVER_PREFETCH
 );
 
-export type DebuggerHook = (e: DebuggerEvent) => void
+export type DebuggerHook = (e: DebuggerEvent) => void;
 export const onRenderTriggered: CreateHook<DebuggerHook> =
   createHook<DebuggerHook>(LifecycleHooks.RENDER_TRIGGERED);
 export const onRenderTracked: CreateHook<DebuggerHook> =
@@ -96,7 +101,7 @@ export type ErrorCapturedHook<TError = unknown> = (
   err: TError,
   instance: TypeNode | null,
   info: string
-) => boolean | void
+) => boolean | void;
 
 export function onErrorCaptured<TError = Error>(
   hook: ErrorCapturedHook<TError>,

@@ -1,9 +1,0 @@
-import type { ITypeHtml, HtmlProps } from '../type-html.interface';
-
-export interface ITypeFigure extends ITypeHtml {
-  props: TypeFigureProps;
-}
-
-export interface TypeFigureProps extends HtmlProps {
-  nodeName?: 'figure';
-}

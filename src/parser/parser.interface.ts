@@ -1,4 +1,4 @@
-import type { IAttr } from '../core/type-node/type-node.interface';
+import type { IAttr } from '../core/abstracts/type-node/type-node.interface';
 
 export interface IContent {
   name: string;

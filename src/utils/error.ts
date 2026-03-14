@@ -1,6 +1,6 @@
 import { inBrowser, isPromise } from '@type-dom/utils';
 // import { pushTarget, popTarget } from '../observer/dep';
-import { TypeNode } from '../core/type-node/type-node.abstract';
+import { TypeNode } from '../core/abstracts/type-node/type-node.abstract';
 
 // import { Config } from '../config'
 
@@ -12,7 +12,7 @@ export function handleError(err: Error, vm: any, info: string) {
     if (vm) {
       let cur = vm;
       while ((cur = cur.$parent)) {
-        const hooks = cur.$options.errorCaptured;
+        const hooks = cur.props.errorCaptured;
         if (hooks) {
           for (let i = 0; i < hooks.length; i++) {
             try {

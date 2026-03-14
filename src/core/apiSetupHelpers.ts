@@ -1,8 +1,16 @@
+import { isArray, isFunction, LooseRequired, Prettify } from '@type-dom/utils';
 // import { warn } from '../utils/debug';
-import { getCurrentInstance } from './instance';
-import { ISlots } from './type-node/type-node.interface';
-import { TypeNode } from './type-node/type-node.abstract';
-import { ITypeAttribute } from './attribute/attribute.interface';
+import { type Attributes   } from '../dom/modules/attribute/attribute.interface';
+import { Ref, unref } from '../reactivity';
+import { Data, getCurrentInstance } from './component';
+import { ISlots } from './abstracts/type-node/type-node.interface';
+import { TypeNode } from './abstracts/type-node/type-node.abstract';
+import { EmitsOptions, ObjectEmitsOptions } from './componentEmits';
+import {
+  ComponentObjectPropsOptions,
+  ComponentPropsOptions, ExtractPropTypes, PropOptions
+} from './componentProps';
+// import { warn } from './warning';
 
 // dev only
 // const warnRuntimeUsage = (method: string) =>
@@ -45,35 +53,35 @@ import { ITypeAttribute } from './attribute/attribute.interface';
  * output and should **not** be actually called at runtime.
  */
 // overload 1: runtime props w/ array
-// export function defineProps<PropNames extends string = string>(
-//   props: PropNames[],
-// ): Prettify<Readonly<{ [key in PropNames]?: any }>>
-// // overload 2: runtime props w/ object
-// export function defineProps<
-//   PP extends ComponentObjectPropsOptions = ComponentObjectPropsOptions,
-// >(props: PP): Prettify<Readonly<ExtractPropTypes<PP>>>
-// // overload 3: typed-based declaration
-// export function defineProps<TypeProps>(): DefineProps<
-//   LooseRequired<TypeProps>,
-//   BooleanKey<TypeProps>
-// >
-// // implementation
-// export function defineProps() {
-//   if (__DEV__) {
-//     warnRuntimeUsage(`defineProps`)
-//   }
-//   return null as any
-// }
-//
-// export type DefineProps<T, BKeys extends keyof T> = Readonly<T> & {
-//   readonly [K in BKeys]-?: boolean
-// }
-//
-// type BooleanKey<T, K extends keyof T = keyof T> = K extends any
-//   ? [T[K]] extends [boolean | undefined]
-//     ? K
-//     : never
-//   : never
+export function defineProps<PropNames extends string = string>(
+  props: PropNames[],
+): Prettify<Readonly<{ [key in PropNames]?: any }>>
+// overload 2: runtime props w/ object
+export function defineProps<
+  PP extends ComponentObjectPropsOptions = ComponentObjectPropsOptions,
+>(props: PP): Prettify<Readonly<ExtractPropTypes<PP>>>
+// overload 3: typed-based declaration
+export function defineProps<TypeProps>(): DefineProps<
+  LooseRequired<TypeProps>,
+  BooleanKey<TypeProps>
+>
+// implementation
+export function defineProps() {
+  // if (__DEV__) {
+  //   warnRuntimeUsage(`defineProps`)
+  // }
+  return null as any
+}
+
+export type DefineProps<T, BKeys extends keyof T> = Readonly<T> & {
+  readonly [K in BKeys]-?: boolean
+}
+
+type BooleanKey<T, K extends keyof T = keyof T> = K extends any
+  ? [T[K]] extends [boolean | undefined]
+    ? K
+    : never
+  : never
 
 /**
  * Vue `<script setup>` compiler macro for declaring a component's emitted
@@ -120,9 +128,9 @@ import { ITypeAttribute } from './attribute/attribute.interface';
 //   }
 //   return null as any
 // }
-//
-// export type ComponentTypeEmits = ((...args: any[]) => any) | Record<string, any>
-//
+
+export type ComponentTypeEmits = ((...args: any[]) => any) | Record<string, any>
+
 // type RecordToUnion<T extends Record<string, any>> = T[keyof T]
 //
 // type ShortEmits<T extends Record<string, any>> = UnionToIntersection<
@@ -209,17 +217,17 @@ import { ITypeAttribute } from './attribute/attribute.interface';
 //   }
 //   return null as any
 // }
-//
-// export type ModelRef<T, M extends PropertyKey = string, G = T, S = T> = Ref<
-//   G,
-//   S
-// > &
-//   [ModelRef<T, M, G, S>, Record<M, true | undefined>]
-//
-// export type DefineModelOptions<T = any, G = T, S = T> = {
-//   get?: (v: T) => G
-//   set?: (v: S) => any
-// }
+
+export type ModelRef<T, M extends PropertyKey = string, G = T, S = T> = Ref<T
+  // G,
+  // S
+> &
+  [ModelRef<T, M, G, S>, Record<M, true | undefined>]
+
+export type DefineModelOptions<T = any, G = T, S = T> = {
+  get?: (v: T) => G
+  set?: (v: S) => any
+}
 
 /**
  * Vue `<script setup>` compiler macro for declaring a
@@ -357,8 +365,8 @@ export function useSlots<T extends ISlots>(): T | undefined {
   return getContext().props.slots as T
 }
 
-export function useAttrs():  ITypeAttribute | undefined {
-  return getContext().props.attrObj;
+export function useAttrs(): Attributes | undefined {
+  return unref(getContext().props.attrObj);
 }
 
 function getContext(): TypeNode {
@@ -372,48 +380,48 @@ function getContext(): TypeNode {
 /**
  * @internal
  */
-// export function normalizePropsOrEmits(
-//   props: ComponentPropsOptions | EmitsOptions,
-// ): ComponentObjectPropsOptions | ObjectEmitsOptions {
-//   return isArray(props)
-//     ? props.reduce(
-//         (normalized, p) => ((normalized[p] = null), normalized),
-//         {} as ComponentObjectPropsOptions | ObjectEmitsOptions,
-//       )
-//     : props
-// }
+export function normalizePropsOrEmits(
+  props: ComponentPropsOptions | EmitsOptions,
+): ComponentObjectPropsOptions | ObjectEmitsOptions {
+  return isArray(props)
+    ? props.reduce(
+        (normalized, p) => ((normalized[p] = null), normalized),
+        {} as ComponentObjectPropsOptions | ObjectEmitsOptions,
+      )
+    : props
+}
 
 /**
  * Runtime helper for merging default declarations. Imported by compiled code
  * only.
  * @internal
  */
-// export function mergeDefaults(
-//   raw: ComponentPropsOptions,
-//   defaults: Record<string, any>,
-// ): ComponentObjectPropsOptions {
-//   const props = normalizePropsOrEmits(raw)
-//   for (const key in defaults) {
-//     if (key.startsWith('__skip')) continue
-//     let opt = props[key]
-//     if (opt) {
-//       if (isArray(opt) || isFunction(opt)) {
-//         opt = props[key] = { type: opt, default: defaults[key] }
-//       } else {
-//         opt.default = defaults[key]
-//       }
-//     } else if (opt === null) {
-//       opt = props[key] = { default: defaults[key] }
-//     } else if (__DEV__) {
-//       warn(`props default key "${key}" has no corresponding declaration.`)
-//     }
-//     if (opt && defaults[`__skip_${key}`]) {
-//       opt.skipFactory = true
-//     }
-//   }
-//   return props
-// }
-//
+export function mergeDefaults(
+  raw: ComponentPropsOptions,
+  defaults: Record<string, any>,
+) {
+  const props = normalizePropsOrEmits(raw)
+  for (const key in defaults) {
+    // if (key.startsWith('__skip')) continue
+    let opt = props[key];
+    if (opt) {
+      if (isArray(opt) || isFunction(opt)) {
+        opt = props[key] = { type: opt, default: defaults[key] }
+      } else {
+        (opt as PropOptions<Data>).default = defaults[key]
+      }
+    } else if (opt === null) {
+      opt = props[key] = { default: defaults[key] }
+    // } else if (__DEV__) {
+    //   warn(`props default key "${key}" has no corresponding declaration.`)
+    }
+    if (opt && defaults[`__skip_${key}`]) {
+      (opt as any).skipFactory = true
+    }
+  }
+  return props
+}
+
 // /**
 //  * Runtime helper for merging model declarations.
 //  * Imported by compiled code only.

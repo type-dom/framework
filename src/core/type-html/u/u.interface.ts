@@ -1,9 +1,0 @@
-import type { ITypeHtml, HtmlProps } from '../type-html.interface';
-
-export interface ITypeU extends ITypeHtml {
-  props: TypeUProps;
-}
-
-export interface TypeUProps extends HtmlProps {
-  nodeName?: 'u';
-}

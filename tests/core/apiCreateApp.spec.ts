@@ -1,0 +1,756 @@
+// import {
+//   type Plugin,
+//   createApp,
+//   defineComponent,
+//   getCurrentInstance,
+//   h,
+//   inject,
+//   nextTick,
+//   nodeOps,
+//   onMounted,
+//   provide,
+//   ref,
+//   resolveComponent,
+//   resolveDirective,
+//   serializeInner,
+//   watch,
+//   withDirectives,
+// } from '@vue/runtime-test'
+import { watch, type Plugin, onMounted, nextTick, defaultProps } from '../../src';
+import { App, createApp, Div, Fragment, FragmentProps, inject, provide, TypeDiv, TypeFragment } from '../../src';
+import { signal } from '@type-dom/signals';
+
+type CompProps = { count?: number } & FragmentProps;
+describe('api: createApp', () => {
+  test('mount', () => {
+    // const Comp = defineComponent({
+    //   props: {
+    //     count: {
+    //       default: 0,
+    //     },
+    //   },
+    //   setup(props) {
+    //     return () => props.count
+    //   },
+    // })
+    class Comp extends TypeFragment<CompProps> {
+      className = 'Comp';
+      constructor(params: CompProps = {}) {
+        super(params);
+        defaultProps(this, {
+          count: 0,
+        })
+      }
+      override setup(props: CompProps) {
+        this.addChild(props.count)
+      }
+    }
+
+    const root1 = document.createElement('div')
+    createApp(new Comp()).mount(root1)
+    expect(root1.innerHTML).toBe(`0`)
+    //#5571 mount multiple apps to the same host element
+    createApp(new Comp()).mount(root1)
+    // expect(
+    //   `There is already an app instance mounted on the host container`,
+    // ).toHaveBeenWarned()
+
+    // mount with props
+    const root2 = document.createElement('div')
+    const app2 = createApp(new Comp({ count: 1 }))
+    app2.mount(root2)
+    expect(root2.innerHTML).toBe(`1`)
+
+    // remount warning
+    const root3 = document.createElement('div')
+    app2.mount(root3)
+    expect(root3.innerHTML).toBe(``)
+    // expect(`already been mounted`).toHaveBeenWarned()
+  })
+
+  test('unmount', () => {
+    // const Comp = defineComponent({
+    //   props: {
+    //     count: {
+    //       default: 0,
+    //     },
+    //   },
+    //   setup(props) {
+    //     return () => props.count
+    //   },
+    // })
+    class Comp extends TypeFragment<CompProps> {
+      className = 'Comp';
+      constructor(params: CompProps = {}) {
+        super(params);
+      }
+      override setup() {
+        const props = this.props
+        this.addChild(props.count)
+      }
+    }
+
+    const root = document.createElement('div')
+    const app = createApp(new Comp())
+
+    // warning
+    app.unmount()
+    // expect(`that is not mounted`).toHaveBeenWarned()
+
+    app.mount(root)
+
+    app.unmount()
+    expect(root.innerHTML).toBe(``)
+  })
+
+  test('provide', () => {
+    class Root extends TypeFragment {
+      className = 'Root';
+      override setup() {
+        // test override
+        provide('foo', 3)
+        // return () => h(Child)
+        this.addChild(new Child());
+      }
+    }
+
+    class Child extends TypeFragment {
+      className = 'Child';
+      override setup() {
+        const foo = inject('foo')
+        const bar = inject('bar')
+        try {
+          inject('__proto__')
+        } catch (e: any) {}
+        // return () => `${foo},${bar}`
+        this.addChild(`${foo},${bar}`)
+      }
+    }
+
+    const app = createApp(new Root())
+    app.provide('foo', 1)
+    app.provide('bar', 2)
+
+    const root = document.createElement('div')
+    app.mount(root)
+    expect(root.innerHTML).toBe(`3,2`)
+    // expect('[Td warn]: injection "__proto__" not found.').toHaveBeenWarned()
+
+    const app2 = createApp(new Root())
+    app2.provide('bar', 1)
+    app2.provide('bar', 2)
+    // expect(`App already provides property with key "bar".`).toHaveBeenWarned()
+  })
+
+  test('runWithContext', () => {
+    const app = createApp(new Div({
+      setup() {
+        provide('foo', 'should not be seen')
+
+        // nested createApp
+        const childApp = createApp(new Fragment({
+          setup() {
+            provide('foo', 'foo from child')
+          },
+        }))
+
+        childApp.provide('foo', 2)
+        expect(childApp.runWithContext(() => inject('foo'))).toBe(2)
+
+        // return () => h('div')
+      },
+    }))
+    app.provide('foo', 1)
+
+    expect(app.runWithContext(() => inject('foo'))).toBe(1)
+    const root = document.createElement('div')
+    app.mount(root)
+
+    expect(
+      app.runWithContext(() => {
+        app.runWithContext(() => {})
+        return inject('foo')
+      }),
+    ).toBe(1)
+
+    // ensure the context is restored
+    inject('foo')
+    // expect('inject() can only be used inside setup').toHaveBeenWarned()
+  })
+
+  test('component', () => {
+    class Root extends TypeDiv {
+      className = 'Root';
+      // local override
+      // components: {
+      //   BarBaz: () => 'barbaz-local!',
+      // },
+      override setup() {
+        // resolve in setup
+        // const FooBar = resolveComponent('foo-bar')
+        // return () => {
+        //   // resolve in render
+        //   // const BarBaz = resolveComponent('bar-baz')
+        //   return h('div', [h(FooBar), h(BarBaz)])
+        // }
+        this.addChildren(new FooBar(), new BarBaz())
+      }
+    }
+
+    class BarBaz extends TypeFragment {
+      className = 'BarBaz';
+      override setup() {
+        this.addChild('barbaz-local!')
+      }
+    }
+    const app = createApp(new Root())
+
+    // const FooBar = () => 'foobar!'
+    class FooBar extends TypeFragment {
+      className = 'FooBar';
+      override setup() {
+        this.addChild('foobar!')
+      }
+    }
+    // app.component('FooBar', FooBar)
+    // expect(app.component('FooBar')).toBe(FooBar)
+    //
+    // app.component('BarBaz', () => 'barbaz!')
+    //
+    // app.component('BarBaz', () => 'barbaz!')
+    // expect(
+    //   'Component "BarBaz" has already been registered in target app.',
+    // ).toHaveBeenWarnedTimes(1)
+
+    const root = document.createElement('div')
+    app.mount(root)
+    expect(root.innerHTML).toBe(`<div>foobar!barbaz-local!</div>`)
+  })
+
+  // test('directive', () => {
+  //   const spy1 = vi.fn()
+  //   const spy2 = vi.fn()
+  //   const spy3 = vi.fn()
+  //
+  //   const Root = {
+  //     // local override
+  //     directives: {
+  //       BarBaz: { mounted: spy3 },
+  //     },
+  //     setup() {
+  //       // resolve in setup
+  //       const FooBar = resolveDirective('foo-bar')
+  //       return () => {
+  //         // resolve in render
+  //         const BarBaz = resolveDirective('bar-baz')
+  //         return withDirectives(h('div'), [[FooBar], [BarBaz]])
+  //       }
+  //     },
+  //   }
+  //
+  //   const app = createApp(Root)
+  //
+  //   const FooBar = { mounted: spy1 }
+  //   app.directive('FooBar', FooBar)
+  //   expect(app.directive('FooBar')).toBe(FooBar)
+  //
+  //   app.directive('BarBaz', {
+  //     mounted: spy2,
+  //   })
+  //
+  //   app.directive('BarBaz', {
+  //     mounted: spy2,
+  //   })
+  //   expect(
+  //     'Directive "BarBaz" has already been registered in target app.',
+  //   ).toHaveBeenWarnedTimes(1)
+  //
+  //   const root = nodeOps.createElement('div')
+  //   app.mount(root)
+  //   expect(spy1).toHaveBeenCalled()
+  //   expect(spy2).not.toHaveBeenCalled()
+  //   expect(spy3).toHaveBeenCalled()
+  //
+  //   app.directive('bind', FooBar)
+  //   expect(
+  //     `Do not use built-in directive ids as custom directive id: bind`,
+  //   ).toHaveBeenWarned()
+  // })
+
+  // test('mixin', () => {
+  //   const calls: string[] = []
+  //   const mixinA = {
+  //     data() {
+  //       return {
+  //         a: 1,
+  //       }
+  //     },
+  //     created(this: any) {
+  //       calls.push('mixinA created')
+  //       expect(this.a).toBe(1)
+  //       expect(this.b).toBe(2)
+  //       expect(this.c).toBe(3)
+  //     },
+  //     mounted() {
+  //       calls.push('mixinA mounted')
+  //     },
+  //   }
+  //   const mixinB = {
+  //     name: 'mixinB',
+  //     data() {
+  //       return {
+  //         b: 2,
+  //       }
+  //     },
+  //     created(this: any) {
+  //       calls.push('mixinB created')
+  //       expect(this.a).toBe(1)
+  //       expect(this.b).toBe(2)
+  //       expect(this.c).toBe(3)
+  //     },
+  //     mounted() {
+  //       calls.push('mixinB mounted')
+  //     },
+  //   }
+  //   const Comp = {
+  //     data() {
+  //       return {
+  //         c: 3,
+  //       }
+  //     },
+  //     created(this: any) {
+  //       calls.push('comp created')
+  //       expect(this.a).toBe(1)
+  //       expect(this.b).toBe(2)
+  //       expect(this.c).toBe(3)
+  //     },
+  //     mounted() {
+  //       calls.push('comp mounted')
+  //     },
+  //     render(this: any) {
+  //       return `${this.a}${this.b}${this.c}`
+  //     },
+  //   }
+  //
+  //   const app = createApp(Comp)
+  //   app.mixin(mixinA)
+  //   app.mixin(mixinB)
+  //
+  //   app.mixin(mixinA)
+  //   app.mixin(mixinB)
+  //   expect(
+  //     'Mixin has already been applied to target app',
+  //   ).toHaveBeenWarnedTimes(2)
+  //   expect(
+  //     'Mixin has already been applied to target app: mixinB',
+  //   ).toHaveBeenWarnedTimes(1)
+  //
+  //   const root = nodeOps.createElement('div')
+  //   app.mount(root)
+  //
+  //   expect(serializeInner(root)).toBe(`123`)
+  //   expect(calls).toEqual([
+  //     'mixinA created',
+  //     'mixinB created',
+  //     'comp created',
+  //     'mixinA mounted',
+  //     'mixinB mounted',
+  //     'comp mounted',
+  //   ])
+  // })
+
+  test('use', () => {
+    const PluginA: Plugin = (app: App) => app.provide('foo', 1)
+    const PluginB: Plugin = {
+      install: (app: App, arg1: number, arg2: number) => app.provide('bar', arg1 + arg2),
+    }
+    class PluginC {
+      someProperty = {}
+      static install() {
+        app.provide('baz', 2)
+      }
+    }
+    const PluginD: any = undefined
+
+    const Root = new Fragment({
+      setup(this: Fragment) {
+        const foo = inject('foo')
+        const bar = inject('bar')
+        // return () => `${foo},${bar}`
+        this.addChild(`${foo},${bar}`);
+      },
+    })
+
+    const app = createApp(Root)
+    app.use(PluginA)
+    app.use(PluginB, 1, 1)
+    app.use(PluginC)
+
+    const root = document.createElement('div')
+    app.mount(root)
+    expect(root.innerHTML).toBe(`1,2`)
+
+    app.use(PluginA)
+    // expect(
+    //   `Plugin has already been applied to target app`,
+    // ).toHaveBeenWarnedTimes(1)
+
+    app.use(PluginD)
+    // expect(
+    //   `A plugin must either be a function or an object with an "install" ` +
+    //     `function.`,
+    // ).toHaveBeenWarnedTimes(1)
+  })
+
+  test('onUnmount', () => {
+    const cleanup = vi.fn().mockName('plugin cleanup')
+    const PluginA: Plugin = app => {
+      app.provide('foo', 1)
+      app.onUnmount(cleanup)
+    }
+    const PluginB: Plugin = {
+      install: (app, arg1, arg2) => {
+        app.provide('bar', arg1 + arg2)
+        app.onUnmount(cleanup)
+      },
+    }
+
+    const app = createApp(new Fragment({
+      slot: 'Test'
+    }))
+    app.use(PluginA)
+    app.use(PluginB)
+
+    const root = document.createElement('div')
+    app.mount(root)
+
+    //also can be added after mount
+    app.onUnmount(cleanup)
+
+    app.unmount()
+
+    expect(cleanup).toHaveBeenCalledTimes(3)
+  })
+
+  // test('config.errorHandler', () => {
+  //   const error = new Error()
+  //   const count = signal(0)
+  //
+  //   const handler = vi.fn((err, instance, info) => {
+  //     expect(err).toBe(error)
+  //     expect(instance.count).toBe(count.get())
+  //     expect(info).toBe(`render function`)
+  //   })
+  //
+  //   class Root extends TypeFragment {
+  //     className = 'Root'
+  //     override setup() {
+  //       const count = signal(0)
+  //       // return {
+  //       //   count,
+  //       // }
+  //       this.addChild(count);
+  //       throw  error;
+  //     }
+  //     // render() {
+  //     //   throw error
+  //     // }
+  //   }
+  //
+  //   const app = createApp(new Root())
+  //   app.config.errorHandler = handler
+  //   app.mount(document.createElement('div'))
+  //   expect(handler).toHaveBeenCalled()
+  // })
+
+  // test('config.warnHandler', () => {
+  //   let ctx: any
+  //   const handler = vi.fn((msg, instance, trace) => {
+  //     expect(msg).toMatch(`Component is missing template or render function`)
+  //     expect(instance).toBe(ctx.proxy)
+  //     expect(trace).toMatch(`Hello`)
+  //   })
+  //
+  //   class Root extends TypeFragment {
+  //     // name: 'Hello'
+  //     className = 'Root'
+  //     override setup() {
+  //       ctx = getCurrentInstance()
+  //     }
+  //   }
+  //
+  //   const app = createApp(new Root())
+  //   app.config.warnHandler = handler
+  //   app.mount(document.createElement('div'))
+  //   expect(handler).toHaveBeenCalledTimes(1)
+  // })
+
+  describe('config.isNativeTag', () => {
+    const isNativeTag = vi.fn(tag => tag === 'div')
+
+    test('Component.name', () => {
+      const Root = new Fragment({
+        name: 'div',
+        // render() {
+        //   return null
+        // },
+      })
+
+      const app = createApp(Root)
+
+      Object.defineProperty(app.config, 'isNativeTag', {
+        value: isNativeTag,
+        writable: false,
+      })
+
+      app.mount(document.createElement('div'))
+      // expect(
+      //   `Do not use built-in or reserved HTML elements as component id: div`,
+      // ).toHaveBeenWarned()
+    })
+
+    test('Component.components', () => {
+      class Root extends TypeFragment {
+        className = 'Root';
+        // components: {
+        //   div: () => 'div',
+        // },
+        // render() {
+        //   return null
+        // },
+      }
+
+      const app = createApp(new Root())
+      Object.defineProperty(app.config, 'isNativeTag', {
+        value: isNativeTag,
+        writable: false,
+      })
+
+      app.mount(document.createElement('div'))
+      // expect(
+      //   `Do not use built-in or reserved HTML elements as component id: div`,
+      // ).toHaveBeenWarned()
+    })
+
+    // test('Component.directives', () => {
+    //   const Root = {
+    //     directives: {
+    //       bind: () => {},
+    //     },
+    //     render() {
+    //       return null
+    //     },
+    //   }
+    //
+    //   const app = createApp(Root)
+    //   app.mount(nodeOps.createElement('div'))
+    //   expect(
+    //     `Do not use built-in directive ids as custom directive id: bind`,
+    //   ).toHaveBeenWarned()
+    // })
+
+    test('register using app.component', () => {
+      // const app = createApp({
+      //   render() {},
+      // })
+      const app = createApp(new Fragment())
+
+      Object.defineProperty(app.config, 'isNativeTag', {
+        value: isNativeTag,
+        writable: false,
+      })
+
+      // app.component('div', () => 'div')
+      app.mount(document.createElement('div'))
+      // expect(
+      //   `Do not use built-in or reserved HTML elements as component id: div`,
+      // ).toHaveBeenWarned()
+    })
+  })
+
+  // test('config.optionMergeStrategies', () => {
+  //   let merged: string
+  //   const App = defineComponent({
+  //     render() {},
+  //     mixins: [{ foo: 'mixin' }],
+  //     extends: { foo: 'extends' },
+  //     foo: 'local',
+  //     beforeCreate() {
+  //       merged = this.$options.foo
+  //     },
+  //   })
+  //
+  //   const app = createApp(App)
+  //   app.mixin({
+  //     foo: 'global',
+  //   })
+  //   app.config.optionMergeStrategies.foo = (a, b) => (a ? `${a},` : ``) + b
+  //
+  //   app.mount(nodeOps.createElement('div'))
+  //   expect(merged!).toBe('global,extends,mixin,local')
+  // })
+
+  test('config.globalProperties', () => {
+    const app = createApp(new Fragment({
+      slot(this: any) {
+        return this.foo;
+      }
+    }))
+    app.config.globalProperties.foo = 'hello'
+    const root = document.createElement('div')
+    app.mount(root)
+    expect(root.innerHTML).toBe('hello')
+  })
+
+  test('config.throwUnhandledErrorInProduction', () => {
+    __DEV__ = false
+    try {
+      const err = new Error()
+      const app = createApp(new Fragment({
+        setup() {
+          throw err
+        },
+      }))
+      app.config.throwUnhandledErrorInProduction = true
+      const root = document.createElement('div')
+      expect(() => app.mount(root)).toThrow(err)
+    } finally {
+      __DEV__ = true
+    }
+  })
+
+  // test('return property "_" should not overwrite "ctx._", __isScriptSetup: false', () => {
+  //   const Comp = defineComponent({
+  //     setup() {
+  //       return {
+  //         _: ref(0), // return property "_" should not overwrite "ctx._"
+  //       }
+  //     },
+  //     render() {
+  //       return h('input', {
+  //         ref: 'input',
+  //       })
+  //     },
+  //   })
+  //
+  //   const root1 = nodeOps.createElement('div')
+  //   createApp(Comp).mount(root1)
+  //
+  //   expect(
+  //     `setup() return property "_" should not start with "$" or "_" which are reserved prefixes for Vue internals.`,
+  //   ).toHaveBeenWarned()
+  // })
+  //
+  // test('return property "_" should not overwrite "ctx._", __isScriptSetup: true', () => {
+  //   const Comp = defineComponent({
+  //     setup() {
+  //       return {
+  //         _: ref(0), // return property "_" should not overwrite "ctx._"
+  //         __isScriptSetup: true, // mock __isScriptSetup = true
+  //       }
+  //     },
+  //     render() {
+  //       return h('input', {
+  //         ref: 'input',
+  //       })
+  //     },
+  //   })
+  //
+  //   const root1 = nodeOps.createElement('div')
+  //   const app = createApp(Comp).mount(root1)
+  //
+  //   // trigger
+  //   app.$refs.input
+  //
+  //   expect(
+  //     `TypeError: Cannot read property '__isScriptSetup' of undefined`,
+  //   ).not.toHaveBeenWarned()
+  // })
+
+  // #10005
+  test('flush order edge case on nested createApp', async () => {
+    const order: string[] = []
+    const App = new Div({
+      setup(this: any, props) {
+        const message = signal('m1')
+        watch(
+          message,
+          () => {
+            order.push('post watcher')
+          },
+          { flush: 'post' },
+        )
+        onMounted(() => {
+          message.set('m2')
+          createApp(new Fragment({ slot: '' })).mount(document.createElement('div'))
+        })
+        // return () => {
+        //   order.push('render')
+        //   return h('div', [message.get()])
+        // }
+        order.push('render')
+        this.addChild(message)
+      },
+    })
+
+    createApp(App).mount(document.createElement('div'))
+    await nextTick()
+    // expect(order).toMatchObject(['render', 'render', 'post watcher'])
+    // message 只加载一次，重新渲染不会触发 order.push
+    expect(order).toMatchObject(['render', 'post watcher'])
+  })
+
+  // #14215
+  test("unmount new app should not trigger other app's watcher", async () => {
+    const compWatcherTriggerFn = vi.fn()
+    const data = signal(true)
+    const foo = signal('')
+
+    const createNewApp = () => {
+      const app = createApp(new Fragment({ slot: 'new app' }))
+      const wrapper = document.createElement('div')
+      app.mount(wrapper)
+      return function destroy() {
+        app.unmount()
+      }
+    }
+
+    // const Comp = defineComponent({
+    //   setup() {
+    //     watch(() => foo.value, compWatcherTriggerFn)
+    //     return () => h('div', 'comp')
+    //   },
+    // })
+    class Comp extends TypeDiv {
+      className: 'Comp';
+      constructor() {
+        super();
+        this.className = 'Comp';
+      }
+      override setup() {
+        watch(() => foo.get(), compWatcherTriggerFn)
+        this.addChild('comp')
+      }
+    }
+
+    const App = new Fragment({
+      setup() {
+        return () => (data.get() ? new Comp() : null)
+      },
+    })
+
+    createApp(App).mount(document.createElement('div'))
+    await nextTick()
+
+    data.set(false)
+    const destroy = createNewApp()
+    foo.set('bar')
+    destroy()
+    await nextTick()
+
+    expect(compWatcherTriggerFn).toBeCalledTimes(0)
+  })
+
+  // config.compilerOptions is tested in packages/vue since it is only
+  // supported in the full build.
+})

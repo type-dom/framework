@@ -1,36 +1,135 @@
-export * from './type-html';
+// import { NOOP } from '@type-dom/utils';
 
+export * from './abstracts';
+export { warn } from './warning';
+// export const warn = (__DEV__ ? _warn : NOOP) as typeof _warn;
+
+export * from './event-emitter/event-emitter';
 export type * from './event-emitter/event-emitter.interface';
-export { TypeNode } from './type-node/type-node.abstract';
-export type * from './type-node/type-node.interface';
-export { TextNode } from './text-node/text-node.class';
-export type { ITextNode } from './text-node/text-node.interface';
-// export { vHash, TypeElement } from './type-element/type-element.abstract';
-// export type * from './type-element/type-element.interface';
-export * from './type-element/index';
-export { TypeFragment } from './type-fragment/type-fragment.abstract';
-export type * from './type-fragment/type-fragment.interface';
 
-export { TypeTransition } from './type-transition/type-transition.abstract';
-export type * from './type-transition/type-transition.interface';
+// export * from './util';
+export { createApp, type Plugin } from './apiCreateApp';
+export {
+  onBeforeCreate,
+  onCreated,
+  onBeforeMount,
+  onMounted,
+  onBeforeUpdate,
+  onUpdated,
+  onBeforeUnmount,
+  onUnmounted,
+  onActivated,
+  onDeactivated,
+  onRenderTracked,
+  onRenderTriggered,
+  onErrorCaptured,
+  onServerPrefetch,
+} from './apiLifecycle'
+export { provide, inject, hasInjectionContext } from './apiInject'
+export * from './scheduler'
+export { useAttrs, useSlots } from './apiSetupHelpers'
+export * from './renderer';
+// export { defineExpose } from './defineExpose';
+// export { useModel } from './helpers/useModel'
+// export { useTemplateRef, type TemplateRef } from './helpers/useTemplateRef'
+export { useId } from './helpers/useId'
+// export {
+//   hydrateOnIdle,
+//   hydrateOnVisible,
+//   hydrateOnMediaQuery,
+//   hydrateOnInteraction,
+// } from './hydrationStrategies'
 
-export { TypeHtml } from './type-html/type-html.abstract';
-export type * from './type-html/type-html.interface';
+// <script setup> API ----------------------------------------------------------
 
-export { TypeRoot } from './type-root/type-root.abstract';
-export type * from './type-root/type-root.interface';
-export * from './style/index';
-export * from './attribute/index';
+export {
+  // macros runtime, for typing and warnings only
+  // defineProps,
+  // defineEmits,
+  // defineExpose,
+  // defineOptions,
+  // defineSlots,
+  // defineModel,
+  // withDefaults,
+  // type DefineProps,
+  // type ModelRef,
+  // type ComponentTypeEmits,
+} from './apiSetupHelpers'
 
-export { TypeSvg } from './type-svg/type-svg.abstract';
-export type * from './type-svg/type-svg.interface';
-export { TypeSvgSvg } from './type-svg/svg/svg.abstract';
-export type * from './type-svg/svg/svg.interface';
+/**
+ * @internal
+ */
+// export {
+//   mergeDefaults,
+//   mergeModels,
+//   createPropsRestProxy,
+//   withAsyncContext,
+// } from './apiSetupHelpers'
 
-export * from './util';
-export * from './instance';
-export * from './apiInject';
-export * from './apiLifecycle';
-export * from './apiSetupHelpers';
-export * from './scheduler';
-export { defineExpose } from './defineExpose';
+// Advanced API ----------------------------------------------------------------
+
+// For getting a hold of the internal instance in setup() - useful for advanced
+// plugins
+export { getCurrentInstance, setCurrentInstance } from './component'
+
+// Advanced render function utilities
+export { // createVNode, cloneVNode,
+  mergeProps, isTypeNode } from './vnode'
+export type { InjectionKey } from './apiInject'
+export type {
+  ComponentOptions,
+  ComponentOptionsMixin,
+  ComponentCustomOptions,
+  ComponentOptionsBase,
+  ComponentProvideOptions,
+  RenderFunction,
+  MethodOptions,
+  ComputedOptions,
+  RuntimeCompilerOptions,
+  ComponentInjectOptions,
+  // deprecated
+  // ComponentOptionsWithoutProps,
+  // ComponentOptionsWithArrayProps,
+  // ComponentOptionsWithObjectProps,
+} from './componentOptions'
+export type {
+  EmitsOptions,
+  ObjectEmitsOptions,
+  EmitsToProps,
+  // ShortEmitsToObject,
+  EmitFn,
+} from './componentEmits'
+export {
+  emit,
+  isEmitListener,
+} from './componentEmits';
+// export type {
+//   ComponentPublicInstance,
+//   ComponentCustomProperties,
+//   CreateComponentPublicInstance,
+//   CreateComponentPublicInstanceWithMixins,
+// } from './componentPublicInstance'
+
+// export type { RootHydrateFunction } from './hydration'
+// export type { Slot, Slots, SlotsType } from './componentSlots'
+export type {
+  Prop,
+  PropType,
+  // ComponentPropsOptions,
+  // ComponentObjectPropsOptions,
+  ExtractPropTypes,
+  ExtractPublicPropTypes,
+  ExtractDefaultPropTypes,
+} from './componentProps'
+export * from './enums';
+
+// export * from './warning';
+
+export { assignProps } from './helpers/assignProps';
+export { findDown, findAll } from './helpers/findDown';
+export { defaultProps } from './helpers/defaultProps';
+export { renderList } from './helpers/renderList';
+export { toHandlers } from './helpers/toHandlers'
+// export { useRecurseRender } from './helpers/useRecurseRender';
+export { transformSlot } from './transforms/transformSlot';
+export * from './decorators/index';

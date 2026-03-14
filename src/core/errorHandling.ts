@@ -1,7 +1,7 @@
 import { AnyFn, isArray, isFunction, isPromise } from '@type-dom/utils';
 import { LifecycleHooks } from './enums'
-import { TypeNode } from './type-node/type-node.abstract';
-import { ITypeNode } from './type-node/type-node.interface';
+import { TypeNode } from './abstracts/type-node/type-node.abstract';
+import { popWarningContext, pushWarningContext, warn } from './warning';
 
 // contexts where user provided function may be executed, in addition to
 // lifecycle hooks.
@@ -65,9 +65,8 @@ export const ErrorTypeStrings: Record<ErrorTypes, string> = {
 export type ErrorTypes = LifecycleHooks | ErrorCodes; // | WatchErrorCodes
 
 export function callWithErrorHandling(
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-  fn: Function,
-  instance: ITypeNode | null | undefined,
+  fn: AnyFn,
+  instance: TypeNode | null | undefined,
   type: ErrorTypes,
   args?: unknown[],
 ): any {
@@ -80,7 +79,7 @@ export function callWithErrorHandling(
 
 export function callWithAsyncErrorHandling(
   fn: AnyFn | AnyFn[],
-  instance: TypeNode | null,
+  instance: TypeNode | undefined,
   type: ErrorTypes,
   args?: unknown[],
 ): any {
@@ -100,44 +99,43 @@ export function callWithAsyncErrorHandling(
       values.push(callWithAsyncErrorHandling(fn[i], instance, type, args))
     }
     return values
+  } else { // if (__DEV__) {
+    warn(
+      `Invalid value type passed to callWithAsyncErrorHandling(): ${typeof fn}`,
+    )
   }
-  // else if (__DEV__) {
-  //   warn(
-  //     `Invalid value type passed to callWithAsyncErrorHandling(): ${typeof fn}`,
-  //   )
-  // }
 }
 
 export function handleError(
   err: unknown,
-  instance: ITypeNode | null | undefined,
+  instance: TypeNode | null | undefined,
   type: ErrorTypes,
   throwInDev = true,
 ): void {
-  // const contextVNode = instance ? instance.vnode : null
+  const contextVNode = instance ? instance : null
   // const { errorHandler, throwUnhandledErrorInProduction } =
   //   (instance && instance.appContext.config) || EMPTY_OBJ
   if (instance) {
-    // let cur = instance.parent
+    let cur = instance.parent
     // the exposed instance is the render proxy to keep it consistent with 2.x
     // const exposedInstance = instance.proxy
     // in production the hook receives only the error code
     // const errorInfo = __DEV__
     //   ? ErrorTypeStrings[type]
     //   : `https://vuejs.org/error-reference/#runtime-${type}`
-    // while (cur) {
-    //   // const errorCapturedHooks = cur.ec
-    //   // if (errorCapturedHooks) {
-    //   //   for (let i = 0; i < errorCapturedHooks.length; i++) {
-    //   //     if (
-    //   //       errorCapturedHooks[i](err, exposedInstance, errorInfo) === false
-    //   //     ) {
-    //   //       return
-    //   //     }
-    //   //   }
-    //   // }
-    //   cur = cur.parent
-    // }
+    while (cur) {
+      // const errorCapturedHooks = cur.ec
+      // if (errorCapturedHooks) {
+      //   for (let i = 0; i < errorCapturedHooks.length; i++) {
+      //     if (
+      //       errorCapturedHooks[i](err, exposedInstance, errorInfo) === false
+      //     ) {
+      //       return
+      //     }
+      //   }
+      // }
+      cur = cur.parent
+    }
     // app-level handling
     // if (errorHandler) {
     //   pauseTracking()
@@ -151,35 +149,36 @@ export function handleError(
     // }
   }
   // logError(err, type, contextVNode, throwInDev, throwUnhandledErrorInProduction)
-  console.error(err, type, throwInDev)
+  logError(err, type, contextVNode, throwInDev)
+  // console.error(err, type, throwInDev)
 }
 
-// function logError(
-//   err: unknown,
-//   type: ErrorTypes,
-//   // contextVNode: VNode | null,
-//   throwInDev = true,
-//   throwInProd = false,
-// ) {
-//   if (__DEV__) {
-//     const info = ErrorTypeStrings[type]
-//     // if (contextVNode) {
-//     //   pushWarningContext(contextVNode)
-//     // }
-//     warn(`Unhandled error${info ? ` during execution of ${info}` : ``}`)
-//     // if (contextVNode) {
-//     //   popWarningContext()
-//     // }
-//     // crash in dev by default so it's more noticeable
-//     if (throwInDev) {
-//       throw err
-//     } else if (!__TEST__) {
-//       console.error(err)
-//     }
-//   } else if (throwInProd) {
-//     throw err
-//   } else {
-//     // recover in prod to reduce the impact on end-user
-//     console.error(err)
-//   }
-// }
+function logError(
+  err: unknown,
+  type: ErrorTypes,
+  contextVNode: TypeNode | null,
+  throwInDev = true,
+  // throwInProd = false,
+) {
+  // if (__DEV__) {
+    const info = ErrorTypeStrings[type]
+    if (contextVNode) {
+      pushWarningContext(contextVNode)
+    }
+    warn(`Unhandled error${info ? ` during execution of ${info}` : ``}`)
+    if (contextVNode) {
+      popWarningContext()
+    }
+    // crash in dev by default so it's more noticeable
+    if (throwInDev) {
+      throw err
+    } else if (!__TEST__) {
+      console.error(err)
+    }
+  // } else if (throwInProd) {
+  //   throw err
+  // } else {
+  //   // recover in prod to reduce the impact on end-user
+  //   console.error(err)
+  // }
+}

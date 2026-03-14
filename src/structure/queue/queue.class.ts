@@ -1,6 +1,6 @@
 /// <reference types="node" />
 import { AnyFn } from '@type-dom/utils';
-import { EventsMap, Options, QueueWorker, EventListenerOrEventListenerObject } from './queue.interface';
+import { Options, QueueWorker } from './queue.interface';
 import { QueueEvent } from './queue-event';
 
 export class Queue extends EventTarget {
@@ -43,7 +43,7 @@ export class Queue extends EventTarget {
     this.running = false;
     this.jobs = [];
     this.timers = [];
-    this.addEventListener('error', this._errorHandler);
+    this.addEventListener('error', this._errorHandler as EventListener);
   }
 
   /**
@@ -58,7 +58,7 @@ export class Queue extends EventTarget {
     return this.jobs.length === 0;
   }
 
-  _errorHandler(evt: QueueEvent<'error', { error: Error, job?: QueueWorker }>) {
+  _errorHandler(evt: Event & QueueEvent<'error', { error: Error, job?: QueueWorker }>) {
     this.end(evt.detail.error);
   }
 
@@ -286,11 +286,11 @@ export class Queue extends EventTarget {
   }
 
   _addCallbackToEndEvent(cb: AnyFn) {
-    const onend = (evt: QueueEvent<'end', any>) => {
-      this.removeEventListener('end', onend);
-      cb(evt.detail.error, this.results);
-    };
-    this.addEventListener('end', onend);
+    const onend = (evt: Event) => {
+      this.removeEventListener('end', onend as EventListener);
+      cb((evt as { detail?: any }).detail.error, this.results);
+    }
+    this.addEventListener('end', onend as EventListener);
   }
 
   _createPromiseToEndEvent(): Promise<{ error?: Error, results?: any[] | null }> {
@@ -339,17 +339,19 @@ export class Queue extends EventTarget {
     return [...this.jobs];
   }
 
-  // eslint-disable-preview-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  override addEventListener<Event extends keyof EventsMap>(name: Event, callback: EventListenerOrEventListenerObject<QueueEvent<Event, EventsMap[Event]>>, options?: AddEventListenerOptions | boolean): void;
-
-  // eslint-disable-preview-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  dispatchEvent<Event extends keyof EventsMap>(event: QueueEvent<Event, EventsMap[Event]>): boolean;
-
-  // eslint-disable-preview-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  removeEventListener<Event extends keyof EventsMap>(name: Event, callback: EventListenerOrEventListenerObject<QueueEvent<Event, EventsMap[Event]>>, options?: EventListenerOptions | boolean): void;
+  // override addEventListener<Event extends keyof EventsMap>(
+  //   name: Event,
+  //   callback: EventListenerOrEventListenerObject<QueueEvent<Event, EventsMap[Event]>> | null,
+  //   options?: AddEventListenerOptions | boolean): void {
+  //   super.addEventListener(name, callback, options);
+  // }
+  //
+  // override dispatchEvent<Event extends keyof EventsMap>(event: QueueEvent<Event, EventsMap[Event]>): boolean;
+  //
+  // override removeEventListener<Event extends keyof EventsMap>(
+  //   name: Event,
+  //   callback: EventListenerOrEventListenerObject<QueueEvent<Event, EventsMap[Event]>>,
+  //   options?: EventListenerOptions | boolean): void;
 
 }
 
